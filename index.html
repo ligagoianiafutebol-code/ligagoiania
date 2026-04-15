@@ -26,13 +26,15 @@ border-bottom:3px solid #f7c600;
 display:flex;
 justify-content:space-around;
 background:#102a52;
-padding:10px;
+padding:12px;
+flex-wrap:wrap;
 }
 
 .menu a{
 color:white;
 text-decoration:none;
 font-weight:bold;
+font-size:14px;
 }
 
 .container{
@@ -56,6 +58,26 @@ margin-top:10px;
 text-decoration:none;
 font-weight:bold;
 }
+
+.section-title{
+font-size:18px;
+margin:15px 0;
+font-weight:bold;
+}
+
+.match{
+background:#102a52;
+padding:12px;
+border-radius:8px;
+margin-bottom:8px;
+}
+
+.footer{
+text-align:center;
+padding:20px;
+opacity:0.7;
+font-size:13px;
+}
 </style>
 
 </head>
@@ -70,9 +92,13 @@ LIGA GOIÂNIA
 <a href="#">Tabela</a>
 <a href="#">Jogos</a>
 <a href="#">Artilharia</a>
+<a href="#">Cartões</a>
+<a href="#">Login</a>
 </div>
 
 <div class="container">
+
+<div class="section-title">Campeonatos</div>
 
 <div class="card">
 <h3>Copa União</h3>
@@ -86,6 +112,30 @@ LIGA GOIÂNIA
 <a class="btn">Ver campeonato</a>
 </div>
 
+<div class="section-title">Próximos Jogos</div>
+
+<div class="match">
+Sub-15<br>
+Atlético GO vs Vila Nova<br>
+10:00 - Campo 1
+</div>
+
+<div class="match">
+Sub-13<br>
+Campinas vs Hidrolândia<br>
+11:30 - Campo 2
+</div>
+
+<div class="section-title">Últimas Notícias</div>
+
+<div class="card">
+Início da Copa União confirmado para sábado.
+</div>
+
+</div>
+
+<div class="footer">
+Liga Goiânia © 2026
 </div>
 
 </body>
