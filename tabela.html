@@ -1,1 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tabela - Liga Goiânia</title>
 
+<style>
+body{
+font-family: Arial;
+margin:0;
+background:#0b1f3a;
+color:white;
+}
+
+header{
+background:#0b1f3a;
+padding:15px;
+text-align:center;
+font-size:20px;
+font-weight:bold;
+border-bottom:3px solid #f7c600;
+}
+
+.container{
+padding:10px;
+}
+
+.table{
+background:#102a52;
+border-radius:10px;
+overflow:hidden;
+}
+
+.row{
+display:flex;
+padding:10px;
+border-bottom:1px solid rgba(255,255,255,0.1);
+font-size:14px;
+}
+
+.row.header{
+background:#081a33;
+font-weight:bold;
+}
+
+.col-pos{width:30px}
+.col-time{flex:1}
+.col-p{width:40px;text-align:center}
+.col-j{width:40px;text-align:center}
+.col-sg{width:40px;text-align:center}
+
+.team{
+display:flex;
+align-items:center;
+gap:8px;
+}
+
+.badge{
+width:20px;
+height:20px;
+background:#f7c600;
+border-radius:50%;
+}
+</style>
+
+</head>
+<body>
+
+<header>
+Tabela - Sub-15
+</header>
+
+<div class="container">
+
+<div class="table">
+
+<div class="row header">
+<div class="col-pos">#</div>
+<div class="col-time">Time</div>
+<div class="col-p">P</div>
+<div class="col-j">J</div>
+<div class="col-sg">SG</div>
+</div>
+
+<div class="row">
+<div class="col-pos">1</div>
+<div class="col-time">
+<div class="team">
+<div class="badge"></div>
+Atlético GO
+</div>
+</div>
+<div class="col-p">9</div>
+<div class="col-j">3</div>
+<div class="col-sg">5</div>
+</div>
+
+<div class="row">
+<div class="col-pos">2</div>
+<div class="col-time">
+<div class="team">
+<div class="badge"></div>
+Vila Nova
+</div>
+</div>
+<div class="col-p">7</div>
+<div class="col-j">3</div>
+<div class="col-sg">3</div>
+</div>
+
+<div class="row">
+<div class="col-pos">3</div>
+<div class="col-time">
+<div class="team">
+<div class="badge"></div>
+Campinas
+</div>
+</div>
+<div class="col-p">4</div>
+<div class="col-j">3</div>
+<div class="col-sg">0</div>
+</div>
+
+</div>
+
+</div>
+
+</body>
+</html>
