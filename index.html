@@ -3,140 +3,92 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LIGA GOIANA DE FUTEBOL DE BASE</title>
+<title>Liga Goiana de Futebol de Base</title>
 
 <style>
-body{
-font-family: Arial;
-margin:0;
-background:#0b1f3a;
-color:white;
+:root {
+    --azul-escuro: #000b1a;
+    --azul-claro: #003366;
+    --dourado: #FFD700;
+    --branco: #ffffff;
 }
 
-header{
-background:#0b1f3a;
-padding:15px;
-text-align:center;
-font-size:22px;
-font-weight:bold;
-border-bottom:3px solid #f7c600;
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: var(--azul-escuro);
+    color: var(--branco);
+
+    /* fundo com imagem + efeito escuro */
+    background-image: linear-gradient(rgba(0, 15, 41, 0.85), rgba(0, 11, 26, 0.95)), 
+    url('https://images.unsplash.com/photo-1522778119026-d647f0596c20?q=80&w=2070');
+
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
 }
 
-.menu{
-display:flex;
-justify-content:space-around;
-background:#102a52;
-padding:12px;
-flex-wrap:wrap;
+.container {
+    max-width: 600px;
 }
 
-.menu a{
-color:white;
-text-decoration:none;
-font-weight:bold;
-font-size:14px;
+/* título */
+h1 {
+    font-size: 2.5rem;
+    color: var(--dourado);
+    text-transform: uppercase;
+    margin-bottom: 10px;
 }
 
-.container{
-padding:15px;
+/* subtítulo */
+p {
+    font-size: 1.1rem;
+    color: #ddd;
+    margin-bottom: 30px;
 }
 
-.card{
-background:#102a52;
-padding:15px;
-border-radius:10px;
-margin-bottom:10px;
+/* botão */
+button {
+    background: linear-gradient(to bottom, var(--dourado), #b8860b);
+    color: black;
+    padding: 16px 35px;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
 }
 
-.btn{
-background:#f7c600;
-color:black;
-padding:10px;
-border-radius:8px;
-display:inline-block;
-margin-top:10px;
-text-decoration:none;
-font-weight:bold;
-}
-
-.section-title{
-font-size:18px;
-margin:15px 0;
-font-weight:bold;
-}
-
-.match{
-background:#102a52;
-padding:12px;
-border-radius:8px;
-margin-bottom:8px;
-}
-
-.footer{
-text-align:center;
-padding:20px;
-opacity:0.7;
-font-size:13px;
+button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(255, 215, 0, 0.4);
 }
 </style>
-
 </head>
+
 <body>
-
-<header>
-LIGA GOIANA DE FUTEBOL DE BASE
-</header>
-
-<div class="menu">
-<a href="index.html">Campeonatos</a>
-<a href="tabela.html">Tabela</a>
-<a href="jogos.html">Jogos</a>
-<a href="artilharia.html">Artilharia</a>
-<a href="cartoes.html">Cartões</a>
-<a href="login.html">Login</a>
-</div>
 
 <div class="container">
 
-<div class="section-title">Campeonatos</div>
+<h1>BEM-VINDO À LIGA GOIANA DE BASE</h1>
 
-<div class="card">
-<h3>Copa União</h3>
-<p>Sub-11 até Sub-18</p>
-<a class="btn">Ver campeonato</a>
-</div>
+<p>Onde o talento encontra o futuro</p>
 
-<div class="card">
-<h3>Liga Goiânia Elite</h3>
-<p>Sub-11 até Sub-18</p>
-<a class="btn">Ver campeonato</a>
-</div>
-
-<div class="section-title">Próximos Jogos</div>
-
-<div class="match">
-Sub-15<br>
-Atlético GO vs Vila Nova<br>
-10:00 - Campo 1
-</div>
-
-<div class="match">
-Sub-13<br>
-Campinas vs Hidrolândia<br>
-11:30 - Campo 2
-</div>
-
-<div class="section-title">Últimas Notícias</div>
-
-<div class="card">
-Início da Copa União confirmado para sábado.
-</div>
+<button onclick="entrar()">ENTRAR</button>
 
 </div>
 
-<div class="footer">
-LIGA GOIANA DE FUTEBOL DE BASE © 2026
-</div>
+<script>
+function entrar(){
+    window.location.href = "login.html"; // ou admin.html
+}
+</script>
 
 </body>
 </html>
