@@ -258,31 +258,6 @@ border-radius:999px;
 font-size:12px;
 }
 
-.player-row{
-display:flex;
-align-items:center;
-gap:10px;
-background:#0b1f3a;
-padding:10px;
-border-radius:8px;
-margin-top:8px;
-text-align:left;
-}
-
-.player-photo{
-width:42px;
-height:42px;
-border-radius:50%;
-object-fit:cover;
-background:#1a3f73;
-}
-
-.player-info small{
-display:block;
-opacity:.85;
-margin-top:2px;
-}
-
 .subtitle{
 opacity:.85;
 font-size:13px;
@@ -309,6 +284,31 @@ gap:8px;
 width:auto;
 margin:0;
 }
+
+.player-row{
+display:flex;
+align-items:center;
+gap:10px;
+background:#0b1f3a;
+padding:10px;
+border-radius:8px;
+margin-top:8px;
+text-align:left;
+}
+
+.player-photo{
+width:42px;
+height:42px;
+border-radius:50%;
+object-fit:cover;
+background:#1a3f73;
+}
+
+.player-info small{
+display:block;
+opacity:.85;
+margin-top:2px;
+}
 </style>
 </head>
 
@@ -327,16 +327,7 @@ margin:0;
   <input id="escudo" type="file" accept="image/*">
 
   <div class="subtitle">Categorias do time</div>
-  <div class="checkbox-grid" id="categoriasGrid">
-    <label class="check-item"><input type="checkbox" value="Sub-11">Sub-11</label>
-    <label class="check-item"><input type="checkbox" value="Sub-12">Sub-12</label>
-    <label class="check-item"><input type="checkbox" value="Sub-13">Sub-13</label>
-    <label class="check-item"><input type="checkbox" value="Sub-14">Sub-14</label>
-    <label class="check-item"><input type="checkbox" value="Sub-15">Sub-15</label>
-    <label class="check-item"><input type="checkbox" value="Sub-16">Sub-16</label>
-    <label class="check-item"><input type="checkbox" value="Sub-17">Sub-17</label>
-    <label class="check-item"><input type="checkbox" value="Sub-18">Sub-18</label>
-  </div>
+  <div class="checkbox-grid" id="categoriasGrid"></div>
 
   <button type="button" class="btn" onclick="togglePaleta()">Selecionar cores</button>
 
@@ -500,6 +491,39 @@ window.togglePaleta = function(){
   document.getElementById("paletaBox").classList.toggle("show");
 }
 
+async function carregarCategoriasCheckbox() {
+  const grid = document.getElementById("categoriasGrid");
+  grid.innerHTML = "";
+
+  const snap = await getDocs(collection(db, "categorias"));
+  let categorias = [];
+
+  snap.forEach(docSnap => {
+    const data = docSnap.data();
+    if (data.nome) categorias.push(data.nome);
+  });
+
+  categorias.sort((a,b)=>a.localeCompare(b,'pt-BR'));
+
+  categorias.forEach(nome => {
+    grid.innerHTML += `
+      <label class="check-item">
+        <input type="checkbox" value="${nome}">${nome}
+      </label>
+    `;
+  });
+}
+
+function getCategoriasSelecionadas() {
+  return Array.from(document.querySelectorAll('#categoriasGrid input[type="checkbox"]:checked')).map(i => i.value);
+}
+
+function marcarCategorias(categorias) {
+  document.querySelectorAll('#categoriasGrid input[type="checkbox"]').forEach(i => {
+    i.checked = (categorias || []).includes(i.value);
+  });
+}
+
 function atualizarCores() {
   const box = document.getElementById("coresSelecionadas");
   box.innerHTML = "";
@@ -536,16 +560,6 @@ document.querySelectorAll(".color-option").forEach(op => {
     atualizarCores();
   };
 });
-
-function getCategoriasSelecionadas() {
-  return Array.from(document.querySelectorAll('#categoriasGrid input[type="checkbox"]:checked')).map(i => i.value);
-}
-
-function marcarCategorias(categorias) {
-  document.querySelectorAll('#categoriasGrid input[type="checkbox"]').forEach(i => {
-    i.checked = (categorias || []).includes(i.value);
-  });
-}
 
 window.salvarTime = async function(){
   const nome = document.getElementById("nomeTime").value.trim();
@@ -759,6 +773,7 @@ async function carregarTimes(){
   });
 }
 
+await carregarCategoriasCheckbox();
 carregarTimes();
 </script>
 
