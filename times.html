@@ -60,14 +60,8 @@ align-items:center;
 .team{
 display:flex;
 align-items:center;
-gap:10px;
-}
-
-.logo{
-width:30px;
-height:30px;
-background:#f7c600;
-border-radius:50%;
+gap:12px;
+flex-wrap:wrap;
 }
 
 .actions a{
@@ -96,34 +90,71 @@ object-fit:cover;
 border:2px solid #ffffff22;
 }
 
-.color-row{
-display:flex;
-gap:10px;
-margin-bottom:12px;
-}
-
-.color-box{
-flex:1;
-}
-
-.color-box label{
-display:block;
-font-size:13px;
-margin-bottom:6px;
-}
-
-input[type="color"]{
-height:45px;
-padding:4px;
-}
-
-input[type="file"]{
-background:#fff;
-color:#000;
-}
-
 .nome-time{
 font-weight:bold;
+font-size:16px;
+}
+
+.section-title{
+font-size:14px;
+margin:8px 0;
+font-weight:bold;
+}
+
+.palette{
+display:flex;
+flex-direction:column;
+gap:10px;
+margin-bottom:14px;
+}
+
+.color-grid{
+display:grid;
+grid-template-columns:repeat(5, 44px);
+gap:10px;
+}
+
+.color-option{
+width:44px;
+height:44px;
+border-radius:8px;
+border:3px solid transparent;
+cursor:pointer;
+box-sizing:border-box;
+}
+
+.color-option.selected{
+border-color:#ffffff;
+box-shadow:0 0 0 2px #f7c600;
+}
+
+#coresSelecionadas{
+display:flex;
+flex-wrap:wrap;
+gap:8px;
+margin:10px 0 14px 0;
+min-height:36px;
+}
+
+.selected-color{
+width:30px;
+height:30px;
+border-radius:8px;
+border:2px solid #ffffff33;
+}
+
+.time-colors{
+display:flex;
+gap:6px;
+flex-wrap:wrap;
+align-items:center;
+}
+
+.time-color{
+width:16px;
+height:16px;
+border-radius:4px;
+border:1px solid #ffffff55;
 }
 </style>
 
@@ -137,17 +168,38 @@ font-weight:bold;
 <input id="nomeTime" placeholder="Nome do time">
 <input id="escudo" type="file" accept="image/*">
 
-<div class="color-row">
-  <div class="color-box">
-    <label for="cor1">Cor principal</label>
-    <input id="cor1" type="color" value="#f7c600">
-  </div>
+<div class="section-title">Escolha quantas cores quiser</div>
 
-  <div class="color-box">
-    <label for="cor2">Cor secundária</label>
-    <input id="cor2" type="color" value="#102a52">
+<div class="palette">
+  <div class="color-grid" id="gradeCores">
+    <div class="color-option" data-color="#ffffff" style="background:#ffffff"></div>
+    <div class="color-option" data-color="#000000" style="background:#000000"></div>
+    <div class="color-option" data-color="#f7c600" style="background:#f7c600"></div>
+    <div class="color-option" data-color="#ff0000" style="background:#ff0000"></div>
+    <div class="color-option" data-color="#002bff" style="background:#002bff"></div>
+
+    <div class="color-option" data-color="#00a651" style="background:#00a651"></div>
+    <div class="color-option" data-color="#ff7a00" style="background:#ff7a00"></div>
+    <div class="color-option" data-color="#8000ff" style="background:#8000ff"></div>
+    <div class="color-option" data-color="#ff4da6" style="background:#ff4da6"></div>
+    <div class="color-option" data-color="#8b4513" style="background:#8b4513"></div>
+
+    <div class="color-option" data-color="#c0c0c0" style="background:#c0c0c0"></div>
+    <div class="color-option" data-color="#808080" style="background:#808080"></div>
+    <div class="color-option" data-color="#001f3f" style="background:#001f3f"></div>
+    <div class="color-option" data-color="#39cccc" style="background:#39cccc"></div>
+    <div class="color-option" data-color="#2ecc40" style="background:#2ecc40"></div>
+
+    <div class="color-option" data-color="#ffdc00" style="background:#ffdc00"></div>
+    <div class="color-option" data-color="#ff851b" style="background:#ff851b"></div>
+    <div class="color-option" data-color="#85144b" style="background:#85144b"></div>
+    <div class="color-option" data-color="#7fdbff" style="background:#7fdbff"></div>
+    <div class="color-option" data-color="#b10dc9" style="background:#b10dc9"></div>
   </div>
 </div>
+
+<div class="section-title">Cores escolhidas</div>
+<div id="coresSelecionadas"></div>
 
 <button onclick="salvarTime()">Salvar Time</button>
 
@@ -175,6 +227,37 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const storage = getStorage(app);
 
+let coresEscolhidas = [];
+
+function atualizarCoresSelecionadas() {
+  const box = document.getElementById("coresSelecionadas");
+  box.innerHTML = "";
+
+  coresEscolhidas.forEach((cor) => {
+    box.innerHTML += `<div class="selected-color" style="background:${cor}"></div>`;
+  });
+}
+
+function configurarPaleta() {
+  const opcoes = document.querySelectorAll(".color-option");
+
+  opcoes.forEach((opcao) => {
+    opcao.addEventListener("click", () => {
+      const cor = opcao.dataset.color;
+
+      if (coresEscolhidas.includes(cor)) {
+        coresEscolhidas = coresEscolhidas.filter(c => c !== cor);
+        opcao.classList.remove("selected");
+      } else {
+        coresEscolhidas.push(cor);
+        opcao.classList.add("selected");
+      }
+
+      atualizarCoresSelecionadas();
+    });
+  });
+}
+
 async function carregarTimes() {
   const lista = document.getElementById("listaTimes");
   lista.innerHTML = "";
@@ -183,14 +266,20 @@ async function carregarTimes() {
 
   querySnapshot.forEach((doc) => {
     const time = doc.data();
+    const cores = Array.isArray(time.cores) ? time.cores : [];
+
+    const bolinhas = cores.map(cor => `
+      <div class="time-color" style="background:${cor}"></div>
+    `).join("");
 
     lista.innerHTML += `
       <div class="card">
         <div class="team">
           <img src="${time.escudo || ''}" class="preview" alt="Escudo do time">
-          <div class="nome-time" style="color:${time.cor1 || '#ffffff'}">${time.nome}</div>
-          <div style="width:14px;height:14px;border-radius:50%;background:${time.cor1 || '#f7c600'}"></div>
-          <div style="width:14px;height:14px;border-radius:50%;background:${time.cor2 || '#102a52'}"></div>
+          <div>
+            <div class="nome-time">${time.nome}</div>
+            <div class="time-colors">${bolinhas}</div>
+          </div>
         </div>
         <div class="actions">
           <a>Editar</a>
@@ -204,8 +293,6 @@ async function carregarTimes() {
 window.salvarTime = async function() {
   const nome = document.getElementById("nomeTime").value.trim();
   const arquivo = document.getElementById("escudo").files[0];
-  const cor1 = document.getElementById("cor1").value;
-  const cor2 = document.getElementById("cor2").value;
 
   if (!nome) {
     alert("Digite o nome do time");
@@ -214,6 +301,11 @@ window.salvarTime = async function() {
 
   if (!arquivo) {
     alert("Escolha o escudo do time");
+    return;
+  }
+
+  if (coresEscolhidas.length === 0) {
+    alert("Escolha pelo menos 1 cor");
     return;
   }
 
@@ -226,20 +318,22 @@ window.salvarTime = async function() {
   await addDoc(collection(db, "times"), {
     nome: nome,
     escudo: urlEscudo,
-    cor1: cor1,
-    cor2: cor2
+    cores: coresEscolhidas
   });
 
   alert("Time salvo com sucesso!");
 
   document.getElementById("nomeTime").value = "";
   document.getElementById("escudo").value = "";
-  document.getElementById("cor1").value = "#f7c600";
-  document.getElementById("cor2").value = "#102a52";
+
+  coresEscolhidas = [];
+  document.querySelectorAll(".color-option").forEach(op => op.classList.remove("selected"));
+  atualizarCoresSelecionadas();
 
   carregarTimes();
 }
 
+configurarPaleta();
 carregarTimes();
 </script>
 
