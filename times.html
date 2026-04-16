@@ -125,6 +125,40 @@ Campinas
 <a href="admin.html" class="back">← Voltar</a>
 
 </div>
+<script type="module">
 
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
+import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCyArj4yRlEl-yibkc0VEmL_4UJpRHHQSc",
+  authDomain: "liga-goiana-base.firebaseapp.com",
+  projectId: "liga-goiana-base",
+  storageBucket: "liga-goiana-base.firebasestorage.app",
+  messagingSenderId: "952863591183",
+  appId: "1:952863591183:web:4eea34f494ba2dd754cc7a"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+window.salvarTime = async function() {
+  const nome = document.getElementById("nomeTime").value;
+
+  if(!nome){
+    alert("Digite o nome do time");
+    return;
+  }
+
+  await addDoc(collection(db, "times"), {
+    nome: nome
+  });
+
+  alert("Time salvo com sucesso!");
+  document.getElementById("nomeTime").value = "";
+}
+
+</script>
+  
 </body>
 </html>
