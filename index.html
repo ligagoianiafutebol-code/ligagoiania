@@ -6,167 +6,517 @@
 <title>Liga Goiana de Futebol de Base</title>
 
 <style>
-:root {
-    --azul-escuro: #000b1a;
-    --azul-claro: #003366;
-    --dourado: #FFD700;
-    --branco: #ffffff;
+:root{
+  --azul-1:#03142e;
+  --azul-2:#06224d;
+  --azul-3:#0a2f66;
+  --dourado:#f0c24b;
+  --dourado-escuro:#b8871e;
+  --branco:#ffffff;
+  --verde:#1f8f3a;
 }
 
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    color: var(--branco);
-    background-color: var(--azul-escuro);
-    background-image:
-        linear-gradient(rgba(0, 15, 41, 0.85), rgba(0, 11, 26, 0.95)),
-        url('https://images.unsplash.com/photo-1522778119026-d647f0596c20?q=80&w=2070');
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
+*{
+  box-sizing:border-box;
 }
 
-header {
-    background: rgba(0, 21, 41, 0.92);
-    padding: 18px 10px;
-    text-align: center;
-    border-bottom: 3px solid var(--dourado);
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    backdrop-filter: blur(4px);
+body{
+  margin:0;
+  font-family:Arial, sans-serif;
+  color:var(--branco);
+  background:
+    linear-gradient(rgba(2,12,28,.82), rgba(2,12,28,.92)),
+    url('https://images.unsplash.com/photo-1522778119026-d647f0596c20?q=80&w=2070');
+  background-size:cover;
+  background-position:center;
+  background-attachment:fixed;
 }
 
-header h2 {
-    margin: 0 0 12px 0;
-    color: var(--dourado);
-    font-size: 22px;
-    text-transform: uppercase;
+header{
+  background:rgba(1,18,45,.95);
+  border-bottom:2px solid var(--dourado);
+  position:sticky;
+  top:0;
+  z-index:1000;
 }
 
-nav {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 12px;
+.topbar{
+  max-width:1200px;
+  margin:auto;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+  padding:12px 16px;
 }
 
-nav a {
-    color: var(--branco);
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 14px;
-    padding: 8px 10px;
-    border-radius: 6px;
-    transition: 0.3s;
+.logo-area{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  min-width:0;
 }
 
-nav a:hover {
-    background: rgba(255,255,255,0.08);
-    color: var(--dourado);
+.logo-box{
+  width:56px;
+  height:56px;
+  border-radius:12px;
+  background:linear-gradient(180deg,#0e3b7a,#041a3f);
+  border:2px solid var(--dourado);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:bold;
+  color:var(--dourado);
+  font-size:13px;
+  text-align:center;
+  line-height:1.1;
+  padding:4px;
 }
 
-.hero {
-    min-height: calc(100vh - 120px);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 30px 20px;
+.logo-text{
+  font-weight:bold;
+  color:var(--dourado);
+  text-transform:uppercase;
+  font-size:14px;
 }
 
-.hero-box {
-    max-width: 750px;
+nav{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:16px;
+  flex-wrap:wrap;
 }
 
-.hero h1 {
-    font-size: 3rem;
-    color: var(--dourado);
-    text-transform: uppercase;
-    margin: 0 0 15px 0;
-    text-shadow: 0 4px 10px rgba(0,0,0,0.8);
+nav a{
+  color:var(--branco);
+  text-decoration:none;
+  font-weight:bold;
+  font-size:13px;
+  text-transform:uppercase;
 }
 
-.hero p {
-    font-size: 1.2rem;
-    color: #e8e8e8;
-    margin-bottom: 30px;
+nav a:hover{
+  color:var(--dourado);
 }
 
-.btn-principal {
-    background: linear-gradient(to bottom, var(--dourado), #b8860b);
-    color: #000;
-    padding: 16px 38px;
-    border: none;
-    border-radius: 8px;
-    font-weight: bold;
-    font-size: 17px;
-    cursor: pointer;
-    transition: 0.3s;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+.btn-topo{
+  background:linear-gradient(to bottom, #ffd54f, #d4a514);
+  color:#111;
+  padding:12px 18px;
+  border:none;
+  border-radius:8px;
+  font-weight:bold;
+  cursor:pointer;
+  text-transform:uppercase;
+  white-space:nowrap;
 }
 
-.btn-principal:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
+.hero{
+  max-width:1200px;
+  margin:0 auto;
+  padding:40px 16px 60px;
 }
 
-@media (max-width: 700px) {
-    header h2 {
-        font-size: 18px;
-    }
+.hero-box{
+  background:linear-gradient(180deg, rgba(6,34,77,.78), rgba(2,16,38,.82));
+  border:2px solid rgba(240,194,75,.25);
+  border-radius:20px;
+  padding:28px 20px 40px;
+  box-shadow:0 15px 40px rgba(0,0,0,.35);
+  position:relative;
+  overflow:hidden;
+}
 
-    nav a {
-        font-size: 13px;
-        padding: 6px 8px;
-    }
+.hero-box::before,
+.hero-box::after{
+  content:"";
+  position:absolute;
+  width:160px;
+  height:160px;
+  border:4px solid rgba(240,194,75,.18);
+  border-radius:50%;
+  filter:blur(1px);
+}
 
-    .hero h1 {
-        font-size: 2rem;
-    }
+.hero-box::before{
+  left:-70px;
+  bottom:50px;
+}
 
-    .hero p {
-        font-size: 1rem;
-    }
+.hero-box::after{
+  right:-70px;
+  top:90px;
+}
+
+.titulo{
+  text-align:center;
+  margin-top:10px;
+}
+
+.titulo h1{
+  margin:0;
+  font-size:62px;
+  line-height:0.95;
+  text-transform:uppercase;
+  color:var(--dourado);
+  text-shadow:
+    0 2px 0 #7d5b10,
+    0 4px 12px rgba(0,0,0,.8);
+}
+
+.titulo p{
+  margin:18px 0 0;
+  font-size:20px;
+  color:#f3e7bf;
+}
+
+.valores{
+  margin:34px auto 28px;
+  max-width:950px;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:18px;
+}
+
+.valor{
+  text-align:center;
+  color:#f3d98b;
+}
+
+.valor .icone{
+  font-size:42px;
+  margin-bottom:10px;
+}
+
+.valor strong{
+  display:block;
+  font-size:15px;
+  text-transform:uppercase;
+  line-height:1.3;
+}
+
+.cards-centro{
+  margin:26px auto 24px;
+  max-width:850px;
+  border:2px solid var(--dourado-escuro);
+  border-radius:18px;
+  padding:26px 20px;
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:20px;
+  background:rgba(2,16,38,.45);
+}
+
+.card-central{
+  text-align:center;
+  padding:16px;
+}
+
+.card-logo{
+  width:110px;
+  height:110px;
+  margin:0 auto 14px;
+  border-radius:18px;
+  border:2px solid rgba(240,194,75,.4);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:linear-gradient(180deg,#0f3d82,#08214d);
+  color:var(--dourado);
+  font-weight:bold;
+  font-size:26px;
+}
+
+.card-central h3{
+  margin:0;
+  color:#f3d98b;
+  text-transform:uppercase;
+  font-size:28px;
+}
+
+.card-central p{
+  margin:10px 0 0;
+  color:#fff1b7;
+  font-weight:bold;
+  text-transform:uppercase;
+  font-size:14px;
+}
+
+.tabela-box{
+  max-width:820px;
+  margin:26px auto 0;
+  background:rgba(2,16,38,.55);
+  border:2px solid rgba(31,143,58,.8);
+  border-radius:12px;
+  overflow:hidden;
+}
+
+.tabela-titulo{
+  background:rgba(18,95,40,.85);
+  color:#d9ffd8;
+  text-align:center;
+  font-weight:bold;
+  padding:10px;
+  font-size:15px;
+}
+
+.tabela{
+  width:100%;
+  border-collapse:collapse;
+}
+
+.tabela td{
+  border-top:1px solid rgba(31,143,58,.6);
+  padding:10px 12px;
+  text-align:center;
+  font-size:14px;
+}
+
+.tabela tr:hover{
+  background:rgba(255,255,255,.04);
+}
+
+.footer{
+  margin-top:40px;
+  background:rgba(1,18,45,.96);
+  border-top:2px solid var(--dourado);
+}
+
+.footer-menu{
+  max-width:1200px;
+  margin:auto;
+  padding:20px 16px 8px;
+  display:flex;
+  justify-content:center;
+  gap:20px;
+  flex-wrap:wrap;
+}
+
+.footer-menu a{
+  color:#f3d98b;
+  text-decoration:none;
+  font-weight:bold;
+  text-transform:uppercase;
+  font-size:13px;
+}
+
+.footer-conteudo{
+  max-width:1200px;
+  margin:auto;
+  padding:20px 16px 30px;
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:20px;
+  align-items:start;
+}
+
+.footer h4{
+  margin:0 0 10px;
+  color:#fff;
+}
+
+.footer p{
+  margin:4px 0;
+  color:#ddd;
+  font-size:14px;
+}
+
+.bandeira{
+  width:90px;
+  height:60px;
+  background:linear-gradient(135deg,#0a8d3f 0 33%, #f0c24b 33% 66%, #0a8d3f 66% 100%);
+  border-radius:8px;
+  margin:auto;
+  border:2px solid rgba(255,255,255,.2);
+}
+
+@media (max-width: 980px){
+  .topbar{
+    flex-direction:column;
+  }
+
+  .titulo h1{
+    font-size:44px;
+  }
+
+  .valores{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .cards-centro{
+    grid-template-columns:1fr;
+  }
+
+  .footer-conteudo{
+    grid-template-columns:1fr;
+    text-align:center;
+  }
+}
+
+@media (max-width: 600px){
+  .titulo h1{
+    font-size:32px;
+  }
+
+  .titulo p{
+    font-size:16px;
+  }
+
+  .valores{
+    grid-template-columns:1fr;
+  }
+
+  nav{
+    gap:10px;
+  }
+
+  nav a{
+    font-size:12px;
+  }
+
+  .card-central h3{
+    font-size:22px;
+  }
+
+  .tabela td{
+    font-size:12px;
+    padding:8px 6px;
+  }
 }
 </style>
 </head>
 <body>
 
 <header>
-    <h2>Liga Goiana de Futebol de Base</h2>
+  <div class="topbar">
+    <div class="logo-area">
+      <div class="logo-box">LIGA<br>GOIANA</div>
+      <div class="logo-text">Liga Goiana de Futebol de Base</div>
+    </div>
 
     <nav>
-        <a href="index.html">Início</a>
-        <a href="campeonatos.html">Campeonatos</a>
-        <a href="categorias.html">Categorias</a>
-        <a href="times.html">Times</a>
-        <a href="jogadores.html">Jogadores</a>
-        <a href="tecnicos.html">Técnicos</a>
-        <a href="arbitros.html">Árbitros</a>
-        <a href="assistentes.html">Assistentes</a>
-        <a href="jogos-admin.html">Jogos</a>
-        <a href="sumulas.html">Súmulas</a>
-        <a href="tabela.html">Tabela</a>
-        <a href="noticias.html">Notícias</a>
-        <a href="configuracoes.html">Configurações</a>
-        <a href="login.html">Login</a>
+      <a href="index.html">Home</a>
+      <a href="campeonatos.html">Campeonatos</a>
+      <a href="times.html">Equipes</a>
+      <a href="tabela.html">Resultados</a>
+      <a href="noticias.html">Notícias</a>
+      <a href="contato.html">Contato</a>
     </nav>
+
+    <button class="btn-topo" onclick="window.location.href='login.html'">Inscrever Agora</button>
+  </div>
 </header>
 
 <section class="hero">
-    <div class="hero-box">
-        <h1>Bem-vindo à Liga Goiana de Base</h1>
-        <p>Onde o talento encontra o futuro</p>
-        <button class="btn-principal" onclick="entrar()">Entrar no Sistema</button>
+  <div class="hero-box">
+
+    <div class="titulo">
+      <h1>BEM-VINDO À LIGA<br>GOIANA DE BASE</h1>
+      <p>Onde o talento encontra o futuro</p>
     </div>
+
+    <div class="valores">
+      <div class="valor">
+        <div class="icone">🏆</div>
+        <strong>Competição<br>de Alto Nível</strong>
+      </div>
+      <div class="valor">
+        <div class="icone">🛡️</div>
+        <strong>Formação<br>de Atletas</strong>
+      </div>
+      <div class="valor">
+        <div class="icone">📈</div>
+        <strong>Desenvolvimento<br>que Transforma</strong>
+      </div>
+      <div class="valor">
+        <div class="icone">🤝</div>
+        <strong>Respeito, União<br>e Propósito</strong>
+      </div>
+    </div>
+
+    <div class="cards-centro">
+      <div class="card-central">
+        <div class="card-logo">LIGA</div>
+        <h3>LIGA</h3>
+        <p>Conheça a Liga</p>
+      </div>
+
+      <div class="card-central">
+        <div class="card-logo">🏆</div>
+        <h3>COPA UNIÃO</h3>
+        <p>Copa União de Base</p>
+      </div>
+    </div>
+
+    <div class="tabela-box">
+      <div class="tabela-titulo">Jogo em Andamento</div>
+      <table class="tabela">
+        <tr>
+          <td>12/04 - 20:30</td>
+          <td>Comuntruna</td>
+          <td><strong>0 - 0</strong></td>
+          <td>Prsmta</td>
+          <td style="color:#58d758;">#008000</td>
+        </tr>
+        <tr>
+          <td>18/06 - 20:30</td>
+          <td>Vialtmra</td>
+          <td><strong>0 - 0</strong></td>
+          <td>Ihtanciarga</td>
+          <td style="color:#58d758;">#009000</td>
+        </tr>
+        <tr>
+          <td>03/01 - 20:30</td>
+          <td>Marsniariss</td>
+          <td><strong>0 - 0</strong></td>
+          <td>Persagulgatas</td>
+          <td style="color:#58d758;">#006000</td>
+        </tr>
+        <tr>
+          <td>05/04 - 20:30</td>
+          <td>Elvema 92</td>
+          <td><strong>0 - 0</strong></td>
+          <td>Vialenra</td>
+          <td style="color:#58d758;">#008000</td>
+        </tr>
+      </table>
+    </div>
+
+  </div>
 </section>
 
-<script>
-function entrar(){
-    window.location.href = "login.html";
-}
-</script>
+<footer class="footer">
+  <div class="footer-menu">
+    <a href="index.html">Home</a>
+    <a href="campeonatos.html">Campeonatos</a>
+    <a href="times.html">Equipes</a>
+    <a href="tabela.html">Resultados</a>
+    <a href="noticias.html">Notícias</a>
+    <a href="contato.html">Contato</a>
+  </div>
+
+  <div class="footer-conteudo">
+    <div>
+      <h4>Sponsors</h4>
+      <p>Goiás</p>
+      <p>Saneamento</p>
+      <p>Comércio Regional</p>
+    </div>
+
+    <div>
+      <div class="bandeira"></div>
+    </div>
+
+    <div>
+      <h4>Contatos e Endereço</h4>
+      <p>Rua Exemplo - Aparecida de Goiânia</p>
+      <p>(61) 98100-0000</p>
+      <p>ligagoianaoficial@gmail.com</p>
+    </div>
+  </div>
+</footer>
 
 </body>
 </html>
