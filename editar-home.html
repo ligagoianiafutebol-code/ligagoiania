@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Editar Home</title>
+
+  <style>
+    body{
+      margin:0;
+      font-family:Arial, sans-serif;
+      background:#0b1f3a;
+      color:white;
+    }
+
+    header{
+      background:#08172c;
+      padding:16px;
+      text-align:center;
+      font-size:24px;
+      font-weight:bold;
+      border-bottom:3px solid #f7c600;
+    }
+
+    .container{
+      max-width:1200px;
+      margin:auto;
+      padding:20px;
+    }
+
+    .btn{
+      background:#f7c600;
+      color:#111;
+      border:none;
+      border-radius:10px;
+      padding:12px 16px;
+      font-weight:bold;
+      cursor:pointer;
+      margin:4px;
+    }
+
+    .btn-sec{
+      background:#1a3f73;
+      color:white;
+      border:none;
+      border-radius:10px;
+      padding:10px 14px;
+      font-weight:bold;
+      cursor:pointer;
+      margin:4px;
+    }
+
+    .btn-red{
+      background:#b30000;
+      color:white;
+      border:none;
+      border-radius:10px;
+      padding:10px 14px;
+      font-weight:bold;
+      cursor:pointer;
+      margin:4px;
+    }
+
+    .top-actions{
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      margin-bottom:20px;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:20px;
+    }
+
+    .box{
+      background:#102a52;
+      border-radius:14px;
+      padding:18px;
+      box-shadow:0 8px 20px rgba(0,0,0,.25);
+    }
+
+    .box h2{
+      margin-top:0;
+      color:#f7c600;
+    }
+
+    label{
+      display:block;
+      margin:10px 0 6px;
+      font-weight:bold;
+    }
+
+    input, textarea, select{
+      width:100%;
+      padding:12px;
+      border:none;
+      border-radius:10px;
+      font-size:14px;
+      box-sizing:border-box;
+    }
+
+    textarea{
+      min-height:100px;
+      resize:vertical;
+    }
+
+    .lista{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    .item{
+      background:#0b1f3a;
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:12px;
+      padding:14px;
+    }
+
+    .item-top{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .item h3{
+      margin:0 0 8px 0;
+      color:#f7c600;
+      font-size:18px;
+    }
+
+    .item small{
+      color:#c8d3e2;
+      display:block;
+      margin-bottom:4px;
+    }
+
+    .acoes{
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+    }
+
+    .tag{
+      display:inline-block;
+      background:#1a3f73;
+      color:#fff;
+      border-radius:999px;
+      padding:5px 10px;
+      font-size:12px;
+      margin-right:6px;
+      margin-top:6px;
+    }
+
+    .preview-img{
+      width:100%;
+      max-height:180px;
+      object-fit:cover;
+      border-radius:10px;
+      margin-top:10px;
+      border:1px solid rgba(255,255,255,.08);
+    }
+
+    .status-on{
+      color:#7CFF8E;
+      font-weight:bold;
+    }
+
+    .status-off{
+      color:#ff8b8b;
+      font-weight:bold;
+    }
+
+    .back{
+      display:inline-block;
+      margin-top:18px;
+      color:#f7c600;
+      text-decoration:none;
+      font-weight:bold;
+    }
+
+    .linha{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+
+    .help{
+      color:#c8d3e2;
+      font-size:13px;
+      margin-top:6px;
+    }
+
+    @media (max-width: 900px){
+      .grid{
+        grid-template-columns:1fr;
+      }
+
+      .linha{
+        grid-template-columns:1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>Editar Home</header>
+
+<div class="container">
+
+  <div class="top-actions">
+    <div>
+      <button class="btn" onclick="novoBloco()">+ Novo Bloco</button>
+      <button class="btn-sec" onclick="carregarBlocos()">Atualizar Lista</button>
+    </div>
+    <div>
+      <a href="index.html" class="back">← Voltar para a Home</a>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="box">
+      <h2>Bloco da Página Inicial</h2>
+
+      <input type="hidden" id="blocoId">
+
+      <label>Tipo do bloco</label>
+      <select id="tipo">
+        <option value="titulo">Título</option>
+        <option value="texto">Texto</option>
+        <option value="imagem">Imagem</option>
+        <option value="botao">Botão</option>
+        <option value="banner">Banner</option>
+        <option value="presidente">Palavra do Presidente</option>
+        <option value="contato">Contato</option>
+        <option value="galeria">Galeria</option>
+        <option value="livre">Bloco Livre</option>
+      </select>
+
+      <label>Título</label>
+      <input id="titulo" placeholder="Ex: Bem-vindo à Liga Goiana">
+
+      <label>Subtítulo</label>
+      <input id="subtitulo" placeholder="Ex: Onde o talento encontra o futuro">
+
+      <label>Texto</label>
+      <textarea id="texto" placeholder="Digite o conteúdo do bloco"></textarea>
+
+      <div class="linha">
+        <div>
+          <label>Texto do botão</label>
+          <input id="botaoTexto" placeholder="Ex: Ver campeonatos">
+        </div>
+        <div>
+          <label>Link do botão</label>
+          <input id="botaoLink" placeholder="Ex: campeonatos.html">
+        </div>
+      </div>
+
+      <label>Imagem do bloco</label>
+      <input type="file" id="imagem" accept="image/*">
+      <div class="help">Pode deixar vazio se não quiser imagem.</div>
+
+      <div class="linha">
+        <div>
+          <label>Ordem</label>
+          <input type="number" id="ordem" placeholder="Ex: 1">
+        </div>
+        <div>
+          <label>Status</label>
+          <select id="ativo">
+            <option value="true">Ativo</option>
+            <option value="false">Oculto</option>
+          </select>
+        </div>
+      </div>
+
+      <div style="margin-top:14px;">
+        <button class="btn" onclick="salvarBloco()">Salvar Bloco</button>
+        <button class="btn-sec" onclick="limparFormulario()">Limpar</button>
+      </div>
+    </div>
+
+    <div class="box">
+      <h2>Blocos Criados</h2>
+      <div id="listaBlocos" class="lista"></div>
+    </div>
+  </div>
+
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
+  import {
+    getFirestore,
+    collection,
+    addDoc,
+    getDocs,
+    doc,
+    updateDoc,
+    deleteDoc
+  } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-firestore.js";
+  import {
+    getStorage,
+    ref,
+    uploadBytes,
+    getDownloadURL
+  } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-storage.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCyArj4yRlEl-yibkc0VEmL_4UJpRHHQSc",
+    authDomain: "liga-goiana-base.firebaseapp.com",
+    projectId: "liga-goiana-base",
+    storageBucket: "liga-goiana-base.firebasestorage.app",
+    messagingSenderId: "952863591183",
+    appId: "1:952863591183:web:4eea34f494ba2dd754cc7a"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const storage = getStorage(app);
+
+  let imagemAtual = "";
+
+  function pegarValores() {
+    return {
+      id: document.getElementById("blocoId").value,
+      tipo: document.getElementById("tipo").value,
+      titulo: document.getElementById("titulo").value.trim(),
+      subtitulo: document.getElementById("subtitulo").value.trim(),
+      texto: document.getElementById("texto").value.trim(),
+      botaoTexto: document.getElementById("botaoTexto").value.trim(),
+      botaoLink: document.getElementById("botaoLink").value.trim(),
+      ordem: Number(document.getElementById("ordem").value || 0),
+      ativo: document.getElementById("ativo").value === "true"
+    };
+  }
+
+  window.novoBloco = function(){
+    limparFormulario();
+    document.getElementById("ordem").value = "";
+  }
+
+  window.limparFormulario = function(){
+    document.getElementById("blocoId").value = "";
+    document.getElementById("tipo").value = "titulo";
+    document.getElementById("titulo").value = "";
+    document.getElementById("subtitulo").value = "";
+    document.getElementById("texto").value = "";
+    document.getElementById("botaoTexto").value = "";
+    document.getElementById("botaoLink").value = "";
+    document.getElementById("imagem").value = "";
+    document.getElementById("ordem").value = "";
+    document.getElementById("ativo").value = "true";
+    imagemAtual = "";
+  }
+
+  window.salvarBloco = async function(){
+    const dados = pegarValores();
+    const arquivo = document.getElementById("imagem").files[0];
+
+    if (!dados.tipo) {
+      alert("Escolha o tipo do bloco.");
+      return;
+    }
+
+    if (!dados.titulo && !dados.texto && !arquivo && !imagemAtual) {
+      alert("Preencha pelo menos título, texto ou imagem.");
+      return;
+    }
+
+    let imagemUrl = imagemAtual;
+
+    if (arquivo) {
+      const storageRef = ref(storage, "home-blocos/" + Date.now() + "-" + arquivo.name);
+      await uploadBytes(storageRef, arquivo);
+      imagemUrl = await getDownloadURL(storageRef);
+    }
+
+    const bloco = {
+      tipo: dados.tipo,
+      titulo: dados.titulo,
+      subtitulo: dados.subtitulo,
+      texto: dados.texto,
+      botaoTexto: dados.botaoTexto,
+      botaoLink: dados.botaoLink,
+      imagem: imagemUrl || "",
+      ordem: dados.ordem,
+      ativo: dados.ativo,
+      atualizadoEm: new Date().toISOString()
+    };
+
+    if (dados.id) {
+      await updateDoc(doc(db, "home_blocos", dados.id), bloco);
+      alert("Bloco atualizado com sucesso!");
+    } else {
+      bloco.criadoEm = new Date().toISOString();
+      await addDoc(collection(db, "home_blocos"), bloco);
+      alert("Bloco criado com sucesso!");
+    }
+
+    limparFormulario();
+    carregarBlocos();
+  }
+
+  window.editarBloco = async function(id){
+    const snap = await getDocs(collection(db, "home_blocos"));
+    snap.forEach((item) => {
+      if (item.id === id) {
+        const b = item.data();
+
+        document.getElementById("blocoId").value = id;
+        document.getElementById("tipo").value = b.tipo || "titulo";
+        document.getElementById("titulo").value = b.titulo || "";
+        document.getElementById("subtitulo").value = b.subtitulo || "";
+        document.getElementById("texto").value = b.texto || "";
+        document.getElementById("botaoTexto").value = b.botaoTexto || "";
+        document.getElementById("botaoLink").value = b.botaoLink || "";
+        document.getElementById("ordem").value = b.ordem ?? "";
+        document.getElementById("ativo").value = String(b.ativo);
+        imagemAtual = b.imagem || "";
+
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    });
+  }
+
+  window.excluirBloco = async function(id){
+    const confirmar = confirm("Deseja excluir este bloco?");
+    if (!confirmar) return;
+
+    await deleteDoc(doc(db, "home_blocos", id));
+    carregarBlocos();
+  }
+
+  window.alterarStatus = async function(id, statusAtual){
+    await updateDoc(doc(db, "home_blocos", id), {
+      ativo: !statusAtual
+    });
+    carregarBlocos();
+  }
+
+  window.subirBloco = async function(id, ordemAtual){
+    const snap = await getDocs(collection(db, "home_blocos"));
+    let blocos = [];
+    snap.forEach((item) => {
+      blocos.push({ id: item.id, ...item.data() });
+    });
+
+    const acima = blocos
+      .filter(b => (b.ordem ?? 0) < (ordemAtual ?? 0))
+      .sort((a,b) => (b.ordem ?? 0) - (a.ordem ?? 0))[0];
+
+    if (!acima) return;
+
+    await updateDoc(doc(db, "home_blocos", id), { ordem: acima.ordem ?? 0 });
+    await updateDoc(doc(db, "home_blocos", acima.id), { ordem: ordemAtual ?? 0 });
+
+    carregarBlocos();
+  }
+
+  window.descerBloco = async function(id, ordemAtual){
+    const snap = await getDocs(collection(db, "home_blocos"));
+    let blocos = [];
+    snap.forEach((item) => {
+      blocos.push({ id: item.id, ...item.data() });
+    });
+
+    const abaixo = blocos
+      .filter(b => (b.ordem ?? 0) > (ordemAtual ?? 0))
+      .sort((a,b) => (a.ordem ?? 0) - (b.ordem ?? 0))[0];
+
+    if (!abaixo) return;
+
+    await updateDoc(doc(db, "home_blocos", id), { ordem: abaixo.ordem ?? 0 });
+    await updateDoc(doc(db, "home_blocos", abaixo.id), { ordem: ordemAtual ?? 0 });
+
+    carregarBlocos();
+  }
+
+  window.carregarBlocos = async function(){
+    const lista = document.getElementById("listaBlocos");
+    lista.innerHTML = "";
+
+    const snap = await getDocs(collection(db, "home_blocos"));
+    let blocos = [];
+
+    snap.forEach((item) => {
+      blocos.push({ id: item.id, ...item.data() });
+    });
+
+    blocos.sort((a,b) => (a.ordem ?? 0) - (b.ordem ?? 0));
+
+    if (blocos.length === 0) {
+      lista.innerHTML = "<div class='item'>Nenhum bloco criado ainda.</div>";
+      return;
+    }
+
+    blocos.forEach((b) => {
+      lista.innerHTML += `
+        <div class="item">
+          <div class="item-top">
+            <div>
+              <h3>${b.titulo || "(Sem título)"}</h3>
+              <small>Tipo: ${b.tipo || "-"}</small>
+              <small>Ordem: ${b.ordem ?? 0}</small>
+              <small class="${b.ativo ? 'status-on' : 'status-off'}">
+                ${b.ativo ? 'Ativo' : 'Oculto'}
+              </small>
+
+              ${b.subtitulo ? `<div class="tag">${b.subtitulo}</div>` : ""}
+              ${b.botaoTexto ? `<div class="tag">Botão: ${b.botaoTexto}</div>` : ""}
+            </div>
+
+            <div class="acoes">
+              <button class="btn-sec" onclick="editarBloco('${b.id}')">Editar</button>
+              <button class="btn-sec" onclick="subirBloco('${b.id}', ${b.ordem ?? 0})">↑</button>
+              <button class="btn-sec" onclick="descerBloco('${b.id}', ${b.ordem ?? 0})">↓</button>
+              <button class="btn-sec" onclick="alterarStatus('${b.id}', ${b.ativo ? 'true' : 'false'})">
+                ${b.ativo ? 'Ocultar' : 'Ativar'}
+              </button>
+              <button class="btn-red" onclick="excluirBloco('${b.id}')">Excluir</button>
+            </div>
+          </div>
+
+          ${b.texto ? `<p style="margin-top:10px;color:#dbe3ee;">${b.texto}</p>` : ""}
+          ${b.imagem ? `<img src="${b.imagem}" class="preview-img">` : ""}
+        </div>
+      `;
+    });
+  }
+
+  carregarBlocos();
+</script>
+
+</body>
+</html>
