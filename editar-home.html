@@ -197,6 +197,53 @@
       margin-top:6px;
     }
 
+    .login-screen{
+      position:fixed;
+      inset:0;
+      background:linear-gradient(rgba(2,10,25,.88), rgba(2,10,25,.95)), url("fundo.jpg");
+      background-size:cover;
+      background-position:center;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      z-index:9999;
+    }
+
+    .login-box{
+      width:92%;
+      max-width:420px;
+      background:#102a52;
+      padding:24px;
+      border-radius:16px;
+      box-shadow:0 15px 40px rgba(0,0,0,.4);
+      border:1px solid rgba(247,198,0,.25);
+    }
+
+    .login-box h1{
+      margin-top:0;
+      text-align:center;
+      color:#f7c600;
+      font-size:26px;
+    }
+
+    .login-box p{
+      text-align:center;
+      color:#d6e1f0;
+      margin-bottom:20px;
+    }
+
+    .erro-login{
+      margin-top:10px;
+      color:#ff9d9d;
+      font-weight:bold;
+      text-align:center;
+      display:none;
+    }
+
+    .hidden{
+      display:none;
+    }
+
     @media (max-width: 900px){
       .grid{
         grid-template-columns:1fr;
@@ -210,90 +257,113 @@
 </head>
 <body>
 
-<header>Editar Home</header>
+  <div id="loginScreen" class="login-screen">
+    <div class="login-box">
+      <h1>Login de Edição</h1>
+      <p>Entre para editar a página inicial</p>
 
-<div class="container">
+      <label>Usuário</label>
+      <input id="loginUsuario" placeholder="Digite o usuário">
 
-  <div class="top-actions">
-    <div>
-      <button class="btn" onclick="novoBloco()">+ Novo Bloco</button>
-      <button class="btn-sec" onclick="carregarBlocos()">Atualizar Lista</button>
-    </div>
-    <div>
-      <a href="index.html" class="back">← Voltar para a Home</a>
+      <label>Senha</label>
+      <input id="loginSenha" type="password" placeholder="Digite a senha">
+
+      <div style="margin-top:16px; text-align:center;">
+        <button class="btn" onclick="fazerLogin()">Entrar</button>
+        <a href="index.html" class="back" style="margin-left:8px;">← Voltar</a>
+      </div>
+
+      <div id="erroLogin" class="erro-login">Usuário ou senha inválidos.</div>
     </div>
   </div>
 
-  <div class="grid">
-    <div class="box">
-      <h2>Bloco da Página Inicial</h2>
+  <div id="editorWrap" class="hidden">
+    <header>Editar Home</header>
 
-      <input type="hidden" id="blocoId">
+    <div class="container">
 
-      <label>Tipo do bloco</label>
-      <select id="tipo">
-        <option value="titulo">Título</option>
-        <option value="texto">Texto</option>
-        <option value="imagem">Imagem</option>
-        <option value="botao">Botão</option>
-        <option value="banner">Banner</option>
-        <option value="presidente">Palavra do Presidente</option>
-        <option value="contato">Contato</option>
-        <option value="galeria">Galeria</option>
-        <option value="livre">Bloco Livre</option>
-      </select>
-
-      <label>Título</label>
-      <input id="titulo" placeholder="Ex: Bem-vindo à Liga Goiana">
-
-      <label>Subtítulo</label>
-      <input id="subtitulo" placeholder="Ex: Onde o talento encontra o futuro">
-
-      <label>Texto</label>
-      <textarea id="texto" placeholder="Digite o conteúdo do bloco"></textarea>
-
-      <div class="linha">
+      <div class="top-actions">
         <div>
-          <label>Texto do botão</label>
-          <input id="botaoTexto" placeholder="Ex: Ver campeonatos">
+          <button class="btn" onclick="novoBloco()">+ Novo Bloco</button>
+          <button class="btn-sec" onclick="carregarBlocos()">Atualizar Lista</button>
+          <button class="btn-red" onclick="sairEdicao()">Sair</button>
         </div>
         <div>
-          <label>Link do botão</label>
-          <input id="botaoLink" placeholder="Ex: campeonatos.html">
+          <a href="index.html" class="back">← Voltar para a Home</a>
         </div>
       </div>
 
-      <label>Imagem do bloco</label>
-      <input type="file" id="imagem" accept="image/*">
-      <div class="help">Pode deixar vazio se não quiser imagem.</div>
+      <div class="grid">
+        <div class="box">
+          <h2>Bloco da Página Inicial</h2>
 
-      <div class="linha">
-        <div>
-          <label>Ordem</label>
-          <input type="number" id="ordem" placeholder="Ex: 1">
-        </div>
-        <div>
-          <label>Status</label>
-          <select id="ativo">
-            <option value="true">Ativo</option>
-            <option value="false">Oculto</option>
+          <input type="hidden" id="blocoId">
+
+          <label>Tipo do bloco</label>
+          <select id="tipo">
+            <option value="titulo">Título</option>
+            <option value="texto">Texto</option>
+            <option value="imagem">Imagem</option>
+            <option value="botao">Botão</option>
+            <option value="banner">Banner</option>
+            <option value="presidente">Palavra do Presidente</option>
+            <option value="contato">Contato</option>
+            <option value="galeria">Galeria</option>
+            <option value="livre">Bloco Livre</option>
           </select>
+
+          <label>Título</label>
+          <input id="titulo" placeholder="Ex: Bem-vindo à Liga Goiana">
+
+          <label>Subtítulo</label>
+          <input id="subtitulo" placeholder="Ex: Onde o talento encontra o futuro">
+
+          <label>Texto</label>
+          <textarea id="texto" placeholder="Digite o conteúdo do bloco"></textarea>
+
+          <div class="linha">
+            <div>
+              <label>Texto do botão</label>
+              <input id="botaoTexto" placeholder="Ex: Ver campeonatos">
+            </div>
+            <div>
+              <label>Link do botão</label>
+              <input id="botaoLink" placeholder="Ex: campeonatos.html">
+            </div>
+          </div>
+
+          <label>Imagem do bloco</label>
+          <input type="file" id="imagem" accept="image/*">
+          <div class="help">Pode deixar vazio se não quiser imagem.</div>
+
+          <div class="linha">
+            <div>
+              <label>Ordem</label>
+              <input type="number" id="ordem" placeholder="Ex: 1">
+            </div>
+            <div>
+              <label>Status</label>
+              <select id="ativo">
+                <option value="true">Ativo</option>
+                <option value="false">Oculto</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="margin-top:14px;">
+            <button class="btn" onclick="salvarBloco()">Salvar Bloco</button>
+            <button class="btn-sec" onclick="limparFormulario()">Limpar</button>
+          </div>
+        </div>
+
+        <div class="box">
+          <h2>Blocos Criados</h2>
+          <div id="listaBlocos" class="lista"></div>
         </div>
       </div>
 
-      <div style="margin-top:14px;">
-        <button class="btn" onclick="salvarBloco()">Salvar Bloco</button>
-        <button class="btn-sec" onclick="limparFormulario()">Limpar</button>
-      </div>
-    </div>
-
-    <div class="box">
-      <h2>Blocos Criados</h2>
-      <div id="listaBlocos" class="lista"></div>
     </div>
   </div>
-
-</div>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
@@ -327,6 +397,52 @@
   const storage = getStorage(app);
 
   let imagemAtual = "";
+
+  const LOGIN_USUARIO = "admin";
+  const LOGIN_SENHA = "123456";
+  const CHAVE_SESSAO = "home_editor_logado";
+
+  function mostrarEditor(){
+    document.getElementById("loginScreen").classList.add("hidden");
+    document.getElementById("editorWrap").classList.remove("hidden");
+  }
+
+  function mostrarLogin(){
+    document.getElementById("loginScreen").classList.remove("hidden");
+    document.getElementById("editorWrap").classList.add("hidden");
+  }
+
+  window.fazerLogin = function(){
+    const usuario = document.getElementById("loginUsuario").value.trim();
+    const senha = document.getElementById("loginSenha").value.trim();
+    const erro = document.getElementById("erroLogin");
+
+    if(usuario === LOGIN_USUARIO && senha === LOGIN_SENHA){
+      localStorage.setItem(CHAVE_SESSAO, "true");
+      erro.style.display = "none";
+      mostrarEditor();
+      carregarBlocos();
+    } else {
+      erro.style.display = "block";
+    }
+  }
+
+  window.sairEdicao = function(){
+    localStorage.removeItem(CHAVE_SESSAO);
+    mostrarLogin();
+    document.getElementById("loginUsuario").value = "";
+    document.getElementById("loginSenha").value = "";
+  }
+
+  function verificarSessao(){
+    const logado = localStorage.getItem(CHAVE_SESSAO) === "true";
+    if(logado){
+      mostrarEditor();
+      carregarBlocos();
+    } else {
+      mostrarLogin();
+    }
+  }
 
   function pegarValores() {
     return {
@@ -536,7 +652,7 @@
     });
   }
 
-  carregarBlocos();
+  verificarSessao();
 </script>
 
 </body>
