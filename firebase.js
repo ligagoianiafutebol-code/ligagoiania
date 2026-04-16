@@ -1,14 +1,18 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
+// firebase.js
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAJB-DdvUk0_VQsGOwt5JNt552120QzsQ4",
-  authDomain: "ligagoiania.firebaseapp.com",
-  projectId: "ligagoiania",
-  storageBucket: "ligagoiania.firebasestorage.app",
-  messagingSenderId: "270024128834",
-  appId: "1:270024128834:web:3c27ea257b08afd5e670db"
+  apiKey: "AIzaSyBct9IeJNya7xq-dG6eFv1cdDdOn4IEEHw",
+  authDomain: "sumula-8027e.firebaseapp.com",
+  projectId: "sumula-8027e",
+  storageBucket: "sumula-8027e.appspot.com",
+  messagingSenderId: "532547952520",
+  appId: "1:532547952520:web:ca5ef98c6de024aa48a43d"
 };
 
 const app = initializeApp(firebaseConfig);
 
-export { app };
+export const auth = getAuth(app);
+export const db = getFirestore(app);
