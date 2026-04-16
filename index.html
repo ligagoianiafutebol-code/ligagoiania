@@ -1,233 +1,821 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Liga Goiana</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Liga Goiana de Futebol de Base</title>
 
-<style>
-:root{
-  --bg:#030f25;
-  --card:#071c3d;
-  --amarelo:#ffff00;
-  --dourado:#ffd700;
-}
+  <style>
+    :root{
+      --bg:#020c22;
+      --bg-2:#041633;
+      --bg-3:#071f47;
+      --card:#03142f;
+      --card-2:#071d43;
+      --yellow:#ffe600;
+      --yellow-2:#ffd000;
+      --green:#0aa23f;
+      --green-2:#0f7d36;
+      --white:#ffffff;
+      --muted:#dbe3ee;
+      --line:rgba(255,230,0,.22);
+      --shadow:0 10px 25px rgba(0,0,0,.35);
+    }
 
-body{
-  margin:0;
-  font-family:Arial;
-  background:
-    linear-gradient(rgba(0,0,20,0.9), rgba(0,0,20,0.95)),
-    url("hero-liga.png");
-  background-size:cover;
-  color:white;
-}
+    *{
+      box-sizing:border-box;
+    }
 
-/* TOPO */
-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:15px 30px;
-  background:#02132d;
-  border-bottom:2px solid var(--dourado);
-}
+    html{
+      scroll-behavior:smooth;
+    }
 
-.logo{
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
+    body{
+      margin:0;
+      font-family:Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at top, rgba(18,64,140,.22), transparent 35%),
+        linear-gradient(rgba(1,9,27,.9), rgba(1,9,27,.95)),
+        url("hero-liga.jpeg");
+      background-size:cover;
+      background-position:center top;
+      background-attachment:fixed;
+      color:var(--white);
+    }
 
-.logo img{
-  width:45px;
-}
+    a{
+      text-decoration:none;
+    }
 
-nav{
-  display:flex;
-  gap:25px;
-}
+    .wrap{
+      width:min(1220px, calc(100% - 28px));
+      margin:auto;
+    }
 
-nav a{
-  color:white;
-  text-decoration:none;
-  font-weight:bold;
-}
+    header{
+      position:sticky;
+      top:0;
+      z-index:1000;
+      background:rgba(2,14,36,.96);
+      border-bottom:1px solid rgba(255,230,0,.28);
+      box-shadow:0 6px 18px rgba(0,0,0,.28);
+      backdrop-filter:blur(6px);
+    }
 
-nav a:hover{
-  color:var(--amarelo);
-}
+    .topbar{
+      min-height:82px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      flex-wrap:wrap;
+      padding:10px 0;
+    }
 
-.btn-topo{
-  background:var(--amarelo);
-  color:black;
-  padding:10px 20px;
-  border:none;
-  border-radius:10px;
-  font-weight:bold;
-}
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:14px;
+      min-width:0;
+    }
 
-/* HERO */
-.hero{
-  text-align:center;
-  padding:60px 20px 30px;
-}
+    .brand img{
+      width:72px;
+      height:72px;
+      object-fit:contain;
+      border-radius:16px;
+      box-shadow:0 0 20px rgba(255,230,0,.12);
+    }
 
-.hero h1{
-  font-size:65px;
-  color:var(--amarelo);
-  text-shadow:0 0 20px yellow;
-}
+    .brand-text{
+      line-height:1.05;
+    }
 
-.hero p{
-  color:#ccc;
-  font-size:18px;
-}
+    .brand-text strong{
+      display:block;
+      font-size:15px;
+      color:var(--yellow);
+      text-transform:uppercase;
+      letter-spacing:.6px;
+    }
 
-/* BOX CENTRAL */
-.box{
-  max-width:900px;
-  margin:30px auto;
-  border:2px solid var(--dourado);
-  border-radius:20px;
-  padding:30px;
-  background:rgba(0,0,40,0.7);
-}
+    .brand-text span{
+      display:block;
+      font-size:12px;
+      color:#d7dfea;
+      margin-top:4px;
+    }
 
-/* ICONES */
-.icones{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:15px;
-  margin-bottom:30px;
-}
+    nav{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      flex-wrap:wrap;
+    }
 
-.icone{
-  text-align:center;
-  color:var(--amarelo);
-  font-size:14px;
-}
+    nav a{
+      color:var(--white);
+      text-transform:uppercase;
+      font-weight:700;
+      font-size:14px;
+      padding:10px 12px;
+      border-radius:8px;
+      transition:.2s;
+    }
 
-/* CARDS */
-.cards{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:20px;
-  margin-bottom:30px;
-}
+    nav a:hover,
+    nav a.active{
+      color:var(--yellow);
+      background:rgba(255,255,255,.04);
+    }
 
-.card{
-  background:var(--card);
-  padding:20px;
-  border-radius:15px;
-  border:1px solid var(--dourado);
-  text-align:center;
-}
+    .btn-top{
+      background:linear-gradient(to bottom, #fff04d, var(--yellow-2));
+      color:#111;
+      border:none;
+      padding:14px 20px;
+      border-radius:10px;
+      font-weight:800;
+      text-transform:uppercase;
+      font-size:14px;
+      cursor:pointer;
+      box-shadow:0 8px 18px rgba(0,0,0,.25);
+      transition:.2s;
+    }
 
-.card img{
-  width:100px;
-}
+    .btn-top:hover,
+    .btn-primary:hover,
+    .btn-secondary:hover{
+      transform:translateY(-2px);
+    }
 
-/* TABELA */
-.tabela{
-  width:100%;
-  border-collapse:collapse;
-}
+    .hero{
+      padding:26px 0 18px;
+    }
 
-.tabela th{
-  background:green;
-  color:white;
-}
+    .hero-panel{
+      display:grid;
+      grid-template-columns:1.05fr .95fr;
+      gap:24px;
+      align-items:center;
+      background:
+        linear-gradient(180deg, rgba(4,22,51,.74), rgba(2,12,34,.82));
+      border:1px solid var(--line);
+      border-radius:26px;
+      padding:28px;
+      box-shadow:var(--shadow);
+      position:relative;
+      overflow:hidden;
+    }
 
-.tabela td{
-  padding:10px;
-  text-align:center;
-  border-bottom:1px solid #333;
-}
+    .hero-panel::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        radial-gradient(circle at 15% 25%, rgba(255,230,0,.07), transparent 20%),
+        radial-gradient(circle at 80% 15%, rgba(255,230,0,.08), transparent 20%);
+      pointer-events:none;
+    }
 
-/* FOOTER */
-footer{
-  margin-top:40px;
-  background:#02132d;
-  padding:20px;
-  text-align:center;
-}
-</style>
+    .hero-copy{
+      position:relative;
+      z-index:1;
+    }
 
+    .tag{
+      display:inline-block;
+      background:rgba(255,230,0,.1);
+      border:1px solid rgba(255,230,0,.28);
+      color:var(--yellow);
+      padding:8px 14px;
+      border-radius:999px;
+      font-weight:800;
+      font-size:13px;
+      text-transform:uppercase;
+      margin-bottom:14px;
+    }
+
+    .hero-copy h1{
+      margin:0;
+      font-size:76px;
+      line-height:.92;
+      text-transform:uppercase;
+      color:var(--yellow);
+      text-shadow:
+        0 0 10px rgba(255,230,0,.35),
+        0 4px 16px rgba(0,0,0,.65);
+      letter-spacing:-1px;
+    }
+
+    .hero-copy .subtitle{
+      margin:14px 0 0;
+      font-size:20px;
+      font-weight:800;
+      text-transform:uppercase;
+      color:#f2f6fb;
+    }
+
+    .hero-copy .desc{
+      margin:18px 0 0;
+      color:#dde5f0;
+      font-size:18px;
+      line-height:1.5;
+      max-width:640px;
+    }
+
+    .hero-actions{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-top:28px;
+    }
+
+    .btn-primary,
+    .btn-secondary{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:54px;
+      padding:0 22px;
+      border-radius:12px;
+      font-weight:800;
+      text-transform:uppercase;
+      font-size:15px;
+      transition:.2s;
+    }
+
+    .btn-primary{
+      background:linear-gradient(to bottom, #fff04d, var(--yellow-2));
+      color:#111;
+      box-shadow:0 8px 18px rgba(0,0,0,.25);
+    }
+
+    .btn-secondary{
+      color:var(--white);
+      border:2px solid rgba(255,230,0,.55);
+      background:rgba(0,0,0,.15);
+    }
+
+    .hero-art{
+      position:relative;
+      z-index:1;
+      text-align:center;
+    }
+
+    .hero-art img{
+      width:100%;
+      max-width:500px;
+      display:block;
+      margin:auto;
+      object-fit:contain;
+      filter:drop-shadow(0 10px 24px rgba(0,0,0,.5));
+    }
+
+    .pillars{
+      display:grid;
+      grid-template-columns:repeat(4, 1fr);
+      gap:16px;
+      margin-top:18px;
+    }
+
+    .pillar{
+      background:linear-gradient(180deg, rgba(5,22,52,.95), rgba(2,13,33,.96));
+      border:1px solid rgba(255,230,0,.2);
+      border-radius:18px;
+      padding:22px 16px;
+      text-align:center;
+      box-shadow:var(--shadow);
+    }
+
+    .pillar .icon{
+      font-size:42px;
+      margin-bottom:12px;
+    }
+
+    .pillar h3{
+      margin:0;
+      font-size:17px;
+      color:var(--yellow);
+      text-transform:uppercase;
+      line-height:1.25;
+    }
+
+    .pillar p{
+      margin:10px 0 0;
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.45;
+    }
+
+    .mid-grid{
+      display:grid;
+      grid-template-columns:1.25fr .75fr;
+      gap:18px;
+      margin-top:18px;
+    }
+
+    .panel{
+      background:linear-gradient(180deg, rgba(5,22,52,.95), rgba(2,13,33,.96));
+      border:1px solid rgba(255,230,0,.2);
+      border-radius:20px;
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+
+    .panel-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding:16px 18px;
+      border-bottom:1px solid rgba(255,255,255,.06);
+    }
+
+    .panel-head h2{
+      margin:0;
+      color:var(--yellow);
+      font-size:28px;
+      text-transform:uppercase;
+      letter-spacing:.4px;
+    }
+
+    .panel-head a{
+      color:#89b7ff;
+      font-weight:700;
+      text-transform:uppercase;
+      font-size:13px;
+    }
+
+    .match-table{
+      width:100%;
+      border-collapse:collapse;
+    }
+
+    .match-table thead th{
+      background:linear-gradient(90deg, var(--green-2), var(--green));
+      color:#f4fff7;
+      font-size:13px;
+      text-transform:uppercase;
+      padding:14px 10px;
+      border-right:1px solid rgba(255,255,255,.08);
+    }
+
+    .match-table td{
+      padding:14px 10px;
+      border-top:1px solid rgba(255,255,255,.07);
+      text-align:center;
+      font-size:14px;
+      color:#eef6ff;
+    }
+
+    .match-table tbody tr:hover{
+      background:rgba(255,255,255,.03);
+    }
+
+    .badge{
+      display:inline-block;
+      padding:6px 10px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:800;
+      text-transform:uppercase;
+      min-width:64px;
+      color:#fff;
+    }
+
+    .sub11{background:#6a00ff;}
+    .sub13{background:#169f45;}
+    .sub15{background:#0f6fff;}
+    .sub17{background:#d3a400;color:#161616;}
+
+    .news-list{
+      padding:14px;
+    }
+
+    .news-item{
+      display:grid;
+      grid-template-columns:110px 1fr;
+      gap:12px;
+      background:rgba(255,255,255,.03);
+      border:1px solid rgba(255,255,255,.05);
+      border-radius:14px;
+      padding:10px;
+      margin-bottom:12px;
+    }
+
+    .news-item img{
+      width:100%;
+      height:78px;
+      object-fit:cover;
+      border-radius:10px;
+    }
+
+    .news-item strong{
+      display:block;
+      color:var(--yellow);
+      font-size:15px;
+      line-height:1.25;
+      margin-bottom:6px;
+    }
+
+    .news-item p{
+      margin:0;
+      font-size:13px;
+      color:#d8e0eb;
+      line-height:1.4;
+    }
+
+    .news-item span{
+      display:block;
+      margin-top:8px;
+      font-size:12px;
+      color:#97a7bd;
+      text-transform:uppercase;
+      font-weight:700;
+    }
+
+    .cta{
+      margin-top:18px;
+    }
+
+    .cta-box{
+      display:grid;
+      grid-template-columns:1fr auto;
+      gap:16px;
+      align-items:center;
+      background:
+        linear-gradient(90deg, rgba(6,25,61,.96), rgba(13,52,112,.9));
+      border:1px solid rgba(255,230,0,.3);
+      border-radius:18px;
+      padding:22px 24px;
+      box-shadow:var(--shadow);
+    }
+
+    .cta-box h3{
+      margin:0 0 8px;
+      color:var(--yellow);
+      font-size:38px;
+      text-transform:uppercase;
+      line-height:1;
+    }
+
+    .cta-box p{
+      margin:0;
+      color:#ecf1f7;
+      font-size:16px;
+    }
+
+    .footer{
+      margin-top:22px;
+      background:rgba(1,12,32,.97);
+      border-top:1px solid rgba(255,230,0,.2);
+    }
+
+    .footer-top{
+      display:grid;
+      grid-template-columns:1.2fr 1fr 1fr 1fr;
+      gap:20px;
+      padding:28px 0;
+    }
+
+    .footer-brand{
+      display:flex;
+      gap:12px;
+      align-items:flex-start;
+    }
+
+    .footer-brand img{
+      width:74px;
+      height:74px;
+      object-fit:contain;
+      border-radius:16px;
+    }
+
+    .footer h4{
+      margin:0 0 12px;
+      color:var(--yellow);
+      font-size:18px;
+      text-transform:uppercase;
+    }
+
+    .footer p,
+    .footer a{
+      margin:7px 0;
+      color:#d6deea;
+      font-size:14px;
+      line-height:1.45;
+      display:block;
+    }
+
+    .footer a:hover{
+      color:var(--yellow);
+    }
+
+    .social{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:10px;
+    }
+
+    .social a{
+      width:42px;
+      height:42px;
+      border-radius:12px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.08);
+      font-size:20px;
+    }
+
+    .copyright{
+      text-align:center;
+      color:#cdd7e4;
+      border-top:1px solid rgba(255,255,255,.06);
+      padding:14px 0 18px;
+      font-size:13px;
+    }
+
+    @media (max-width: 1100px){
+      .hero-panel,
+      .mid-grid,
+      .footer-top{
+        grid-template-columns:1fr;
+      }
+
+      .pillars{
+        grid-template-columns:repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 720px){
+      .topbar{
+        justify-content:center;
+      }
+
+      .brand{
+        justify-content:center;
+      }
+
+      .brand-text{
+        text-align:center;
+      }
+
+      .hero-copy h1{
+        font-size:44px;
+      }
+
+      .hero-copy .subtitle{
+        font-size:17px;
+      }
+
+      .hero-copy .desc{
+        font-size:16px;
+      }
+
+      .pillars{
+        grid-template-columns:1fr;
+      }
+
+      .cta-box{
+        grid-template-columns:1fr;
+        text-align:center;
+      }
+
+      .cta-box h3{
+        font-size:30px;
+      }
+
+      .news-item{
+        grid-template-columns:1fr;
+      }
+
+      .news-item img{
+        height:140px;
+      }
+    }
+  </style>
 </head>
 <body>
 
-<header>
-  <div class="logo">
-    <img src="logo-liga.png">
-    <strong>Liga Goiana</strong>
-  </div>
+  <header>
+    <div class="wrap topbar">
+      <div class="brand">
+        <img src="logo-liga.jfif" alt="Logo Liga Goiana">
+        <div class="brand-text">
+          <strong>Liga Goiana de Futebol de Base</strong>
+          <span>Onde o talento encontra o futuro</span>
+        </div>
+      </div>
 
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="campeonatos.html">Campeonatos</a>
-    <a href="times.html">Equipes</a>
-    <a href="tabela.html">Resultados</a>
-    <a href="noticias.html">Notícias</a>
-    <a href="contato.html">Contato</a>
-  </nav>
+      <nav>
+        <a href="index.html" class="active">Início</a>
+        <a href="campeonatos.html">Campeonatos</a>
+        <a href="times.html">Equipes</a>
+        <a href="tabela.html">Resultados</a>
+        <a href="noticias.html">Notícias</a>
+        <a href="#contato">Contato</a>
+      </nav>
 
-  <button class="btn-topo" onclick="window.location.href='campeonatos.html'">
-    Inscrever Agora
-  </button>
-</header>
+      <button class="btn-top" onclick="window.location.href='campeonatos.html'">🏆 Inscrever Agora</button>
+    </div>
+  </header>
 
-<section class="hero">
-  <h1>BEM-VINDO À LIGA GOIANA DE BASE</h1>
-  <p>Onde o talento encontra o futuro</p>
-</section>
+  <main class="wrap">
+    <section class="hero">
+      <div class="hero-panel">
+        <div class="hero-copy">
+          <span class="tag">Liga Oficial</span>
+          <h1>Bem-vindo à Liga Goiana de Base</h1>
+          <div class="subtitle">Onde o talento encontra o futuro</div>
+          <p class="desc">Competição, formação e desenvolvimento para revelar talentos e fortalecer o futebol de base em Goiás.</p>
 
-<div class="box">
+          <div class="hero-actions">
+            <a href="campeonatos.html" class="btn-primary">🏆 Ver Campeonatos</a>
+            <a href="times.html" class="btn-secondary">👥 Conhecer Equipes</a>
+          </div>
+        </div>
 
-  <div class="icones">
-    <div class="icone">🏆 Competição</div>
-    <div class="icone">🛡️ Formação</div>
-    <div class="icone">📈 Desenvolvimento</div>
-    <div class="icone">🤝 União</div>
-  </div>
+        <div class="hero-art">
+          <img src="hero-liga.jpeg" alt="Hero Liga Goiana">
+        </div>
+      </div>
 
-  <div class="cards">
-    <div class="card">
-      <img src="logo-liga.png">
-      <h3>LIGA</h3>
+      <div class="pillars">
+        <div class="pillar">
+          <div class="icon">🏆</div>
+          <h3>Competição de Alto Nível</h3>
+          <p>Jogos organizados, arbitragem qualificada e estrutura de campeonato profissional.</p>
+        </div>
+
+        <div class="pillar">
+          <div class="icon">🛡️</div>
+          <h3>Formação de Atletas</h3>
+          <p>Desenvolvimento técnico, disciplinar e humano dentro e fora de campo.</p>
+        </div>
+
+        <div class="pillar">
+          <div class="icon">📈</div>
+          <h3>Desenvolvimento que Transforma</h3>
+          <p>Estrutura preparada para impulsionar talentos, clubes e projetos esportivos.</p>
+        </div>
+
+        <div class="pillar">
+          <div class="icon">🤝</div>
+          <h3>Respeito, União e Propósito</h3>
+          <p>Valores que fortalecem o futebol de base e constroem futuros campeões.</p>
+        </div>
+      </div>
+
+      <div class="mid-grid">
+        <section class="panel">
+          <div class="panel-head">
+            <h2>Próximos Jogos</h2>
+            <a href="tabela.html">Ver todos →</a>
+          </div>
+
+          <table class="match-table">
+            <thead>
+              <tr>
+                <th>Data e Hora</th>
+                <th>Confronto</th>
+                <th>Categoria</th>
+                <th>Local</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>20/04 - 09:00</td>
+                <td>Atlético GO x Vila Nova</td>
+                <td><span class="badge sub15">Sub-15</span></td>
+                <td>Campo 01</td>
+              </tr>
+              <tr>
+                <td>20/04 - 10:30</td>
+                <td>Campinas x Hidrolândia</td>
+                <td><span class="badge sub13">Sub-13</span></td>
+                <td>Campo 02</td>
+              </tr>
+              <tr>
+                <td>20/04 - 14:00</td>
+                <td>União x Independência</td>
+                <td><span class="badge sub17">Sub-17</span></td>
+                <td>Estádio Regional</td>
+              </tr>
+              <tr>
+                <td>21/04 - 08:30</td>
+                <td>AC Esporte x B14 Futebol</td>
+                <td><span class="badge sub11">Sub-11</span></td>
+                <td>Campo Principal</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <aside class="panel">
+          <div class="panel-head">
+            <h2>Últimas Notícias</h2>
+            <a href="noticias.html">Ver notícias →</a>
+          </div>
+
+          <div class="news-list">
+            <div class="news-item">
+              <img src="hero-liga.jpeg" alt="Abertura da temporada">
+              <div>
+                <strong>Abertura oficial da temporada</strong>
+                <p>A Liga Goiana inicia mais um ciclo com grandes expectativas e equipes preparadas para a disputa.</p>
+                <span>15 Abr 2026</span>
+              </div>
+            </div>
+
+            <div class="news-item">
+              <img src="copa-uniao.jpeg" alt="Copa União confirmada">
+              <div>
+                <strong>Copa União de Base confirmada</strong>
+                <p>Categorias definidas e confrontos que prometem grandes jogos e muita emoção na competição.</p>
+                <span>10 Abr 2026</span>
+              </div>
+            </div>
+
+            <div class="news-item">
+              <img src="logo-liga.jfif" alt="Novas equipes">
+              <div>
+                <strong>Mais clubes fortalecem a Liga</strong>
+                <p>Projetos de todo o estado elevam ainda mais o nível da competição e ampliam o alcance da base.</p>
+                <span>05 Abr 2026</span>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <section class="cta">
+        <div class="cta-box">
+          <div>
+            <h3>Faça parte dessa história!</h3>
+            <p>Inscreva sua equipe e viva o futebol de base no mais alto nível.</p>
+          </div>
+
+          <div>
+            <a href="campeonatos.html" class="btn-primary">🏆 Quero Participar!</a>
+          </div>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <footer class="footer" id="contato">
+    <div class="wrap footer-top">
+      <div>
+        <div class="footer-brand">
+          <img src="logo-liga.jfif" alt="Logo da Liga">
+          <div>
+            <h4>Liga Goiana</h4>
+            <p>Liga Goiana de Futebol de Base</p>
+            <p>Onde o talento encontra o futuro.</p>
+            <div class="social">
+              <a href="#" aria-label="Instagram">📸</a>
+              <a href="#" aria-label="Facebook">📘</a>
+              <a href="#" aria-label="YouTube">▶️</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <h4>Acesso Rápido</h4>
+        <a href="index.html">Início</a>
+        <a href="campeonatos.html">Campeonatos</a>
+        <a href="times.html">Equipes</a>
+        <a href="tabela.html">Resultados</a>
+        <a href="noticias.html">Notícias</a>
+        <a href="#contato">Contato</a>
+      </div>
+
+      <div>
+        <h4>Competições</h4>
+        <a href="campeonatos.html">Liga Goiana Elite</a>
+        <a href="campeonatos.html">Copa União de Base</a>
+        <a href="tabela.html">Tabelas</a>
+        <a href="times.html">Clubes Participantes</a>
+      </div>
+
+      <div>
+        <h4>Contato</h4>
+        <p>Aparecida de Goiânia - GO</p>
+        <p>(61) 98100-0000</p>
+        <p>ligagoianaoficial@gmail.com</p>
+      </div>
     </div>
 
-    <div class="card">
-      <img src="logo-liga.png">
-      <h3>COPA UNIÃO</h3>
+    <div class="wrap copyright">
+      © 2026 Liga Goiana de Futebol de Base. Todos os direitos reservados.
     </div>
-  </div>
-
-  <table class="tabela">
-    <tr>
-      <th>Data</th>
-      <th>Jogo</th>
-      <th>Status</th>
-    </tr>
-
-    <tr>
-      <td>20/04</td>
-      <td>Atlético GO x Vila Nova</td>
-      <td>AO VIVO</td>
-    </tr>
-
-    <tr>
-      <td>21/04</td>
-      <td>Campinas x União</td>
-      <td>Agendado</td>
-    </tr>
-  </table>
-
-</div>
-
-<footer>
-  © Liga Goiana 2026
-</footer>
+  </footer>
 
 </body>
 </html>
