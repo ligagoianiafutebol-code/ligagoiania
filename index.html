@@ -125,7 +125,6 @@
 
     .main.expanded{ margin-left:0; }
 
-    /* ALTERADO: agora a barra de cima sobe junto com a tela */
     header{
       background:
         linear-gradient(rgba(2,10,25,.62), rgba(2,10,25,.84)),
@@ -235,9 +234,68 @@
       transition:.2s;
     }
 
+    .btn-top:hover,
+    .menu-toggle:hover,
+    .btn-primary:hover,
+    .btn-secondary:hover,
+    .btn-save:hover{
+      transform:translateY(-2px);
+    }
+
     .wrap{
       width:min(1280px, calc(100% - 28px));
       margin:auto;
+    }
+
+    .editor-home{
+      display:none;
+      background:rgba(2,12,34,.95);
+      border-bottom:1px solid rgba(255,230,0,.14);
+      padding:22px 0;
+    }
+
+    .editor-box{
+      background:linear-gradient(180deg, rgba(5,22,52,.98), rgba(2,13,33,.99));
+      border:1px solid rgba(255,230,0,.14);
+      border-radius:20px;
+      box-shadow:var(--shadow);
+      padding:22px;
+    }
+
+    .editor-box h2{
+      margin:0 0 16px;
+      color:var(--yellow);
+      text-transform:uppercase;
+    }
+
+    .editor-box label{
+      display:block;
+      margin:14px 0 6px;
+      font-weight:bold;
+      color:#eef4ff;
+    }
+
+    .editor-box textarea,
+    .editor-box input{
+      width:100%;
+      padding:12px;
+      border:none;
+      border-radius:10px;
+      box-sizing:border-box;
+      font-size:14px;
+    }
+
+    .btn-save{
+      margin-top:16px;
+      background:linear-gradient(to bottom, #fff04d, var(--yellow-2));
+      color:#111;
+      border:none;
+      padding:14px 18px;
+      border-radius:10px;
+      font-weight:800;
+      text-transform:uppercase;
+      font-size:14px;
+      cursor:pointer;
     }
 
     .hero{
@@ -343,13 +401,6 @@
       color:var(--white);
       border:2px solid rgba(255,230,0,.48);
       background:rgba(0,0,0,.18);
-    }
-
-    .btn-primary:hover,
-    .btn-secondary:hover,
-    .btn-top:hover,
-    .menu-toggle:hover{
-      transform:translateY(-2px);
     }
 
     .hero-art{
@@ -847,10 +898,26 @@
           <a href="#contato">Contato</a>
         </div>
 
-        <!-- ALTERADO: agora vai para login -->
         <button class="btn-top" onclick="window.location.href='login.html'">🔐 Login / Cadastro</button>
+        <button class="btn-top" id="btnEditar" style="display:none;">⚙️ Editar Página</button>
       </div>
     </header>
+
+    <div id="editorHome" class="editor-home">
+      <div class="wrap">
+        <div class="editor-box">
+          <h2>Editar Página Inicial</h2>
+
+          <label for="editTexto">Texto principal</label>
+          <textarea id="editTexto" rows="5"></textarea>
+
+          <label for="editImagem">Imagem principal (URL)</label>
+          <input id="editImagem" type="text" placeholder="Cole a URL da imagem">
+
+          <button class="btn-save" onclick="salvarEdicao()">Salvar Alterações</button>
+        </div>
+      </div>
+    </div>
 
     <section class="hero">
       <div class="wrap">
@@ -1123,7 +1190,11 @@
     </footer>
   </div>
 
-  <script>
+  <script type="module">
+    import { auth, db } from "./firebase.js";
+    import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
     function toggleSidebar(event){
       if(event) event.stopPropagation();
 
@@ -1137,6 +1208,8 @@
         main.classList.toggle("expanded");
       }
     }
+
+    window.toggleSidebar = toggleSidebar;
 
     document.addEventListener("click", function(e){
       const sidebar = document.querySelector(".sidebar");
@@ -1155,6 +1228,75 @@
         }
       }
     });
+
+    const btnEditar = document.getElementById("btnEditar");
+    const editorHome = document.getElementById("editorHome");
+
+    const EMAIL_ADMIN = "SEUEMAIL@gmail.com";
+
+    onAuthStateChanged(auth, async (user) => {
+      if(user && user.email === EMAIL_ADMIN){
+        btnEditar.style.display = "inline-block";
+      } else {
+        btnEditar.style.display = "none";
+        editorHome.style.display = "none";
+      }
+    });
+
+    btnEditar.addEventListener("click", async function(){
+      editorHome.style.display = editorHome.style.display === "none" || editorHome.style.display === "" ? "block" : "none";
+
+      const ref = doc(db, "site", "home");
+      const snap = await getDoc(ref);
+
+      if(snap.exists()){
+        const data = snap.data();
+        document.getElementById("editTexto").value = data.texto || "";
+        document.getElementById("editImagem").value = data.imagem || "";
+      } else {
+        document.getElementById("editTexto").value = document.querySelector(".hero-copy .desc").innerText;
+        document.getElementById("editImagem").value = document.querySelector(".hero-art img").src;
+      }
+    });
+
+    window.salvarEdicao = async function(){
+      const texto = document.getElementById("editTexto").value.trim();
+      const imagem = document.getElementById("editImagem").value.trim();
+
+      await setDoc(doc(db, "site", "home"), {
+        texto: texto,
+        imagem: imagem
+      });
+
+      if(texto){
+        document.querySelector(".hero-copy .desc").innerText = texto;
+      }
+
+      if(imagem){
+        document.querySelector(".hero-art img").src = imagem;
+      }
+
+      alert("Página inicial atualizada com sucesso!");
+    };
+
+    async function carregarHome(){
+      const ref = doc(db, "site", "home");
+      const snap = await getDoc(ref);
+
+      if(snap.exists()){
+        const data = snap.data();
+
+        if(data.texto){
+          document.querySelector(".hero-copy .desc").innerText = data.texto;
+        }
+
+        if(data.imagem){
+          document.querySelector(".hero-art img").src = data.imagem;
+        }
+      }
+    }
+
+    carregarHome();
   </script>
 
 </body>
