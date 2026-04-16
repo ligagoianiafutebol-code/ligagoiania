@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painel Admin - Liga Goiânia</title>
+
+<style>
+body{
+margin:0;
+font-family:Arial, sans-serif;
+background:#0b1f3a;
+color:white;
+}
+
+header{
+background:#08172c;
+padding:15px;
+text-align:center;
+font-size:22px;
+font-weight:bold;
+border-bottom:3px solid #f7c600;
+}
+
+.container{
+padding:15px;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+gap:12px;
+margin-bottom:20px;
+}
+
+.card{
+background:#102a52;
+border-radius:12px;
+padding:15px;
+text-align:center;
+box-shadow:0 2px 8px rgba(0,0,0,0.2);
+}
+
+.card h3{
+margin:0;
+font-size:26px;
+color:#f7c600;
+}
+
+.card p{
+margin:8px 0 0;
+font-size:14px;
+}
+
+.menu{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+gap:12px;
+}
+
+.menu a{
+background:#102a52;
+color:white;
+text-decoration:none;
+padding:14px;
+border-radius:10px;
+text-align:center;
+font-weight:bold;
+display:block;
+}
+
+.menu a:hover{
+background:#153766;
+}
+</style>
+</head>
+<body>
+
+<header>Painel do Administrador</header>
+
+<div class="container">
+
+<div class="grid">
+<div class="card">
+<h3>2</h3>
+<p>Campeonatos</p>
+</div>
+
+<div class="card">
+<h3>8</h3>
+<p>Categorias</p>
+</div>
+
+<div class="card">
+<h3>0</h3>
+<p>Times</p>
+</div>
+
+<div class="card">
+<h3>0</h3>
+<p>Jogadores</p>
+</div>
+</div>
+
+<div class="menu">
+<a href="#">Campeonatos</a>
+<a href="#">Categorias</a>
+<a href="#">Times</a>
+<a href="#">Jogadores</a>
+<a href="#">Técnicos</a>
+<a href="#">Árbitros</a>
+<a href="#">Assistentes</a>
+<a href="#">Jogos</a>
+<a href="#">Súmulas</a>
+<a href="#">Tabelas</a>
+<a href="#">Notícias</a>
+<a href="#">Configurações</a>
+</div>
+
+</div>
+
+</body>
+</html>
