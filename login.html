@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Login - LIGA GOIANA DE FUTEBOL DE BASE</title>
+<title>Liga Goiana de Futebol de Base - Login</title>
 
 <style>
 body{
@@ -23,7 +23,7 @@ border-radius:12px;
 width:90%;
 max-width:360px;
 }
-h1{text-align:center;font-size:24px;margin-bottom:20px;}
+h1{text-align:center;font-size:22px;margin-bottom:20px;}
 input, select{
 width:100%;
 padding:12px;
@@ -50,7 +50,7 @@ cursor:pointer;
 <body>
 
 <div class="box">
-<h1>Login LIGA GOIANA DE FUTEBOL DE BASE</h1>
+<h1>Login Liga Goiana</h1>
 
 <select>
 <option>Administrador</option>
@@ -72,12 +72,12 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/fireba
 import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-auth.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAJB-DdvUk0_VQsGOwt5JNt552120QzsQ4",
-  authDomain: "ligagoiania.firebaseapp.com",
-  projectId: "ligagoiania",
-  storageBucket: "ligagoiania.firebasestorage.app",
-  messagingSenderId: "270024128834",
-  appId: "1:270024128834:web:3c27ea257b08afd5e670db"
+  apiKey: "AIzaSyCyArj4yRlEl-yibkc0VEmL_4UJpRHHQSc",
+  authDomain: "liga-goiana-base.firebaseapp.com",
+  projectId: "liga-goiana-base",
+  storageBucket: "liga-goiana-base.firebasestorage.app",
+  messagingSenderId: "952863591183",
+  appId: "1:952863591183:web:4eea34f494ba2dd754cc7a"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -88,7 +88,7 @@ window.login = function() {
   const senha = document.getElementById("senha").value;
 
   signInWithEmailAndPassword(auth, email, senha)
-    .then((userCredential) => {
+    .then(() => {
       alert("Login realizado com sucesso");
       window.location.href = "admin.html";
     })
