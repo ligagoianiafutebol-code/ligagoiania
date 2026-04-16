@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Configurações - Admin</title>
+<style>
+body{margin:0;font-family:Arial;background:#0b1f3a;color:white;}
+header{background:#08172c;padding:15px;text-align:center;font-size:22px;font-weight:bold;border-bottom:3px solid #f7c600;}
+.container{padding:15px;}
+.card{background:#102a52;padding:15px;border-radius:10px;margin-bottom:10px;}
+label{display:block;margin-bottom:6px;font-size:14px;}
+input, select{width:100%;padding:10px;border:none;border-radius:8px;margin-bottom:10px;box-sizing:border-box;}
+button{background:#f7c600;color:black;padding:10px 14px;border:none;border-radius:8px;font-weight:bold;cursor:pointer;}
+.back{display:block;margin-top:10px;color:#f7c600;text-decoration:none;font-weight:bold;}
+</style>
+</head>
+<body>
+<header>Configurações</header>
+<div class="container">
+
+<div class="card">
+  <label>Pontos por vitória</label>
+  <input type="text" value="3">
+
+  <label>Pontos por empate</label>
+  <input type="text" value="1">
+
+  <label>Amarelos para suspensão</label>
+  <input type="text" value="3">
+
+  <label>Vermelho direto</label>
+  <input type="text" value="2 jogos">
+
+  <label>2 amarelos + vermelho</label>
+  <input type="text" value="1 jogo">
+
+  <label>W.O</label>
+  <input type="text" value="3x0">
+
+  <button>Salvar Configurações</button>
+</div>
+
+<a href="admin.html" class="back">← Voltar</a>
+</div>
+</body>
+</html>
