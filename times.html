@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Times - Liga Goiana</title>
+<title>Times - Admin</title>
 
 <style>
 body{
@@ -28,19 +28,46 @@ max-width:1100px;
 margin:auto;
 }
 
-.lista-grid{
-display:grid;
-grid-template-columns:repeat(auto-fit, minmax(250px, 1fr));
-gap:12px;
+input{
+width:100%;
+padding:12px;
+margin-bottom:12px;
+border:none;
+border-radius:8px;
+font-size:14px;
+box-sizing:border-box;
 }
 
-.card{
-background:#102a52;
-padding:15px;
-border-radius:10px;
-display:flex;
-align-items:center;
-gap:12px;
+button{
+background:#f7c600;
+color:black;
+padding:10px 14px;
+border:none;
+border-radius:8px;
+font-weight:bold;
+cursor:pointer;
+margin-bottom:15px;
+}
+
+.btn{
+background:#f7c600;
+color:black;
+padding:10px 14px;
+border-radius:8px;
+text-decoration:none;
+display:inline-block;
+margin-bottom:12px;
+font-weight:bold;
+cursor:pointer;
+border:none;
+}
+
+.back{
+display:block;
+margin-top:15px;
+color:#f7c600;
+text-decoration:none;
+font-weight:bold;
 }
 
 .preview{
@@ -56,10 +83,90 @@ font-weight:bold;
 font-size:16px;
 }
 
+.palette-box{
+display:none;
+background:#102a52;
+padding:12px;
+border-radius:10px;
+margin-bottom:14px;
+overflow-x:auto;
+}
+
+.palette-box.show{
+display:block;
+}
+
+.color-grid{
+display:grid;
+grid-auto-flow:column;
+grid-template-rows:repeat(8, 26px);
+grid-auto-columns:26px;
+gap:6px;
+}
+
+.color-option{
+width:26px;
+height:26px;
+border-radius:3px;
+border:2px solid transparent;
+cursor:pointer;
+box-sizing:border-box;
+}
+
+.color-option.selected{
+border-color:#ffffff;
+box-shadow:0 0 0 1px #f7c600;
+}
+
+#coresSelecionadas{
+display:flex;
+flex-wrap:wrap;
+gap:8px;
+margin:10px 0 14px 0;
+min-height:36px;
+}
+
+.selected-color{
+width:30px;
+height:30px;
+border-radius:6px;
+border:2px solid #ffffff33;
+}
+
+.lista-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));
+gap:12px;
+}
+
+.card{
+background:#102a52;
+padding:15px;
+border-radius:10px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:10px;
+}
+
+.team{
+display:flex;
+align-items:center;
+gap:12px;
+min-width:0;
+}
+
+.team-info{
+display:flex;
+flex-direction:column;
+gap:6px;
+min-width:0;
+}
+
 .time-colors{
 display:flex;
 gap:6px;
-margin-top:5px;
+flex-wrap:wrap;
 }
 
 .time-color{
@@ -68,20 +175,179 @@ height:14px;
 border-radius:4px;
 border:1px solid #ffffff55;
 }
-</style>
 
+.actions{
+display:flex;
+gap:6px;
+flex-wrap:wrap;
+}
+
+.actions a{
+background:#1a3f73;
+padding:6px 10px;
+border-radius:6px;
+color:white;
+text-decoration:none;
+font-size:12px;
+}
+</style>
 </head>
+
 <body>
 
-<header>LIGA GOIANA DE FUTEBOL DE BASE</header>
+<header>Times</header>
 
 <div class="container">
+
+<a class="btn" onclick="toggleFormulario()">+ Novo Time</a>
+
+<div id="formulario" style="display:none;">
+  <input id="nomeTime" placeholder="Nome do time">
+  <input id="escudo" type="file" accept="image/*">
+
+  <button type="button" class="btn" onclick="togglePaleta()">Selecionar cores</button>
+
+  <div class="palette-box" id="paletaBox">
+    <div class="color-grid">
+
+      <!-- Coluna 1: Vermelhos -->
+      <div class="color-option" data-color="#ffd6d6" style="background:#ffd6d6"></div>
+      <div class="color-option" data-color="#ffb3b3" style="background:#ffb3b3"></div>
+      <div class="color-option" data-color="#ff8080" style="background:#ff8080"></div>
+      <div class="color-option" data-color="#ff4d4d" style="background:#ff4d4d"></div>
+      <div class="color-option" data-color="#ff1a1a" style="background:#ff1a1a"></div>
+      <div class="color-option" data-color="#e60000" style="background:#e60000"></div>
+      <div class="color-option" data-color="#b30000" style="background:#b30000"></div>
+      <div class="color-option" data-color="#800000" style="background:#800000"></div>
+
+      <!-- Coluna 2: Laranjas/Marrons -->
+      <div class="color-option" data-color="#ffe0cc" style="background:#ffe0cc"></div>
+      <div class="color-option" data-color="#ffc299" style="background:#ffc299"></div>
+      <div class="color-option" data-color="#ff9966" style="background:#ff9966"></div>
+      <div class="color-option" data-color="#ff7f27" style="background:#ff7f27"></div>
+      <div class="color-option" data-color="#cc6633" style="background:#cc6633"></div>
+      <div class="color-option" data-color="#a0522d" style="background:#a0522d"></div>
+      <div class="color-option" data-color="#8b4513" style="background:#8b4513"></div>
+      <div class="color-option" data-color="#5c3317" style="background:#5c3317"></div>
+
+      <!-- Coluna 3: Amarelos/Dourados -->
+      <div class="color-option" data-color="#fff7cc" style="background:#fff7cc"></div>
+      <div class="color-option" data-color="#ffef99" style="background:#ffef99"></div>
+      <div class="color-option" data-color="#ffe766" style="background:#ffe766"></div>
+      <div class="color-option" data-color="#ffdd33" style="background:#ffdd33"></div>
+      <div class="color-option" data-color="#f7c600" style="background:#f7c600"></div>
+      <div class="color-option" data-color="#d4a017" style="background:#d4a017"></div>
+      <div class="color-option" data-color="#b8860b" style="background:#b8860b"></div>
+      <div class="color-option" data-color="#8b6508" style="background:#8b6508"></div>
+
+      <!-- Coluna 4: Verdes Limão -->
+      <div class="color-option" data-color="#f2ffd9" style="background:#f2ffd9"></div>
+      <div class="color-option" data-color="#e5ffb3" style="background:#e5ffb3"></div>
+      <div class="color-option" data-color="#d9ff80" style="background:#d9ff80"></div>
+      <div class="color-option" data-color="#ccff4d" style="background:#ccff4d"></div>
+      <div class="color-option" data-color="#bfff00" style="background:#bfff00"></div>
+      <div class="color-option" data-color="#99cc00" style="background:#99cc00"></div>
+      <div class="color-option" data-color="#809900" style="background:#809900"></div>
+      <div class="color-option" data-color="#667a00" style="background:#667a00"></div>
+
+      <!-- Coluna 5: Verdes -->
+      <div class="color-option" data-color="#d9f2d9" style="background:#d9f2d9"></div>
+      <div class="color-option" data-color="#b3e6b3" style="background:#b3e6b3"></div>
+      <div class="color-option" data-color="#80d480" style="background:#80d480"></div>
+      <div class="color-option" data-color="#4dc34d" style="background:#4dc34d"></div>
+      <div class="color-option" data-color="#00a651" style="background:#00a651"></div>
+      <div class="color-option" data-color="#008f45" style="background:#008f45"></div>
+      <div class="color-option" data-color="#006b33" style="background:#006b33"></div>
+      <div class="color-option" data-color="#004d26" style="background:#004d26"></div>
+
+      <!-- Coluna 6: Cianos/Águas -->
+      <div class="color-option" data-color="#d9ffff" style="background:#d9ffff"></div>
+      <div class="color-option" data-color="#b3ffff" style="background:#b3ffff"></div>
+      <div class="color-option" data-color="#80ffff" style="background:#80ffff"></div>
+      <div class="color-option" data-color="#4dffff" style="background:#4dffff"></div>
+      <div class="color-option" data-color="#00e6e6" style="background:#00e6e6"></div>
+      <div class="color-option" data-color="#00b8b8" style="background:#00b8b8"></div>
+      <div class="color-option" data-color="#008b8b" style="background:#008b8b"></div>
+      <div class="color-option" data-color="#006666" style="background:#006666"></div>
+
+      <!-- Coluna 7: Azuis Claros -->
+      <div class="color-option" data-color="#d9ecff" style="background:#d9ecff"></div>
+      <div class="color-option" data-color="#b3d9ff" style="background:#b3d9ff"></div>
+      <div class="color-option" data-color="#80c1ff" style="background:#80c1ff"></div>
+      <div class="color-option" data-color="#4da6ff" style="background:#4da6ff"></div>
+      <div class="color-option" data-color="#3399ff" style="background:#3399ff"></div>
+      <div class="color-option" data-color="#1a8cff" style="background:#1a8cff"></div>
+      <div class="color-option" data-color="#0073e6" style="background:#0073e6"></div>
+      <div class="color-option" data-color="#0059b3" style="background:#0059b3"></div>
+
+      <!-- Coluna 8: Azuis Médios -->
+      <div class="color-option" data-color="#ccd9ff" style="background:#ccd9ff"></div>
+      <div class="color-option" data-color="#99b3ff" style="background:#99b3ff"></div>
+      <div class="color-option" data-color="#668cff" style="background:#668cff"></div>
+      <div class="color-option" data-color="#3366ff" style="background:#3366ff"></div>
+      <div class="color-option" data-color="#003d99" style="background:#003d99"></div>
+      <div class="color-option" data-color="#0047b3" style="background:#0047b3"></div>
+      <div class="color-option" data-color="#003380" style="background:#003380"></div>
+      <div class="color-option" data-color="#002966" style="background:#002966"></div>
+
+      <!-- Coluna 9: Azuis Escuros -->
+      <div class="color-option" data-color="#cfd8e6" style="background:#cfd8e6"></div>
+      <div class="color-option" data-color="#9fb3cc" style="background:#9fb3cc"></div>
+      <div class="color-option" data-color="#6f8fb3" style="background:#6f8fb3"></div>
+      <div class="color-option" data-color="#406b99" style="background:#406b99"></div>
+      <div class="color-option" data-color="#204a80" style="background:#204a80"></div>
+      <div class="color-option" data-color="#163a66" style="background:#163a66"></div>
+      <div class="color-option" data-color="#0b1f3a" style="background:#0b1f3a"></div>
+      <div class="color-option" data-color="#08172c" style="background:#08172c"></div>
+
+      <!-- Coluna 10: Roxos/Violetas -->
+      <div class="color-option" data-color="#efe0ff" style="background:#efe0ff"></div>
+      <div class="color-option" data-color="#dcc2ff" style="background:#dcc2ff"></div>
+      <div class="color-option" data-color="#c299ff" style="background:#c299ff"></div>
+      <div class="color-option" data-color="#a366ff" style="background:#a366ff"></div>
+      <div class="color-option" data-color="#8000ff" style="background:#8000ff"></div>
+      <div class="color-option" data-color="#6a00cc" style="background:#6a00cc"></div>
+      <div class="color-option" data-color="#5200a3" style="background:#5200a3"></div>
+      <div class="color-option" data-color="#3b007a" style="background:#3b007a"></div>
+
+      <!-- Coluna 11: Magentas -->
+      <div class="color-option" data-color="#ffd9f2" style="background:#ffd9f2"></div>
+      <div class="color-option" data-color="#ffb3e6" style="background:#ffb3e6"></div>
+      <div class="color-option" data-color="#ff80d5" style="background:#ff80d5"></div>
+      <div class="color-option" data-color="#ff4dc4" style="background:#ff4dc4"></div>
+      <div class="color-option" data-color="#ff00aa" style="background:#ff00aa"></div>
+      <div class="color-option" data-color="#cc0088" style="background:#cc0088"></div>
+      <div class="color-option" data-color="#990066" style="background:#990066"></div>
+      <div class="color-option" data-color="#660044" style="background:#660044"></div>
+
+      <!-- Coluna 12: Cinzas/Preto -->
+      <div class="color-option" data-color="#ffffff" style="background:#ffffff"></div>
+      <div class="color-option" data-color="#eeeeee" style="background:#eeeeee"></div>
+      <div class="color-option" data-color="#d9d9d9" style="background:#d9d9d9"></div>
+      <div class="color-option" data-color="#bfbfbf" style="background:#bfbfbf"></div>
+      <div class="color-option" data-color="#999999" style="background:#999999"></div>
+      <div class="color-option" data-color="#666666" style="background:#666666"></div>
+      <div class="color-option" data-color="#333333" style="background:#333333"></div>
+      <div class="color-option" data-color="#000000" style="background:#000000"></div>
+
+    </div>
+  </div>
+
+  <div id="coresSelecionadas"></div>
+
+  <button onclick="salvarTime()">Salvar Time</button>
+</div>
+
 <div class="lista-grid" id="listaTimes"></div>
+
+<a href="admin.html" class="back">← Voltar</a>
+
 </div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
-import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-firestore.js";
+import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-firestore.js";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-storage.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCyArj4yRlEl-yibkc0VEmL_4UJpRHHQSc",
@@ -94,35 +360,110 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const storage = getStorage(app);
 
-async function carregarTimes() {
+let coresEscolhidas = [];
+
+window.toggleFormulario = function(){
+  const f = document.getElementById("formulario");
+  f.style.display = f.style.display === "none" ? "block" : "none";
+}
+
+window.togglePaleta = function(){
+  document.getElementById("paletaBox").classList.toggle("show");
+}
+
+function atualizarCores() {
+  const box = document.getElementById("coresSelecionadas");
+  box.innerHTML = "";
+
+  coresEscolhidas.forEach(cor => {
+    box.innerHTML += `<div class="selected-color" style="background:${cor};cursor:pointer;" onclick="removerCor('${cor}')"></div>`;
+  });
+}
+
+window.removerCor = function(cor){
+  coresEscolhidas = coresEscolhidas.filter(c => c !== cor);
+
+  document.querySelectorAll(".color-option").forEach(op => {
+    if(op.dataset.color === cor){
+      op.classList.remove("selected");
+    }
+  });
+
+  atualizarCores();
+}
+
+document.querySelectorAll(".color-option").forEach(op => {
+  op.onclick = () => {
+    const cor = op.dataset.color;
+
+    if (coresEscolhidas.includes(cor)) {
+      coresEscolhidas = coresEscolhidas.filter(c => c !== cor);
+      op.classList.remove("selected");
+    } else {
+      coresEscolhidas.push(cor);
+      op.classList.add("selected");
+    }
+
+    atualizarCores();
+  };
+});
+
+window.salvarTime = async function(){
+  const nome = document.getElementById("nomeTime").value.trim();
+  const file = document.getElementById("escudo").files[0];
+
+  if(!nome || !file || coresEscolhidas.length === 0){
+    alert("Preencha nome, escudo e escolha pelo menos 1 cor");
+    return;
+  }
+
+  const refStorage = ref(storage, "escudos/" + Date.now() + "-" + file.name);
+  await uploadBytes(refStorage, file);
+  const url = await getDownloadURL(refStorage);
+
+  await addDoc(collection(db, "times"), {
+    nome: nome,
+    escudo: url,
+    cores: coresEscolhidas
+  });
+
+  alert("Time salvo com sucesso!");
+
+  document.getElementById("nomeTime").value = "";
+  document.getElementById("escudo").value = "";
+  coresEscolhidas = [];
+  document.querySelectorAll(".color-option").forEach(op => op.classList.remove("selected"));
+  atualizarCores();
+  carregarTimes();
+}
+
+async function carregarTimes(){
   const lista = document.getElementById("listaTimes");
   lista.innerHTML = "";
 
-  const querySnapshot = await getDocs(collection(db, "times"));
-
   let times = [];
+  const snap = await getDocs(collection(db, "times"));
+  snap.forEach(doc => times.push(doc.data()));
 
-  querySnapshot.forEach((doc) => {
-    times.push(doc.data());
-  });
-
-  // ORDEM ALFABÉTICA
   times.sort((a, b) => a.nome.localeCompare(b.nome, 'pt-BR'));
 
-  times.forEach((time) => {
-    const cores = Array.isArray(time.cores) ? time.cores : [];
-
-    const coresHTML = cores.map(cor => `
-      <div class="time-color" style="background:${cor}"></div>
-    `).join("");
+  times.forEach(t => {
+    const cores = (t.cores || []).map(c => `<div class="time-color" style="background:${c}"></div>`).join("");
 
     lista.innerHTML += `
       <div class="card">
-        <img src="${time.escudo}" class="preview">
-        <div>
-          <div class="nome-time">${time.nome}</div>
-          <div class="time-colors">${coresHTML}</div>
+        <div class="team">
+          <img src="${t.escudo}" class="preview">
+          <div class="team-info">
+            <div class="nome-time">${t.nome}</div>
+            <div class="time-colors">${cores}</div>
+          </div>
+        </div>
+        <div class="actions">
+          <a>Editar</a>
+          <a>Ver</a>
         </div>
       </div>
     `;
