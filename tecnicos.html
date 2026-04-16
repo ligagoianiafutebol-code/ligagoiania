@@ -4,46 +4,515 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Técnicos - Admin</title>
+
 <style>
-body{margin:0;font-family:Arial;background:#0b1f3a;color:white;}
-header{background:#08172c;padding:15px;text-align:center;font-size:22px;font-weight:bold;border-bottom:3px solid #f7c600;}
-.container{padding:15px;}
-.btn{background:#f7c600;color:black;padding:10px;border-radius:8px;text-decoration:none;display:inline-block;margin-bottom:15px;font-weight:bold;}
-.card{background:#102a52;padding:12px;border-radius:10px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;}
-.user{display:flex;align-items:center;gap:10px;}
-.photo{width:30px;height:30px;background:#f7c600;border-radius:50%;}
-.actions a{background:#1a3f73;padding:6px 10px;border-radius:6px;color:white;text-decoration:none;margin-left:5px;font-size:12px;}
-.back{display:block;margin-top:10px;color:#f7c600;text-decoration:none;font-weight:bold;}
+body{
+margin:0;
+font-family:Arial;
+background:#0b1f3a;
+color:white;
+}
+
+header{
+background:#08172c;
+padding:15px;
+text-align:center;
+font-size:22px;
+font-weight:bold;
+border-bottom:3px solid #f7c600;
+}
+
+.container{
+padding:15px;
+max-width:1100px;
+margin:auto;
+}
+
+input, select{
+width:100%;
+padding:12px;
+margin-bottom:12px;
+border:none;
+border-radius:8px;
+font-size:14px;
+box-sizing:border-box;
+}
+
+button{
+background:#f7c600;
+color:black;
+padding:10px 14px;
+border:none;
+border-radius:8px;
+font-weight:bold;
+cursor:pointer;
+margin-bottom:15px;
+}
+
+.btn{
+background:#f7c600;
+color:black;
+padding:10px 14px;
+border-radius:8px;
+text-decoration:none;
+display:inline-block;
+margin-bottom:12px;
+font-weight:bold;
+cursor:pointer;
+border:none;
+}
+
+.back{
+display:block;
+margin-top:15px;
+color:#f7c600;
+text-decoration:none;
+font-weight:bold;
+}
+
+.photo{
+width:60px;
+height:60px;
+border-radius:50%;
+object-fit:cover;
+border:2px solid #ffffff22;
+background:#1a3f73;
+}
+
+.nome-tecnico{
+font-weight:bold;
+font-size:16px;
+}
+
+.lista-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit, minmax(320px, 1fr));
+gap:12px;
+}
+
+.card{
+background:#102a52;
+padding:15px;
+border-radius:10px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:10px;
+}
+
+.user{
+display:flex;
+align-items:center;
+gap:12px;
+min-width:0;
+}
+
+.user-info{
+display:flex;
+flex-direction:column;
+gap:4px;
+min-width:0;
+}
+
+.user-info small{
+opacity:.85;
+font-size:12px;
+}
+
+.actions{
+display:flex;
+gap:6px;
+flex-wrap:wrap;
+}
+
+.actions button{
+background:#1a3f73;
+padding:6px 10px;
+border-radius:6px;
+color:white;
+border:none;
+font-size:12px;
+margin:0;
+}
+
+.actions .delete{
+background:#b30000;
+}
+
+.modal{
+display:none;
+position:fixed;
+inset:0;
+background:rgba(0,0,0,0.7);
+justify-content:center;
+align-items:center;
+padding:15px;
+z-index:999;
+}
+
+.modal-content{
+background:#102a52;
+padding:20px;
+border-radius:12px;
+max-width:500px;
+width:100%;
+text-align:center;
+max-height:85vh;
+overflow:auto;
+}
+
+.modal-content img{
+width:100px;
+height:100px;
+border-radius:50%;
+object-fit:cover;
+border:2px solid #ffffff22;
+margin-bottom:12px;
+background:#1a3f73;
+}
+
+.tags{
+display:flex;
+gap:6px;
+flex-wrap:wrap;
+justify-content:center;
+margin-top:10px;
+}
+
+.tag{
+background:#1a3f73;
+padding:4px 8px;
+border-radius:999px;
+font-size:12px;
+}
+
+.subtitle{
+opacity:.85;
+font-size:13px;
+margin-bottom:10px;
+}
+
+.checkbox-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit, minmax(110px, 1fr));
+gap:8px;
+margin-bottom:12px;
+}
+
+.check-item{
+background:#102a52;
+padding:8px;
+border-radius:8px;
+display:flex;
+align-items:center;
+gap:8px;
+}
+
+.check-item input{
+width:auto;
+margin:0;
+}
 </style>
 </head>
+
 <body>
+
 <header>Técnicos</header>
+
 <div class="container">
-<a class="btn">+ Novo Técnico</a>
 
-<div class="card">
-  <div class="user">
-    <div class="photo"></div>
-    Marcos Silva
+<a class="btn" onclick="toggleFormulario()">+ Novo Técnico</a>
+
+<input id="buscaTecnico" placeholder="Pesquisar técnico..." oninput="carregarTecnicos()">
+
+<div id="formulario" style="display:none;">
+  <input id="nomeTecnico" placeholder="Nome do técnico">
+  <input id="fotoTecnico" type="file" accept="image/*">
+  <input id="cpfTecnico" placeholder="CPF do técnico">
+  <input id="telefoneTecnico" placeholder="Telefone">
+  <input id="emailTecnico" placeholder="Email">
+
+  <select id="timeTecnico">
+    <option value="">Selecione o time</option>
+  </select>
+
+  <div class="subtitle">Categorias liberadas para o técnico</div>
+  <div class="checkbox-grid" id="categoriasGrid">
+    <label class="check-item"><input type="checkbox" value="Sub-11">Sub-11</label>
+    <label class="check-item"><input type="checkbox" value="Sub-12">Sub-12</label>
+    <label class="check-item"><input type="checkbox" value="Sub-13">Sub-13</label>
+    <label class="check-item"><input type="checkbox" value="Sub-14">Sub-14</label>
+    <label class="check-item"><input type="checkbox" value="Sub-15">Sub-15</label>
+    <label class="check-item"><input type="checkbox" value="Sub-16">Sub-16</label>
+    <label class="check-item"><input type="checkbox" value="Sub-17">Sub-17</label>
+    <label class="check-item"><input type="checkbox" value="Sub-18">Sub-18</label>
   </div>
-  <div class="actions">
-    <a>Editar</a>
-    <a>Vincular</a>
-  </div>
+
+  <button id="botaoSalvar" onclick="salvarTecnico()">Salvar Técnico</button>
 </div>
 
-<div class="card">
-  <div class="user">
-    <div class="photo"></div>
-    André Souza
-  </div>
-  <div class="actions">
-    <a>Editar</a>
-    <a>Vincular</a>
-  </div>
-</div>
+<div class="lista-grid" id="listaTecnicos"></div>
 
 <a href="admin.html" class="back">← Voltar</a>
+
 </div>
+
+<div class="modal" id="modalVer">
+  <div class="modal-content" id="modalConteudo"></div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
+import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-firestore.js";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-storage.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCyArj4yRlEl-yibkc0VEmL_4UJpRHHQSc",
+  authDomain: "liga-goiana-base.firebaseapp.com",
+  projectId: "liga-goiana-base",
+  storageBucket: "liga-goiana-base.firebasestorage.app",
+  messagingSenderId: "952863591183",
+  appId: "1:952863591183:web:4eea34f494ba2dd754cc7a"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const storage = getStorage(app);
+
+let editandoId = null;
+let fotoAtual = "";
+
+window.toggleFormulario = function(){
+  const f = document.getElementById("formulario");
+  f.style.display = f.style.display === "none" ? "block" : "none";
+}
+
+function getCategoriasSelecionadas() {
+  return Array.from(document.querySelectorAll('#categoriasGrid input[type="checkbox"]:checked')).map(i => i.value);
+}
+
+function marcarCategorias(categorias) {
+  document.querySelectorAll('#categoriasGrid input[type="checkbox"]').forEach(i => {
+    i.checked = (categorias || []).includes(i.value);
+  });
+}
+
+function limparFormulario() {
+  document.getElementById("nomeTecnico").value = "";
+  document.getElementById("fotoTecnico").value = "";
+  document.getElementById("cpfTecnico").value = "";
+  document.getElementById("telefoneTecnico").value = "";
+  document.getElementById("emailTecnico").value = "";
+  document.getElementById("timeTecnico").value = "";
+  document.getElementById("botaoSalvar").textContent = "Salvar Técnico";
+  document.querySelectorAll('#categoriasGrid input[type="checkbox"]').forEach(i => i.checked = false);
+  editandoId = null;
+  fotoAtual = "";
+}
+
+async function carregarTimesNoSelect() {
+  const select = document.getElementById("timeTecnico");
+  select.innerHTML = '<option value="">Selecione o time</option>';
+
+  const querySnapshot = await getDocs(collection(db, "times"));
+  let times = [];
+
+  querySnapshot.forEach((docSnap) => {
+    times.push(docSnap.data());
+  });
+
+  times.sort((a, b) => a.nome.localeCompare(b.nome, 'pt-BR'));
+
+  times.forEach((time) => {
+    select.innerHTML += `<option value="${time.nome}">${time.nome}</option>`;
+  });
+}
+
+window.salvarTecnico = async function() {
+  const nome = document.getElementById("nomeTecnico").value.trim();
+  const foto = document.getElementById("fotoTecnico").files[0];
+  const cpf = document.getElementById("cpfTecnico").value.trim();
+  const telefone = document.getElementById("telefoneTecnico").value.trim();
+  const email = document.getElementById("emailTecnico").value.trim();
+  const time = document.getElementById("timeTecnico").value;
+  const categorias = getCategoriasSelecionadas();
+
+  if (!nome) {
+    alert("Digite o nome do técnico");
+    return;
+  }
+
+  if (!cpf) {
+    alert("Digite o CPF do técnico");
+    return;
+  }
+
+  if (!time) {
+    alert("Selecione o time");
+    return;
+  }
+
+  const snap = await getDocs(collection(db, "tecnicos"));
+  let cpfDuplicado = false;
+
+  snap.forEach((item) => {
+    const t = item.data();
+    if (t.cpf === cpf && item.id !== editandoId) {
+      cpfDuplicado = true;
+    }
+  });
+
+  if (cpfDuplicado) {
+    alert("Já existe um técnico cadastrado com esse CPF.");
+    return;
+  }
+
+  let urlFoto = fotoAtual;
+
+  if (foto) {
+    const nomeArquivo = Date.now() + "-" + foto.name;
+    const storageRef = ref(storage, "tecnicos/" + nomeArquivo);
+    await uploadBytes(storageRef, foto);
+    urlFoto = await getDownloadURL(storageRef);
+  }
+
+  const dados = {
+    nome: nome,
+    foto: urlFoto || "",
+    cpf: cpf,
+    telefone: telefone,
+    email: email,
+    time: time,
+    categorias: categorias
+  };
+
+  if (editandoId) {
+    await updateDoc(doc(db, "tecnicos", editandoId), dados);
+    alert("Técnico atualizado com sucesso!");
+  } else {
+    await addDoc(collection(db, "tecnicos"), dados);
+    alert("Técnico salvo com sucesso!");
+  }
+
+  limparFormulario();
+  carregarTecnicos();
+}
+
+window.editarTecnico = async function(id) {
+  const snap = await getDocs(collection(db, "tecnicos"));
+
+  snap.forEach((item) => {
+    if (item.id === id) {
+      const t = item.data();
+
+      document.getElementById("nomeTecnico").value = t.nome || "";
+      document.getElementById("cpfTecnico").value = t.cpf || "";
+      document.getElementById("telefoneTecnico").value = t.telefone || "";
+      document.getElementById("emailTecnico").value = t.email || "";
+      document.getElementById("timeTecnico").value = t.time || "";
+      document.getElementById("botaoSalvar").textContent = "Atualizar Técnico";
+
+      marcarCategorias(t.categorias || []);
+      fotoAtual = t.foto || "";
+      editandoId = id;
+
+      document.getElementById("formulario").style.display = "block";
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  });
+}
+
+window.verTecnico = async function(id) {
+  const snap = await getDocs(collection(db, "tecnicos"));
+  let tecnico = null;
+
+  snap.forEach((item) => {
+    if (item.id === id) {
+      tecnico = item.data();
+    }
+  });
+
+  if (!tecnico) return;
+
+  const categorias = (tecnico.categorias || []).map(c => `<div class="tag">${c}</div>`).join("");
+
+  document.getElementById("modalConteudo").innerHTML = `
+    <img src="${tecnico.foto || ''}">
+    <h2 style="margin:10px 0;">${tecnico.nome}</h2>
+    <div class="subtitle">Time: ${tecnico.time || "-"}</div>
+    <div class="subtitle">CPF: ${tecnico.cpf || "-"}</div>
+    <div class="subtitle">Telefone: ${tecnico.telefone || "-"}</div>
+    <div class="subtitle">Email: ${tecnico.email || "-"}</div>
+    <div class="tags">${categorias}</div>
+    <button onclick="fecharModal()" style="margin-top:15px;">Fechar</button>
+  `;
+
+  document.getElementById("modalVer").style.display = "flex";
+}
+
+window.fecharModal = function() {
+  document.getElementById("modalVer").style.display = "none";
+}
+
+window.excluirTecnico = async function(id){
+  const confirmar = confirm("Tem certeza que deseja excluir este técnico?");
+  if(!confirmar) return;
+
+  await deleteDoc(doc(db, "tecnicos", id));
+  alert("Técnico excluído!");
+  carregarTecnicos();
+}
+
+async function carregarTecnicos() {
+  const lista = document.getElementById("listaTecnicos");
+  lista.innerHTML = "";
+
+  const querySnapshot = await getDocs(collection(db, "tecnicos"));
+  let tecnicos = [];
+
+  querySnapshot.forEach((docSnap) => {
+    tecnicos.push({ id: docSnap.id, ...docSnap.data() });
+  });
+
+  const busca = (document.getElementById("buscaTecnico").value || "").toLowerCase().trim();
+
+  if (busca) {
+    tecnicos = tecnicos.filter(t =>
+      (t.nome || "").toLowerCase().includes(busca) ||
+      (t.time || "").toLowerCase().includes(busca) ||
+      (t.email || "").toLowerCase().includes(busca)
+    );
+  }
+
+  tecnicos.sort((a, b) => a.nome.localeCompare(b.nome, 'pt-BR'));
+
+  tecnicos.forEach((tecnico) => {
+    const categorias = (tecnico.categorias || []).map(c => `<span class="tag">${c}</span>`).join("");
+
+    lista.innerHTML += `
+      <div class="card">
+        <div class="user">
+          <img src="${tecnico.foto || ''}" class="photo" alt="Foto do técnico">
+          <div class="user-info">
+            <div class="nome-tecnico">${tecnico.nome}</div>
+            <small>Time: ${tecnico.time || "-"}</small>
+            <small>Email: ${tecnico.email || "-"}</small>
+            <div class="tags">${categorias}</div>
+          </div>
+        </div>
+        <div class="actions">
+          <button onclick="editarTecnico('${tecnico.id}')">Editar</button>
+          <button onclick="verTecnico('${tecnico.id}')">Ver</button>
+          <button class="delete" onclick="excluirTecnico('${tecnico.id}')">Excluir</button>
+        </div>
+      </div>
+    `;
+  });
+}
+
+await carregarTimesNoSelect();
+carregarTecnicos();
+</script>
+
 </body>
 </html>
