@@ -1,142 +1,161 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LIGA GOIANA DE FUTEBOL DE BASE</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liga Goiana de Futebol de Base</title>
+    <style>
+        /* Paleta de Cores baseada nos Escudos */
+        :root {
+            --azul-escuro: #001529;
+            --azul-claro: #003366;
+            --dourado: #FFD700;
+            --verde-goias: #008000;
+            --branco: #ffffff;
+        }
 
-<style>
-body{
-font-family: Arial;
-margin:0;
-background:#0b1f3a;
-color:white;
-}
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            background-color: var(--azul-escuro);
+            color: var(--branco);
+        }
 
-header{
-background:#0b1f3a;
-padding:15px;
-text-align:center;
-font-size:22px;
-font-weight:bold;
-border-bottom:3px solid #f7c600;
-}
+        /* Cabeçalho */
+        header {
+            background: linear-gradient(to bottom, var(--azul-claro), var(--azul-escuro));
+            padding: 20px;
+            text-align: center;
+            border-bottom: 3px solid var(--dourado);
+        }
 
-.menu{
-display:flex;
-justify-content:space-around;
-background:#102a52;
-padding:12px;
-flex-wrap:wrap;
-}
+        nav a {
+            color: var(--branco);
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
 
-.menu a{
-color:white;
-text-decoration:none;
-font-weight:bold;
-font-size:14px;
-}
+        nav a:hover {
+            color: var(--dourado);
+        }
 
-.container{
-padding:15px;
-}
+        /* Seção Principal (Hero) */
+        .hero {
+            padding: 60px 20px;
+            text-align: center;
+            background: radial-gradient(circle, #003366 0%, #001529 100%);
+        }
 
-.card{
-background:#102a52;
-padding:15px;
-border-radius:10px;
-margin-bottom:10px;
-}
+        .hero h1 {
+            font-size: 3rem;
+            color: var(--dourado);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            margin-bottom: 10px;
+        }
 
-.btn{
-background:#f7c600;
-color:black;
-padding:10px;
-border-radius:8px;
-display:inline-block;
-margin-top:10px;
-text-decoration:none;
-font-weight:bold;
-}
+        .btn-inscricao {
+            background-color: var(--dourado);
+            color: var(--azul-escuro);
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: 0.3s;
+        }
 
-.section-title{
-font-size:18px;
-margin:15px 0;
-font-weight:bold;
-}
+        .btn-inscricao:hover {
+            transform: scale(1.05);
+            background-color: #ffcc00;
+        }
 
-.match{
-background:#102a52;
-padding:12px;
-border-radius:8px;
-margin-bottom:8px;
-}
+        /* Container de Jogos/Tabelas */
+        .container {
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 20px;
+        }
 
-.footer{
-text-align:center;
-padding:20px;
-opacity:0.7;
-font-size:13px;
-}
-</style>
+        .tabela-jogos {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            overflow: hidden;
+        }
 
+        .tabela-jogos th {
+            background-color: var(--verde-goias);
+            padding: 15px;
+            text-align: left;
+        }
+
+        .tabela-jogos td {
+            padding: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Rodapé */
+        footer {
+            background-color: #000b1a;
+            padding: 40px 20px;
+            text-align: center;
+            margin-top: 50px;
+            border-top: 1px solid var(--azul-claro);
+        }
+    </style>
 </head>
 <body>
 
 <header>
-LIGA GOIANA DE FUTEBOL DE BASE
+    <nav>
+        <a href="#">Início</a>
+        <a href="#">Campeonatos</a>
+        <a href="#">Equipes</a>
+        <a href="#">Resultados</a>
+        <a href="#">Contato</a>
+    </nav>
 </header>
 
-<div class="menu">
-<a href="index.html">Campeonatos</a>
-<a href="tabela.html">Tabela</a>
-<a href="jogos.html">Jogos</a>
-<a href="artilharia.html">Artilharia</a>
-<a href="cartoes.html">Cartões</a>
-<a href="login.html">Login</a>
-</div>
+<section class="hero">
+    <h1>BEM-VINDO À LIGA ELITE GOIANA</h1>
+    <p>Onde o talento encontra o futuro</p>
+    <br>
+    <button class="btn-inscricao">INSCREVER AGORA</button>
+</section>
 
 <div class="container">
-
-<div class="section-title">Campeonatos</div>
-
-<div class="card">
-<h3>Copa União</h3>
-<p>Sub-11 até Sub-18</p>
-<a class="btn">Ver campeonato</a>
+    <h2 style="color: var(--verde-goias);">⚽ Próximos Jogos</h2>
+    <table class="tabela-jogos">
+        <thead>
+            <tr>
+                <th>Data/Hora</th>
+                <th>Partida</th>
+                <th>Local</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>12/04 - 20:30</td>
+                <td>Independência 0 x 0 B14</td>
+                <td>Campo Principal</td>
+            </tr>
+            <tr>
+                <td>18/04 - 15:00</td>
+                <td>AC Esporte x União</td>
+                <td>Estádio Regional</td>
+            </tr>
+        </tbody>
+    </table>
 </div>
 
-<div class="card">
-<h3>Liga Goiânia Elite</h3>
-<p>Sub-11 até Sub-18</p>
-<a class="btn">Ver campeonato</a>
-</div>
-
-<div class="section-title">Próximos Jogos</div>
-
-<div class="match">
-Sub-15<br>
-Atlético GO vs Vila Nova<br>
-10:00 - Campo 1
-</div>
-
-<div class="match">
-Sub-13<br>
-Campinas vs Hidrolândia<br>
-11:30 - Campo 2
-</div>
-
-<div class="section-title">Últimas Notícias</div>
-
-<div class="card">
-Início da Copa União confirmado para sábado.
-</div>
-
-</div>
-
-<div class="footer">
-LIGA GOIANA DE FUTEBOL DE BASE © 2026
-</div>
+<footer>
+    <p>&copy; 2026 Liga Goiana de Futebol de Base</p>
+    <p>Aparecida de Goiânia - GO</p>
+</footer>
 
 </body>
 </html>
