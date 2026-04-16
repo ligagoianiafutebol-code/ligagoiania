@@ -14,79 +14,157 @@
 }
 
 body {
-    margin: 0;
     font-family: Arial, sans-serif;
-    background-color: var(--azul-escuro);
+    margin: 0;
     color: var(--branco);
-
-    /* fundo com imagem + efeito escuro */
-    background-image: linear-gradient(rgba(0, 15, 41, 0.85), rgba(0, 11, 26, 0.95)), 
-    url('https://images.unsplash.com/photo-1522778119026-d647f0596c20?q=80&w=2070');
-
+    background-color: var(--azul-escuro);
+    background-image:
+        linear-gradient(rgba(0, 15, 41, 0.85), rgba(0, 11, 26, 0.95)),
+        url('https://images.unsplash.com/photo-1522778119026-d647f0596c20?q=80&w=2070');
     background-size: cover;
     background-position: center;
-    height: 100vh;
+    background-attachment: fixed;
+}
 
+header {
+    background: rgba(0, 21, 41, 0.92);
+    padding: 18px 10px;
+    text-align: center;
+    border-bottom: 3px solid var(--dourado);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    backdrop-filter: blur(4px);
+}
+
+header h2 {
+    margin: 0 0 12px 0;
+    color: var(--dourado);
+    font-size: 22px;
+    text-transform: uppercase;
+}
+
+nav {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+nav a {
+    color: var(--branco);
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 14px;
+    padding: 8px 10px;
+    border-radius: 6px;
+    transition: 0.3s;
+}
+
+nav a:hover {
+    background: rgba(255,255,255,0.08);
+    color: var(--dourado);
+}
+
+.hero {
+    min-height: calc(100vh - 120px);
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
+    padding: 30px 20px;
 }
 
-.container {
-    max-width: 600px;
+.hero-box {
+    max-width: 750px;
 }
 
-/* título */
-h1 {
-    font-size: 2.5rem;
+.hero h1 {
+    font-size: 3rem;
     color: var(--dourado);
     text-transform: uppercase;
-    margin-bottom: 10px;
+    margin: 0 0 15px 0;
+    text-shadow: 0 4px 10px rgba(0,0,0,0.8);
 }
 
-/* subtítulo */
-p {
-    font-size: 1.1rem;
-    color: #ddd;
+.hero p {
+    font-size: 1.2rem;
+    color: #e8e8e8;
     margin-bottom: 30px;
 }
 
-/* botão */
-button {
+.btn-principal {
     background: linear-gradient(to bottom, var(--dourado), #b8860b);
-    color: black;
-    padding: 16px 35px;
+    color: #000;
+    padding: 16px 38px;
     border: none;
     border-radius: 8px;
     font-weight: bold;
-    font-size: 16px;
+    font-size: 17px;
     cursor: pointer;
     transition: 0.3s;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.4);
 }
 
-button:hover {
+.btn-principal:hover {
     transform: translateY(-3px);
-    box-shadow: 0 10px 25px rgba(255, 215, 0, 0.4);
+    box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
+}
+
+@media (max-width: 700px) {
+    header h2 {
+        font-size: 18px;
+    }
+
+    nav a {
+        font-size: 13px;
+        padding: 6px 8px;
+    }
+
+    .hero h1 {
+        font-size: 2rem;
+    }
+
+    .hero p {
+        font-size: 1rem;
+    }
 }
 </style>
 </head>
-
 <body>
 
-<div class="container">
+<header>
+    <h2>Liga Goiana de Futebol de Base</h2>
 
-<h1>BEM-VINDO À LIGA GOIANA DE BASE</h1>
+    <nav>
+        <a href="index.html">Início</a>
+        <a href="campeonatos.html">Campeonatos</a>
+        <a href="categorias.html">Categorias</a>
+        <a href="times.html">Times</a>
+        <a href="jogadores.html">Jogadores</a>
+        <a href="tecnicos.html">Técnicos</a>
+        <a href="arbitros.html">Árbitros</a>
+        <a href="assistentes.html">Assistentes</a>
+        <a href="jogos-admin.html">Jogos</a>
+        <a href="sumulas.html">Súmulas</a>
+        <a href="tabela.html">Tabela</a>
+        <a href="noticias.html">Notícias</a>
+        <a href="configuracoes.html">Configurações</a>
+        <a href="login.html">Login</a>
+    </nav>
+</header>
 
-<p>Onde o talento encontra o futuro</p>
-
-<button onclick="entrar()">ENTRAR</button>
-
-</div>
+<section class="hero">
+    <div class="hero-box">
+        <h1>Bem-vindo à Liga Goiana de Base</h1>
+        <p>Onde o talento encontra o futuro</p>
+        <button class="btn-principal" onclick="entrar()">Entrar no Sistema</button>
+    </div>
+</section>
 
 <script>
 function entrar(){
-    window.location.href = "login.html"; // ou admin.html
+    window.location.href = "login.html";
 }
 </script>
 
