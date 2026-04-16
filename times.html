@@ -182,13 +182,58 @@ gap:6px;
 flex-wrap:wrap;
 }
 
-.actions a{
+.actions button{
 background:#1a3f73;
 padding:6px 10px;
 border-radius:6px;
 color:white;
-text-decoration:none;
+border:none;
 font-size:12px;
+margin:0;
+}
+
+.modal{
+display:none;
+position:fixed;
+inset:0;
+background:rgba(0,0,0,0.7);
+justify-content:center;
+align-items:center;
+padding:15px;
+z-index:999;
+}
+
+.modal-content{
+background:#102a52;
+padding:20px;
+border-radius:12px;
+max-width:420px;
+width:100%;
+text-align:center;
+}
+
+.modal-content img{
+width:90px;
+height:90px;
+border-radius:50%;
+object-fit:cover;
+border:2px solid #ffffff22;
+margin-bottom:10px;
+}
+
+.modal-colors{
+display:flex;
+justify-content:center;
+gap:8px;
+flex-wrap:wrap;
+margin-top:10px;
+}
+
+.modal-color{
+width:20px;
+height:20px;
+border-radius:4px;
+border:1px solid #ffffff55;
 }
 </style>
 </head>
@@ -210,7 +255,6 @@ font-size:12px;
   <div class="palette-box" id="paletaBox">
     <div class="color-grid">
 
-      <!-- Coluna 1: Vermelhos -->
       <div class="color-option" data-color="#ffd6d6" style="background:#ffd6d6"></div>
       <div class="color-option" data-color="#ffb3b3" style="background:#ffb3b3"></div>
       <div class="color-option" data-color="#ff8080" style="background:#ff8080"></div>
@@ -220,7 +264,6 @@ font-size:12px;
       <div class="color-option" data-color="#b30000" style="background:#b30000"></div>
       <div class="color-option" data-color="#800000" style="background:#800000"></div>
 
-      <!-- Coluna 2: Laranjas/Marrons -->
       <div class="color-option" data-color="#ffe0cc" style="background:#ffe0cc"></div>
       <div class="color-option" data-color="#ffc299" style="background:#ffc299"></div>
       <div class="color-option" data-color="#ff9966" style="background:#ff9966"></div>
@@ -230,7 +273,6 @@ font-size:12px;
       <div class="color-option" data-color="#8b4513" style="background:#8b4513"></div>
       <div class="color-option" data-color="#5c3317" style="background:#5c3317"></div>
 
-      <!-- Coluna 3: Amarelos/Dourados -->
       <div class="color-option" data-color="#fff7cc" style="background:#fff7cc"></div>
       <div class="color-option" data-color="#ffef99" style="background:#ffef99"></div>
       <div class="color-option" data-color="#ffe766" style="background:#ffe766"></div>
@@ -240,7 +282,6 @@ font-size:12px;
       <div class="color-option" data-color="#b8860b" style="background:#b8860b"></div>
       <div class="color-option" data-color="#8b6508" style="background:#8b6508"></div>
 
-      <!-- Coluna 4: Verdes Limão -->
       <div class="color-option" data-color="#f2ffd9" style="background:#f2ffd9"></div>
       <div class="color-option" data-color="#e5ffb3" style="background:#e5ffb3"></div>
       <div class="color-option" data-color="#d9ff80" style="background:#d9ff80"></div>
@@ -250,7 +291,6 @@ font-size:12px;
       <div class="color-option" data-color="#809900" style="background:#809900"></div>
       <div class="color-option" data-color="#667a00" style="background:#667a00"></div>
 
-      <!-- Coluna 5: Verdes -->
       <div class="color-option" data-color="#d9f2d9" style="background:#d9f2d9"></div>
       <div class="color-option" data-color="#b3e6b3" style="background:#b3e6b3"></div>
       <div class="color-option" data-color="#80d480" style="background:#80d480"></div>
@@ -260,7 +300,6 @@ font-size:12px;
       <div class="color-option" data-color="#006b33" style="background:#006b33"></div>
       <div class="color-option" data-color="#004d26" style="background:#004d26"></div>
 
-      <!-- Coluna 6: Cianos/Águas -->
       <div class="color-option" data-color="#d9ffff" style="background:#d9ffff"></div>
       <div class="color-option" data-color="#b3ffff" style="background:#b3ffff"></div>
       <div class="color-option" data-color="#80ffff" style="background:#80ffff"></div>
@@ -270,7 +309,6 @@ font-size:12px;
       <div class="color-option" data-color="#008b8b" style="background:#008b8b"></div>
       <div class="color-option" data-color="#006666" style="background:#006666"></div>
 
-      <!-- Coluna 7: Azuis Claros -->
       <div class="color-option" data-color="#d9ecff" style="background:#d9ecff"></div>
       <div class="color-option" data-color="#b3d9ff" style="background:#b3d9ff"></div>
       <div class="color-option" data-color="#80c1ff" style="background:#80c1ff"></div>
@@ -280,7 +318,6 @@ font-size:12px;
       <div class="color-option" data-color="#0073e6" style="background:#0073e6"></div>
       <div class="color-option" data-color="#0059b3" style="background:#0059b3"></div>
 
-      <!-- Coluna 8: Azuis Médios -->
       <div class="color-option" data-color="#ccd9ff" style="background:#ccd9ff"></div>
       <div class="color-option" data-color="#99b3ff" style="background:#99b3ff"></div>
       <div class="color-option" data-color="#668cff" style="background:#668cff"></div>
@@ -290,7 +327,6 @@ font-size:12px;
       <div class="color-option" data-color="#003380" style="background:#003380"></div>
       <div class="color-option" data-color="#002966" style="background:#002966"></div>
 
-      <!-- Coluna 9: Azuis Escuros -->
       <div class="color-option" data-color="#cfd8e6" style="background:#cfd8e6"></div>
       <div class="color-option" data-color="#9fb3cc" style="background:#9fb3cc"></div>
       <div class="color-option" data-color="#6f8fb3" style="background:#6f8fb3"></div>
@@ -300,7 +336,6 @@ font-size:12px;
       <div class="color-option" data-color="#0b1f3a" style="background:#0b1f3a"></div>
       <div class="color-option" data-color="#08172c" style="background:#08172c"></div>
 
-      <!-- Coluna 10: Roxos/Violetas -->
       <div class="color-option" data-color="#efe0ff" style="background:#efe0ff"></div>
       <div class="color-option" data-color="#dcc2ff" style="background:#dcc2ff"></div>
       <div class="color-option" data-color="#c299ff" style="background:#c299ff"></div>
@@ -310,7 +345,6 @@ font-size:12px;
       <div class="color-option" data-color="#5200a3" style="background:#5200a3"></div>
       <div class="color-option" data-color="#3b007a" style="background:#3b007a"></div>
 
-      <!-- Coluna 11: Magentas -->
       <div class="color-option" data-color="#ffd9f2" style="background:#ffd9f2"></div>
       <div class="color-option" data-color="#ffb3e6" style="background:#ffb3e6"></div>
       <div class="color-option" data-color="#ff80d5" style="background:#ff80d5"></div>
@@ -320,7 +354,6 @@ font-size:12px;
       <div class="color-option" data-color="#990066" style="background:#990066"></div>
       <div class="color-option" data-color="#660044" style="background:#660044"></div>
 
-      <!-- Coluna 12: Cinzas/Preto -->
       <div class="color-option" data-color="#ffffff" style="background:#ffffff"></div>
       <div class="color-option" data-color="#eeeeee" style="background:#eeeeee"></div>
       <div class="color-option" data-color="#d9d9d9" style="background:#d9d9d9"></div>
@@ -335,7 +368,7 @@ font-size:12px;
 
   <div id="coresSelecionadas"></div>
 
-  <button onclick="salvarTime()">Salvar Time</button>
+  <button id="botaoSalvar" onclick="salvarTime()">Salvar Time</button>
 </div>
 
 <div class="lista-grid" id="listaTimes"></div>
@@ -344,9 +377,13 @@ font-size:12px;
 
 </div>
 
+<div class="modal" id="modalVer">
+  <div class="modal-content" id="modalConteudo"></div>
+</div>
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-firestore.js";
+import { getFirestore, collection, addDoc, getDocs, doc, updateDoc } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-firestore.js";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-storage.js";
 
 const firebaseConfig = {
@@ -363,6 +400,8 @@ const db = getFirestore(app);
 const storage = getStorage(app);
 
 let coresEscolhidas = [];
+let editandoId = null;
+let escudoAtual = "";
 
 window.toggleFormulario = function(){
   const f = document.getElementById("formulario");
@@ -414,29 +453,96 @@ window.salvarTime = async function(){
   const nome = document.getElementById("nomeTime").value.trim();
   const file = document.getElementById("escudo").files[0];
 
-  if(!nome || !file || coresEscolhidas.length === 0){
-    alert("Preencha nome, escudo e escolha pelo menos 1 cor");
+  if(!nome || coresEscolhidas.length === 0){
+    alert("Preencha nome e escolha pelo menos 1 cor");
     return;
   }
 
-  const refStorage = ref(storage, "escudos/" + Date.now() + "-" + file.name);
-  await uploadBytes(refStorage, file);
-  const url = await getDownloadURL(refStorage);
+  let urlEscudo = escudoAtual;
 
-  await addDoc(collection(db, "times"), {
-    nome: nome,
-    escudo: url,
-    cores: coresEscolhidas
-  });
+  if (file) {
+    const refStorage = ref(storage, "escudos/" + Date.now() + "-" + file.name);
+    await uploadBytes(refStorage, file);
+    urlEscudo = await getDownloadURL(refStorage);
+  }
 
-  alert("Time salvo com sucesso!");
+  if (!urlEscudo) {
+    alert("Escolha o escudo do time");
+    return;
+  }
 
+  if (editandoId) {
+    await updateDoc(doc(db, "times", editandoId), {
+      nome: nome,
+      escudo: urlEscudo,
+      cores: coresEscolhidas
+    });
+    alert("Time atualizado com sucesso!");
+  } else {
+    await addDoc(collection(db, "times"), {
+      nome: nome,
+      escudo: urlEscudo,
+      cores: coresEscolhidas
+    });
+    alert("Time salvo com sucesso!");
+  }
+
+  limparFormulario();
+  carregarTimes();
+}
+
+function limparFormulario() {
   document.getElementById("nomeTime").value = "";
   document.getElementById("escudo").value = "";
+  document.getElementById("botaoSalvar").textContent = "Salvar Time";
   coresEscolhidas = [];
+  escudoAtual = "";
+  editandoId = null;
   document.querySelectorAll(".color-option").forEach(op => op.classList.remove("selected"));
   atualizarCores();
-  carregarTimes();
+}
+
+window.editarTime = async function(id) {
+  const snap = await getDocs(collection(db, "times"));
+  snap.forEach((item) => {
+    if (item.id === id) {
+      const t = item.data();
+      document.getElementById("nomeTime").value = t.nome || "";
+      escudoAtual = t.escudo || "";
+      coresEscolhidas = Array.isArray(t.cores) ? [...t.cores] : [];
+      editandoId = id;
+
+      document.querySelectorAll(".color-option").forEach(op => {
+        op.classList.remove("selected");
+        if (coresEscolhidas.includes(op.dataset.color)) {
+          op.classList.add("selected");
+        }
+      });
+
+      atualizarCores();
+      document.getElementById("formulario").style.display = "block";
+      document.getElementById("botaoSalvar").textContent = "Atualizar Time";
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  });
+}
+
+window.verTime = function(nome, escudo, cores) {
+  const listaCores = (cores || []).map(c => `<div class="modal-color" style="background:${c}"></div>`).join("");
+
+  document.getElementById("modalConteudo").innerHTML = `
+    <img src="${escudo}">
+    <h2 style="margin:10px 0;">${nome}</h2>
+    <div style="opacity:.85;">Cores do time</div>
+    <div class="modal-colors">${listaCores}</div>
+    <button onclick="fecharModal()" style="margin-top:15px;">Fechar</button>
+  `;
+
+  document.getElementById("modalVer").style.display = "flex";
+}
+
+window.fecharModal = function() {
+  document.getElementById("modalVer").style.display = "none";
 }
 
 async function carregarTimes(){
@@ -445,12 +551,13 @@ async function carregarTimes(){
 
   let times = [];
   const snap = await getDocs(collection(db, "times"));
-  snap.forEach(doc => times.push(doc.data()));
+  snap.forEach(docSnap => times.push({ id: docSnap.id, ...docSnap.data() }));
 
   times.sort((a, b) => a.nome.localeCompare(b.nome, 'pt-BR'));
 
   times.forEach(t => {
     const cores = (t.cores || []).map(c => `<div class="time-color" style="background:${c}"></div>`).join("");
+    const coresJson = JSON.stringify(t.cores || []).replace(/"/g, '&quot;');
 
     lista.innerHTML += `
       <div class="card">
@@ -462,11 +569,10 @@ async function carregarTimes(){
           </div>
         </div>
         <div class="actions">
-          <a>Editar</a>
-          <a>Ver</a>
+          <button onclick="editarTime('${t.id}')">Editar</button>
+          <button onclick="verTime('${t.nome.replace(/'/g, "\\'")}', '${t.escudo}', ${coresJson})">Ver</button>
         </div>
-      </div>
-    `;
+      </div>`;
   });
 }
 
