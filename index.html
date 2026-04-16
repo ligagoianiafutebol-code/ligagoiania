@@ -7,16 +7,17 @@
 
   <style>
     :root{
-      --azul-escuro:#04142c;
-      --azul-medio:#0a2f66;
-      --azul-card:rgba(7, 26, 56, 0.92);
-      --dourado:#f0c24b;
-      --dourado-escuro:#b88417;
+      --azul-escuro:#020f26;
+      --azul-medio:#0d47a1;
+      --azul-card:rgba(5, 28, 70, 0.95);
+      --dourado:#FFD700;
+      --dourado-brilho:#fff27a;
+      --dourado-escuro:#caa000;
       --branco:#ffffff;
-      --cinza:#d7dce5;
-      --verde:#17853b;
-      --borda:rgba(240, 194, 75, 0.25);
-      --sombra:0 10px 30px rgba(0,0,0,0.35);
+      --cinza:#e6ecf5;
+      --verde:#00ff88;
+      --borda:rgba(255, 215, 0, 0.4);
+      --sombra:0 12px 30px rgba(0,0,0,0.35);
     }
 
     *{
@@ -32,10 +33,10 @@
       font-family:Arial, sans-serif;
       color:var(--branco);
       background:
-        linear-gradient(rgba(3,14,30,0.90), rgba(3,14,30,0.95)),
+        linear-gradient(rgba(2,10,25,0.85), rgba(2,10,25,0.95)),
         url("hero-liga.png");
       background-size:cover;
-      background-position:center top;
+      background-position:center;
       background-attachment:fixed;
     }
 
@@ -45,7 +46,7 @@
       z-index:1000;
       background:rgba(2, 15, 36, 0.95);
       backdrop-filter:blur(6px);
-      border-bottom:2px solid rgba(240, 194, 75, 0.35);
+      border-bottom:2px solid rgba(255,215,0,0.35);
       box-shadow:0 4px 15px rgba(0,0,0,0.25);
     }
 
@@ -73,7 +74,7 @@
       object-fit:contain;
       border-radius:12px;
       background:rgba(255,255,255,0.03);
-      box-shadow:0 0 18px rgba(240,194,75,0.12);
+      box-shadow:0 0 18px rgba(255,215,0,0.18);
     }
 
     .brand-text{
@@ -121,14 +122,14 @@
 
     .btn-topo{
       border:none;
-      background:linear-gradient(to bottom, #ffd958, var(--dourado-escuro));
+      background:linear-gradient(45deg, var(--dourado), var(--dourado-brilho));
       color:#111;
       font-weight:bold;
       text-transform:uppercase;
       border-radius:10px;
       padding:13px 18px;
       cursor:pointer;
-      box-shadow:0 8px 20px rgba(0,0,0,0.25);
+      box-shadow:0 0 20px rgba(255,215,0,0.45);
       transition:0.25s;
     }
 
@@ -175,7 +176,10 @@
       text-transform:uppercase;
       font-size:58px;
       line-height:0.95;
-      text-shadow:0 3px 10px rgba(0,0,0,0.6);
+      text-shadow:
+        0 0 10px rgba(255,215,0,0.6),
+        0 0 20px rgba(255,215,0,0.4),
+        0 4px 10px rgba(0,0,0,0.8);
     }
 
     .hero-texto p{
@@ -205,9 +209,9 @@
     }
 
     .btn-principal{
-      background:linear-gradient(to bottom, #ffd958, var(--dourado-escuro));
+      background:linear-gradient(45deg, #FFD700, #fff27a);
       color:#111;
-      box-shadow:0 8px 22px rgba(0,0,0,0.25);
+      box-shadow:0 0 20px rgba(255,215,0,0.6);
     }
 
     .btn-secundario{
@@ -225,7 +229,7 @@
       max-width:480px;
       border-radius:24px;
       box-shadow:0 18px 40px rgba(0,0,0,0.35);
-      border:1px solid rgba(240,194,75,0.25);
+      border:1px solid rgba(255,215,0,0.25);
     }
 
     .section{
@@ -240,6 +244,7 @@
       font-size:28px;
       text-transform:uppercase;
       text-align:center;
+      text-shadow:0 0 12px rgba(255,215,0,0.18);
     }
 
     .destaques{
@@ -249,8 +254,8 @@
     }
 
     .destaque{
-      background:var(--azul-card);
-      border:1px solid var(--borda);
+      background:linear-gradient(180deg, rgba(5,30,80,0.95), rgba(3,18,45,0.95));
+      border:1px solid rgba(255,215,0,0.35);
       border-radius:18px;
       padding:22px 16px;
       text-align:center;
@@ -284,8 +289,8 @@
     }
 
     .bloco{
-      background:var(--azul-card);
-      border:1px solid var(--borda);
+      background:linear-gradient(180deg, rgba(5,30,80,0.95), rgba(3,18,45,0.95));
+      border:1px solid rgba(255,215,0,0.35);
       border-radius:22px;
       padding:24px;
       text-align:center;
@@ -297,7 +302,7 @@
       height:120px;
       object-fit:contain;
       margin-bottom:14px;
-      filter:drop-shadow(0 0 12px rgba(240,194,75,0.15));
+      filter:drop-shadow(0 0 12px rgba(255,194,75,0.18));
     }
 
     .bloco h3{
@@ -321,8 +326,8 @@
     }
 
     .card{
-      background:var(--azul-card);
-      border:1px solid var(--borda);
+      background:linear-gradient(180deg, rgba(5,30,80,0.95), rgba(3,18,45,0.95));
+      border:1px solid rgba(255,215,0,0.35);
       border-radius:20px;
       padding:20px;
       box-shadow:var(--sombra);
@@ -342,8 +347,8 @@
     }
 
     .jogos-tabela th{
-      background:rgba(18,133,59,0.85);
-      color:#edffef;
+      background:linear-gradient(90deg, #00c853, #00ff88);
+      color:#001a0f;
       padding:12px 8px;
       font-size:13px;
       text-transform:uppercase;
@@ -354,7 +359,7 @@
       text-align:center;
       border-top:1px solid rgba(255,255,255,0.08);
       font-size:14px;
-      color:#e9edf4;
+      color:#eafff3;
     }
 
     .jogos-tabela tr:hover{
@@ -388,7 +393,7 @@
     }
 
     .cta-box{
-      background:linear-gradient(180deg, rgba(10,47,102,0.92), rgba(4,20,44,0.96));
+      background:linear-gradient(180deg, rgba(13,71,161,0.92), rgba(4,20,44,0.96));
       border:1px solid var(--borda);
       border-radius:22px;
       padding:30px 22px;
@@ -411,7 +416,7 @@
     footer{
       margin-top:28px;
       background:rgba(2, 15, 36, 0.97);
-      border-top:2px solid rgba(240,194,75,0.3);
+      border-top:2px solid rgba(255,215,0,0.3);
     }
 
     .footer-wrap{
@@ -610,7 +615,7 @@
 
       <div class="bloco">
         <img src="copa-uniao.png" alt="Copa União de Base">
-        <h3>Copa União de Base</h3>
+        <h3>Copa União</h3>
         <p>Uma das principais competições da nossa estrutura, reunindo categorias e grandes confrontos.</p>
       </div>
     </div>
