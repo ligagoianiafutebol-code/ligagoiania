@@ -110,15 +110,15 @@ margin-bottom:14px;
 
 .color-grid{
 display:grid;
-grid-template-columns:repeat(5, 44px);
-gap:10px;
+grid-template-columns:repeat(10, 28px);
+gap:6px;
 }
 
 .color-option{
-width:44px;
-height:44px;
-border-radius:8px;
-border:3px solid transparent;
+width:28px;
+height:28px;
+border-radius:4px;
+border:2px solid transparent;
 cursor:pointer;
 box-sizing:border-box;
 }
@@ -177,7 +177,6 @@ border:1px solid #ffffff55;
     <div class="color-option" data-color="#f7c600" style="background:#f7c600"></div>
     <div class="color-option" data-color="#ff0000" style="background:#ff0000"></div>
     <div class="color-option" data-color="#002bff" style="background:#002bff"></div>
-
     <div class="color-option" data-color="#00a651" style="background:#00a651"></div>
     <div class="color-option" data-color="#ff7a00" style="background:#ff7a00"></div>
     <div class="color-option" data-color="#8000ff" style="background:#8000ff"></div>
@@ -189,16 +188,59 @@ border:1px solid #ffffff55;
     <div class="color-option" data-color="#001f3f" style="background:#001f3f"></div>
     <div class="color-option" data-color="#39cccc" style="background:#39cccc"></div>
     <div class="color-option" data-color="#2ecc40" style="background:#2ecc40"></div>
-
     <div class="color-option" data-color="#ffdc00" style="background:#ffdc00"></div>
     <div class="color-option" data-color="#ff851b" style="background:#ff851b"></div>
     <div class="color-option" data-color="#85144b" style="background:#85144b"></div>
     <div class="color-option" data-color="#7fdbff" style="background:#7fdbff"></div>
     <div class="color-option" data-color="#b10dc9" style="background:#b10dc9"></div>
+
+    <div class="color-option" data-color="#f4cccc" style="background:#f4cccc"></div>
+    <div class="color-option" data-color="#fce5cd" style="background:#fce5cd"></div>
+    <div class="color-option" data-color="#fff2cc" style="background:#fff2cc"></div>
+    <div class="color-option" data-color="#d9ead3" style="background:#d9ead3"></div>
+    <div class="color-option" data-color="#d0e0e3" style="background:#d0e0e3"></div>
+    <div class="color-option" data-color="#cfe2f3" style="background:#cfe2f3"></div>
+    <div class="color-option" data-color="#d9d2e9" style="background:#d9d2e9"></div>
+    <div class="color-option" data-color="#ead1dc" style="background:#ead1dc"></div>
+    <div class="color-option" data-color="#ea9999" style="background:#ea9999"></div>
+    <div class="color-option" data-color="#f9cb9c" style="background:#f9cb9c"></div>
+
+    <div class="color-option" data-color="#ffe599" style="background:#ffe599"></div>
+    <div class="color-option" data-color="#b6d7a8" style="background:#b6d7a8"></div>
+    <div class="color-option" data-color="#a2c4c9" style="background:#a2c4c9"></div>
+    <div class="color-option" data-color="#9fc5e8" style="background:#9fc5e8"></div>
+    <div class="color-option" data-color="#b4a7d6" style="background:#b4a7d6"></div>
+    <div class="color-option" data-color="#d5a6bd" style="background:#d5a6bd"></div>
+    <div class="color-option" data-color="#e06666" style="background:#e06666"></div>
+    <div class="color-option" data-color="#f6b26b" style="background:#f6b26b"></div>
+    <div class="color-option" data-color="#ffd966" style="background:#ffd966"></div>
+    <div class="color-option" data-color="#93c47d" style="background:#93c47d"></div>
+
+    <div class="color-option" data-color="#76a5af" style="background:#76a5af"></div>
+    <div class="color-option" data-color="#6fa8dc" style="background:#6fa8dc"></div>
+    <div class="color-option" data-color="#8e7cc3" style="background:#8e7cc3"></div>
+    <div class="color-option" data-color="#c27ba0" style="background:#c27ba0"></div>
+    <div class="color-option" data-color="#cc0000" style="background:#cc0000"></div>
+    <div class="color-option" data-color="#e69138" style="background:#e69138"></div>
+    <div class="color-option" data-color="#f1c232" style="background:#f1c232"></div>
+    <div class="color-option" data-color="#6aa84f" style="background:#6aa84f"></div>
+    <div class="color-option" data-color="#45818e" style="background:#45818e"></div>
+    <div class="color-option" data-color="#3d85c6" style="background:#3d85c6"></div>
+
+    <div class="color-option" data-color="#674ea7" style="background:#674ea7"></div>
+    <div class="color-option" data-color="#a64d79" style="background:#a64d79"></div>
+    <div class="color-option" data-color="#990000" style="background:#990000"></div>
+    <div class="color-option" data-color="#b45f06" style="background:#b45f06"></div>
+    <div class="color-option" data-color="#bf9000" style="background:#bf9000"></div>
+    <div class="color-option" data-color="#38761d" style="background:#38761d"></div>
+    <div class="color-option" data-color="#134f5c" style="background:#134f5c"></div>
+    <div class="color-option" data-color="#0b5394" style="background:#0b5394"></div>
+    <div class="color-option" data-color="#351c75" style="background:#351c75"></div>
+    <div class="color-option" data-color="#741b47" style="background:#741b47"></div>
   </div>
 </div>
 
-<div class="section-title">Cores escolhidas</div>
+<div class="section-title">Cores escolhidas (clique para remover)</div>
 <div id="coresSelecionadas"></div>
 
 <button onclick="salvarTime()">Salvar Time</button>
@@ -234,8 +276,25 @@ function atualizarCoresSelecionadas() {
   box.innerHTML = "";
 
   coresEscolhidas.forEach((cor) => {
-    box.innerHTML += `<div class="selected-color" style="background:${cor}"></div>`;
+    box.innerHTML += `
+      <div class="selected-color"
+           style="background:${cor}; cursor:pointer;"
+           onclick="removerCor('${cor}')">
+      </div>
+    `;
   });
+}
+
+window.removerCor = function(cor) {
+  coresEscolhidas = coresEscolhidas.filter(c => c !== cor);
+
+  document.querySelectorAll(".color-option").forEach(op => {
+    if (op.dataset.color === cor) {
+      op.classList.remove("selected");
+    }
+  });
+
+  atualizarCoresSelecionadas();
 }
 
 function configurarPaleta() {
