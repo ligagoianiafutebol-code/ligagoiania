@@ -342,17 +342,27 @@
       margin-bottom:12px;
     }
 
-    .hero-texto h1{
-      margin:0;
-      color:var(--dourado);
-      text-transform:uppercase;
-      font-size:58px;
-      line-height:0.95;
-      text-shadow:
-        0 0 10px rgba(255,215,0,0.6),
-        0 0 20px rgba(255,215,0,0.4),
-        0 4px 10px rgba(0,0,0,0.8);
-    }
+.hero-texto h1{
+  margin:0;
+  font-size:58px;
+  text-transform:uppercase;
+
+  background:linear-gradient(
+    45deg,
+    #b8860b,   /* ouro escuro */
+    #ffd700,   /* ouro padrão */
+    #fff8dc,   /* brilho */
+    #ffd700,
+    #b8860b
+  );
+
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+
+  text-shadow:
+    0 2px 4px rgba(0,0,0,0.8),
+    0 0 10px rgba(255,215,0,0.4);
+}
 
     .hero-texto p{
       margin:18px 0 0;
