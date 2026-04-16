@@ -108,6 +108,7 @@ background:#102a52;
 padding:12px;
 border-radius:10px;
 margin-bottom:14px;
+overflow-x:auto;
 }
 
 .palette-label{
@@ -118,8 +119,9 @@ opacity:.9;
 
 .color-grid{
 display:grid;
-grid-template-columns:repeat(12, 26px);
-grid-auto-rows:26px;
+grid-auto-flow:column;
+grid-template-rows:repeat(8, 26px);
+grid-auto-columns:26px;
 gap:6px;
 justify-content:start;
 }
