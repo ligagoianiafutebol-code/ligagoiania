@@ -1,103 +1,120 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Liga Goiana de Futebol de Base - Login</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Liga Goiana</title>
 
-<style>
-body{
-font-family:Arial;
-margin:0;
-background:#0b1f3a;
-color:white;
-display:flex;
-justify-content:center;
-align-items:center;
-min-height:100vh;
-}
-.box{
-background:#102a52;
-padding:25px;
-border-radius:12px;
-width:90%;
-max-width:360px;
-}
-h1{text-align:center;font-size:22px;margin-bottom:20px;}
-input, select{
-width:100%;
-padding:12px;
-margin-bottom:12px;
-border:none;
-border-radius:8px;
-font-size:14px;
-box-sizing:border-box;
-}
-button{
-width:100%;
-padding:12px;
-background:#f7c600;
-color:black;
-font-weight:bold;
-border:none;
-border-radius:8px;
-font-size:15px;
-cursor:pointer;
-}
-</style>
+  <style>
+    body{
+      margin:0;
+      font-family:Arial, sans-serif;
+      background:linear-gradient(rgba(2,10,25,.75), rgba(2,10,25,.9)), url("fundo.png");
+      background-size:cover;
+      background-position:center;
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:white;
+    }
+
+    .box{
+      width:100%;
+      max-width:420px;
+      background:rgba(3,16,34,.92);
+      border:1px solid rgba(255,230,0,.18);
+      border-radius:18px;
+      padding:28px;
+      box-shadow:0 12px 28px rgba(0,0,0,.35);
+    }
+
+    h1{
+      margin:0 0 8px;
+      color:#ffe600;
+      text-align:center;
+      text-transform:uppercase;
+      font-size:28px;
+    }
+
+    p{
+      margin:0 0 20px;
+      text-align:center;
+      color:#dbe3ee;
+    }
+
+    label{
+      display:block;
+      margin:12px 0 6px;
+      font-weight:bold;
+    }
+
+    input{
+      width:100%;
+      padding:12px;
+      border:none;
+      border-radius:10px;
+      box-sizing:border-box;
+      font-size:14px;
+    }
+
+    button{
+      width:100%;
+      margin-top:18px;
+      padding:13px;
+      border:none;
+      border-radius:10px;
+      background:linear-gradient(to bottom, #fff04d, #ffd000);
+      color:#111;
+      font-weight:800;
+      font-size:15px;
+      cursor:pointer;
+    }
+
+    .voltar{
+      display:block;
+      margin-top:14px;
+      text-align:center;
+      color:#ffe600;
+      font-weight:bold;
+      text-decoration:none;
+    }
+  </style>
 </head>
-
 <body>
 
-<div class="box">
-<h1>Login Liga Goiana</h1>
+  <div class="box">
+    <h1>Login</h1>
+    <p>Entre para acessar o sistema</p>
 
-<select>
-<option>Administrador</option>
-<option>Técnico</option>
-<option>Árbitro</option>
-<option>Assistente</option>
-</select>
+    <label>Email</label>
+    <input type="email" id="email" placeholder="Digite seu email">
 
-<input id="email" type="email" placeholder="Seu email">
-<input id="senha" type="password" placeholder="Sua senha">
+    <label>Senha</label>
+    <input type="password" id="senha" placeholder="Digite sua senha">
 
-<button onclick="login()">Entrar</button>
+    <button onclick="login()">Entrar</button>
 
-</div>
+    <a href="index.html" class="voltar">← Voltar para o site</a>
+  </div>
 
-<script type="module">
+  <script type="module">
+    import { auth } from "./firebase.js";
+    import { signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-auth.js";
+    window.login = async function(){
+      const email = document.getElementById("email").value;
+      const senha = document.getElementById("senha").value;
 
-const firebaseConfig = {
-  apiKey: "AIzaSyCyArj4yRlEl-yibkc0VEmL_4UJpRHHQSc",
-  authDomain: "liga-goiana-base.firebaseapp.com",
-  projectId: "liga-goiana-base",
-  storageBucket: "liga-goiana-base.firebasestorage.app",
-  messagingSenderId: "952863591183",
-  appId: "1:952863591183:web:4eea34f494ba2dd754cc7a"
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-
-window.login = function() {
-  const email = document.getElementById("email").value;
-  const senha = document.getElementById("senha").value;
-
-  signInWithEmailAndPassword(auth, email, senha)
-    .then(() => {
-      alert("Login realizado com sucesso");
-      window.location.href = "admin.html";
-    })
-    .catch((error) => {
-      alert("Erro: " + error.message);
-    });
-}
-
-</script>
+      try{
+        await signInWithEmailAndPassword(auth, email, senha);
+        alert("Login realizado com sucesso!");
+        window.location.href = "index.html";
+      }catch(e){
+        alert("Erro ao entrar: " + e.message);
+      }
+    }
+  </script>
 
 </body>
 </html>
