@@ -1,141 +1,141 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Liga Elite Goiana</title>
-    <style>
-        :root {
-            --azul-escuro: #000b1a;
-            --dourado: #FFD700;
-            --verde: #00c853;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LIGA GOIANA DE FUTEBOL DE BASE</title>
 
-        body {
-            margin: 0;
-            font-family: 'Arial', sans-serif;
-            background: var(--azul-escuro);
-            color: white;
-            /* Imagem de estádio ao fundo para dar o clima */
-            background-image: linear-gradient(rgba(0, 11, 26, 0.8), rgba(0, 11, 26, 0.9)), url('https://images.unsplash.com/photo-1508098682722-e99c43a406b2?q=80&w=2070');
-            background-size: cover;
-            background-attachment: fixed;
-            background-position: center;
-        }
+<style>
+body{
+font-family: Arial;
+margin:0;
+background:#0b1f3a;
+color:white;
+}
 
-        header {
-            padding: 20px;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(10px);
-            border-bottom: 2px solid var(--dourado);
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-        }
+header{
+background:#0b1f3a;
+padding:15px;
+text-align:center;
+font-size:22px;
+font-weight:bold;
+border-bottom:3px solid #f7c600;
+}
 
-        header a { color: white; text-decoration: none; font-weight: bold; font-size: 14px; text-transform: uppercase; }
-        header a:hover { color: var(--dourado); }
+.menu{
+display:flex;
+justify-content:space-around;
+background:#102a52;
+padding:12px;
+flex-wrap:wrap;
+}
 
-        .hero {
-            text-align: center;
-            padding: 80px 20px;
-        }
+.menu a{
+color:white;
+text-decoration:none;
+font-weight:bold;
+font-size:14px;
+}
 
-        /* Espaço para o seu Escudo */
-        .escudo-principal {
-            width: 180px;
-            filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.5));
-            margin-bottom: 20px;
-        }
+.container{
+padding:15px;
+}
 
-        .hero h1 {
-            font-size: 45px;
-            margin: 0;
-            background: linear-gradient(to bottom, #fff, var(--dourado));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
+.card{
+background:#102a52;
+padding:15px;
+border-radius:10px;
+margin-bottom:10px;
+}
 
-        .btn-gold {
-            background: linear-gradient(to bottom, #FFD700, #b8860b);
-            border: none;
-            padding: 15px 40px;
-            border-radius: 5px;
-            font-weight: bold;
-            color: black;
-            font-size: 18px;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-            transition: 0.3s;
-        }
+.btn{
+background:#f7c600;
+color:black;
+padding:10px;
+border-radius:8px;
+display:inline-block;
+margin-top:10px;
+text-decoration:none;
+font-weight:bold;
+}
 
-        .btn-gold:hover { transform: scale(1.1); box-shadow: 0 0 20px var(--dourado); }
+.section-title{
+font-size:18px;
+margin:15px 0;
+font-weight:bold;
+}
 
-        .container { max-width: 900px; margin: auto; padding: 20px; }
+.match{
+background:#102a52;
+padding:12px;
+border-radius:8px;
+margin-bottom:8px;
+}
 
-        /* Tabela Estilo Elite */
-        .tabela-container {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(15px);
-            border-radius: 15px;
-            border: 1px solid rgba(255, 215, 0, 0.3);
-            overflow: hidden;
-            margin-top: 30px;
-        }
+.footer{
+text-align:center;
+padding:20px;
+opacity:0.7;
+font-size:13px;
+}
+</style>
 
-        table { width: 100%; border-collapse: collapse; }
-        th { background: var(--verde); padding: 15px; text-transform: uppercase; font-size: 12px; }
-        td { padding: 15px; text-align: center; border-bottom: 1px dotted rgba(255,255,255,0.1); }
-        
-        .ao-vivo { color: var(--verde); font-weight: bold; animation: pisca 1s infinite; }
-        @keyframes pisca { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
-
-    </style>
 </head>
 <body>
 
 <header>
-    <a href="#">Início</a>
-    <a href="#">Campeonatos</a>
-    <a href="#">Resultados</a>
-    <a href="#">Equipes</a>
+LIGA GOIANA DE FUTEBOL DE BASE
 </header>
 
-<section class="hero">
-    <img src="logo-elite.png" alt="Logo Liga Elite" class="escudo-principal">
-    
-    <h1>Liga Elite Goiana</h1>
-    <p style="color: var(--dourado); letter-spacing: 3px;">ONDE O TALENTO ENCONTRA O FUTURO</p>
-    <br>
-    <button class="btn-gold">INSCREVER AGORA</button>
-</section>
+<div class="menu">
+<a href="index.html">Campeonatos</a>
+<a href="tabela.html">Tabela</a>
+<a href="jogos.html">Jogos</a>
+<a href="artilharia.html">Artilharia</a>
+<a href="cartoes.html">Cartões</a>
+<a href="login.html">Login</a>
+</div>
 
 <div class="container">
-    <div class="tabela-container">
-        <table>
-            <thead>
-                <tr>
-                    <th>Data/Hora</th>
-                    <th>Partida</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>16/04 - 19:30</td>
-                    <td>Independência 1 x 0 AC Esporte</td>
-                    <td class="ao-vivo">● AO VIVO</td>
-                </tr>
-                <tr>
-                    <td>17/04 - 09:00</td>
-                    <td>B14 x União</td>
-                    <td>Aguardando</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+
+<div class="section-title">Campeonatos</div>
+
+<div class="card">
+<h3>Copa União</h3>
+<p>Sub-11 até Sub-18</p>
+<a class="btn">Ver campeonato</a>
+</div>
+
+<div class="card">
+<h3>Liga Goiânia Elite</h3>
+<p>Sub-11 até Sub-18</p>
+<a class="btn">Ver campeonato</a>
+</div>
+
+<div class="section-title">Próximos Jogos</div>
+
+<div class="match">
+Sub-15<br>
+Atlético GO vs Vila Nova<br>
+10:00 - Campo 1
+</div>
+
+<div class="match">
+Sub-13<br>
+Campinas vs Hidrolândia<br>
+11:30 - Campo 2
+</div>
+
+<div class="section-title">Últimas Notícias</div>
+
+<div class="card">
+Início da Copa União confirmado para sábado.
+</div>
+
+</div>
+
+<div class="footer">
+LIGA GOIANA DE FUTEBOL DE BASE © 2026
 </div>
 
 </body>
