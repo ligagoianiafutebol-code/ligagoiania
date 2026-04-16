@@ -87,6 +87,44 @@ color:#f7c600;
 text-decoration:none;
 font-weight:bold;
 }
+
+.preview{
+width:36px;
+height:36px;
+border-radius:50%;
+object-fit:cover;
+border:2px solid #ffffff22;
+}
+
+.color-row{
+display:flex;
+gap:10px;
+margin-bottom:12px;
+}
+
+.color-box{
+flex:1;
+}
+
+.color-box label{
+display:block;
+font-size:13px;
+margin-bottom:6px;
+}
+
+input[type="color"]{
+height:45px;
+padding:4px;
+}
+
+input[type="file"]{
+background:#fff;
+color:#000;
+}
+
+.nome-time{
+font-weight:bold;
+}
 </style>
 
 </head>
@@ -97,6 +135,20 @@ font-weight:bold;
 <div class="container">
 
 <input id="nomeTime" placeholder="Nome do time">
+<input id="escudo" type="file" accept="image/*">
+
+<div class="color-row">
+  <div class="color-box">
+    <label for="cor1">Cor principal</label>
+    <input id="cor1" type="color" value="#f7c600">
+  </div>
+
+  <div class="color-box">
+    <label for="cor2">Cor secundária</label>
+    <input id="cor2" type="color" value="#102a52">
+  </div>
+</div>
+
 <button onclick="salvarTime()">Salvar Time</button>
 
 <div id="listaTimes"></div>
@@ -108,6 +160,7 @@ font-weight:bold;
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
 import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-firestore.js";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-storage.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCyArj4yRlEl-yibkc0VEmL_4UJpRHHQSc",
@@ -120,6 +173,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const storage = getStorage(app);
 
 async function carregarTimes() {
   const lista = document.getElementById("listaTimes");
@@ -133,8 +187,10 @@ async function carregarTimes() {
     lista.innerHTML += `
       <div class="card">
         <div class="team">
-          <div class="logo"></div>
-          ${time.nome}
+          <img src="${time.escudo || ''}" class="preview" alt="Escudo do time">
+          <div class="nome-time" style="color:${time.cor1 || '#ffffff'}">${time.nome}</div>
+          <div style="width:14px;height:14px;border-radius:50%;background:${time.cor1 || '#f7c600'}"></div>
+          <div style="width:14px;height:14px;border-radius:50%;background:${time.cor2 || '#102a52'}"></div>
         </div>
         <div class="actions">
           <a>Editar</a>
@@ -146,24 +202,46 @@ async function carregarTimes() {
 }
 
 window.salvarTime = async function() {
-  const nome = document.getElementById("nomeTime").value;
+  const nome = document.getElementById("nomeTime").value.trim();
+  const arquivo = document.getElementById("escudo").files[0];
+  const cor1 = document.getElementById("cor1").value;
+  const cor2 = document.getElementById("cor2").value;
 
   if (!nome) {
     alert("Digite o nome do time");
     return;
   }
 
+  if (!arquivo) {
+    alert("Escolha o escudo do time");
+    return;
+  }
+
+  const nomeArquivo = Date.now() + "-" + arquivo.name;
+  const storageRef = ref(storage, "escudos/" + nomeArquivo);
+
+  await uploadBytes(storageRef, arquivo);
+  const urlEscudo = await getDownloadURL(storageRef);
+
   await addDoc(collection(db, "times"), {
-    nome: nome
+    nome: nome,
+    escudo: urlEscudo,
+    cor1: cor1,
+    cor2: cor2
   });
 
   alert("Time salvo com sucesso!");
+
   document.getElementById("nomeTime").value = "";
+  document.getElementById("escudo").value = "";
+  document.getElementById("cor1").value = "#f7c600";
+  document.getElementById("cor2").value = "#102a52";
+
   carregarTimes();
 }
 
 carregarTimes();
 </script>
-  
+
 </body>
 </html>
