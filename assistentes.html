@@ -4,46 +4,482 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Assistentes - Admin</title>
+
 <style>
-body{margin:0;font-family:Arial;background:#0b1f3a;color:white;}
-header{background:#08172c;padding:15px;text-align:center;font-size:22px;font-weight:bold;border-bottom:3px solid #f7c600;}
-.container{padding:15px;}
-.btn{background:#f7c600;color:black;padding:10px;border-radius:8px;text-decoration:none;display:inline-block;margin-bottom:15px;font-weight:bold;}
-.card{background:#102a52;padding:12px;border-radius:10px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;}
-.user{display:flex;align-items:center;gap:10px;}
-.photo{width:30px;height:30px;background:#f7c600;border-radius:50%;}
-.actions a{background:#1a3f73;padding:6px 10px;border-radius:6px;color:white;text-decoration:none;margin-left:5px;font-size:12px;}
-.back{display:block;margin-top:10px;color:#f7c600;text-decoration:none;font-weight:bold;}
+body{
+margin:0;
+font-family:Arial;
+background:#0b1f3a;
+color:white;
+}
+
+header{
+background:#08172c;
+padding:15px;
+text-align:center;
+font-size:22px;
+font-weight:bold;
+border-bottom:3px solid #f7c600;
+}
+
+.container{
+padding:15px;
+max-width:1100px;
+margin:auto;
+}
+
+input{
+width:100%;
+padding:12px;
+margin-bottom:12px;
+border:none;
+border-radius:8px;
+font-size:14px;
+box-sizing:border-box;
+}
+
+button{
+background:#f7c600;
+color:black;
+padding:10px 14px;
+border:none;
+border-radius:8px;
+font-weight:bold;
+cursor:pointer;
+margin-bottom:15px;
+}
+
+.btn{
+background:#f7c600;
+color:black;
+padding:10px 14px;
+border-radius:8px;
+text-decoration:none;
+display:inline-block;
+margin-bottom:12px;
+font-weight:bold;
+cursor:pointer;
+border:none;
+}
+
+.back{
+display:block;
+margin-top:15px;
+color:#f7c600;
+text-decoration:none;
+font-weight:bold;
+}
+
+.photo{
+width:60px;
+height:60px;
+border-radius:50%;
+object-fit:cover;
+border:2px solid #ffffff22;
+background:#1a3f73;
+}
+
+.nome-assistente{
+font-weight:bold;
+font-size:16px;
+}
+
+.lista-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit, minmax(320px, 1fr));
+gap:12px;
+}
+
+.card{
+background:#102a52;
+padding:15px;
+border-radius:10px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:10px;
+}
+
+.user{
+display:flex;
+align-items:center;
+gap:12px;
+min-width:0;
+}
+
+.user-info{
+display:flex;
+flex-direction:column;
+gap:4px;
+min-width:0;
+}
+
+.user-info small{
+opacity:.85;
+font-size:12px;
+}
+
+.actions{
+display:flex;
+gap:6px;
+flex-wrap:wrap;
+}
+
+.actions button{
+background:#1a3f73;
+padding:6px 10px;
+border-radius:6px;
+color:white;
+border:none;
+font-size:12px;
+margin:0;
+}
+
+.actions .delete{
+background:#b30000;
+}
+
+.modal{
+display:none;
+position:fixed;
+inset:0;
+background:rgba(0,0,0,0.7);
+justify-content:center;
+align-items:center;
+padding:15px;
+z-index:999;
+}
+
+.modal-content{
+background:#102a52;
+padding:20px;
+border-radius:12px;
+max-width:500px;
+width:100%;
+text-align:center;
+max-height:85vh;
+overflow:auto;
+}
+
+.modal-content img{
+width:100px;
+height:100px;
+border-radius:50%;
+object-fit:cover;
+border:2px solid #ffffff22;
+margin-bottom:12px;
+background:#1a3f73;
+}
+
+.tags{
+display:flex;
+gap:6px;
+flex-wrap:wrap;
+justify-content:center;
+margin-top:10px;
+}
+
+.tag{
+background:#1a3f73;
+padding:4px 8px;
+border-radius:999px;
+font-size:12px;
+}
+
+.subtitle{
+opacity:.85;
+font-size:13px;
+margin-bottom:10px;
+}
+
+.checkbox-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit, minmax(110px, 1fr));
+gap:8px;
+margin-bottom:12px;
+}
+
+.check-item{
+background:#102a52;
+padding:8px;
+border-radius:8px;
+display:flex;
+align-items:center;
+gap:8px;
+}
+
+.check-item input{
+width:auto;
+margin:0;
+}
 </style>
 </head>
+
 <body>
+
 <header>Assistentes</header>
+
 <div class="container">
-<a class="btn">+ Novo Assistente</a>
 
-<div class="card">
-  <div class="user">
-    <div class="photo"></div>
-    Paulo Lima
+<a class="btn" onclick="toggleFormulario()">+ Novo Assistente</a>
+
+<input id="buscaAssistente" placeholder="Pesquisar assistente..." oninput="carregarAssistentes()">
+
+<div id="formulario" style="display:none;">
+  <input id="nomeAssistente" placeholder="Nome do assistente">
+  <input id="fotoAssistente" type="file" accept="image/*">
+  <input id="cpfAssistente" placeholder="CPF do assistente">
+  <input id="telefoneAssistente" placeholder="Telefone">
+  <input id="emailAssistente" placeholder="Email">
+
+  <div class="subtitle">Categorias liberadas para o assistente</div>
+  <div class="checkbox-grid" id="categoriasGrid">
+    <label class="check-item"><input type="checkbox" value="Sub-11">Sub-11</label>
+    <label class="check-item"><input type="checkbox" value="Sub-12">Sub-12</label>
+    <label class="check-item"><input type="checkbox" value="Sub-13">Sub-13</label>
+    <label class="check-item"><input type="checkbox" value="Sub-14">Sub-14</label>
+    <label class="check-item"><input type="checkbox" value="Sub-15">Sub-15</label>
+    <label class="check-item"><input type="checkbox" value="Sub-16">Sub-16</label>
+    <label class="check-item"><input type="checkbox" value="Sub-17">Sub-17</label>
+    <label class="check-item"><input type="checkbox" value="Sub-18">Sub-18</label>
   </div>
-  <div class="actions">
-    <a>Editar</a>
-    <a>Escalar</a>
-  </div>
+
+  <button id="botaoSalvar" onclick="salvarAssistente()">Salvar Assistente</button>
 </div>
 
-<div class="card">
-  <div class="user">
-    <div class="photo"></div>
-    Diego Alves
-  </div>
-  <div class="actions">
-    <a>Editar</a>
-    <a>Escalar</a>
-  </div>
-</div>
+<div class="lista-grid" id="listaAssistentes"></div>
 
 <a href="admin.html" class="back">← Voltar</a>
+
 </div>
+
+<div class="modal" id="modalVer">
+  <div class="modal-content" id="modalConteudo"></div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
+import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-firestore.js";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-storage.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCyArj4yRlEl-yibkc0VEmL_4UJpRHHQSc",
+  authDomain: "liga-goiana-base.firebaseapp.com",
+  projectId: "liga-goiana-base",
+  storageBucket: "liga-goiana-base.firebasestorage.app",
+  messagingSenderId: "952863591183",
+  appId: "1:952863591183:web:4eea34f494ba2dd754cc7a"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const storage = getStorage(app);
+
+let editandoId = null;
+let fotoAtual = "";
+
+window.toggleFormulario = function(){
+  const f = document.getElementById("formulario");
+  f.style.display = f.style.display === "none" ? "block" : "none";
+}
+
+function getCategoriasSelecionadas() {
+  return Array.from(document.querySelectorAll('#categoriasGrid input[type="checkbox"]:checked')).map(i => i.value);
+}
+
+function marcarCategorias(categorias) {
+  document.querySelectorAll('#categoriasGrid input[type="checkbox"]').forEach(i => {
+    i.checked = (categorias || []).includes(i.value);
+  });
+}
+
+function limparFormulario() {
+  document.getElementById("nomeAssistente").value = "";
+  document.getElementById("fotoAssistente").value = "";
+  document.getElementById("cpfAssistente").value = "";
+  document.getElementById("telefoneAssistente").value = "";
+  document.getElementById("emailAssistente").value = "";
+  document.getElementById("botaoSalvar").textContent = "Salvar Assistente";
+  document.querySelectorAll('#categoriasGrid input[type="checkbox"]').forEach(i => i.checked = false);
+  editandoId = null;
+  fotoAtual = "";
+}
+
+window.salvarAssistente = async function() {
+  const nome = document.getElementById("nomeAssistente").value.trim();
+  const foto = document.getElementById("fotoAssistente").files[0];
+  const cpf = document.getElementById("cpfAssistente").value.trim();
+  const telefone = document.getElementById("telefoneAssistente").value.trim();
+  const email = document.getElementById("emailAssistente").value.trim();
+  const categorias = getCategoriasSelecionadas();
+
+  if (!nome) {
+    alert("Digite o nome do assistente");
+    return;
+  }
+
+  if (!cpf) {
+    alert("Digite o CPF do assistente");
+    return;
+  }
+
+  const snap = await getDocs(collection(db, "assistentes"));
+  let cpfDuplicado = false;
+
+  snap.forEach((item) => {
+    const a = item.data();
+    if (a.cpf === cpf && item.id !== editandoId) {
+      cpfDuplicado = true;
+    }
+  });
+
+  if (cpfDuplicado) {
+    alert("Já existe um assistente cadastrado com esse CPF.");
+    return;
+  }
+
+  let urlFoto = fotoAtual;
+
+  if (foto) {
+    const nomeArquivo = Date.now() + "-" + foto.name;
+    const storageRef = ref(storage, "assistentes/" + nomeArquivo);
+    await uploadBytes(storageRef, foto);
+    urlFoto = await getDownloadURL(storageRef);
+  }
+
+  const dados = {
+    nome: nome,
+    foto: urlFoto || "",
+    cpf: cpf,
+    telefone: telefone,
+    email: email,
+    categorias: categorias
+  };
+
+  if (editandoId) {
+    await updateDoc(doc(db, "assistentes", editandoId), dados);
+    alert("Assistente atualizado com sucesso!");
+  } else {
+    await addDoc(collection(db, "assistentes"), dados);
+    alert("Assistente salvo com sucesso!");
+  }
+
+  limparFormulario();
+  carregarAssistentes();
+}
+
+window.editarAssistente = async function(id) {
+  const snap = await getDocs(collection(db, "assistentes"));
+
+  snap.forEach((item) => {
+    if (item.id === id) {
+      const a = item.data();
+
+      document.getElementById("nomeAssistente").value = a.nome || "";
+      document.getElementById("cpfAssistente").value = a.cpf || "";
+      document.getElementById("telefoneAssistente").value = a.telefone || "";
+      document.getElementById("emailAssistente").value = a.email || "";
+      document.getElementById("botaoSalvar").textContent = "Atualizar Assistente";
+
+      marcarCategorias(a.categorias || []);
+      fotoAtual = a.foto || "";
+      editandoId = id;
+
+      document.getElementById("formulario").style.display = "block";
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  });
+}
+
+window.verAssistente = async function(id) {
+  const snap = await getDocs(collection(db, "assistentes"));
+  let assistente = null;
+
+  snap.forEach((item) => {
+    if (item.id === id) {
+      assistente = item.data();
+    }
+  });
+
+  if (!assistente) return;
+
+  const categorias = (assistente.categorias || []).map(c => `<div class="tag">${c}</div>`).join("");
+
+  document.getElementById("modalConteudo").innerHTML = `
+    <img src="${assistente.foto || ''}">
+    <h2 style="margin:10px 0;">${assistente.nome}</h2>
+    <div class="subtitle">CPF: ${assistente.cpf || "-"}</div>
+    <div class="subtitle">Telefone: ${assistente.telefone || "-"}</div>
+    <div class="subtitle">Email: ${assistente.email || "-"}</div>
+    <div class="tags">${categorias}</div>
+    <button onclick="fecharModal()" style="margin-top:15px;">Fechar</button>
+  `;
+
+  document.getElementById("modalVer").style.display = "flex";
+}
+
+window.fecharModal = function() {
+  document.getElementById("modalVer").style.display = "none";
+}
+
+window.excluirAssistente = async function(id){
+  const confirmar = confirm("Tem certeza que deseja excluir este assistente?");
+  if(!confirmar) return;
+
+  await deleteDoc(doc(db, "assistentes", id));
+  alert("Assistente excluído!");
+  carregarAssistentes();
+}
+
+async function carregarAssistentes() {
+  const lista = document.getElementById("listaAssistentes");
+  lista.innerHTML = "";
+
+  const querySnapshot = await getDocs(collection(db, "assistentes"));
+  let assistentes = [];
+
+  querySnapshot.forEach((docSnap) => {
+    assistentes.push({ id: docSnap.id, ...docSnap.data() });
+  });
+
+  const busca = (document.getElementById("buscaAssistente").value || "").toLowerCase().trim();
+
+  if (busca) {
+    assistentes = assistentes.filter(a =>
+      (a.nome || "").toLowerCase().includes(busca) ||
+      (a.email || "").toLowerCase().includes(busca) ||
+      (a.cpf || "").toLowerCase().includes(busca)
+    );
+  }
+
+  assistentes.sort((a, b) => a.nome.localeCompare(b.nome, 'pt-BR'));
+
+  assistentes.forEach((assistente) => {
+    const categorias = (assistente.categorias || []).map(c => `<span class="tag">${c}</span>`).join("");
+
+    lista.innerHTML += `
+      <div class="card">
+        <div class="user">
+          <img src="${assistente.foto || ''}" class="photo" alt="Foto do assistente">
+          <div class="user-info">
+            <div class="nome-assistente">${assistente.nome}</div>
+            <small>Email: ${assistente.email || "-"}</small>
+            <small>Telefone: ${assistente.telefone || "-"}</small>
+            <div class="tags">${categorias}</div>
+          </div>
+        </div>
+        <div class="actions">
+          <button onclick="editarAssistente('${assistente.id}')">Editar</button>
+          <button onclick="verAssistente('${assistente.id}')">Ver</button>
+          <button class="delete" onclick="excluirAssistente('${assistente.id}')">Excluir</button>
+        </div>
+      </div>
+    `;
+  });
+}
+
+carregarAssistentes();
+</script>
+
 </body>
 </html>
