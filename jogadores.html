@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Jogadores - Admin</title>
+<title>Times - Admin</title>
 
 <style>
 body{
@@ -28,7 +28,7 @@ max-width:1100px;
 margin:auto;
 }
 
-input, select{
+input{
 width:100%;
 padding:12px;
 margin-bottom:12px;
@@ -70,23 +70,72 @@ text-decoration:none;
 font-weight:bold;
 }
 
-.photo{
+.preview{
 width:60px;
 height:60px;
 border-radius:50%;
 object-fit:cover;
 border:2px solid #ffffff22;
-background:#f7c600;
 }
 
-.nome-jogador{
+.nome-time{
 font-weight:bold;
 font-size:16px;
 }
 
+.palette-box{
+display:none;
+background:#102a52;
+padding:12px;
+border-radius:10px;
+margin-bottom:14px;
+overflow-x:auto;
+}
+
+.palette-box.show{
+display:block;
+}
+
+.color-grid{
+display:grid;
+grid-auto-flow:column;
+grid-template-rows:repeat(8, 26px);
+grid-auto-columns:26px;
+gap:6px;
+}
+
+.color-option{
+width:26px;
+height:26px;
+border-radius:3px;
+border:2px solid transparent;
+cursor:pointer;
+box-sizing:border-box;
+}
+
+.color-option.selected{
+border-color:#ffffff;
+box-shadow:0 0 0 1px #f7c600;
+}
+
+#coresSelecionadas{
+display:flex;
+flex-wrap:wrap;
+gap:8px;
+margin:10px 0 14px 0;
+min-height:36px;
+}
+
+.selected-color{
+width:30px;
+height:30px;
+border-radius:6px;
+border:2px solid #ffffff33;
+}
+
 .lista-grid{
 display:grid;
-grid-template-columns:repeat(auto-fit, minmax(320px, 1fr));
+grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));
 gap:12px;
 }
 
@@ -100,23 +149,31 @@ align-items:center;
 gap:10px;
 }
 
-.player{
+.team{
 display:flex;
 align-items:center;
 gap:12px;
 min-width:0;
 }
 
-.player-info{
+.team-info{
 display:flex;
 flex-direction:column;
-gap:4px;
+gap:6px;
 min-width:0;
 }
 
-.player-info small{
-opacity:.85;
-font-size:12px;
+.time-colors{
+display:flex;
+gap:6px;
+flex-wrap:wrap;
+}
+
+.time-color{
+width:14px;
+height:14px;
+border-radius:4px;
+border:1px solid #ffffff55;
 }
 
 .actions{
@@ -125,49 +182,208 @@ gap:6px;
 flex-wrap:wrap;
 }
 
-.actions a{
+.actions button{
 background:#1a3f73;
 padding:6px 10px;
 border-radius:6px;
 color:white;
-text-decoration:none;
+border:none;
 font-size:12px;
+margin:0;
+}
+
+.modal{
+display:none;
+position:fixed;
+inset:0;
+background:rgba(0,0,0,0.7);
+justify-content:center;
+align-items:center;
+padding:15px;
+z-index:999;
+}
+
+.modal-content{
+background:#102a52;
+padding:20px;
+border-radius:12px;
+max-width:420px;
+width:100%;
+text-align:center;
+}
+
+.modal-content img{
+width:90px;
+height:90px;
+border-radius:50%;
+object-fit:cover;
+border:2px solid #ffffff22;
+margin-bottom:10px;
+}
+
+.modal-colors{
+display:flex;
+justify-content:center;
+gap:8px;
+flex-wrap:wrap;
+margin-top:10px;
+}
+
+.modal-color{
+width:20px;
+height:20px;
+border-radius:4px;
+border:1px solid #ffffff55;
 }
 </style>
 </head>
 
 <body>
 
-<header>Jogadores</header>
+<header>Times</header>
 
 <div class="container">
 
-<a class="btn" onclick="toggleFormulario()">+ Novo Jogador</a>
+<a class="btn" onclick="toggleFormulario()">+ Novo Time</a>
 
 <div id="formulario" style="display:none;">
-  <input id="nomeJogador" placeholder="Nome do jogador">
-  <input id="fotoJogador" type="file" accept="image/*">
-  <input id="dataNascimento" type="date">
-  <input id="cpfJogador" placeholder="CPF do jogador">
-  <input id="posicaoJogador" placeholder="Posição (ex: Goleiro, Zagueiro, Atacante)">
-  <input id="numeroJogador" placeholder="Número da camisa">
+  <input id="nomeTime" placeholder="Nome do time">
+  <input id="escudo" type="file" accept="image/*">
 
-  <select id="timeJogador">
-    <option value="">Selecione o time</option>
-  </select>
+  <button type="button" class="btn" onclick="togglePaleta()">Selecionar cores</button>
 
-  <button onclick="salvarJogador()">Salvar Jogador</button>
+  <div class="palette-box" id="paletaBox">
+    <div class="color-grid">
+
+      <div class="color-option" data-color="#ffd6d6" style="background:#ffd6d6"></div>
+      <div class="color-option" data-color="#ffb3b3" style="background:#ffb3b3"></div>
+      <div class="color-option" data-color="#ff8080" style="background:#ff8080"></div>
+      <div class="color-option" data-color="#ff4d4d" style="background:#ff4d4d"></div>
+      <div class="color-option" data-color="#ff1a1a" style="background:#ff1a1a"></div>
+      <div class="color-option" data-color="#e60000" style="background:#e60000"></div>
+      <div class="color-option" data-color="#b30000" style="background:#b30000"></div>
+      <div class="color-option" data-color="#800000" style="background:#800000"></div>
+
+      <div class="color-option" data-color="#ffe0cc" style="background:#ffe0cc"></div>
+      <div class="color-option" data-color="#ffc299" style="background:#ffc299"></div>
+      <div class="color-option" data-color="#ff9966" style="background:#ff9966"></div>
+      <div class="color-option" data-color="#ff7f27" style="background:#ff7f27"></div>
+      <div class="color-option" data-color="#cc6633" style="background:#cc6633"></div>
+      <div class="color-option" data-color="#a0522d" style="background:#a0522d"></div>
+      <div class="color-option" data-color="#8b4513" style="background:#8b4513"></div>
+      <div class="color-option" data-color="#5c3317" style="background:#5c3317"></div>
+
+      <div class="color-option" data-color="#fff7cc" style="background:#fff7cc"></div>
+      <div class="color-option" data-color="#ffef99" style="background:#ffef99"></div>
+      <div class="color-option" data-color="#ffe766" style="background:#ffe766"></div>
+      <div class="color-option" data-color="#ffdd33" style="background:#ffdd33"></div>
+      <div class="color-option" data-color="#f7c600" style="background:#f7c600"></div>
+      <div class="color-option" data-color="#d4a017" style="background:#d4a017"></div>
+      <div class="color-option" data-color="#b8860b" style="background:#b8860b"></div>
+      <div class="color-option" data-color="#8b6508" style="background:#8b6508"></div>
+
+      <div class="color-option" data-color="#f2ffd9" style="background:#f2ffd9"></div>
+      <div class="color-option" data-color="#e5ffb3" style="background:#e5ffb3"></div>
+      <div class="color-option" data-color="#d9ff80" style="background:#d9ff80"></div>
+      <div class="color-option" data-color="#ccff4d" style="background:#ccff4d"></div>
+      <div class="color-option" data-color="#bfff00" style="background:#bfff00"></div>
+      <div class="color-option" data-color="#99cc00" style="background:#99cc00"></div>
+      <div class="color-option" data-color="#809900" style="background:#809900"></div>
+      <div class="color-option" data-color="#667a00" style="background:#667a00"></div>
+
+      <div class="color-option" data-color="#d9f2d9" style="background:#d9f2d9"></div>
+      <div class="color-option" data-color="#b3e6b3" style="background:#b3e6b3"></div>
+      <div class="color-option" data-color="#80d480" style="background:#80d480"></div>
+      <div class="color-option" data-color="#4dc34d" style="background:#4dc34d"></div>
+      <div class="color-option" data-color="#00a651" style="background:#00a651"></div>
+      <div class="color-option" data-color="#008f45" style="background:#008f45"></div>
+      <div class="color-option" data-color="#006b33" style="background:#006b33"></div>
+      <div class="color-option" data-color="#004d26" style="background:#004d26"></div>
+
+      <div class="color-option" data-color="#d9ffff" style="background:#d9ffff"></div>
+      <div class="color-option" data-color="#b3ffff" style="background:#b3ffff"></div>
+      <div class="color-option" data-color="#80ffff" style="background:#80ffff"></div>
+      <div class="color-option" data-color="#4dffff" style="background:#4dffff"></div>
+      <div class="color-option" data-color="#00e6e6" style="background:#00e6e6"></div>
+      <div class="color-option" data-color="#00b8b8" style="background:#00b8b8"></div>
+      <div class="color-option" data-color="#008b8b" style="background:#008b8b"></div>
+      <div class="color-option" data-color="#006666" style="background:#006666"></div>
+
+      <div class="color-option" data-color="#d9ecff" style="background:#d9ecff"></div>
+      <div class="color-option" data-color="#b3d9ff" style="background:#b3d9ff"></div>
+      <div class="color-option" data-color="#80c1ff" style="background:#80c1ff"></div>
+      <div class="color-option" data-color="#4da6ff" style="background:#4da6ff"></div>
+      <div class="color-option" data-color="#3399ff" style="background:#3399ff"></div>
+      <div class="color-option" data-color="#1a8cff" style="background:#1a8cff"></div>
+      <div class="color-option" data-color="#0073e6" style="background:#0073e6"></div>
+      <div class="color-option" data-color="#0059b3" style="background:#0059b3"></div>
+
+      <div class="color-option" data-color="#ccd9ff" style="background:#ccd9ff"></div>
+      <div class="color-option" data-color="#99b3ff" style="background:#99b3ff"></div>
+      <div class="color-option" data-color="#668cff" style="background:#668cff"></div>
+      <div class="color-option" data-color="#3366ff" style="background:#3366ff"></div>
+      <div class="color-option" data-color="#003d99" style="background:#003d99"></div>
+      <div class="color-option" data-color="#0047b3" style="background:#0047b3"></div>
+      <div class="color-option" data-color="#003380" style="background:#003380"></div>
+      <div class="color-option" data-color="#002966" style="background:#002966"></div>
+
+      <div class="color-option" data-color="#cfd8e6" style="background:#cfd8e6"></div>
+      <div class="color-option" data-color="#9fb3cc" style="background:#9fb3cc"></div>
+      <div class="color-option" data-color="#6f8fb3" style="background:#6f8fb3"></div>
+      <div class="color-option" data-color="#406b99" style="background:#406b99"></div>
+      <div class="color-option" data-color="#204a80" style="background:#204a80"></div>
+      <div class="color-option" data-color="#163a66" style="background:#163a66"></div>
+      <div class="color-option" data-color="#0b1f3a" style="background:#0b1f3a"></div>
+      <div class="color-option" data-color="#08172c" style="background:#08172c"></div>
+
+      <div class="color-option" data-color="#efe0ff" style="background:#efe0ff"></div>
+      <div class="color-option" data-color="#dcc2ff" style="background:#dcc2ff"></div>
+      <div class="color-option" data-color="#c299ff" style="background:#c299ff"></div>
+      <div class="color-option" data-color="#a366ff" style="background:#a366ff"></div>
+      <div class="color-option" data-color="#8000ff" style="background:#8000ff"></div>
+      <div class="color-option" data-color="#6a00cc" style="background:#6a00cc"></div>
+      <div class="color-option" data-color="#5200a3" style="background:#5200a3"></div>
+      <div class="color-option" data-color="#3b007a" style="background:#3b007a"></div>
+
+      <div class="color-option" data-color="#ffd9f2" style="background:#ffd9f2"></div>
+      <div class="color-option" data-color="#ffb3e6" style="background:#ffb3e6"></div>
+      <div class="color-option" data-color="#ff80d5" style="background:#ff80d5"></div>
+      <div class="color-option" data-color="#ff4dc4" style="background:#ff4dc4"></div>
+      <div class="color-option" data-color="#ff00aa" style="background:#ff00aa"></div>
+      <div class="color-option" data-color="#cc0088" style="background:#cc0088"></div>
+      <div class="color-option" data-color="#990066" style="background:#990066"></div>
+      <div class="color-option" data-color="#660044" style="background:#660044"></div>
+
+      <div class="color-option" data-color="#ffffff" style="background:#ffffff"></div>
+      <div class="color-option" data-color="#eeeeee" style="background:#eeeeee"></div>
+      <div class="color-option" data-color="#d9d9d9" style="background:#d9d9d9"></div>
+      <div class="color-option" data-color="#bfbfbf" style="background:#bfbfbf"></div>
+      <div class="color-option" data-color="#999999" style="background:#999999"></div>
+      <div class="color-option" data-color="#666666" style="background:#666666"></div>
+      <div class="color-option" data-color="#333333" style="background:#333333"></div>
+      <div class="color-option" data-color="#000000" style="background:#000000"></div>
+
+    </div>
+  </div>
+
+  <div id="coresSelecionadas"></div>
+
+  <button id="botaoSalvar" onclick="salvarTime()">Salvar Time</button>
 </div>
 
-<div class="lista-grid" id="listaJogadores"></div>
+<div class="lista-grid" id="listaTimes"></div>
 
 <a href="admin.html" class="back">← Voltar</a>
 
 </div>
 
+<div class="modal" id="modalVer">
+  <div class="modal-content" id="modalConteudo"></div>
+</div>
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-firestore.js";
+import { getFirestore, collection, addDoc, getDocs, doc, updateDoc } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-firestore.js";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-storage.js";
 
 const firebaseConfig = {
@@ -183,129 +399,184 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const storage = getStorage(app);
 
+let coresEscolhidas = [];
+let editandoId = null;
+let escudoAtual = "";
+
 window.toggleFormulario = function(){
   const f = document.getElementById("formulario");
   f.style.display = f.style.display === "none" ? "block" : "none";
 }
 
-async function carregarTimesNoSelect() {
-  const select = document.getElementById("timeJogador");
-  select.innerHTML = '<option value="">Selecione o time</option>';
+window.togglePaleta = function(){
+  document.getElementById("paletaBox").classList.toggle("show");
+}
 
-  const querySnapshot = await getDocs(collection(db, "times"));
+function atualizarCores() {
+  const box = document.getElementById("coresSelecionadas");
+  box.innerHTML = "";
+
+  coresEscolhidas.forEach(cor => {
+    box.innerHTML += `<div class="selected-color" style="background:${cor};cursor:pointer;" onclick="removerCor('${cor}')"></div>`;
+  });
+}
+
+window.removerCor = function(cor){
+  coresEscolhidas = coresEscolhidas.filter(c => c !== cor);
+
+  document.querySelectorAll(".color-option").forEach(op => {
+    if(op.dataset.color === cor){
+      op.classList.remove("selected");
+    }
+  });
+
+  atualizarCores();
+}
+
+document.querySelectorAll(".color-option").forEach(op => {
+  op.onclick = () => {
+    const cor = op.dataset.color;
+
+    if (coresEscolhidas.includes(cor)) {
+      coresEscolhidas = coresEscolhidas.filter(c => c !== cor);
+      op.classList.remove("selected");
+    } else {
+      coresEscolhidas.push(cor);
+      op.classList.add("selected");
+    }
+
+    atualizarCores();
+  };
+});
+
+window.salvarTime = async function(){
+  const nome = document.getElementById("nomeTime").value.trim();
+  const file = document.getElementById("escudo").files[0];
+
+  if(!nome || coresEscolhidas.length === 0){
+    alert("Preencha nome e escolha pelo menos 1 cor");
+    return;
+  }
+
+  let urlEscudo = escudoAtual;
+
+  if (file) {
+    const refStorage = ref(storage, "escudos/" + Date.now() + "-" + file.name);
+    await uploadBytes(refStorage, file);
+    urlEscudo = await getDownloadURL(refStorage);
+  }
+
+  if (!urlEscudo) {
+    alert("Escolha o escudo do time");
+    return;
+  }
+
+  if (editandoId) {
+    await updateDoc(doc(db, "times", editandoId), {
+      nome: nome,
+      escudo: urlEscudo,
+      cores: coresEscolhidas
+    });
+    alert("Time atualizado com sucesso!");
+  } else {
+    await addDoc(collection(db, "times"), {
+      nome: nome,
+      escudo: urlEscudo,
+      cores: coresEscolhidas
+    });
+    alert("Time salvo com sucesso!");
+  }
+
+  limparFormulario();
+  carregarTimes();
+}
+
+function limparFormulario() {
+  document.getElementById("nomeTime").value = "";
+  document.getElementById("escudo").value = "";
+  document.getElementById("botaoSalvar").textContent = "Salvar Time";
+  coresEscolhidas = [];
+  escudoAtual = "";
+  editandoId = null;
+  document.querySelectorAll(".color-option").forEach(op => op.classList.remove("selected"));
+  atualizarCores();
+}
+
+window.editarTime = async function(id) {
+  const snap = await getDocs(collection(db, "times"));
+  snap.forEach((item) => {
+    if (item.id === id) {
+      const t = item.data();
+      document.getElementById("nomeTime").value = t.nome || "";
+      escudoAtual = t.escudo || "";
+      coresEscolhidas = Array.isArray(t.cores) ? [...t.cores] : [];
+      editandoId = id;
+
+      document.querySelectorAll(".color-option").forEach(op => {
+        op.classList.remove("selected");
+        if (coresEscolhidas.includes(op.dataset.color)) {
+          op.classList.add("selected");
+        }
+      });
+
+      atualizarCores();
+      document.getElementById("formulario").style.display = "block";
+      document.getElementById("botaoSalvar").textContent = "Atualizar Time";
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  });
+}
+
+window.verTime = function(nome, escudo, cores) {
+  const listaCores = (cores || []).map(c => `<div class="modal-color" style="background:${c}"></div>`).join("");
+
+  document.getElementById("modalConteudo").innerHTML = `
+    <img src="${escudo}">
+    <h2 style="margin:10px 0;">${nome}</h2>
+    <div style="opacity:.85;">Cores do time</div>
+    <div class="modal-colors">${listaCores}</div>
+    <button onclick="fecharModal()" style="margin-top:15px;">Fechar</button>
+  `;
+
+  document.getElementById("modalVer").style.display = "flex";
+}
+
+window.fecharModal = function() {
+  document.getElementById("modalVer").style.display = "none";
+}
+
+async function carregarTimes(){
+  const lista = document.getElementById("listaTimes");
+  lista.innerHTML = "";
 
   let times = [];
-  querySnapshot.forEach((doc) => {
-    times.push(doc.data());
-  });
+  const snap = await getDocs(collection(db, "times"));
+  snap.forEach(docSnap => times.push({ id: docSnap.id, ...docSnap.data() }));
 
   times.sort((a, b) => a.nome.localeCompare(b.nome, 'pt-BR'));
 
-  times.forEach((time) => {
-    select.innerHTML += `<option value="${time.nome}">${time.nome}</option>`;
-  });
-}
+  times.forEach(t => {
+    const cores = (t.cores || []).map(c => `<div class="time-color" style="background:${c}"></div>`).join("");
+    const coresJson = JSON.stringify(t.cores || []).replace(/"/g, '&quot;');
 
-async function carregarJogadores() {
-  const lista = document.getElementById("listaJogadores");
-  lista.innerHTML = "";
-
-  const querySnapshot = await getDocs(collection(db, "jogadores"));
-
-  let jogadores = [];
-  querySnapshot.forEach((doc) => {
-    jogadores.push(doc.data());
-  });
-
-  jogadores.sort((a, b) => a.nome.localeCompare(b.nome, 'pt-BR'));
-
-  jogadores.forEach((jogador) => {
     lista.innerHTML += `
       <div class="card">
-        <div class="player">
-          <img src="${jogador.foto || ''}" class="photo" alt="Foto do jogador">
-          <div class="player-info">
-            <div class="nome-jogador">${jogador.nome}</div>
-            <small>Time: ${jogador.time || "-"}</small>
-            <small>Posição: ${jogador.posicao || "-"}</small>
-            <small>Número: ${jogador.numero || "-"}</small>
-            <small>CPF: ${jogador.cpf || "-"}</small>
+        <div class="team">
+          <img src="${t.escudo}" class="preview">
+          <div class="team-info">
+            <div class="nome-time">${t.nome}</div>
+            <div class="time-colors">${cores}</div>
           </div>
         </div>
         <div class="actions">
-          <a>Editar</a>
-          <a>Transferir</a>
+          <button onclick="editarTime('${t.id}')">Editar</button>
+          <button onclick="verTime('${t.nome.replace(/'/g, "\\'")}', '${t.escudo}', ${coresJson})">Ver</button>
         </div>
-      </div>
-    `;
+      </div>`;
   });
 }
 
-window.salvarJogador = async function() {
-  const nome = document.getElementById("nomeJogador").value.trim();
-  const foto = document.getElementById("fotoJogador").files[0];
-  const dataNascimento = document.getElementById("dataNascimento").value;
-  const cpf = document.getElementById("cpfJogador").value.trim();
-  const posicao = document.getElementById("posicaoJogador").value.trim();
-  const numero = document.getElementById("numeroJogador").value.trim();
-  const time = document.getElementById("timeJogador").value;
-
-  if (!nome) {
-    alert("Digite o nome do jogador");
-    return;
-  }
-
-  if (!foto) {
-    alert("Escolha a foto do jogador");
-    return;
-  }
-
-  if (!dataNascimento) {
-    alert("Escolha a data de nascimento");
-    return;
-  }
-
-  if (!cpf) {
-    alert("Digite o CPF do jogador");
-    return;
-  }
-
-  if (!time) {
-    alert("Selecione o time");
-    return;
-  }
-
-  const nomeArquivo = Date.now() + "-" + foto.name;
-  const storageRef = ref(storage, "jogadores/" + nomeArquivo);
-
-  await uploadBytes(storageRef, foto);
-  const urlFoto = await getDownloadURL(storageRef);
-
-  await addDoc(collection(db, "jogadores"), {
-    nome: nome,
-    foto: urlFoto,
-    dataNascimento: dataNascimento,
-    cpf: cpf,
-    posicao: posicao,
-    numero: numero,
-    time: time
-  });
-
-  alert("Jogador salvo com sucesso!");
-
-  document.getElementById("nomeJogador").value = "";
-  document.getElementById("fotoJogador").value = "";
-  document.getElementById("dataNascimento").value = "";
-  document.getElementById("cpfJogador").value = "";
-  document.getElementById("posicaoJogador").value = "";
-  document.getElementById("numeroJogador").value = "";
-  document.getElementById("timeJogador").value = "";
-
-  carregarJogadores();
-}
-
-carregarTimesNoSelect();
-carregarJogadores();
+carregarTimes();
 </script>
 
 </body>
