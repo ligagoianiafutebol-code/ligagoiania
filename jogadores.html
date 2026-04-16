@@ -238,16 +238,7 @@ margin:0;
   </select>
 
   <div class="subtitle">Categorias liberadas para o jogador</div>
-  <div class="checkbox-grid" id="categoriasGrid">
-    <label class="check-item"><input type="checkbox" value="Sub-11">Sub-11</label>
-    <label class="check-item"><input type="checkbox" value="Sub-12">Sub-12</label>
-    <label class="check-item"><input type="checkbox" value="Sub-13">Sub-13</label>
-    <label class="check-item"><input type="checkbox" value="Sub-14">Sub-14</label>
-    <label class="check-item"><input type="checkbox" value="Sub-15">Sub-15</label>
-    <label class="check-item"><input type="checkbox" value="Sub-16">Sub-16</label>
-    <label class="check-item"><input type="checkbox" value="Sub-17">Sub-17</label>
-    <label class="check-item"><input type="checkbox" value="Sub-18">Sub-18</label>
-  </div>
+  <div class="checkbox-grid" id="categoriasGrid"></div>
 
   <button id="botaoSalvar" onclick="salvarJogador()">Salvar Jogador</button>
 </div>
@@ -286,6 +277,29 @@ let fotoAtual = "";
 window.toggleFormulario = function(){
   const f = document.getElementById("formulario");
   f.style.display = f.style.display === "none" ? "block" : "none";
+}
+
+async function carregarCategoriasCheckbox() {
+  const grid = document.getElementById("categoriasGrid");
+  grid.innerHTML = "";
+
+  const snap = await getDocs(collection(db, "categorias"));
+  let categorias = [];
+
+  snap.forEach(docSnap => {
+    const data = docSnap.data();
+    if (data.nome) categorias.push(data.nome);
+  });
+
+  categorias.sort((a,b)=>a.localeCompare(b,'pt-BR'));
+
+  categorias.forEach(nome => {
+    grid.innerHTML += `
+      <label class="check-item">
+        <input type="checkbox" value="${nome}">${nome}
+      </label>
+    `;
+  });
 }
 
 function getCategoriasSelecionadas() {
@@ -527,6 +541,7 @@ async function carregarJogadores() {
   });
 }
 
+await carregarCategoriasCheckbox();
 await carregarTimesNoSelect();
 carregarJogadores();
 </script>
