@@ -28,7 +28,7 @@ max-width:1100px;
 margin:auto;
 }
 
-input{
+input, select{
 width:100%;
 padding:12px;
 margin-bottom:12px;
@@ -76,6 +76,7 @@ height:60px;
 border-radius:50%;
 object-fit:cover;
 border:2px solid #ffffff22;
+background:#1a3f73;
 }
 
 .nome-time{
@@ -135,7 +136,7 @@ border:2px solid #ffffff33;
 
 .lista-grid{
 display:grid;
-grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));
+grid-template-columns:repeat(auto-fit, minmax(300px, 1fr));
 gap:12px;
 }
 
@@ -192,6 +193,10 @@ font-size:12px;
 margin:0;
 }
 
+.actions .delete{
+background:#b30000;
+}
+
 .modal{
 display:none;
 position:fixed;
@@ -207,9 +212,11 @@ z-index:999;
 background:#102a52;
 padding:20px;
 border-radius:12px;
-max-width:420px;
+max-width:500px;
 width:100%;
 text-align:center;
+max-height:85vh;
+overflow:auto;
 }
 
 .modal-content img{
@@ -235,6 +242,73 @@ height:20px;
 border-radius:4px;
 border:1px solid #ffffff55;
 }
+
+.tags{
+display:flex;
+gap:6px;
+flex-wrap:wrap;
+justify-content:center;
+margin-top:10px;
+}
+
+.tag{
+background:#1a3f73;
+padding:4px 8px;
+border-radius:999px;
+font-size:12px;
+}
+
+.player-row{
+display:flex;
+align-items:center;
+gap:10px;
+background:#0b1f3a;
+padding:10px;
+border-radius:8px;
+margin-top:8px;
+text-align:left;
+}
+
+.player-photo{
+width:42px;
+height:42px;
+border-radius:50%;
+object-fit:cover;
+background:#1a3f73;
+}
+
+.player-info small{
+display:block;
+opacity:.85;
+margin-top:2px;
+}
+
+.subtitle{
+opacity:.85;
+font-size:13px;
+margin-bottom:10px;
+}
+
+.checkbox-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit, minmax(110px, 1fr));
+gap:8px;
+margin-bottom:12px;
+}
+
+.check-item{
+background:#102a52;
+padding:8px;
+border-radius:8px;
+display:flex;
+align-items:center;
+gap:8px;
+}
+
+.check-item input{
+width:auto;
+margin:0;
+}
 </style>
 </head>
 
@@ -246,9 +320,23 @@ border:1px solid #ffffff55;
 
 <a class="btn" onclick="toggleFormulario()">+ Novo Time</a>
 
+<input id="buscaTime" placeholder="Pesquisar time..." oninput="carregarTimes()">
+
 <div id="formulario" style="display:none;">
   <input id="nomeTime" placeholder="Nome do time">
   <input id="escudo" type="file" accept="image/*">
+
+  <div class="subtitle">Categorias do time</div>
+  <div class="checkbox-grid" id="categoriasGrid">
+    <label class="check-item"><input type="checkbox" value="Sub-11">Sub-11</label>
+    <label class="check-item"><input type="checkbox" value="Sub-12">Sub-12</label>
+    <label class="check-item"><input type="checkbox" value="Sub-13">Sub-13</label>
+    <label class="check-item"><input type="checkbox" value="Sub-14">Sub-14</label>
+    <label class="check-item"><input type="checkbox" value="Sub-15">Sub-15</label>
+    <label class="check-item"><input type="checkbox" value="Sub-16">Sub-16</label>
+    <label class="check-item"><input type="checkbox" value="Sub-17">Sub-17</label>
+    <label class="check-item"><input type="checkbox" value="Sub-18">Sub-18</label>
+  </div>
 
   <button type="button" class="btn" onclick="togglePaleta()">Selecionar cores</button>
 
@@ -449,9 +537,20 @@ document.querySelectorAll(".color-option").forEach(op => {
   };
 });
 
+function getCategoriasSelecionadas() {
+  return Array.from(document.querySelectorAll('#categoriasGrid input[type="checkbox"]:checked')).map(i => i.value);
+}
+
+function marcarCategorias(categorias) {
+  document.querySelectorAll('#categoriasGrid input[type="checkbox"]').forEach(i => {
+    i.checked = (categorias || []).includes(i.value);
+  });
+}
+
 window.salvarTime = async function(){
   const nome = document.getElementById("nomeTime").value.trim();
   const file = document.getElementById("escudo").files[0];
+  const categorias = getCategoriasSelecionadas();
 
   if(!nome || coresEscolhidas.length === 0){
     alert("Preencha nome e escolha pelo menos 1 cor");
@@ -475,14 +574,16 @@ window.salvarTime = async function(){
     await updateDoc(doc(db, "times", editandoId), {
       nome: nome,
       escudo: urlEscudo,
-      cores: coresEscolhidas
+      cores: coresEscolhidas,
+      categorias: categorias
     });
     alert("Time atualizado com sucesso!");
   } else {
     await addDoc(collection(db, "times"), {
       nome: nome,
       escudo: urlEscudo,
-      cores: coresEscolhidas
+      cores: coresEscolhidas,
+      categorias: categorias
     });
     alert("Time salvo com sucesso!");
   }
@@ -499,6 +600,7 @@ function limparFormulario() {
   escudoAtual = "";
   editandoId = null;
   document.querySelectorAll(".color-option").forEach(op => op.classList.remove("selected"));
+  document.querySelectorAll('#categoriasGrid input[type="checkbox"]').forEach(i => i.checked = false);
   atualizarCores();
 }
 
@@ -519,6 +621,7 @@ window.editarTime = async function(id) {
         }
       });
 
+      marcarCategorias(t.categorias || []);
       atualizarCores();
       document.getElementById("formulario").style.display = "block";
       document.getElementById("botaoSalvar").textContent = "Atualizar Time";
@@ -527,14 +630,53 @@ window.editarTime = async function(id) {
   });
 }
 
-window.verTime = function(nome, escudo, cores) {
-  const listaCores = (cores || []).map(c => `<div class="modal-color" style="background:${c}"></div>`).join("");
+window.verTime = async function(id) {
+  const snapTimes = await getDocs(collection(db, "times"));
+  let time = null;
+
+  snapTimes.forEach((item) => {
+    if (item.id === id) {
+      time = item.data();
+    }
+  });
+
+  if (!time) return;
+
+  const snapJogadores = await getDocs(collection(db, "jogadores"));
+  let jogadores = [];
+
+  snapJogadores.forEach((item) => {
+    const jogador = item.data();
+    if (jogador.time === time.nome) {
+      jogadores.push(jogador);
+    }
+  });
+
+  jogadores.sort((a, b) => a.nome.localeCompare(b.nome, 'pt-BR'));
+
+  const listaCores = (time.cores || []).map(c => `<div class="modal-color" style="background:${c}"></div>`).join("");
+  const categorias = (time.categorias || []).map(c => `<div class="tag">${c}</div>`).join("");
+  const elenco = jogadores.length
+    ? jogadores.map(j => `
+        <div class="player-row">
+          <img src="${j.foto || ''}" class="player-photo">
+          <div class="player-info">
+            <strong>${j.nome}</strong>
+            <small>${j.posicao || "-"}</small>
+            <small>Nº ${j.numero || "-"}</small>
+          </div>
+        </div>
+      `).join("")
+    : `<div class="subtitle">Esse time ainda não tem jogadores cadastrados.</div>`;
 
   document.getElementById("modalConteudo").innerHTML = `
-    <img src="${escudo}">
-    <h2 style="margin:10px 0;">${nome}</h2>
+    <img src="${time.escudo}">
+    <h2 style="margin:10px 0;">${time.nome}</h2>
     <div style="opacity:.85;">Cores do time</div>
     <div class="modal-colors">${listaCores}</div>
+    <div class="tags">${categorias || ""}</div>
+    <h3 style="margin-top:20px;">Elenco</h3>
+    ${elenco}
     <button onclick="fecharModal()" style="margin-top:15px;">Fechar</button>
   `;
 
@@ -546,6 +688,30 @@ window.fecharModal = function() {
 }
 
 window.excluirTime = async function(id){
+  const snapTimes = await getDocs(collection(db, "times"));
+  let nomeTime = "";
+
+  snapTimes.forEach((item) => {
+    if (item.id === id) {
+      nomeTime = item.data().nome || "";
+    }
+  });
+
+  const snapJogadores = await getDocs(collection(db, "jogadores"));
+  let temJogador = false;
+
+  snapJogadores.forEach((item) => {
+    const jogador = item.data();
+    if (jogador.time === nomeTime) {
+      temJogador = true;
+    }
+  });
+
+  if (temJogador) {
+    alert("Esse time tem jogadores cadastrados e não pode ser excluído.");
+    return;
+  }
+
   const confirmar = confirm("Tem certeza que deseja excluir este time?");
   if(!confirmar) return;
 
@@ -562,12 +728,17 @@ async function carregarTimes(){
   const snap = await getDocs(collection(db, "times"));
   snap.forEach(docSnap => times.push({ id: docSnap.id, ...docSnap.data() }));
 
+  const busca = (document.getElementById("buscaTime").value || "").toLowerCase().trim();
+
+  if (busca) {
+    times = times.filter(t => (t.nome || "").toLowerCase().includes(busca));
+  }
+
   times.sort((a, b) => a.nome.localeCompare(b.nome, 'pt-BR'));
 
   times.forEach(t => {
     const cores = (t.cores || []).map(c => `<div class="time-color" style="background:${c}"></div>`).join("");
-    const coresJson = JSON.stringify(t.cores || []).replace(/"/g, '&quot;');
-    const nomeSeguro = t.nome.replace(/'/g, "\\'");
+    const categorias = (t.categorias || []).map(c => `<span class="tag">${c}</span>`).join("");
 
     lista.innerHTML += `
       <div class="card">
@@ -576,11 +747,12 @@ async function carregarTimes(){
           <div class="team-info">
             <div class="nome-time">${t.nome}</div>
             <div class="time-colors">${cores}</div>
+            <div class="tags">${categorias}</div>
           </div>
         </div>
         <div class="actions">
           <button onclick="editarTime('${t.id}')">Editar</button>
-          <button onclick="verTime('${nomeSeguro}', '${t.escudo}', ${coresJson})">Ver</button>
+          <button onclick="verTime('${t.id}')">Ver</button>
           <button onclick="excluirTime('${t.id}')" style="background:#b30000;">Excluir</button>
         </div>
       </div>`;
