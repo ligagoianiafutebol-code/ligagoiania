@@ -26,15 +26,25 @@ border-bottom:3px solid #f7c600;
 padding:15px;
 }
 
-.btn{
+input{
+width:100%;
+padding:12px;
+margin-bottom:12px;
+border:none;
+border-radius:8px;
+font-size:14px;
+box-sizing:border-box;
+}
+
+button{
 background:#f7c600;
 color:black;
-padding:10px;
+padding:10px 14px;
+border:none;
 border-radius:8px;
-text-decoration:none;
-display:inline-block;
-margin-bottom:15px;
 font-weight:bold;
+cursor:pointer;
+margin-bottom:15px;
 }
 
 .card{
@@ -89,46 +99,15 @@ font-weight:bold;
 <input id="nomeTime" placeholder="Nome do time">
 <button onclick="salvarTime()">Salvar Time</button>
 
-<div class="card">
-<div class="team">
-<div class="logo"></div>
-Atlético GO
-</div>
-<div class="actions">
-<a>Editar</a>
-<a>Ver</a>
-</div>
-</div>
-
-<div class="card">
-<div class="team">
-<div class="logo"></div>
-Vila Nova
-</div>
-<div class="actions">
-<a>Editar</a>
-<a>Ver</a>
-</div>
-</div>
-
-<div class="card">
-<div class="team">
-<div class="logo"></div>
-Campinas
-</div>
-<div class="actions">
-<a>Editar</a>
-<a>Ver</a>
-</div>
-</div>
+<div id="listaTimes"></div>
 
 <a href="admin.html" class="back">← Voltar</a>
 
 </div>
-<script type="module">
 
+<script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
-import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-firestore.js";
+import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCyArj4yRlEl-yibkc0VEmL_4UJpRHHQSc",
@@ -142,10 +121,34 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+async function carregarTimes() {
+  const lista = document.getElementById("listaTimes");
+  lista.innerHTML = "";
+
+  const querySnapshot = await getDocs(collection(db, "times"));
+
+  querySnapshot.forEach((doc) => {
+    const time = doc.data();
+
+    lista.innerHTML += `
+      <div class="card">
+        <div class="team">
+          <div class="logo"></div>
+          ${time.nome}
+        </div>
+        <div class="actions">
+          <a>Editar</a>
+          <a>Ver</a>
+        </div>
+      </div>
+    `;
+  });
+}
+
 window.salvarTime = async function() {
   const nome = document.getElementById("nomeTime").value;
 
-  if(!nome){
+  if (!nome) {
     alert("Digite o nome do time");
     return;
   }
@@ -156,8 +159,10 @@ window.salvarTime = async function() {
 
   alert("Time salvo com sucesso!");
   document.getElementById("nomeTime").value = "";
+  carregarTimes();
 }
 
+carregarTimes();
 </script>
   
 </body>
