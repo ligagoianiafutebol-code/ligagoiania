@@ -1,186 +1,1532 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Liga Goiana de Futebol de Base</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Liga Goiana de Futebol de Base</title>
 
-<style>
-body{margin:0;font-family:Arial;background:#031022;color:#fff;}
-.wrap{width:95%;margin:auto}
+  <style>
+    :root{
+      --yellow:#ffe600;
+      --yellow-2:#ffd000;
+      --yellow-soft:rgba(255,230,0,.14);
+      --white:#ffffff;
+      --muted:#d7dfeb;
+      --line:rgba(255,230,0,.18);
+      --shadow:0 14px 32px rgba(0,0,0,.30);
+      --sidebar-width:280px;
+      --blue-bg:#031022;
+      --blue-1:#051935;
+      --blue-2:#0b2a57;
+      --blue-3:#102d5c;
+      --card:rgba(8,28,58,.94);
+      --green:#10a542;
+      --green-2:#0b7c31;
+      --radius:18px;
+    }
 
-/* SIDEBAR */
-.sidebar{
-  position:fixed;
-  left:-260px;
-  top:0;
-  width:260px;
-  height:100%;
-  background:#041734;
-  transition:.3s;
-  z-index:999;
-}
-.sidebar.open{left:0;}
-.sidebar a{display:block;padding:12px;color:#fff;text-decoration:none}
-.sidebar a:hover{background:#07214d}
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
 
-/* TOPO */
-.topbar{background:#041734;padding:10px 0;position:sticky;top:0;z-index:10}
-.menu-toggle{background:#ffd000;border:none;padding:10px;border-radius:6px}
+    html{
+      scroll-behavior:smooth;
+    }
 
-/* HERO */
-.hero{padding:40px 0;display:flex;gap:20px}
-.hero img{width:100%;border-radius:12px}
+    body{
+      font-family:Arial, Helvetica, sans-serif;
+      background:
+        linear-gradient(rgba(3,16,34,.92), rgba(3,16,34,.96)),
+        url("fundo.png") center/cover no-repeat fixed;
+      color:var(--white);
+      min-height:100vh;
+      overflow-x:hidden;
+    }
 
-/* BOTÕES */
-.btn-primary{background:#ffd000;color:#000;padding:10px 15px;border-radius:8px;text-decoration:none}
-.btn-secondary{background:#102a52;padding:10px 15px;border-radius:8px;color:#fff;text-decoration:none}
+    body.sidebar-collapsed{
+      --sidebar-width:0px;
+    }
 
-/* CARDS */
-.cards-pilares{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-top:20px}
-.pillar{background:#07214d;padding:20px;border-radius:10px}
+    a{
+      text-decoration:none;
+      color:inherit;
+    }
 
-/* NEWS SLIDER */
-.news-slider{overflow:hidden;position:relative;height:220px}
-.news-item{position:absolute;width:100%;transition:opacity .5s}
+    img{
+      max-width:100%;
+      display:block;
+    }
 
-/* FOOTER */
-footer{margin-top:40px;padding:20px;background:#041734}
+    .wrap{
+      width:min(1220px, calc(100% - 32px));
+      margin:0 auto;
+    }
 
-</style>
+    /* SIDEBAR */
+    .sidebar{
+      position:fixed;
+      top:0;
+      left:0;
+      width:var(--sidebar-width);
+      height:100vh;
+      overflow-y:auto;
+      background:linear-gradient(180deg, rgba(3,16,34,.98), rgba(5,25,53,.98));
+      border-right:1px solid var(--line);
+      z-index:1300;
+      padding:22px 18px 28px;
+      transition:width .35s ease, transform .35s ease, padding .35s ease;
+      box-shadow:var(--shadow);
+    }
+
+    .sidebar-header{
+      padding-bottom:18px;
+      border-bottom:1px solid var(--line);
+      margin-bottom:18px;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-width:0;
+    }
+
+    .brand img{
+      width:58px;
+      height:58px;
+      border-radius:50%;
+      object-fit:cover;
+      border:2px solid var(--yellow);
+      background:#fff;
+      flex-shrink:0;
+    }
+
+    .brand-text{
+      display:flex;
+      flex-direction:column;
+      gap:3px;
+      min-width:0;
+    }
+
+    .brand-text strong{
+      color:var(--yellow);
+      font-size:15px;
+      line-height:1.2;
+    }
+
+    .brand-text span{
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.2;
+    }
+
+    .menu-title{
+      font-size:13px;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      color:var(--yellow);
+      margin:18px 0 10px;
+      font-weight:700;
+    }
+
+    .side-menu{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+
+    .side-menu a{
+      padding:12px 14px;
+      border-radius:12px;
+      color:#fff;
+      background:rgba(255,255,255,.04);
+      border:1px solid transparent;
+      transition:.25s ease;
+      font-size:14px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .side-menu a:hover,
+    .side-menu a.active{
+      background:var(--yellow-soft);
+      color:var(--yellow);
+      border-color:var(--line);
+      transform:translateX(4px);
+    }
+
+    body.sidebar-collapsed .sidebar{
+      transform:translateX(-100%);
+      width:0;
+      padding:0;
+      border-right:none;
+      overflow:hidden;
+    }
+
+    /* TOPBAR */
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:1200;
+      background:rgba(3,16,34,.88);
+      backdrop-filter:blur(10px);
+      border-bottom:1px solid var(--line);
+      margin-left:var(--sidebar-width);
+      transition:margin-left .35s ease;
+    }
+
+    .topbar-content{
+      min-height:86px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:18px;
+      padding:14px 0;
+    }
+
+    .menu-toggle{
+      border:none;
+      background:var(--yellow);
+      color:#031022;
+      width:46px;
+      height:46px;
+      border-radius:12px;
+      font-size:24px;
+      font-weight:700;
+      cursor:pointer;
+      box-shadow:var(--shadow);
+      flex-shrink:0;
+      transition:.25s ease;
+    }
+
+    .menu-toggle:hover{
+      background:var(--yellow-2);
+      transform:translateY(-2px);
+    }
+
+    .top-links{
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:center;
+      gap:10px;
+      flex:1;
+    }
+
+    .top-links a{
+      color:#fff;
+      font-size:14px;
+      padding:10px 12px;
+      border-radius:10px;
+      transition:.25s ease;
+    }
+
+    .top-links a:hover,
+    .top-links a.active{
+      color:var(--yellow);
+      background:rgba(255,255,255,.05);
+    }
+
+    .top-actions{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-shrink:0;
+    }
+
+    .btn-top,
+    .btn-primary,
+    .btn-secondary{
+      border:none;
+      cursor:pointer;
+      font-weight:700;
+      transition:.25s ease;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+    }
+
+    .btn-top{
+      padding:12px 16px;
+      border-radius:12px;
+      background:var(--yellow);
+      color:#031022;
+      font-size:14px;
+      box-shadow:var(--shadow);
+    }
+
+    .btn-top:hover{
+      transform:translateY(-2px);
+      background:var(--yellow-2);
+    }
+
+    .hero,
+    .conteudo,
+    footer{
+      margin-left:var(--sidebar-width);
+      transition:margin-left .35s ease;
+    }
+
+    /* HERO */
+    .hero{
+      padding:24px 0 20px;
+    }
+
+    .hero-panel{
+      display:grid;
+      grid-template-columns:1.15fr .95fr;
+      gap:22px;
+      align-items:center;
+      background:linear-gradient(145deg, rgba(8,28,58,.96), rgba(16,45,92,.92));
+      border:1px solid var(--line);
+      border-radius:26px;
+      overflow:hidden;
+      box-shadow:var(--shadow);
+      min-height:500px;
+    }
+
+    .hero-copy{
+      padding:42px;
+    }
+
+    .tag{
+      display:inline-flex;
+      align-items:center;
+      padding:8px 14px;
+      border-radius:999px;
+      font-size:13px;
+      font-weight:700;
+      color:#031022;
+      background:var(--yellow);
+      margin-bottom:18px;
+    }
+
+    .hero-copy h1{
+      font-size:52px;
+      line-height:1.05;
+      color:var(--yellow);
+      margin-bottom:14px;
+    }
+
+    .subtitle{
+      font-size:24px;
+      font-weight:700;
+      color:#fff;
+      margin-bottom:14px;
+    }
+
+    .desc{
+      font-size:18px;
+      line-height:1.7;
+      color:var(--muted);
+      max-width:620px;
+    }
+
+    .hero-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:14px;
+      margin-top:28px;
+    }
+
+    .btn-primary{
+      padding:14px 20px;
+      border-radius:14px;
+      background:var(--yellow);
+      color:#031022;
+      font-size:15px;
+      box-shadow:var(--shadow);
+    }
+
+    .btn-primary:hover{
+      transform:translateY(-2px);
+      background:var(--yellow-2);
+    }
+
+    .btn-secondary{
+      padding:14px 20px;
+      border-radius:14px;
+      background:rgba(255,255,255,.08);
+      color:#fff;
+      border:1px solid rgba(255,255,255,.12);
+      font-size:15px;
+    }
+
+    .btn-secondary:hover{
+      background:rgba(255,255,255,.14);
+      transform:translateY(-2px);
+    }
+
+    .hero-art{
+      height:100%;
+      min-height:440px;
+      background:rgba(255,255,255,.03);
+    }
+
+    .hero-art img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+
+    /* CONTEÚDO */
+    .conteudo{
+      padding:6px 0 28px;
+    }
+
+    .cards-pilares{
+      display:grid;
+      grid-template-columns:repeat(4, 1fr);
+      gap:18px;
+      margin-top:24px;
+    }
+
+    .pillar{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:20px;
+      padding:24px 18px;
+      box-shadow:var(--shadow);
+      transition:.25s ease;
+    }
+
+    .pillar:hover{
+      transform:translateY(-4px);
+    }
+
+    .pillar-icon{
+      width:58px;
+      height:58px;
+      border-radius:16px;
+      background:var(--yellow-soft);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      margin-bottom:16px;
+      border:1px solid var(--line);
+    }
+
+    .pillar-icon svg{
+      width:28px;
+      height:28px;
+      fill:none;
+      stroke:var(--yellow);
+      stroke-width:1.8;
+      stroke-linecap:round;
+      stroke-linejoin:round;
+    }
+
+    .pillar h3{
+      color:var(--yellow);
+      font-size:20px;
+      margin-bottom:10px;
+      line-height:1.25;
+    }
+
+    .pillar p{
+      color:var(--muted);
+      line-height:1.6;
+      font-size:15px;
+    }
+
+    .mid-grid{
+      display:grid;
+      grid-template-columns:1.35fr .95fr;
+      gap:22px;
+      margin-bottom:26px;
+    }
+
+    .panel{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:22px;
+      box-shadow:var(--shadow);
+      padding:22px;
+      overflow:hidden;
+    }
+
+    .panel-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      margin-bottom:18px;
+      flex-wrap:wrap;
+    }
+
+    .panel-head-title{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+
+    .panel-head-icon{
+      width:48px;
+      height:48px;
+      border-radius:14px;
+      background:var(--yellow-soft);
+      border:1px solid var(--line);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex-shrink:0;
+    }
+
+    .panel-head-icon svg{
+      width:24px;
+      height:24px;
+      fill:none;
+      stroke:var(--yellow);
+      stroke-width:1.8;
+      stroke-linecap:round;
+      stroke-linejoin:round;
+    }
+
+    .panel h2{
+      color:var(--yellow);
+      font-size:28px;
+    }
+
+    .panel-head a{
+      color:#fff;
+      font-weight:700;
+      font-size:14px;
+    }
+
+    .panel-head a:hover{
+      color:var(--yellow);
+    }
+
+    .match-table{
+      width:100%;
+      border-collapse:collapse;
+      overflow:hidden;
+      border-radius:16px;
+    }
+
+    .match-table thead th{
+      text-align:left;
+      background:rgba(255,230,0,.12);
+      color:var(--yellow);
+      padding:14px 12px;
+      font-size:14px;
+      border-bottom:1px solid var(--line);
+    }
+
+    .match-table tbody td{
+      padding:16px 12px;
+      border-bottom:1px solid rgba(255,255,255,.08);
+      color:#fff;
+      vertical-align:middle;
+      font-size:14px;
+    }
+
+    .match-table tbody tr:hover{
+      background:rgba(255,255,255,.03);
+    }
+
+    .confronto{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
+    .time-mini{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      min-width:max-content;
+    }
+
+    .escudo{
+      width:34px;
+      height:34px;
+      border-radius:50%;
+      object-fit:cover;
+      border:1px solid rgba(255,255,255,.15);
+      background:#fff;
+    }
+
+    .vs{
+      color:var(--yellow);
+      font-weight:700;
+    }
+
+    .badge{
+      display:inline-block;
+      padding:7px 12px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:700;
+      color:#031022;
+      background:var(--yellow);
+    }
+
+    /* NOTÍCIAS LADO */
+    .news-slider-wrap{
+      width:100%;
+      border-radius:16px;
+    }
+
+    .news-slider-single{
+      position:relative;
+      width:100%;
+      max-width:420px;
+      margin:0 auto;
+    }
+
+    .news-slide{
+      display:none;
+      width:100%;
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:18px;
+      padding:12px;
+      animation:fadeNews .5s ease;
+    }
+
+    .news-slide.active{
+      display:block;
+    }
+
+    .news-slide img{
+      width:100%;
+      height:220px;
+      object-fit:cover;
+      border-radius:14px;
+      margin-bottom:12px;
+      background:#0b1f3a;
+    }
+
+    .news-slide strong{
+      display:block;
+      color:var(--yellow);
+      font-size:20px;
+      margin-bottom:8px;
+      line-height:1.25;
+    }
+
+    .news-slide p{
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.55;
+      margin-bottom:10px;
+    }
+
+    .news-slide span{
+      color:#fff;
+      font-size:12px;
+      opacity:.8;
+    }
+
+    @keyframes fadeNews{
+      from{opacity:.25; transform:translateX(10px);}
+      to{opacity:1; transform:translateX(0);}
+    }
+
+    /* NOTÍCIAS CIMA */
+    .news-vertical-wrap{
+      height:440px;
+      overflow:hidden;
+      position:relative;
+      mask-image:linear-gradient(to bottom, transparent 0%, #000 8%, #000 92%, transparent 100%);
+      -webkit-mask-image:linear-gradient(to bottom, transparent 0%, #000 8%, #000 92%, transparent 100%);
+    }
+
+    .news-vertical-track{
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+      animation:scrollUpNews 22s linear infinite;
+    }
+
+    .news-item{
+      display:grid;
+      grid-template-columns:110px 1fr;
+      gap:14px;
+      align-items:start;
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:16px;
+      padding:12px;
+      transition:.25s ease;
+    }
+
+    .news-item:hover{
+      transform:translateY(-3px);
+      border-color:var(--line);
+    }
+
+    .news-item img{
+      width:110px;
+      height:85px;
+      object-fit:cover;
+      border-radius:12px;
+      background:#0b1f3a;
+    }
+
+    .news-item strong{
+      display:block;
+      color:var(--yellow);
+      font-size:17px;
+      margin-bottom:6px;
+      line-height:1.25;
+    }
+
+    .news-item p{
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.55;
+      margin-bottom:8px;
+    }
+
+    .news-item span{
+      color:#fff;
+      font-size:12px;
+      opacity:.8;
+    }
+
+    @keyframes scrollUpNews{
+      from{ transform:translateY(0); }
+      to{ transform:translateY(-50%); }
+    }
+
+    .cta-box{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:18px;
+      padding:28px;
+      border-radius:22px;
+      background:linear-gradient(135deg, rgba(255,230,0,.13), rgba(255,255,255,.04));
+      border:1px solid var(--line);
+      box-shadow:var(--shadow);
+      flex-wrap:wrap;
+    }
+
+    .cta-box h3{
+      font-size:30px;
+      color:var(--yellow);
+      margin-bottom:8px;
+    }
+
+    .cta-box p{
+      color:var(--muted);
+      font-size:16px;
+      line-height:1.6;
+    }
+
+    footer{
+      margin-top:26px;
+      background:rgba(2,10,22,.96);
+      border-top:1px solid var(--line);
+      padding-top:32px;
+    }
+
+    .footer-top{
+      display:grid;
+      grid-template-columns:1.2fr 1fr 1fr 1fr;
+      gap:22px;
+      padding-bottom:26px;
+    }
+
+    .footer-brand{
+      display:flex;
+      gap:14px;
+      align-items:flex-start;
+    }
+
+    .footer-brand img{
+      width:72px;
+      height:72px;
+      object-fit:cover;
+      border-radius:50%;
+      border:2px solid var(--yellow);
+      background:#fff;
+    }
+
+    footer h4{
+      color:var(--yellow);
+      font-size:18px;
+      margin-bottom:12px;
+    }
+
+    footer p,
+    footer a{
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.9;
+    }
+
+    footer a{
+      display:block;
+      margin-bottom:4px;
+    }
+
+    footer a:hover{
+      color:var(--yellow);
+    }
+
+    .social{
+      display:flex;
+      gap:10px;
+      margin-top:12px;
+      flex-wrap:wrap;
+    }
+
+    .social a{
+      width:42px;
+      height:42px;
+      border-radius:12px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:rgba(255,255,255,.06);
+      font-size:18px;
+      transition:.25s ease;
+    }
+
+    .social a:hover{
+      background:var(--yellow-soft);
+      color:var(--yellow);
+      transform:translateY(-2px);
+    }
+
+    .copyright{
+      border-top:1px solid rgba(255,255,255,.08);
+      padding:16px 0 22px;
+      color:#d2dae6;
+      text-align:center;
+      font-size:14px;
+    }
+
+    @media (max-width:1200px){
+      .top-links{
+        display:none;
+      }
+
+      body,
+      body.sidebar-collapsed{
+        --sidebar-width:280px;
+      }
+
+      .sidebar{
+        transform:translateX(-100%);
+      }
+
+      .sidebar.open{
+        transform:translateX(0);
+      }
+
+      .topbar,
+      .hero,
+      .conteudo,
+      footer{
+        margin-left:0;
+      }
+
+      .topbar-content{
+        justify-content:space-between;
+      }
+    }
+
+    @media (max-width:1024px){
+      .hero-panel{
+        grid-template-columns:1fr;
+      }
+
+      .hero-copy{
+        padding:30px 24px 10px;
+      }
+
+      .hero-art{
+        min-height:320px;
+      }
+
+      .cards-pilares{
+        grid-template-columns:repeat(2, 1fr);
+      }
+
+      .mid-grid{
+        grid-template-columns:1fr;
+      }
+
+      .footer-top{
+        grid-template-columns:repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width:700px){
+      .wrap{
+        width:min(100% - 20px, 1200px);
+      }
+
+      .brand-text strong{
+        font-size:13px;
+      }
+
+      .brand-text span{
+        font-size:11px;
+      }
+
+      .top-actions{
+        flex-wrap:wrap;
+        justify-content:flex-end;
+      }
+
+      .btn-top{
+        font-size:13px;
+        padding:11px 14px;
+      }
+
+      .hero-copy h1{
+        font-size:36px;
+      }
+
+      .subtitle{
+        font-size:20px;
+      }
+
+      .desc{
+        font-size:16px;
+      }
+
+      .cards-pilares{
+        grid-template-columns:1fr;
+      }
+
+      .match-table{
+        display:block;
+        overflow-x:auto;
+        white-space:nowrap;
+      }
+
+      .news-item{
+        grid-template-columns:1fr;
+      }
+
+      .news-item img{
+        width:100%;
+        height:180px;
+      }
+
+      .cta-box{
+        padding:22px;
+      }
+
+      .cta-box h3{
+        font-size:24px;
+      }
+
+      .footer-top{
+        grid-template-columns:1fr;
+      }
+
+      .news-slide img{
+        height:180px;
+      }
+    }
+  </style>
 </head>
-
 <body>
 
-<!-- SIDEBAR -->
-<aside class="sidebar" id="sidebar">
-  <a href="tabela.html">Tabelas</a>
-  <a href="artilharia.html">Artilharia</a>
-  <a href="classificacao.html">Classificação</a>
-  <a href="jogos.html">Jogos</a>
-  <a href="campeonatos.html">Campeonato</a>
-  <a href="categorias.html">Categoria</a>
-  <a href="times.html">Times</a>
-  <a href="jogadores.html">Jogadores</a>
-  <a href="tecnicos.html">Técnicos</a>
-  <a href="sumulas.html">Súmulas</a>
-  <a href="noticias.html">Notícias</a>
-  <a href="index.html">Início</a>
-</aside>
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="brand">
+        <img src="logo-liga.jfif" alt="Logo Liga Goiana">
+        <div class="brand-text">
+          <strong>Liga Goiana de Futebol de Base</strong>
+          <span>Onde o talento encontra o futuro</span>
+        </div>
+      </div>
+    </div>
 
-<!-- TOPO -->
-<header class="topbar">
-<div class="wrap">
-<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
-Liga Goiana de Futebol de Base
-<a href="login.html" class="btn-primary">Login / Cadastro</a>
-</div>
-</header>
+    <div class="menu-title">Menu Público</div>
+    <div class="side-menu">
+      <a href="tabela.html">Tabelas</a>
+      <a href="artilharia.html">Artilharia</a>
+      <a href="classificacao.html">Classificação</a>
+      <a href="jogos.html">Jogos</a>
+      <a href="campeonatos.html">Campeonato</a>
+      <a href="categorias.html">Categoria</a>
+      <a href="times.html">Times</a>
+      <a href="jogadores.html">Jogadores</a>
+      <a href="tecnicos.html">Técnicos</a>
+      <a href="sumulas.html">Súmulas</a>
+      <a href="noticias.html">Notícias</a>
+      <a href="index.html" class="active">Página Inicial</a>
+      <a href="#contato">Contato</a>
+    </div>
 
-<!-- HERO -->
-<section class="hero wrap">
-<div>
-<h1>Bem-vindo à Liga Goiana de Base</h1>
-<p>Onde o talento encontra o futuro!</p>
+    <div class="menu-title">Acesso ao Sistema</div>
+    <div class="side-menu">
+      <a href="login.html">Login / Cadastro</a>
+      <a href="admin.html">Painel ADM</a>
+    </div>
+  </aside>
 
-<a href="campeonatos.html" class="btn-primary">Ver Campeonatos</a>
-<a href="times.html" class="btn-secondary">Equipes</a>
-<a href="login.html" class="btn-secondary">Login</a>
-</div>
+  <!-- TOPO -->
+  <header class="topbar">
+    <div class="wrap topbar-content">
+      <button class="menu-toggle" id="menuToggle" onclick="toggleSidebar()">☰</button>
 
-<div>
-<img src="hero-liga.jpeg">
-</div>
-</section>
+      <div class="brand">
+        <img src="logo-liga.jfif" alt="Logo Liga Goiana">
+        <div class="brand-text">
+          <strong>Liga Goiana de Futebol de Base</strong>
+          <span>Onde o talento encontra o futuro</span>
+        </div>
+      </div>
 
-<!-- NOTÍCIAS (SLIDER) -->
-<section class="wrap">
-<h2>Últimas Notícias</h2>
+      <div class="top-links">
+        <a href="index.html" class="active">Início</a>
+        <a href="campeonatos.html">Campeonato</a>
+        <a href="categorias.html">Categoria</a>
+        <a href="times.html">Times</a>
+        <a href="jogadores.html">Jogadores</a>
+        <a href="tecnicos.html">Técnicos</a>
+        <a href="sumulas.html">Súmulas</a>
+        <a href="tabela.html">Tabelas</a>
+        <a href="artilharia.html">Artilharia</a>
+        <a href="classificacao.html">Classificação</a>
+        <a href="jogos.html">Jogos</a>
+        <a href="noticias.html">Notícias</a>
+        <a href="#contato">Contato</a>
+      </div>
 
-<div class="news-slider" id="newsSlider">
+      <div class="top-actions">
+        <button class="btn-top" onclick="window.location.href='login.html'">🔐 Login / Cadastro</button>
+      </div>
+    </div>
+  </header>
 
-<div class="news-item">
-<img src="fundo.png" width="100%">
-<p>Abertura oficial da temporada</p>
-</div>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-panel">
+        <div class="hero-copy">
+          <span class="tag">Liga Oficial</span>
+          <h1>Bem-vindo à Liga Goiana de Base</h1>
+          <div class="subtitle">Onde o talento encontra o futuro!</div>
+          <p class="desc">
+            Competição, formação e desenvolvimento para revelar talentos
+            e fortalecer o futebol de base em Goiás.
+          </p>
 
-<div class="news-item">
-<img src="copa-uniao.jpeg" width="100%">
-<p>Copa União confirmada</p>
-</div>
+          <div class="hero-actions">
+            <a href="campeonatos.html" class="btn-primary">🏆 Ver Campeonatos</a>
+            <a href="times.html" class="btn-secondary">👥 Conhecer Equipes</a>
+            <a href="login.html" class="btn-secondary">📝 Login / Cadastro</a>
+          </div>
+        </div>
 
-<div class="news-item">
-<img src="hero-liga.jpeg" width="100%">
-<p>Mais clubes fortalecem a liga</p>
-</div>
+        <div class="hero-art">
+          <img src="hero-liga.jpeg" alt="Hero Liga Goiana" onerror="this.src='fundo.png'">
+        </div>
+      </div>
+    </div>
+  </section>
 
-</div>
-</section>
+  <section class="conteudo">
+    <main class="wrap">
 
-<!-- CTA -->
-<section class="wrap">
-<h2>Faça parte dessa história!</h2>
-<p>Inscreva sua equipe</p>
+      <!-- NOTÍCIAS HORIZONTAL -->
+      <section class="panel" style="margin-bottom:22px;">
+        <div class="panel-head">
+          <div class="panel-head-title">
+            <div class="panel-head-icon">
+              <svg viewBox="0 0 24 24">
+                <path d="M4 19V5h16v14"></path>
+                <path d="M8 9h8"></path>
+                <path d="M8 13h8"></path>
+                <path d="M8 17h5"></path>
+              </svg>
+            </div>
+            <h2>Últimas Notícias</h2>
+          </div>
+          <a href="noticias.html">Ver notícias →</a>
+        </div>
 
-<a href="https://wa.me/5562981916316" class="btn-primary">
-Quero Participar
-</a>
-</section>
+        <div class="news-slider-wrap">
+          <div class="news-slider-single" id="newsSliderTrack"></div>
+        </div>
+      </section>
 
-<!-- CARDS -->
-<div class="cards-pilares wrap">
-<div class="pillar">Competição de Alto Nível</div>
-<div class="pillar">Formação de Atletas</div>
-<div class="pillar">Desenvolvimento</div>
-<div class="pillar">Respeito</div>
-</div>
+      <div class="mid-grid">
+        <!-- JOGOS -->
+        <section class="panel">
+          <div class="panel-head">
+            <div class="panel-head-title">
+              <div class="panel-head-icon">
+                <svg viewBox="0 0 24 24">
+                  <rect x="3" y="5" width="18" height="16" rx="2"></rect>
+                  <path d="M8 3v4"></path>
+                  <path d="M16 3v4"></path>
+                  <path d="M3 10h18"></path>
+                </svg>
+              </div>
+              <h2>Próximos Jogos</h2>
+            </div>
+            <a href="jogos.html">Ver todos →</a>
+          </div>
 
-<!-- FOOTER -->
-<footer>
-<div class="wrap">
-<p>📱 <a href="https://wa.me/5562981916316">Clique para WhatsApp</a></p>
-<p>📧 ligagoianaoficial@gmail.com</p>
-<p>📍 Goiânia - GO</p>
+          <table class="match-table">
+            <thead>
+              <tr>
+                <th>Data e Hora</th>
+                <th>Confronto</th>
+                <th>Categoria</th>
+                <th>Local</th>
+              </tr>
+            </thead>
+            <tbody id="gamesTableBody"></tbody>
+          </table>
+        </section>
 
-<div>
-<a href="https://www.instagram.com/liga_lgf" target="_blank">Instagram</a> |
-<a href="#">Facebook</a> |
-<a href="#">YouTube</a>
-</div>
+        <!-- NOTÍCIAS VERTICAL -->
+        <aside class="panel">
+          <div class="panel-head">
+            <div class="panel-head-title">
+              <div class="panel-head-icon">
+                <svg viewBox="0 0 24 24">
+                  <path d="M4 19V5h16v14"></path>
+                  <path d="M8 9h8"></path>
+                  <path d="M8 13h8"></path>
+                  <path d="M8 17h5"></path>
+                </svg>
+              </div>
+              <h2>Últimas Notícias</h2>
+            </div>
+            <a href="noticias.html">Ver notícias →</a>
+          </div>
 
-</div>
-</footer>
+          <div class="news-vertical-wrap">
+            <div class="news-vertical-track" id="newsVerticalTrack"></div>
+          </div>
+        </aside>
+      </div>
 
-<script>
-// MENU
-function toggleSidebar(){
-  document.getElementById('sidebar').classList.toggle('open');
-}
+      <section class="cta">
+        <div class="cta-box">
+          <div>
+            <h3>Faça parte dessa história!</h3>
+            <p>Inscreva sua equipe e viva o futebol de base no mais alto nível da Liga Goiana de Futebol de Base.</p>
+          </div>
 
-// FECHAR AO CLICAR FORA
-document.addEventListener('click', function(e) {
-  const sidebar = document.getElementById('sidebar');
-  const botao = document.querySelector('.menu-toggle');
+          <div>
+            <a
+              href="https://wa.me/5562981916316?text=Ol%C3%A1%2C%20quero%20participar%20da%20Liga%20Goiana%20de%20Futebol%20de%20Base."
+              class="btn-primary"
+              target="_blank"
+            >
+              🙋 Quero Participar!
+            </a>
+          </div>
+        </div>
+      </section>
 
-  if (!sidebar.contains(e.target) && !botao.contains(e.target)) {
-    sidebar.classList.remove('open');
-  }
-});
+      <div class="cards-pilares">
+        <div class="pillar">
+          <div class="pillar-icon">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 3l1.8 3.6 4 .6-2.9 2.8.7 4-3.6-1.9-3.6 1.9.7-4-2.9-2.8 4-.6"></path>
+              <path d="M7 15c1.2 2.7 2.9 4 5 4s3.8-1.3 5-4"></path>
+            </svg>
+          </div>
+          <h3>Competição de Alto Nível</h3>
+          <p>Jogos organizados e arbitragem qualificada para valorizar cada atleta.</p>
+        </div>
 
-// SLIDER NOTÍCIAS
-let index = 0;
-const items = document.querySelectorAll('.news-item');
+        <div class="pillar">
+          <div class="pillar-icon">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 3l7 3v5c0 5-3.5 8-7 10-3.5-2-7-5-7-10V6z"></path>
+              <path d="M9.5 12.5l1.7 1.7 3.3-3.7"></path>
+            </svg>
+          </div>
+          <h3>Formação de Atletas</h3>
+          <p>Desenvolvimento dentro e fora de campo, com foco em evolução e oportunidade.</p>
+        </div>
 
-function showNews(){
-  items.forEach((el,i)=>{
-    el.style.opacity = (i === index) ? '1' : '0';
-  });
-  index = (index + 1) % items.length;
-}
-setInterval(showNews, 3000);
-showNews();
+        <div class="pillar">
+          <div class="pillar-icon">
+            <svg viewBox="0 0 24 24">
+              <path d="M4 18h16"></path>
+              <path d="M6 16V9"></path>
+              <path d="M12 16V6"></path>
+              <path d="M18 16V11"></path>
+              <path d="M14 8l4-4"></path>
+              <path d="M18 4h-4"></path>
+              <path d="M18 4v4"></path>
+            </svg>
+          </div>
+          <h3>Desenvolvimento que Transforma</h3>
+          <p>Uma estrutura criada para impulsionar talentos e fortalecer o futebol de base em Goiás.</p>
+        </div>
 
-</script>
+        <div class="pillar">
+          <div class="pillar-icon">
+            <svg viewBox="0 0 24 24">
+              <path d="M8 12l2-2a2 2 0 0 1 3 0l3 3"></path>
+              <path d="M7 13l-2 2a2 2 0 0 0 0 3"></path>
+              <path d="M17 11l2-2a2 2 0 0 1 0-3"></path>
+              <path d="M9 17l1 1a2 2 0 0 0 3 0l1-1"></path>
+            </svg>
+          </div>
+          <h3>Respeito, União e Propósito</h3>
+          <p>Valores que formam grandes equipes e campeões para a vida inteira.</p>
+        </div>
+      </div>
 
+    </main>
+  </section>
+
+  <footer id="contato">
+    <div class="wrap footer-top">
+      <div>
+        <div class="footer-brand">
+          <img src="logo-liga.jfif" alt="Logo da Liga">
+          <div>
+            <h4>Liga Goiana</h4>
+            <p>Liga Goiana de Futebol de Base</p>
+            <p>Onde o talento encontra o futuro.</p>
+
+            <div class="social">
+              <a href="instagram://user?username=liga_lgf" title="Instagram">📸</a>
+              <a href="fb://facewebmodal/f?href=https://www.facebook.com/" title="Facebook">📘</a>
+              <a href="vnd.youtube://" title="YouTube">▶️</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <h4>Acesso Rápido</h4>
+        <a href="index.html">Início</a>
+        <a href="campeonatos.html">Campeonato</a>
+        <a href="categorias.html">Categoria</a>
+        <a href="times.html">Times</a>
+        <a href="jogos.html">Jogos</a>
+        <a href="tabela.html">Tabelas</a>
+        <a href="noticias.html">Notícias</a>
+        <a href="#contato">Contato</a>
+      </div>
+
+      <div>
+        <h4>Menu Público</h4>
+        <a href="artilharia.html">Artilharia</a>
+        <a href="classificacao.html">Classificação</a>
+        <a href="jogadores.html">Jogadores</a>
+        <a href="tecnicos.html">Técnicos</a>
+        <a href="sumulas.html">Súmulas</a>
+        <a href="login.html">Login / Cadastro</a>
+      </div>
+
+      <div>
+        <h4>Contato</h4>
+        <a href="https://wa.me/5562984284785?text=Ol%C3%A1%2C%20vim%20pelo%20site%20da%20Liga%20Goiana%20de%20Futebol%20de%20Base." target="_blank">(62) 98428-4785</a>
+        <a href="mailto:ligagoianaoficial@gmail.com">ligagoianaoficial@gmail.com</a>
+        <a href="https://ligagoianiafutebol.com" target="_blank">ligagoianiafutebol.com</a>
+        <p>Goiânia - GO</p>
+      </div>
+    </div>
+
+    <div class="wrap copyright">
+      © 2026 Liga Goiana de Futebol de Base. Todos os direitos reservados.
+    </div>
+  </footer>
+
+  <script>
+    const noticiasPadrao = [
+      {
+        titulo: "Abertura oficial da temporada",
+        resumo: "A Liga Goiana inicia mais um ciclo com grandes expectativas e fortes equipes em todas as categorias.",
+        data: "15 Abr 2026",
+        imagem: "fundo.png"
+      },
+      {
+        titulo: "Copa União de Base confirmada",
+        resumo: "Categorias definidas e confrontos prometem grandes jogos, emoção e muito talento em campo.",
+        data: "10 Abr 2026",
+        imagem: "copa-uniao.jpeg"
+      },
+      {
+        titulo: "Mais clubes fortalecem a Liga",
+        resumo: "Projetos de todo o estado elevam ainda mais o nível técnico da competição e da formação.",
+        data: "05 Abr 2026",
+        imagem: "hero-liga.jpeg"
+      }
+    ];
+
+    const jogosPadrao = [
+      {
+        data: "2026-04-20",
+        hora: "09:00",
+        mandante: "Atlético GO",
+        visitante: "Vila Nova",
+        categoria: "Sub-15",
+        local: "Campo 01",
+        status: "agendado",
+        escudoMandante: "atletico-go.png",
+        escudoVisitante: "vila-nova.png"
+      },
+      {
+        data: "2026-04-20",
+        hora: "10:30",
+        mandante: "Campinas",
+        visitante: "Hidrolândia",
+        categoria: "Sub-13",
+        local: "Campo 02",
+        status: "agendado",
+        escudoMandante: "campinas.png",
+        escudoVisitante: "hidrolandia.png"
+      },
+      {
+        data: "2026-04-20",
+        hora: "14:00",
+        mandante: "União",
+        visitante: "Independência",
+        categoria: "Sub-17",
+        local: "Estádio Regional",
+        status: "agendado",
+        escudoMandante: "uniao.png",
+        escudoVisitante: "independencia.png"
+      },
+      {
+        data: "2026-04-21",
+        hora: "08:30",
+        mandante: "AC Esporte",
+        visitante: "B14 Futebol",
+        categoria: "Sub-11",
+        local: "Campo Principal",
+        status: "agendado",
+        escudoMandante: "ac-esporte.png",
+        escudoVisitante: "b14.png"
+      }
+    ];
+
+    let noticiaAtual = 0;
+    let timerNoticias = null;
+
+    function toggleSidebar() {
+      if (window.innerWidth <= 1200) {
+        document.getElementById("sidebar").classList.toggle("open");
+      } else {
+        document.body.classList.toggle("sidebar-collapsed");
+
+        if (document.body.classList.contains("sidebar-collapsed")) {
+          localStorage.setItem("liga_sidebar_state", "fechada");
+        } else {
+          localStorage.setItem("liga_sidebar_state", "aberta");
+        }
+      }
+    }
+
+    function formatarDataBR(dataIso, hora) {
+      try {
+        const [ano, mes, dia] = dataIso.split("-");
+        return `${dia}/${mes} - ${hora}`;
+      } catch {
+        return `${dataIso} - ${hora}`;
+      }
+    }
+
+    function carregarNoticias() {
+      try {
+        const noticiasSalvas = JSON.parse(localStorage.getItem("liga_noticias"));
+        if (Array.isArray(noticiasSalvas) && noticiasSalvas.length) {
+          return noticiasSalvas;
+        }
+      } catch (e) {}
+      return noticiasPadrao;
+    }
+
+    function carregarJogos() {
+      try {
+        const jogosSalvos = JSON.parse(localStorage.getItem("liga_jogos"));
+        if (Array.isArray(jogosSalvos) && jogosSalvos.length) {
+          return jogosSalvos;
+        }
+      } catch (e) {}
+      return jogosPadrao;
+    }
+
+    function renderNoticias() {
+      const noticias = carregarNoticias();
+      const slider = document.getElementById("newsSliderTrack");
+      const vertical = document.getElementById("newsVerticalTrack");
+      const noticiasDuplicadas = [...noticias, ...noticias];
+
+      slider.innerHTML = noticias.map((noticia, index) => `
+        <article class="news-slide ${index === 0 ? "active" : ""}">
+          <img src="${noticia.imagem || 'fundo.png'}" alt="${noticia.titulo}" onerror="this.src='fundo.png'">
+          <strong>${noticia.titulo}</strong>
+          <p>${noticia.resumo}</p>
+          <span>${noticia.data}</span>
+        </article>
+      `).join("");
+
+      vertical.innerHTML = noticiasDuplicadas.map(noticia => `
+        <div class="news-item">
+          <img src="${noticia.imagem || 'fundo.png'}" alt="${noticia.titulo}" onerror="this.src='fundo.png'">
+          <div>
+            <strong>${noticia.titulo}</strong>
+            <p>${noticia.resumo}</p>
+            <span>${noticia.data}</span>
+          </div>
+        </div>
+      `).join("");
+
+      iniciarSliderNoticias();
+    }
+
+    function iniciarSliderNoticias() {
+      const slides = document.querySelectorAll("#newsSliderTrack .news-slide");
+      if (!slides.length) return;
+
+      if (timerNoticias) clearInterval(timerNoticias);
+
+      noticiaAtual = 0;
+
+      timerNoticias = setInterval(() => {
+        slides[noticiaAtual].classList.remove("active");
+        noticiaAtual = (noticiaAtual + 1) % slides.length;
+        slides[noticiaAtual].classList.add("active");
+      }, 3500);
+    }
+
+    function renderJogos() {
+      const jogos = carregarJogos();
+      const tabela = document.getElementById("gamesTableBody");
+      const agora = new Date();
+
+      const futuros = jogos.filter(jogo => {
+        if (jogo.status === "encerrado") return false;
+        const dataHora = new Date(`${jogo.data}T${jogo.hora || "00:00"}:00`);
+        return dataHora >= agora;
+      }).sort((a, b) => new Date(`${a.data}T${a.hora}`) - new Date(`${b.data}T${b.hora}`));
+
+      const encerrados = jogos.filter(jogo => {
+        if (jogo.status === "encerrado") return true;
+        const dataHora = new Date(`${jogo.data}T${jogo.hora || "00:00"}:00`);
+        return dataHora < agora;
+      }).sort((a, b) => new Date(`${b.data}T${b.hora}`) - new Date(`${a.data}T${a.hora}`));
+
+      const listaFinal = futuros.length ? futuros.slice(0, 6) : encerrados.slice(0, 6);
+
+      if (!listaFinal.length) {
+        tabela.innerHTML = `
+          <tr>
+            <td colspan="4" style="text-align:center; padding:22px;">
+              Nenhum jogo encontrado no momento.
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tabela.innerHTML = listaFinal.map(jogo => `
+        <tr>
+          <td>${formatarDataBR(jogo.data, jogo.hora)}</td>
+          <td>
+            <div class="confronto">
+              <div class="time-mini">
+                <img src="${jogo.escudoMandante || 'logo-liga.jfif'}" onerror="this.src='logo-liga.jfif'" class="escudo" alt="${jogo.mandante}">
+                <span>${jogo.mandante}</span>
+              </div>
+              <span class="vs">X</span>
+              <div class="time-mini">
+                <img src="${jogo.escudoVisitante || 'logo-liga.jfif'}" onerror="this.src='logo-liga.jfif'" class="escudo" alt="${jogo.visitante}">
+                <span>${jogo.visitante}</span>
+              </div>
+            </div>
+          </td>
+          <td><span class="badge">${jogo.categoria || "-"}</span></td>
+          <td>${jogo.local || "-"}</td>
+        </tr>
+      `).join("");
+    }
+
+    function configurarLinksSociais() {
+      const links = document.querySelectorAll(".social a");
+
+      if (links[0]) {
+        links[0].addEventListener("click", function(e) {
+          e.preventDefault();
+          const appLink = "instagram://user?username=liga_lgf";
+          const webLink = "https://www.instagram.com/liga_lgf?igsh=MWE0M2RiNnU1aWJtaA==";
+          window.location.href = appLink;
+          setTimeout(() => window.open(webLink, "_blank"), 900);
+        });
+      }
+
+      if (links[1]) {
+        links[1].addEventListener("click", function(e) {
+          e.preventDefault();
+          const appLink = "fb://facewebmodal/f?href=https://www.facebook.com/";
+          const webLink = "https://www.facebook.com/";
+          window.location.href = appLink;
+          setTimeout(() => window.open(webLink, "_blank"), 900);
+        });
+      }
+
+      if (links[2]) {
+        links[2].addEventListener("click", function(e) {
+          e.preventDefault();
+          const appLink = "vnd.youtube://";
+          const webLink = "https://www.youtube.com/";
+          window.location.href = appLink;
+          setTimeout(() => window.open(webLink, "_blank"), 900);
+        });
+      }
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      const sidebarState = localStorage.getItem("liga_sidebar_state");
+
+      if (window.innerWidth > 1200 && sidebarState === "fechada") {
+        document.body.classList.add("sidebar-collapsed");
+      }
+
+      renderNoticias();
+      renderJogos();
+      configurarLinksSociais();
+    });
+
+    window.addEventListener("resize", () => {
+      const sidebar = document.getElementById("sidebar");
+
+      if (window.innerWidth <= 1200) {
+        document.body.classList.remove("sidebar-collapsed");
+      } else {
+        sidebar.classList.remove("open");
+      }
+    });
+
+    document.addEventListener("click", function(e){
+      const sidebar = document.getElementById("sidebar");
+      const button = document.getElementById("menuToggle");
+
+      if (window.innerWidth <= 1200) {
+        if (sidebar.classList.contains("open")) {
+          if (!sidebar.contains(e.target) && !button.contains(e.target)) {
+            sidebar.classList.remove("open");
+          }
+        }
+      } else {
+        if (!document.body.classList.contains("sidebar-collapsed")) {
+          if (!sidebar.contains(e.target) && !button.contains(e.target)) {
+            document.body.classList.add("sidebar-collapsed");
+            localStorage.setItem("liga_sidebar_state", "fechada");
+          }
+        }
+      }
+    });
+  </script>
 </body>
 </html>
