@@ -2,46 +2,179 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Súmulas - Admin</title>
+<title>Súmula</title>
+
 <style>
-body{margin:0;font-family:Arial;background:#0b1f3a;color:white;}
-header{background:#08172c;padding:15px;text-align:center;font-size:22px;font-weight:bold;border-bottom:3px solid #f7c600;}
-.container{padding:15px;}
-.btn{background:#f7c600;color:black;padding:10px;border-radius:8px;text-decoration:none;display:inline-block;margin-bottom:15px;font-weight:bold;}
-.card{background:#102a52;padding:15px;border-radius:10px;margin-bottom:10px;}
-.title{font-weight:bold;margin-bottom:6px;}
-.info{font-size:13px;opacity:.85;margin-bottom:8px;}
-.actions a{background:#1a3f73;padding:6px 10px;border-radius:6px;color:white;text-decoration:none;margin-right:5px;font-size:12px;}
-.back{display:block;margin-top:10px;color:#f7c600;text-decoration:none;font-weight:bold;}
+body{
+margin:0;
+font-family:Arial;
+background:#0b1f3a;
+color:white;
+}
+
+.container{
+padding:20px;
+max-width:1000px;
+margin:auto;
+}
+
+.header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:20px;
+}
+
+.logo{
+height:60px;
+}
+
+.times{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:20px;
+}
+
+.time{
+text-align:center;
+}
+
+.jogadores{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px;
+}
+
+.card{
+background:#102a52;
+padding:10px;
+border-radius:8px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+input{
+width:60px;
+padding:5px;
+border-radius:5px;
+border:none;
+}
+
+textarea{
+width:100%;
+margin-top:15px;
+padding:10px;
+border-radius:8px;
+border:none;
+}
+
+button{
+margin-top:15px;
+padding:10px;
+background:#f7c600;
+border:none;
+border-radius:8px;
+font-weight:bold;
+cursor:pointer;
+}
 </style>
 </head>
+
 <body>
-<header>Súmulas</header>
+
 <div class="container">
-<a class="btn">+ Nova Súmula</a>
 
-<div class="card">
-  <div class="title">Atlético GO x Vila Nova</div>
-  <div class="info">Sub-15 • Código: JG-001 • Status: Pendente</div>
-  <div class="actions">
-    <a>Abrir</a>
-    <a>Editar</a>
-    <a>Imprimir</a>
-  </div>
+<div class="header">
+<img src="logo-liga.jfif" class="logo">
+<h2>SÚMULA OFICIAL</h2>
+<img src="logo-campeonato.png" class="logo">
 </div>
 
-<div class="card">
-  <div class="title">Campinas x Hidrolândia</div>
-  <div class="info">Sub-13 • Código: JG-002 • Status: Finalizada</div>
-  <div class="actions">
-    <a>Ver</a>
-    <a>Reabrir</a>
-    <a>Imprimir</a>
-  </div>
+<div class="times">
+<div class="time">
+<h3 id="timeA"></h3>
+<div id="jogadoresA"></div>
 </div>
 
-<a href="admin.html" class="back">← Voltar</a>
+<div class="time">
+<h3 id="timeB"></h3>
+<div id="jogadoresB"></div>
 </div>
+</div>
+
+<textarea id="observacoes" placeholder="Observações do árbitro..."></textarea>
+
+<button onclick="salvarSumula()">Finalizar Súmula</button>
+
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
+import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCyArj4yRlEl-yibkc0VEmL_4UJpRHHQSc",
+  authDomain: "liga-goiana-base.firebaseapp.com",
+  projectId: "liga-goiana-base",
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// EXEMPLO: pegar primeiro jogo
+async function carregar(){
+
+const jogos = await getDocs(collection(db,"jogos"));
+const jogo = jogos.docs[0].data();
+
+document.getElementById("timeA").innerText = jogo.timeA;
+document.getElementById("timeB").innerText = jogo.timeB;
+
+// puxar jogadores
+const jogadoresSnap = await getDocs(collection(db,"jogadores"));
+
+jogadoresSnap.forEach(doc=>{
+  const j = doc.data();
+
+  if(j.time === jogo.timeA){
+    document.getElementById("jogadoresA").innerHTML += `
+      <div class="card">
+        ${j.nome}
+        <input placeholder="#" />
+      </div>
+    `;
+  }
+
+  if(j.time === jogo.timeB){
+    document.getElementById("jogadoresB").innerHTML += `
+      <div class="card">
+        ${j.nome}
+        <input placeholder="#" />
+      </div>
+    `;
+  }
+
+});
+
+}
+
+window.salvarSumula = async function(){
+
+const obs = document.getElementById("observacoes").value;
+
+await addDoc(collection(db,"sumulas"),{
+  observacoes: obs,
+  data: new Date()
+});
+
+alert("Súmula salva!");
+}
+
+carregar();
+
+</script>
+
 </body>
 </html>
