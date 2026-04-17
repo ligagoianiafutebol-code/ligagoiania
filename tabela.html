@@ -7,137 +7,329 @@
 
 <style>
 body{
-font-family: Arial;
-margin:0;
-background:#0b1f3a;
-color:white;
+  font-family:Arial;
+  margin:0;
+  background:#0b1f3a;
+  color:white;
 }
-
 header{
-background:#0b1f3a;
-padding:15px;
-text-align:center;
-font-size:22px;
-font-weight:bold;
-border-bottom:3px solid #f7c600;
+  background:#08172c;
+  padding:18px;
+  text-align:center;
+  font-size:24px;
+  font-weight:bold;
+  border-bottom:3px solid #f7c600;
 }
-
 .menu{
-display:flex;
-justify-content:space-around;
-background:#102a52;
-padding:12px;
-flex-wrap:wrap;
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  background:#102a52;
+  padding:12px;
+  flex-wrap:wrap;
 }
-
 .menu a{
-color:white;
-text-decoration:none;
-font-weight:bold;
-font-size:14px;
+  color:white;
+  text-decoration:none;
+  font-weight:bold;
+  font-size:14px;
+  background:#0d2346;
+  padding:10px 14px;
+  border-radius:8px;
 }
-
+.menu a.ativo{
+  background:#f7c600;
+  color:black;
+}
 .container{
-padding:10px;
+  max-width:1200px;
+  margin:auto;
+  padding:20px;
 }
-
+.filtros{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  margin-bottom:20px;
+}
+select{
+  width:100%;
+  padding:12px;
+  border:none;
+  border-radius:8px;
+  box-sizing:border-box;
+}
+.titulo{
+  font-size:22px;
+  color:#f7c600;
+  font-weight:bold;
+  margin-bottom:14px;
+}
 .table{
-background:#102a52;
-border-radius:10px;
-overflow:hidden;
+  background:#102a52;
+  border-radius:12px;
+  overflow:hidden;
+  border:1px solid rgba(255,230,0,.12);
 }
-
 .row{
-display:flex;
-padding:10px;
-border-bottom:1px solid rgba(255,255,255,0.1);
-font-size:14px;
+  display:flex;
+  align-items:center;
+  padding:12px 8px;
+  border-bottom:1px solid rgba(255,255,255,.08);
+  min-width:980px;
 }
-
 .row.header{
-background:#081a33;
-font-weight:bold;
+  background:#081a33;
+  color:#f7c600;
+  font-weight:bold;
 }
-
-.col-pos{width:30px}
-.col-time{flex:1}
-.col-p{width:40px;text-align:center}
-.col-j{width:40px;text-align:center}
-.col-sg{width:40px;text-align:center}
-
+.col-pos{width:45px;text-align:center;}
+.col-time{flex:1;padding:0 8px;}
+.col{width:55px;text-align:center;}
 .team{
-display:flex;
-align-items:center;
-gap:8px;
+  display:flex;
+  align-items:center;
+  gap:10px;
 }
-
-.badge{
-width:20px;
-height:20px;
-background:#f7c600;
-border-radius:50%;
+.escudo{
+  width:26px;
+  height:26px;
+  object-fit:contain;
+  border-radius:50%;
+  background:#1a3f73;
+}
+.box-tabela{
+  overflow-x:auto;
+}
+.vazio{
+  background:#102a52;
+  border-radius:12px;
+  padding:30px;
+  text-align:center;
+}
+@media (max-width: 900px){
+  .filtros{
+    grid-template-columns:1fr;
+  }
 }
 </style>
-
 </head>
 <body>
 
-<header>
-LIGA GOIÂNIA
-</header>
+<header>LIGA GOIANA DE FUTEBOL DE BASE</header>
 
 <div class="menu">
-<a href="index.html">Campeonatos</a>
-<a href="tabela.html">Tabela</a>
-<a href="jogos.html">Jogos</a>
-<a href="artilharia.html">Artilharia</a>
-<a href="cartoes.html">Cartões</a>
-<a href="login.html">Login</a>
+  <a href="index.html">Campeonatos</a>
+  <a href="tabela.html" class="ativo">Tabela</a>
+  <a href="jogos.html">Jogos</a>
+  <a href="artilharia.html">Artilharia</a>
+  <a href="cartoes.html">Cartões</a>
+  <a href="login.html">Login</a>
 </div>
 
 <div class="container">
+  <div class="filtros">
+    <select id="filtroCampeonato" onchange="carregarTabela()">
+      <option value="">Selecione o campeonato</option>
+    </select>
 
-<h3>Tabela - Sub-15</h3>
+    <select id="filtroCategoria" onchange="carregarTabela()">
+      <option value="">Selecione a categoria</option>
+    </select>
+  </div>
 
-<div class="table">
+  <div class="titulo" id="tituloTabela">Tabela</div>
 
-<div class="row header">
-<div class="col-pos">#</div>
-<div class="col-time">Time</div>
-<div class="col-p">P</div>
-<div class="col-j">J</div>
-<div class="col-sg">SG</div>
-</div>
-
-<div class="row">
-<div class="col-pos">1</div>
-<div class="col-time">
-<div class="team">
-<div class="badge"></div>
-Atlético GO
-</div>
-</div>
-<div class="col-p">9</div>
-<div class="col-j">3</div>
-<div class="col-sg">5</div>
+  <div id="areaTabela"></div>
 </div>
 
-<div class="row">
-<div class="col-pos">2</div>
-<div class="col-time">
-<div class="team">
-<div class="badge"></div>
-Vila Nova
-</div>
-</div>
-<div class="col-p">7</div>
-<div class="col-j">3</div>
-<div class="col-sg">3</div>
-</div>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
+import {
+  getFirestore,
+  collection,
+  getDocs
+} from "https://www.gstatic.com/firebasejs/12.12.0/firebase-firestore.js";
 
-</div>
+const firebaseConfig = {
+  apiKey: "AIzaSyCyArj4yRlEl-yibkc0VEmL_4UJpRHHQSc",
+  authDomain: "liga-goiana-base.firebaseapp.com",
+  projectId: "liga-goiana-base",
+  storageBucket: "liga-goiana-base.appspot.com",
+  messagingSenderId: "952863591183",
+  appId: "1:952863591183:web:4eea34f494ba2dd754cc7a"
+};
 
-</div>
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+let jogos = [];
+let times = [];
+
+async function carregarDados(){
+  const snapJogos = await getDocs(collection(db, "jogos"));
+  jogos = [];
+  snapJogos.forEach(docSnap => {
+    jogos.push({ id: docSnap.id, ...docSnap.data() });
+  });
+
+  const snapTimes = await getDocs(collection(db, "times"));
+  times = [];
+  snapTimes.forEach(docSnap => {
+    times.push({ id: docSnap.id, ...docSnap.data() });
+  });
+}
+
+function pegarEscudo(nomeTime){
+  const time = times.find(t => t.nome === nomeTime);
+  return time?.escudo || "logo-liga.jfif";
+}
+
+function preencherFiltros(){
+  const selectCamp = document.getElementById("filtroCampeonato");
+  const selectCat = document.getElementById("filtroCategoria");
+
+  const campeonatos = [...new Set(jogos.map(j => j.campeonato).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"pt-BR"));
+  const categorias = [...new Set(jogos.map(j => j.categoria).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"pt-BR"));
+
+  selectCamp.innerHTML = '<option value="">Selecione o campeonato</option>';
+  selectCat.innerHTML = '<option value="">Selecione a categoria</option>';
+
+  campeonatos.forEach(c => {
+    selectCamp.innerHTML += `<option value="${c}">${c}</option>`;
+  });
+
+  categorias.forEach(c => {
+    selectCat.innerHTML += `<option value="${c}">${c}</option>`;
+  });
+}
+
+function criarTime(nome){
+  return {
+    nome,
+    pontos: 0,
+    jogos: 0,
+    vitorias: 0,
+    empates: 0,
+    derrotas: 0,
+    gp: 0,
+    gc: 0,
+    sg: 0
+  };
+}
+
+window.carregarTabela = function(){
+  const campeonato = document.getElementById("filtroCampeonato").value;
+  const categoria = document.getElementById("filtroCategoria").value;
+  const area = document.getElementById("areaTabela");
+
+  let jogosFiltrados = jogos.filter(j =>
+    j.status === "sumula_enviada" &&
+    (!campeonato || j.campeonato === campeonato) &&
+    (!categoria || j.categoria === categoria)
+  );
+
+  document.getElementById("tituloTabela").textContent =
+    `Tabela${categoria ? " - " + categoria : ""}${campeonato ? " | " + campeonato : ""}`;
+
+  if(jogosFiltrados.length === 0){
+    area.innerHTML = `<div class="vazio">Nenhum jogo finalizado para montar a tabela.</div>`;
+    return;
+  }
+
+  const tabela = {};
+
+  jogosFiltrados.forEach(j => {
+    if(!tabela[j.timeA]) tabela[j.timeA] = criarTime(j.timeA);
+    if(!tabela[j.timeB]) tabela[j.timeB] = criarTime(j.timeB);
+
+    const a = tabela[j.timeA];
+    const b = tabela[j.timeB];
+
+    const golsA = Number(j.golsA || 0);
+    const golsB = Number(j.golsB || 0);
+
+    a.jogos++;
+    b.jogos++;
+
+    a.gp += golsA;
+    a.gc += golsB;
+    a.sg = a.gp - a.gc;
+
+    b.gp += golsB;
+    b.gc += golsA;
+    b.sg = b.gp - b.gc;
+
+    if(golsA > golsB){
+      a.vitorias++;
+      a.pontos += 3;
+      b.derrotas++;
+    }else if(golsB > golsA){
+      b.vitorias++;
+      b.pontos += 3;
+      a.derrotas++;
+    }else{
+      a.empates++;
+      b.empates++;
+      a.pontos += 1;
+      b.pontos += 1;
+    }
+  });
+
+  let lista = Object.values(tabela);
+
+  lista.sort((a,b) => {
+    if(b.pontos !== a.pontos) return b.pontos - a.pontos;
+    if(b.vitorias !== a.vitorias) return b.vitorias - a.vitorias;
+    if(b.sg !== a.sg) return b.sg - a.sg;
+    if(b.gp !== a.gp) return b.gp - a.gp;
+    return a.nome.localeCompare(b.nome, "pt-BR");
+  });
+
+  area.innerHTML = `
+    <div class="box-tabela">
+      <div class="table">
+        <div class="row header">
+          <div class="col-pos">#</div>
+          <div class="col-time">Time</div>
+          <div class="col">P</div>
+          <div class="col">J</div>
+          <div class="col">V</div>
+          <div class="col">E</div>
+          <div class="col">D</div>
+          <div class="col">GP</div>
+          <div class="col">GC</div>
+          <div class="col">SG</div>
+        </div>
+
+        ${lista.map((t, index) => `
+          <div class="row">
+            <div class="col-pos">${index + 1}</div>
+            <div class="col-time">
+              <div class="team">
+                <img src="${pegarEscudo(t.nome)}" class="escudo">
+                ${t.nome}
+              </div>
+            </div>
+            <div class="col">${t.pontos}</div>
+            <div class="col">${t.jogos}</div>
+            <div class="col">${t.vitorias}</div>
+            <div class="col">${t.empates}</div>
+            <div class="col">${t.derrotas}</div>
+            <div class="col">${t.gp}</div>
+            <div class="col">${t.gc}</div>
+            <div class="col">${t.sg}</div>
+          </div>
+        `).join("")}
+      </div>
+    </div>
+  `;
+};
+
+await carregarDados();
+preencherFiltros();
+carregarTabela();
+</script>
 
 </body>
 </html>
