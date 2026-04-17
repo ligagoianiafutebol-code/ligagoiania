@@ -1,283 +1,414 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Liga Goiana de Futebol de Base</title>
-  <style>
-    :root{
-      --yellow:#ffe600;
-      --yellow-2:#ffd000;
-      --white:#ffffff;
-      --muted:#dbe3ee;
-      --shadow:0 12px 28px rgba(0,0,0,.35);
-      --sidebar-width:270px;
-    }
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="brand">
+      <img src="logo-liga.jfif" alt="Logo Liga Goiana">
+      <div class="brand-text">
+        <strong>Liga Goiana de Futebol de Base</strong>
+        <span>Onde o talento encontra o futuro</span>
+      </div>
+    </div>
+  </div>
 
-    *{ box-sizing:border-box; }
-    html{ scroll-behavior:smooth; }
+  <div class="menu-title">Menu Público</div>
+  <div class="side-menu">
+    <a href="tabela.html">Tabelas</a>
+    <a href="artilharia.html">Artilharia</a>
+    <a href="classificacao.html">Classificação</a>
+    <a href="jogos.html">Jogos que vão acontecer</a>
+    <a href="campeonatos.html">Campeonato</a>
+    <a href="categorias.html">Categoria</a>
+    <a href="times.html">Times</a>
+    <a href="jogadores.html">Jogadores</a>
+    <a href="tecnicos.html">Técnicos</a>
+    <a href="sumulas.html">Súmulas</a>
+    <a href="noticias.html">Notícias</a>
+    <a href="index.html" class="active">Página Inicial</a>
+    <a href="#contato">Contato</a>
+  </div>
 
-    body{
-      margin:0;
-      font-family:Arial, Helvetica, sans-serif;
-      background:linear-gradient(180deg, #02101f, #05152b 28%, #06152e 100%);
-      color:var(--white);
-    }
+  <div class="menu-title">Acesso ao Sistema</div>
+  <div class="side-menu">
+    <a href="login.html">Login / Cadastro</a>
+    <a href="admin.html">Painel ADM</a>
+  </div>
+</aside>
 
-    a{ text-decoration:none; }
+<!-- TOPO -->
+<header class="topbar">
+  <div class="wrap topbar-content">
+    <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
 
-    /* SIDEBAR ORIGINAL */
-    .sidebar{
-      position:fixed;
-      top:0;
-      left:0;
-      width:var(--sidebar-width);
-      height:100vh;
-      background:linear-gradient(180deg, rgba(4,15,33,.96), rgba(2,10,24,.98));
-      border-right:1px solid rgba(255,230,0,.14);
-      z-index:1200;
-      padding:18px 14px;
-      transition:transform .3s ease;
-    }
-    .sidebar.closed{ transform:translateX(-100%); }
-
-    .sidebar-logo{ text-align:center; padding-bottom:18px; border-bottom:1px solid rgba(255,255,255,.08); margin-bottom:18px; }
-    .sidebar-logo img{ width:90px; border-radius:18px; }
-    .sidebar-logo strong{ display:block; color:var(--yellow); text-transform:uppercase; font-size:15px; margin-top:10px; }
-
-    .menu-title{ font-size:12px; color:#8fa4bf; text-transform:uppercase; margin:18px 8px 10px; letter-spacing:1px; }
-    .side-menu a{ display:block; padding:12px 14px; border-radius:12px; color:#eef4ff; font-weight:bold; margin-bottom:8px; background:rgba(255,255,255,.025); }
-    .side-menu a:hover{ color:var(--yellow); background:rgba(255,230,0,.1); }
-
-    .main{ margin-left:var(--sidebar-width); transition:margin-left .3s ease; }
-    .main.expanded{ margin-left:0; }
-
-    /* HEADER */
-    header{ background: rgba(2,10,25,.8); border-bottom:1px solid rgba(255,230,0,.16); }
-    .topbar{ width:min(1280px, 95%); margin:auto; display:flex; align-items:center; justify-content:space-between; padding:15px 0; }
-    .menu-toggle{ background:var(--yellow); border:none; padding:10px 15px; border-radius:8px; cursor:pointer; font-weight:bold; }
-    .top-links a{ color:#fff; margin:0 10px; font-weight:bold; text-transform:uppercase; font-size:13px; }
-    .btn-top{ background:var(--yellow); padding:12px 20px; border-radius:10px; font-weight:800; border:none; cursor:pointer; }
-
-    /* HERO */
-    .hero{ padding:40px 0; text-align:center; }
-    .hero-panel{ 
-        width:min(1280px, 95%); margin:auto; 
-        display:grid; grid-template-columns:1fr 1fr; gap:20px; align-items:center;
-        background:rgba(4,22,51,0.4); border:1px solid rgba(255,230,0,0.2); border-radius:24px; padding:30px;
-    }
-    .hero-copy h1{ font-size:60px; color:var(--yellow); margin:0; line-height:1; }
-    .hero-art img{ width:100%; max-width:450px; border-radius:20px; }
-
-    /* GRID DE CONTEÚDO */
-    .mid-grid{ 
-        width:min(1280px, 95%); margin:20px auto; 
-        display:grid; grid-template-columns: 1.3fr 0.7fr; gap:20px; 
-    }
-
-    .panel{ background:rgba(5,22,52,0.9); border:1px solid rgba(255,230,0,0.14); border-radius:20px; overflow:hidden; }
-    .panel-head{ padding:15px; border-bottom:1px solid rgba(255,255,255,0.1); display:flex; justify-content:space-between; align-items:center; }
-    .panel-head h2{ margin:0; color:var(--yellow); font-size:22px; }
-
-    /* TABELA DE JOGOS */
-    .match-table{ width:100%; border-collapse:collapse; }
-    .match-table th{ background:var(--green); padding:12px; font-size:12px; text-align:center; }
-    .match-table td{ padding:15px; border-top:1px solid rgba(255,255,255,0.05); text-align:center; font-size:14px; }
-    .badge{ padding:5px 10px; border-radius:15px; font-weight:bold; font-size:11px; }
-
-    /* QUADRO DE NOTÍCIAS (TAMANHO REDUZIDO CONFORME FOTO) */
-    .ticker-container {
-        height: 380px; /* Tamanho do quadro original */
-        overflow: hidden;
-        position: relative;
-        padding: 10px;
-    }
-    .ticker-track {
-        display: flex;
-        flex-direction: column;
-        animation: scrollUp 15s linear infinite;
-    }
-    .ticker-track:hover { animation-play-state: paused; }
-    
-    @keyframes scrollUp {
-        0% { transform: translateY(0); }
-        100% { transform: translateY(-50%); }
-    }
-
-    .news-item{ 
-        display:flex; gap:10px; background:rgba(255,255,255,0.03); 
-        padding:10px; border-radius:12px; margin-bottom:10px; border:1px solid rgba(255,255,255,0.05);
-    }
-    .news-item img{ width:80px; height:60px; object-fit:cover; border-radius:8px; }
-    .news-item strong{ font-size:14px; color:var(--yellow); display:block; }
-    .news-item p{ font-size:12px; margin:4px 0; color:#ccc; }
-
-    /* FOOTER */
-    footer{ background:#010c20; padding:40px 0; border-top:1px solid var(--yellow); margin-top:40px; }
-    .footer-grid{ width:min(1280px, 95%); margin:auto; display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:30px; }
-    
-    @media (max-width: 900px) {
-        .hero-panel, .mid-grid { grid-template-columns: 1fr; }
-        .sidebar { transform: translateX(-100%); }
-    }
-  </style>
-</head>
-<body>
-
-  <aside class="sidebar" id="sidebar">
-    <div class="sidebar-logo">
-      <img src="logo-liga.jfif" alt="Logo">
-      <strong>LIGA GOIANA DE BASE</strong>
-      <span>Menu completo do sistema</span>
+    <div class="brand">
+      <img src="logo-liga.jfif" alt="Logo Liga Goiana">
+      <div class="brand-text">
+        <strong>Liga Goiana de Futebol de Base</strong>
+        <span>Onde o talento encontra o futuro</span>
+      </div>
     </div>
 
-    <div class="menu-title">COMPETIÇÕES</div>
-    <div class="side-menu">
-      <a href="campeonatos.html">Campeonatos</a>
-      <a href="categorias.html">Categorias</a>
+    <div class="top-links">
+      <a href="index.html" class="active">Início</a>
+      <a href="campeonatos.html">Campeonato</a>
+      <a href="categorias.html">Categoria</a>
       <a href="times.html">Times</a>
       <a href="jogadores.html">Jogadores</a>
       <a href="tecnicos.html">Técnicos</a>
-      <a href="arbitros.html">Árbitros</a>
-      <a href="assistentes.html">Assistentes</a>
-      <a href="jogos.html">Jogos</a>
       <a href="sumulas.html">Súmulas</a>
       <a href="tabela.html">Tabelas</a>
+      <a href="artilharia.html">Artilharia</a>
+      <a href="classificacao.html">Classificação</a>
+      <a href="jogos.html">Jogos</a>
+      <a href="noticias.html">Notícias</a>
+      <a href="#contato">Contato</a>
     </div>
 
-    <div class="menu-title">SISTEMA</div>
-    <div class="side-menu">
-        <a href="noticias.html">Notícias</a>
-        <a href="index.html">Início</a>
-        <a href="#contato">Contato</a>
+    <div class="top-actions">
+      <button class="btn-top" onclick="window.location.href='login.html'">🔐 Login / Cadastro</button>
+      <button class="btn-top admin-only" id="btnEditar" style="display:none;" onclick="window.location.href='admin.html'">⚙️ Painel ADM</button>
     </div>
-  </aside>
+  </div>
+</header>
 
-  <div class="main" id="mainContent">
-    <header>
-      <div class="topbar">
-        <button class="menu-toggle" onclick="toggleSidebar()">☰ MENU</button>
-        <nav class="top-links">
-          <a href="campeonatos.html">CAMPEONATOS</a>
-          <a href="times.html">EQUIPES</a>
-          <a href="tabela.html">RESULTADOS</a>
-          <a href="noticias.html">NOTÍCIAS</a>
-          <a href="#contato">CONTATO</a>
-        </nav>
-        <button class="btn-top">🔐 LOGIN / CADASTRO</button>
+<!-- EDITOR HOME -->
+<div id="editorHome" class="editor-home">
+  <div class="wrap">
+    <div class="editor-box">
+      <h2>Editar Página Inicial</h2>
+
+      <label for="editTexto">Texto principal</label>
+      <textarea id="editTexto" rows="5"></textarea>
+
+      <label for="editImagem">Imagem principal (URL)</label>
+      <input id="editImagem" type="text" placeholder="Cole a URL da imagem">
+
+      <button class="btn-save" onclick="salvarEdicao()">Salvar Alterações</button>
+    </div>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-panel">
+      <div class="hero-copy">
+        <span class="tag">Liga Oficial</span>
+        <h1>Bem-vindo à Liga Goiana de Base</h1>
+        <div class="subtitle">Onde o talento encontra o futuro!</div>
+        <p class="desc">
+          Competição, formação e desenvolvimento para revelar talentos
+          e fortalecer o futebol de base em Goiás.
+        </p>
+
+        <div class="hero-actions">
+          <a href="campeonatos.html" class="btn-primary">🏆 Ver Campeonatos</a>
+          <a href="times.html" class="btn-secondary">👥 Conhecer Equipes</a>
+          <a href="login.html" class="btn-secondary">📝 Login / Cadastro</a>
+        </div>
       </div>
-    </header>
 
-    <section class="hero">
-        <div class="hero-panel">
-          <div class="hero-copy">
-            <h1>LIGA GOIANA ELITE</h1>
-            <p style="font-size:18px; font-weight:bold; margin-top:15px;">ONDE O TALENTO ENCONTRA O FUTURO</p>
-            <button class="btn-top" style="margin-top:20px;">🏆 QUERO PARTICIPAR!</button>
-          </div>
-          <div class="hero-art"><img src="hero-liga.jpeg" alt="Elite"></div>
+      <div class="hero-art">
+        <img src="hero-liga.jpeg" alt="Hero Liga Goiana">
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="conteudo">
+  <main class="wrap">
+    <div class="cards-pilares">
+      <div class="pillar">
+        <div class="pillar-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 3l1.8 3.6 4 .6-2.9 2.8.7 4-3.6-1.9-3.6 1.9.7-4-2.9-2.8 4-.6z"/><path d="M7 15c1.2 2.7 2.9 4 5 4s3.8-1.3 5-4"/></svg>
         </div>
-    </section>
+        <h3>Competição de Alto Nível</h3>
+        <p>Jogos organizados e arbitragem qualificada.</p>
+      </div>
 
+      <div class="pillar">
+        <div class="pillar-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 5-3.5 8-7 10-3.5-2-7-5-7-10V6z"/><path d="M9.5 12.5l1.7 1.7 3.3-3.7"/></svg>
+        </div>
+        <h3>Formação de Atletas</h3>
+        <p>Desenvolvimento dentro e fora de campo.</p>
+      </div>
+
+      <div class="pillar">
+        <div class="pillar-icon">
+          <svg viewBox="0 0 24 24"><path d="M4 18h16"/><path d="M6 16V9"/><path d="M12 16V6"/><path d="M18 16V11"/><path d="M14 8l4-4"/><path d="M18 4h-4"/><path d="M18 4v4"/></svg>
+        </div>
+        <h3>Desenvolvimento que Transforma</h3>
+        <p>Estrutura que impulsiona sonhos e resultados.</p>
+      </div>
+
+      <div class="pillar">
+        <div class="pillar-icon">
+          <svg viewBox="0 0 24 24"><path d="M8 12l2-2a2 2 0 0 1 3 0l3 3"/><path d="M7 13l-2 2a2 2 0 0 0 0 3"/><path d="M17 11l2-2a2 2 0 0 1 0-3"/><path d="M9 17l1 1a2 2 0 0 0 3 0l1-1"/></svg>
+        </div>
+        <h3>Respeito, União e Propósito</h3>
+        <p>Valores que constroem campeões para a vida.</p>
+      </div>
+    </div>
     <div class="mid-grid">
-      <div class="panel">
+      <section class="panel">
         <div class="panel-head">
-          <h2>📅 PRÓXIMOS JOGOS</h2>
-          <a href="jogos.html" style="color:var(--yellow); font-size:12px;">VER TODOS →</a>
+          <div class="panel-head-title">
+            <div class="panel-head-icon">
+              <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4"/><path d="M16 3v4"/><path d="M3 10h18"/></svg>
+            </div>
+            <h2>Próximos Jogos</h2>
+          </div>
+          <a href="jogos.html">Ver todos →</a>
         </div>
+
         <table class="match-table">
           <thead>
-            <tr style="background:#0ea5e9;">
-              <th>DATA E HORA</th>
-              <th>CONFRONTO</th>
-              <th>CATEGORIA</th>
-              <th>LOCAL</th>
+            <tr>
+              <th>Data e Hora</th>
+              <th>Confronto</th>
+              <th>Categoria</th>
+              <th>Local</th>
             </tr>
           </thead>
-          <tbody id="listaJogos">
-            </tbody>
-        </table>
-      </div>
-
-      <div class="panel">
-        <div class="panel-head">
-          <h2>📰 ÚLTIMAS NOTÍCIAS</h2>
-        </div>
-        <div class="ticker-container">
-            <div class="ticker-track" id="newsTicker">
+          <tbody>
+            <tr>
+              <td>20/04 - 09:00</td>
+              <td>
+                <div class="confronto">
+                  <div class="time-mini">
+                    <img src="atletico-go.png" onerror="this.src='logo-liga.jfif'" class="escudo" alt="Atlético GO">
+                    <span>Atlético GO</span>
+                  </div>
+                  <span class="vs">X</span>
+                  <div class="time-mini">
+                    <img src="vila-nova.png" onerror="this.src='logo-liga.jfif'" class="escudo" alt="Vila Nova">
+                    <span>Vila Nova</span>
+                  </div>
                 </div>
+              </td>
+              <td><span class="badge sub15">Sub-15</span></td>
+              <td>Campo 01</td>
+            </tr>
+
+            <tr>
+              <td>20/04 - 10:30</td>
+              <td>
+                <div class="confronto">
+                  <div class="time-mini">
+                    <img src="campinas.png" onerror="this.src='logo-liga.jfif'" class="escudo" alt="Campinas">
+                    <span>Campinas</span>
+                  </div>
+                  <span class="vs">X</span>
+                  <div class="time-mini">
+                    <img src="hidrolandia.png" onerror="this.src='logo-liga.jfif'" class="escudo" alt="Hidrolândia">
+                    <span>Hidrolândia</span>
+                  </div>
+                </div>
+              </td>
+              <td><span class="badge sub13">Sub-13</span></td>
+              <td>Campo 02</td>
+            </tr>
+
+            <tr>
+              <td>20/04 - 14:00</td>
+              <td>
+                <div class="confronto">
+                  <div class="time-mini">
+                    <img src="uniao.png" onerror="this.src='logo-liga.jfif'" class="escudo" alt="União">
+                    <span>União</span>
+                  </div>
+                  <span class="vs">X</span>
+                  <div class="time-mini">
+                    <img src="independencia.png" onerror="this.src='logo-liga.jfif'" class="escudo" alt="Independência">
+                    <span>Independência</span>
+                  </div>
+                </div>
+              </td>
+              <td><span class="badge sub17">Sub-17</span></td>
+              <td>Estádio Regional</td>
+            </tr>
+
+            <tr>
+              <td>21/04 - 08:30</td>
+              <td>
+                <div class="confronto">
+                  <div class="time-mini">
+                    <img src="ac-esporte.png" onerror="this.src='logo-liga.jfif'" class="escudo" alt="AC Esporte">
+                    <span>AC Esporte</span>
+                  </div>
+                  <span class="vs">X</span>
+                  <div class="time-mini">
+                    <img src="b14.png" onerror="this.src='logo-liga.jfif'" class="escudo" alt="B14 Futebol">
+                    <span>B14 Futebol</span>
+                  </div>
+                </div>
+              </td>
+              <td><span class="badge sub11">Sub-11</span></td>
+              <td>Campo Principal</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <aside class="panel">
+        <div class="panel-head">
+          <div class="panel-head-title">
+            <div class="panel-head-icon">
+              <svg viewBox="0 0 24 24"><path d="M4 19V5h16v14"/><path d="M8 9h8"/><path d="M8 13h8"/><path d="M8 17h5"/></svg>
+            </div>
+            <h2>Últimas Notícias</h2>
+          </div>
+          <a href="noticias.html">Ver notícias →</a>
+        </div>
+
+        <div class="news-list">
+          <div class="news-item">
+            <img src="fundo.png" alt="Abertura oficial">
+            <div>
+              <strong>Abertura oficial da temporada</strong>
+              <p>A Liga Goiana inicia mais um ciclo com grandes expectativas e fortes equipes.</p>
+              <span>15 Abr 2026</span>
+            </div>
+          </div>
+
+          <div class="news-item">
+            <img src="copa-uniao.jpeg" alt="Copa União">
+            <div>
+              <strong>Copa União de Base confirmada</strong>
+              <p>Categorias definidas e confrontos prometem grandes jogos e muita emoção.</p>
+              <span>10 Abr 2026</span>
+            </div>
+          </div>
+
+          <div class="news-item">
+            <img src="hero-liga.jpeg" alt="Mais clubes">
+            <div>
+              <strong>Mais clubes fortalecem a Liga</strong>
+              <p>Projetos de todo o estado elevam ainda mais o nível da competição.</p>
+              <span>05 Abr 2026</span>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <section class="cta">
+      <div class="cta-box">
+        <div>
+          <h3>Faça parte dessa história!</h3>
+          <p>Inscreva sua equipe e viva o futebol de base no mais alto nível.</p>
+        </div>
+
+        <div>
+          <a href="campeonatos.html" class="btn-primary">🏆 Quero Participar!</a>
+        </div>
+      </div>
+    </section>
+  </main>
+</section>
+
+<footer id="contato">
+  <div class="wrap footer-top">
+    <div>
+      <div class="footer-brand">
+        <img src="logo-liga.jfif" alt="Logo da Liga">
+        <div>
+          <h4>Liga Goiana</h4>
+          <p>Liga Goiana de Futebol de Base</p>
+          <p>Onde o talento encontra o futuro.</p>
+
+          <div class="social">
+            <a href="#">📸</a>
+            <a href="#">📘</a>
+            <a href="#">▶️</a>
+          </div>
         </div>
       </div>
     </div>
 
-    <footer id="contato">
-        <div class="footer-grid">
-            <div>
-                <h4 style="color:var(--yellow)">CONTATO</h4>
-                <p>Goiânia - GO</p>
-                <p>(62) 98428-4785</p>
-                <p style="font-size:12px">ligagoianaoficial@gmail.com</p>
-            </div>
-            <div>
-                <h4 style="color:var(--yellow)">ACESSO RÁPIDO</h4>
-                <a href="#" style="color:#fff; display:block; margin-bottom:5px;">Início</a>
-                <a href="#" style="color:#fff; display:block; margin-bottom:5px;">Campeonatos</a>
-                <a href="#" style="color:#fff; display:block; margin-bottom:5px;">Equipes</a>
-            </div>
-            <div style="text-align:center;">
-                <img src="logo-liga.jfif" width="80" style="border-radius:10px;">
-                <p style="font-size:11px; margin-top:10px;">O talento encontra o futuro.</p>
-            </div>
-        </div>
-    </footer>
+    <div>
+      <h4>Acesso Rápido</h4>
+      <a href="index.html">Início</a>
+      <a href="campeonatos.html">Campeonato</a>
+      <a href="categorias.html">Categoria</a>
+      <a href="times.html">Times</a>
+      <a href="jogos.html">Jogos</a>
+      <a href="tabela.html">Tabelas</a>
+      <a href="noticias.html">Notícias</a>
+      <a href="#contato">Contato</a>
+    </div>
+
+    <div>
+      <h4>Menu Público</h4>
+      <a href="artilharia.html">Artilharia</a>
+      <a href="classificacao.html">Classificação</a>
+      <a href="jogadores.html">Jogadores</a>
+      <a href="tecnicos.html">Técnicos</a>
+      <a href="sumulas.html">Súmulas</a>
+      <a href="login.html">Login / Cadastro</a>
+    </div>
+
+    <div>
+      <h4>Contato</h4>
+      <p>Goiânia - GO</p>
+      <p>(62) 98428-4785</p>
+      <p>ligagoianaoficial@gmail.com</p>
+    </div>
   </div>
 
-  <script type="module">
-    import { db } from "./firebase.js";
-    import { collection, query, orderBy, limit, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+  <div class="wrap copyright">
+    © 2026 Liga Goiana de Futebol de Base. Todos os direitos reservados.
+  </div>
+</footer>
 
-    // Toggle Sidebar
-    window.toggleSidebar = function() {
-        const sidebar = document.getElementById('sidebar');
-        const main = document.getElementById('mainContent');
-        sidebar.classList.toggle('closed');
-        main.classList.toggle('expanded');
-    };
+<script>
+  function toggleSidebar() {
+    document.getElementById('sidebar').classList.toggle('open');
+  }
 
-    // Carregar Jogos (Baseado na Foto 9)
-    onSnapshot(query(collection(db, "jogos"), orderBy("data_hora", "asc"), limit(4)), (snap) => {
-        const lista = document.getElementById('listaJogos');
-        lista.innerHTML = "";
-        snap.forEach(doc => {
-            const j = doc.data();
-            lista.innerHTML += `
-                <tr>
-                    <td>${j.data_hora}</td>
-                    <td style="font-weight:bold;">${j.timeA} x ${j.timeB}</td>
-                    <td><span class="badge" style="background:#6366f1;">${j.categoria}</span></td>
-                    <td>${j.local}</td>
-                </tr>`;
-        });
-    });
+  function salvarEdicao() {
+    const texto = document.getElementById('editTexto').value;
+    const imagem = document.getElementById('editImagem').value;
 
-    // Carregar Notícias no Ticker (Tamanho reduzido)
-    onSnapshot(query(collection(db, "noticias"), orderBy("data", "desc"), limit(5)), (snap) => {
-        const ticker = document.getElementById('newsTicker');
-        let html = "";
-        snap.forEach(doc => {
-            const n = doc.data();
-            html += `
-                <div class="news-item">
-                    <img src="${n.imagem || 'fundo.png'}">
-                    <div>
-                        <strong>${n.titulo}</strong>
-                        <p>${n.resumo.substring(0, 50)}...</p>
-                        <span style="font-size:10px; color:var(--yellow);">${n.data}</span>
-                    </div>
-                </div>`;
-        });
-        ticker.innerHTML = html + html; // Duplica para o efeito de loop infinito
-    });
-  </script>
+    if (texto) {
+      const desc = document.querySelector('.hero .desc');
+      if (desc) desc.innerText = texto;
+      localStorage.setItem('liga_home_texto', texto);
+    }
+
+    if (imagem) {
+      const heroImg = document.querySelector('.hero-art img');
+      if (heroImg) heroImg.src = imagem;
+      localStorage.setItem('liga_home_imagem', imagem);
+    }
+
+    alert('Alterações salvas com sucesso!');
+  }
+
+  window.addEventListener('DOMContentLoaded', () => {
+    const textoSalvo = localStorage.getItem('liga_home_texto');
+    const imagemSalva = localStorage.getItem('liga_home_imagem');
+
+    if (textoSalvo) {
+      const desc = document.querySelector('.hero .desc');
+      const campoTexto = document.getElementById('editTexto');
+      if (desc) desc.innerText = textoSalvo;
+      if (campoTexto) campoTexto.value = textoSalvo;
+    }
+
+    if (imagemSalva) {
+      const heroImg = document.querySelector('.hero-art img');
+      const campoImagem = document.getElementById('editImagem');
+      if (heroImg) heroImg.src = imagemSalva;
+      if (campoImagem) campoImagem.value = imagemSalva;
+    }
+
+    const logado = localStorage.getItem('adminLogado');
+    if (logado === 'true') {
+      const btnEditar = document.getElementById('btnEditar');
+      if (btnEditar) btnEditar.style.display = 'inline-flex';
+    }
+  });
+</script>
 </body>
 </html>
