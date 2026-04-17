@@ -6,21 +6,70 @@
 <title>Técnicos - Admin</title>
 
 <style>
-body{margin:0;font-family:Arial;background:#0b1f3a;color:white;}
-header{background:#08172c;padding:15px;text-align:center;font-size:22px;font-weight:bold;border-bottom:3px solid #f7c600;}
-.container{padding:15px;max-width:1100px;margin:auto;}
+body{
+margin:0;
+font-family:Arial;
+background:#0b1f3a;
+color:white;
+}
+
+header{
+background:#08172c;
+padding:15px;
+text-align:center;
+font-size:22px;
+font-weight:bold;
+border-bottom:3px solid #f7c600;
+}
+
+.container{
+padding:15px;
+max-width:1100px;
+margin:auto;
+}
 
 input, select{
-width:100%;padding:12px;margin-bottom:12px;border:none;border-radius:8px;font-size:14px;
+width:100%;
+padding:12px;
+margin-bottom:12px;
+border:none;
+border-radius:8px;
+font-size:14px;
+box-sizing:border-box;
 }
 
 button{
-background:#f7c600;color:black;padding:10px;border:none;border-radius:8px;font-weight:bold;cursor:pointer;
+background:#f7c600;
+color:black;
+padding:10px 14px;
+border:none;
+border-radius:8px;
+font-weight:bold;
+cursor:pointer;
+margin-bottom:15px;
 }
 
 .btn{
-background:#f7c600;color:black;padding:10px;border-radius:8px;font-weight:bold;cursor:pointer;margin-bottom:10px;
+background:#f7c600;
+color:black;
+padding:10px 14px;
+border-radius:8px;
+font-weight:bold;
+cursor:pointer;
+margin-bottom:10px;
 display:inline-block;
+text-decoration:none;
+}
+
+.btn-voltar{
+display:inline-block;
+margin-bottom:15px;
+background:#f7c600;
+color:black;
+padding:10px 14px;
+border-radius:8px;
+text-decoration:none;
+font-weight:bold;
 }
 
 .lista-grid{
@@ -30,23 +79,62 @@ gap:12px;
 }
 
 .card{
-background:#102a52;padding:15px;border-radius:10px;
-display:flex;justify-content:space-between;align-items:center;
+background:#102a52;
+padding:15px;
+border-radius:10px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:10px;
 }
 
 .user{
-display:flex;gap:10px;align-items:center;
+display:flex;
+gap:10px;
+align-items:center;
+min-width:0;
+}
+
+.user-info{
+display:flex;
+flex-direction:column;
+gap:4px;
+min-width:0;
+}
+
+.user-info small{
+opacity:.85;
+font-size:12px;
 }
 
 .photo{
-width:60px;height:60px;border-radius:50%;object-fit:cover;background:#1a3f73;
+width:60px;
+height:60px;
+border-radius:50%;
+object-fit:cover;
+background:#1a3f73;
+border:2px solid #ffffff22;
+}
+
+.actions{
+display:flex;
+gap:6px;
+flex-wrap:wrap;
 }
 
 .actions button{
-background:#1a3f73;margin-left:5px;font-size:12px;
+background:#1a3f73;
+padding:6px 10px;
+border-radius:6px;
+color:white;
+border:none;
+font-size:12px;
+margin:0;
 }
 
-.delete{background:#b30000 !important;}
+.delete{
+background:#b30000 !important;
+}
 
 .checkbox-grid{
 display:grid;
@@ -56,25 +144,48 @@ margin-bottom:12px;
 }
 
 .check-item{
-background:#102a52;padding:8px;border-radius:8px;
-display:flex;align-items:center;gap:8px;
+background:#102a52;
+padding:8px;
+border-radius:8px;
+display:flex;
+align-items:center;
+gap:8px;
+}
+
+.check-item input{
+width:auto;
+margin:0;
 }
 
 .tag{
-background:#1a3f73;padding:4px 8px;border-radius:999px;font-size:12px;margin-right:5px;
+background:#1a3f73;
+padding:4px 8px;
+border-radius:999px;
+font-size:12px;
+margin-right:5px;
+display:inline-block;
 }
 
 .modal{
-display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);
-justify-content:center;align-items:center;
+display:none;
+position:fixed;
+inset:0;
+background:rgba(0,0,0,0.7);
+justify-content:center;
+align-items:center;
+padding:15px;
+z-index:999;
 }
 
 .modal-content{
-background:#102a52;padding:20px;border-radius:12px;text-align:center;
-}
-
-.back{
-display:block;margin-top:15px;color:#f7c600;font-weight:bold;text-decoration:none;
+background:#102a52;
+padding:20px;
+border-radius:12px;
+text-align:center;
+max-width:500px;
+width:100%;
+max-height:85vh;
+overflow:auto;
 }
 </style>
 </head>
@@ -85,18 +196,22 @@ display:block;margin-top:15px;color:#f7c600;font-weight:bold;text-decoration:non
 
 <div class="container">
 
+<a href="admin.html" class="btn-voltar">← Voltar</a>
+
 <a class="btn" onclick="toggleFormulario()">+ Novo Técnico</a>
 
 <input id="busca" placeholder="Pesquisar..." oninput="carregarTecnicos()">
 
 <div id="formulario" style="display:none;">
   <input id="nome" placeholder="Nome do técnico">
-  <input id="foto" type="file">
+  <input id="foto" type="file" accept="image/*">
   <input id="cpf" placeholder="CPF">
   <input id="telefone" placeholder="Telefone">
   <input id="email" placeholder="Email">
 
-  <select id="time"></select>
+  <select id="time">
+    <option value="">Selecione o time</option>
+  </select>
 
   <div class="checkbox-grid" id="categoriasGrid"></div>
 
@@ -104,8 +219,6 @@ display:block;margin-top:15px;color:#f7c600;font-weight:bold;text-decoration:non
 </div>
 
 <div class="lista-grid" id="lista"></div>
-
-<a href="admin.html" class="back">← Voltar</a>
 
 </div>
 
@@ -122,6 +235,9 @@ const firebaseConfig = {
   apiKey: "AIzaSyCyArj4yRlEl-yibkc0VEmL_4UJpRHHQSc",
   authDomain: "liga-goiana-base.firebaseapp.com",
   projectId: "liga-goiana-base",
+  storageBucket: "liga-goiana-base.appspot.com",
+  messagingSenderId: "952863591183",
+  appId: "1:952863591183:web:4eea34f494ba2dd754cc7a"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -143,9 +259,12 @@ async function carregarCategorias(){
   const snap = await getDocs(collection(db, "categorias"));
   let lista = [];
 
-  snap.forEach(d => lista.push(d.data().nome));
+  snap.forEach(d => {
+    const data = d.data();
+    if(data.nome) lista.push(data.nome);
+  });
 
-  lista.sort((a,b)=>a.localeCompare(b));
+  lista.sort((a,b)=>a.localeCompare(b, "pt-BR"));
 
   lista.forEach(nome=>{
     grid.innerHTML += `
@@ -165,7 +284,7 @@ async function carregarTimes(){
 
   snap.forEach(d=>lista.push(d.data()));
 
-  lista.sort((a,b)=>a.nome.localeCompare(b.nome));
+  lista.sort((a,b)=>(a.nome || "").localeCompare(b.nome || "", "pt-BR"));
 
   lista.forEach(t=>{
     select.innerHTML += `<option value="${t.nome}">${t.nome}</option>`;
@@ -176,11 +295,29 @@ function getCategorias(){
   return Array.from(document.querySelectorAll('#categoriasGrid input:checked')).map(i=>i.value);
 }
 
+function marcarCategorias(categorias){
+  document.querySelectorAll('#categoriasGrid input').forEach(i => {
+    i.checked = (categorias || []).includes(i.value);
+  });
+}
+
+function limparFormulario(){
+  document.getElementById("nome").value = "";
+  document.getElementById("foto").value = "";
+  document.getElementById("cpf").value = "";
+  document.getElementById("telefone").value = "";
+  document.getElementById("email").value = "";
+  document.getElementById("time").value = "";
+  document.querySelectorAll('#categoriasGrid input').forEach(i => i.checked = false);
+  editandoId = null;
+  fotoAtual = "";
+}
+
 window.salvar = async function(){
-  const nome = document.getElementById("nome").value;
-  const cpf = document.getElementById("cpf").value;
-  const telefone = document.getElementById("telefone").value;
-  const email = document.getElementById("email").value;
+  const nome = document.getElementById("nome").value.trim();
+  const cpf = document.getElementById("cpf").value.trim();
+  const telefone = document.getElementById("telefone").value.trim();
+  const email = document.getElementById("email").value.trim();
   const time = document.getElementById("time").value;
   const foto = document.getElementById("foto").files[0];
   const categorias = getCategorias();
@@ -193,21 +330,23 @@ window.salvar = async function(){
   let url = fotoAtual;
 
   if(foto){
-    const refStorage = ref(storage, "tecnicos/"+Date.now());
+    const refStorage = ref(storage, "tecnicos/" + Date.now() + "-" + foto.name);
     await uploadBytes(refStorage, foto);
     url = await getDownloadURL(refStorage);
   }
 
-  const dados = {nome,cpf,telefone,email,time,foto:url,categorias};
+  const dados = { nome, cpf, telefone, email, time, foto: url, categorias };
 
   if(editandoId){
-    await updateDoc(doc(db,"tecnicos",editandoId),dados);
+    await updateDoc(doc(db,"tecnicos",editandoId), dados);
+    alert("Técnico atualizado com sucesso!");
   }else{
-    await addDoc(collection(db,"tecnicos"),dados);
+    await addDoc(collection(db,"tecnicos"), dados);
+    alert("Técnico salvo com sucesso!");
   }
 
-  alert("Salvo!");
-  location.reload();
+  limparFormulario();
+  carregarTecnicos();
 }
 
 window.editar = async function(id){
@@ -216,21 +355,23 @@ window.editar = async function(id){
   snap.forEach(d=>{
     if(d.id===id){
       const t = d.data();
-      document.getElementById("nome").value=t.nome;
-      document.getElementById("cpf").value=t.cpf;
-      document.getElementById("telefone").value=t.telefone;
-      document.getElementById("email").value=t.email;
-      document.getElementById("time").value=t.time;
-      fotoAtual = t.foto;
-      editandoId=id;
+      document.getElementById("nome").value = t.nome || "";
+      document.getElementById("cpf").value = t.cpf || "";
+      document.getElementById("telefone").value = t.telefone || "";
+      document.getElementById("email").value = t.email || "";
+      document.getElementById("time").value = t.time || "";
+      fotoAtual = t.foto || "";
+      editandoId = id;
+      marcarCategorias(t.categorias || []);
     }
   });
 
-  document.getElementById("formulario").style.display="block";
+  document.getElementById("formulario").style.display = "block";
+  window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
 window.excluir = async function(id){
-  if(confirm("Excluir?")){
+  if(confirm("Excluir técnico?")){
     await deleteDoc(doc(db,"tecnicos",id));
     carregarTecnicos();
   }
@@ -241,45 +382,58 @@ window.ver = async function(id){
 
   snap.forEach(d=>{
     if(d.id===id){
-      const t=d.data();
+      const t = d.data();
 
       const cats = (t.categorias||[]).map(c=>`<span class="tag">${c}</span>`).join("");
 
-      document.getElementById("modalContent").innerHTML=`
-        <img src="${t.foto}" class="photo">
-        <h2>${t.nome}</h2>
-        <p>${t.time}</p>
-        <p>${t.email}</p>
-        ${cats}
-        <button onclick="fechar()">Fechar</button>
+      document.getElementById("modalContent").innerHTML = `
+        <img src="${t.foto || ''}" class="photo">
+        <h2>${t.nome || ""}</h2>
+        <p>${t.time || "-"}</p>
+        <p>${t.email || "-"}</p>
+        <p>${t.telefone || "-"}</p>
+        <div style="margin-top:10px;">${cats}</div>
+        <button onclick="fechar()" style="margin-top:15px;">Fechar</button>
       `;
 
-      document.getElementById("modal").style.display="flex";
+      document.getElementById("modal").style.display = "flex";
     }
   });
 }
 
-window.fechar = ()=>document.getElementById("modal").style.display="none";
+window.fechar = function(){
+  document.getElementById("modal").style.display = "none";
+}
 
 async function carregarTecnicos(){
   const lista = document.getElementById("lista");
-  lista.innerHTML="";
+  lista.innerHTML = "";
 
   const snap = await getDocs(collection(db,"tecnicos"));
-  let tecnicos=[];
+  let tecnicos = [];
 
-  snap.forEach(d=>tecnicos.push({id:d.id,...d.data()}));
+  snap.forEach(d => tecnicos.push({ id:d.id, ...d.data() }));
 
-  tecnicos.sort((a,b)=>a.nome.localeCompare(b.nome));
+  const busca = (document.getElementById("busca").value || "").toLowerCase().trim();
+
+  if(busca){
+    tecnicos = tecnicos.filter(t =>
+      (t.nome || "").toLowerCase().includes(busca) ||
+      (t.time || "").toLowerCase().includes(busca) ||
+      (t.email || "").toLowerCase().includes(busca)
+    );
+  }
+
+  tecnicos.sort((a,b)=>(a.nome || "").localeCompare(b.nome || "", "pt-BR"));
 
   tecnicos.forEach(t=>{
-    lista.innerHTML+=`
+    lista.innerHTML += `
       <div class="card">
         <div class="user">
-          <img src="${t.foto||''}" class="photo">
-          <div>
-            <div>${t.nome}</div>
-            <small>${t.time}</small>
+          <img src="${t.foto || ''}" class="photo">
+          <div class="user-info">
+            <div>${t.nome || ""}</div>
+            <small>${t.time || "-"}</small>
           </div>
         </div>
         <div class="actions">
@@ -295,7 +449,6 @@ async function carregarTecnicos(){
 await carregarCategorias();
 await carregarTimes();
 carregarTecnicos();
-
 </script>
 
 </body>
