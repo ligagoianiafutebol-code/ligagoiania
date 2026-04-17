@@ -7,27 +7,29 @@
 
 <style>
 body{
-font-family: Arial;
+font-family:Arial;
 margin:0;
 background:#0b1f3a;
 color:white;
 }
 
 header{
-background:#0b1f3a;
-padding:15px;
+background:#08172c;
+padding:18px;
 text-align:center;
-font-size:22px;
+font-size:24px;
 font-weight:bold;
 border-bottom:3px solid #f7c600;
 }
 
 .menu{
 display:flex;
-justify-content:space-around;
+justify-content:center;
+gap:10px;
 background:#102a52;
 padding:12px;
 flex-wrap:wrap;
+border-bottom:1px solid rgba(255,255,255,0.08);
 }
 
 .menu a{
@@ -35,39 +37,145 @@ color:white;
 text-decoration:none;
 font-weight:bold;
 font-size:14px;
+background:#0d2346;
+padding:10px 14px;
+border-radius:8px;
+}
+
+.menu a.ativo{
+background:#f7c600;
+color:black;
 }
 
 .container{
+max-width:1100px;
+margin:auto;
+padding:20px;
+}
+
+.filtros{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:12px;
+margin-bottom:20px;
+}
+
+select{
+width:100%;
 padding:12px;
+border:none;
+border-radius:8px;
+box-sizing:border-box;
+font-size:14px;
+}
+
+.titulo{
+font-size:22px;
+font-weight:bold;
+color:#f7c600;
+margin-bottom:15px;
 }
 
 .rodada{
 font-weight:bold;
-margin:15px 0 8px;
+margin:18px 0 10px;
+font-size:18px;
+color:#f7c600;
 }
 
 .jogo{
 background:#102a52;
-padding:12px;
-border-radius:10px;
-margin-bottom:8px;
+padding:14px;
+border-radius:12px;
+margin-bottom:10px;
+border:1px solid rgba(255,230,0,.12);
+}
+
+.topo-jogo{
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:10px;
+flex-wrap:wrap;
 }
 
 .times{
 display:flex;
 justify-content:space-between;
-font-size:15px;
+align-items:center;
+gap:10px;
+font-size:16px;
+font-weight:bold;
+width:100%;
 }
 
-.info{
-font-size:13px;
-opacity:0.8;
-margin-top:5px;
+.time{
+display:flex;
+align-items:center;
+gap:10px;
+}
+
+.escudo{
+width:28px;
+height:28px;
+object-fit:contain;
+border-radius:50%;
+background:#1a3f73;
 }
 
 .placar{
 font-weight:bold;
-font-size:16px;
+font-size:18px;
+color:#f7c600;
+min-width:80px;
+text-align:center;
+}
+
+.info{
+font-size:13px;
+opacity:.9;
+margin-top:8px;
+}
+
+.status{
+display:inline-block;
+margin-top:8px;
+padding:6px 10px;
+border-radius:999px;
+font-size:12px;
+font-weight:bold;
+background:#0d2346;
+}
+
+.finalizado{
+background:#1b5e20;
+}
+
+.agendado{
+background:#7a5a00;
+}
+
+.vazio{
+background:#102a52;
+padding:30px;
+border-radius:12px;
+text-align:center;
+}
+
+@media (max-width: 800px){
+.filtros{
+grid-template-columns:1fr;
+}
+
+.times{
+flex-direction:column;
+align-items:flex-start;
+}
+
+.placar{
+text-align:left;
+min-width:auto;
+}
 }
 </style>
 
@@ -81,7 +189,7 @@ LIGA GOIANA DE FUTEBOL DE BASE
 <div class="menu">
 <a href="index.html">Campeonatos</a>
 <a href="tabela.html">Tabela</a>
-<a href="jogos.html">Jogos</a>
+<a href="jogos.html" class="ativo">Jogos</a>
 <a href="artilharia.html">Artilharia</a>
 <a href="cartoes.html">Cartões</a>
 <a href="login.html">Login</a>
@@ -89,29 +197,189 @@ LIGA GOIANA DE FUTEBOL DE BASE
 
 <div class="container">
 
-<h3>Jogos - Sub-15</h3>
+<div class="filtros">
+  <select id="filtroCampeonato" onchange="carregarJogos()">
+    <option value="">Selecione o campeonato</option>
+  </select>
 
-<div class="rodada">Rodada 1</div>
-
-<div class="jogo">
-<div class="times">
-Atlético GO 
-<span class="placar">2 x 1</span>
-Vila Nova
-</div>
-<div class="info">Campo 1 - 10:00</div>
+  <select id="filtroCategoria" onchange="carregarJogos()">
+    <option value="">Selecione a categoria</option>
+  </select>
 </div>
 
-<div class="jogo">
-<div class="times">
-Campinas 
-<span class="placar">1 x 1</span>
-Hidrolândia
-</div>
-<div class="info">Campo 2 - 11:30</div>
-</div>
+<div class="titulo" id="tituloPagina">Jogos</div>
+
+<div id="listaJogos"></div>
 
 </div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
+import {
+  getFirestore,
+  collection,
+  getDocs
+} from "https://www.gstatic.com/firebasejs/12.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCyArj4yRlEl-yibkc0VEmL_4UJpRHHQSc",
+  authDomain: "liga-goiana-base.firebaseapp.com",
+  projectId: "liga-goiana-base",
+  storageBucket: "liga-goiana-base.appspot.com",
+  messagingSenderId: "952863591183",
+  appId: "1:952863591183:web:4eea34f494ba2dd754cc7a"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+let jogos = [];
+let times = [];
+
+async function carregarDados(){
+  const snapJogos = await getDocs(collection(db, "jogos"));
+  jogos = [];
+  snapJogos.forEach(docSnap => {
+    jogos.push({ id: docSnap.id, ...docSnap.data() });
+  });
+
+  const snapTimes = await getDocs(collection(db, "times"));
+  times = [];
+  snapTimes.forEach(docSnap => {
+    times.push({ id: docSnap.id, ...docSnap.data() });
+  });
+}
+
+function pegarEscudo(nomeTime){
+  const time = times.find(t => t.nome === nomeTime);
+  return time?.escudo || "logo-liga.jfif";
+}
+
+function preencherFiltros(){
+  const selectCamp = document.getElementById("filtroCampeonato");
+  const selectCat = document.getElementById("filtroCategoria");
+
+  const campeonatos = [...new Set(jogos.map(j => j.campeonato).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"pt-BR"));
+  const categorias = [...new Set(jogos.map(j => j.categoria).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"pt-BR"));
+
+  selectCamp.innerHTML = '<option value="">Selecione o campeonato</option>';
+  selectCat.innerHTML = '<option value="">Selecione a categoria</option>';
+
+  campeonatos.forEach(c => {
+    selectCamp.innerHTML += `<option value="${c}">${c}</option>`;
+  });
+
+  categorias.forEach(c => {
+    selectCat.innerHTML += `<option value="${c}">${c}</option>`;
+  });
+}
+
+function formatarDataHora(dataString){
+  if(!dataString) return "-";
+
+  const data = new Date(dataString);
+  if(isNaN(data.getTime())) return dataString;
+
+  const dia = String(data.getDate()).padStart(2, "0");
+  const mes = String(data.getMonth() + 1).padStart(2, "0");
+  const ano = data.getFullYear();
+  const hora = String(data.getHours()).padStart(2, "0");
+  const minuto = String(data.getMinutes()).padStart(2, "0");
+
+  return `${dia}/${mes}/${ano} - ${hora}:${minuto}`;
+}
+
+function numeroRodada(valor){
+  if(valor === undefined || valor === null || valor === "") return 999999;
+
+  const texto = String(valor);
+  const numero = parseInt(texto.replace(/\D/g, ""), 10);
+
+  return isNaN(numero) ? 999999 : numero;
+}
+
+window.carregarJogos = function(){
+  const lista = document.getElementById("listaJogos");
+  const campeonato = document.getElementById("filtroCampeonato").value;
+  const categoria = document.getElementById("filtroCategoria").value;
+
+  let filtrados = jogos.filter(j =>
+    (!campeonato || j.campeonato === campeonato) &&
+    (!categoria || j.categoria === categoria)
+  );
+
+  document.getElementById("tituloPagina").textContent =
+    `Jogos${categoria ? " - " + categoria : ""}${campeonato ? " | " + campeonato : ""}`;
+
+  if(filtrados.length === 0){
+    lista.innerHTML = `<div class="vazio">Nenhum jogo encontrado.</div>`;
+    return;
+  }
+
+  filtrados.sort((a, b) => {
+    const rodadaA = numeroRodada(a.rodada);
+    const rodadaB = numeroRodada(b.rodada);
+
+    if(rodadaA !== rodadaB) return rodadaA - rodadaB;
+    return (a.data || "").localeCompare(b.data || "");
+  });
+
+  const grupos = {};
+
+  filtrados.forEach(j => {
+    const chave = j.rodada ? `Rodada ${j.rodada}` : "Sem rodada";
+    if(!grupos[chave]) grupos[chave] = [];
+    grupos[chave].push(j);
+  });
+
+  lista.innerHTML = "";
+
+  Object.keys(grupos).forEach(rodada => {
+    lista.innerHTML += `<div class="rodada">${rodada}</div>`;
+
+    grupos[rodada].forEach(j => {
+      const finalizado = j.status === "sumula_enviada";
+      const placar = finalizado
+        ? `${Number(j.golsA || 0)} x ${Number(j.golsB || 0)}`
+        : "x";
+
+      lista.innerHTML += `
+        <div class="jogo">
+          <div class="topo-jogo">
+            <div class="times">
+              <div class="time">
+                <img src="${pegarEscudo(j.timeA)}" class="escudo" alt="${j.timeA}">
+                <span>${j.timeA || "-"}</span>
+              </div>
+
+              <div class="placar">${placar}</div>
+
+              <div class="time">
+                <img src="${pegarEscudo(j.timeB)}" class="escudo" alt="${j.timeB}">
+                <span>${j.timeB || "-"}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="info">
+            ${formatarDataHora(j.data)}<br>
+            ${j.local || "-"}<br>
+            Campeonato: ${j.campeonato || "-"} | Categoria: ${j.categoria || "-"}
+          </div>
+
+          <div class="status ${finalizado ? "finalizado" : "agendado"}">
+            ${finalizado ? "Finalizado" : "Agendado"}
+          </div>
+        </div>
+      `;
+    });
+  });
+};
+
+await carregarDados();
+preencherFiltros();
+carregarJogos();
+</script>
 
 </body>
 </html>
