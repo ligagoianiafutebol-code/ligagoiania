@@ -117,6 +117,11 @@ button{
     </div>
 
     <div>
+      <label>Rodada</label>
+      <input id="rodada" placeholder="Ex: 1">
+    </div>
+
+    <div>
       <label>Categoria</label>
       <select id="categoria">
         <option value="">Selecione</option>
@@ -313,6 +318,7 @@ window.salvarJogo = async function(){
     local: document.getElementById("localJogo").value.trim(),
     campeonato: document.getElementById("campeonato").value.trim(),
     logoCampeonato: document.getElementById("logoCampeonato").value.trim(),
+    rodada: document.getElementById("rodada").value.trim(),
     categoria: document.getElementById("categoria").value,
     timeA: document.getElementById("timeA").value,
     timeB: document.getElementById("timeB").value,
@@ -336,6 +342,7 @@ window.salvarJogo = async function(){
 
   if(!jogo.data) return alert("Escolha a data e hora.");
   if(!jogo.local) return alert("Digite o local.");
+  if(!jogo.rodada) return alert("Digite a rodada.");
   if(!jogo.timeA || !jogo.timeB) return alert("Selecione os times.");
   if(jogo.timeA === jogo.timeB) return alert("Os times não podem ser iguais.");
   if(!jogo.categoria) return alert("Selecione a categoria.");
@@ -365,6 +372,7 @@ async function carregarJogos(){
     lista.innerHTML += `
       <div class="card">
         <strong>${j.timeA} x ${j.timeB}</strong><br>
+        Rodada: ${j.rodada || "-"}<br>
         Categoria: ${j.categoria || "-"}<br>
         Campeonato: ${j.campeonato || "-"}<br>
         Data: ${j.data || "-"}<br>
