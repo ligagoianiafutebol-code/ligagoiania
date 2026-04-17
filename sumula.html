@@ -89,7 +89,7 @@ body{
 }
 .jogador{
   display:grid;
-  grid-template-columns:70px 1fr 1fr auto;
+  grid-template-columns:70px 1fr 1fr 1.2fr auto;
   gap:8px;
   align-items:center;
   background:#15325f;
@@ -137,6 +137,18 @@ body{
   border-radius:6px;
   padding:8px 10px;
   cursor:pointer;
+}
+.comissao-linha{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:8px;
+}
+.comissao-linha input{
+  width:100%;
+  padding:10px;
+  border:none;
+  border-radius:6px;
+  box-sizing:border-box;
 }
 .botao-add{
   background:#f7c600;
@@ -195,13 +207,23 @@ body{
   border-radius:999px;
   font-weight:bold;
 }
+.btn-voltar{
+  display:inline-block;
+  margin-bottom:15px;
+  background:#f7c600;
+  color:black;
+  padding:10px 14px;
+  border-radius:8px;
+  text-decoration:none;
+  font-weight:bold;
+}
 @media (max-width: 980px){
   .times,
   .grid{
     grid-template-columns:1fr;
   }
   .jogador{
-    grid-template-columns:60px 1fr;
+    grid-template-columns:1fr;
   }
   .acao-linha{
     grid-template-columns:1fr;
@@ -212,6 +234,8 @@ body{
 <body>
 
 <div class="container">
+  <a href="jogos-admin.html" class="btn-voltar">← Voltar</a>
+
   <div class="topo">
     <div class="topo-flex">
       <img src="logo-liga.jfif" class="logo" alt="Liga">
@@ -236,9 +260,18 @@ body{
       </div>
 
       <div class="bloco">
+        <h3>Comissão Técnica</h3>
+        <div class="comissao-linha">
+          <input id="tecnicoA" placeholder="Técnico do time mandante">
+          <input id="assistenteA1" placeholder="Assistente 1 do time mandante">
+          <input id="assistenteA2" placeholder="Assistente 2 do time mandante">
+        </div>
+      </div>
+
+      <div class="bloco">
         <h3>Escalação</h3>
         <div id="listaA"></div>
-        <button class="botao-add" onclick="adicionarJogadorManual('A')">+ Adicionar jogador</button>
+        <button class="botao-add" onclick="adicionarJogadorManual('A')">+ Adicionar jogador não inscrito</button>
       </div>
 
       <div class="bloco">
@@ -267,9 +300,18 @@ body{
       </div>
 
       <div class="bloco">
+        <h3>Comissão Técnica</h3>
+        <div class="comissao-linha">
+          <input id="tecnicoB" placeholder="Técnico do time visitante">
+          <input id="assistenteB1" placeholder="Assistente 1 do time visitante">
+          <input id="assistenteB2" placeholder="Assistente 2 do time visitante">
+        </div>
+      </div>
+
+      <div class="bloco">
         <h3>Escalação</h3>
         <div id="listaB"></div>
-        <button class="botao-add" onclick="adicionarJogadorManual('B')">+ Adicionar jogador</button>
+        <button class="botao-add" onclick="adicionarJogadorManual('B')">+ Adicionar jogador não inscrito</button>
       </div>
 
       <div class="bloco">
@@ -299,8 +341,16 @@ body{
         <input id="nomeArbitro" readonly>
       </div>
       <div>
-        <label>Assistente</label>
-        <input id="nomeAssistente" readonly>
+        <label>Árbitro Assistente 1</label>
+        <input id="nomeAssistente1" placeholder="Árbitro Assistente 1">
+      </div>
+      <div>
+        <label>Árbitro Assistente 2</label>
+        <input id="nomeAssistente2" placeholder="Árbitro Assistente 2">
+      </div>
+      <div>
+        <label>Árbitro Auxiliar</label>
+        <input id="nomeArbitroAuxiliar" placeholder="Árbitro Auxiliar">
       </div>
       <div style="grid-column:1 / -1;">
         <label>Observações do árbitro</label>
@@ -394,6 +444,7 @@ function renderJogadores(lado){
         <input value="${j.numero || ""}" placeholder="#" onchange="atualizarCampo('${lado}', ${index}, 'numero', this.value)">
         <input value="${j.nome || ""}" placeholder="Nome do jogador" onchange="atualizarCampo('${lado}', ${index}, 'nome', this.value)">
         <input value="${j.posicao || ""}" placeholder="Posição" onchange="atualizarCampo('${lado}', ${index}, 'posicao', this.value)">
+        <input value="${j.observacao || ""}" placeholder="Observação / motivo da inclusão" onchange="atualizarCampo('${lado}', ${index}, 'observacao', this.value)">
         <button onclick="removerJogador('${lado}', ${index})">X</button>
       </div>
     `;
@@ -484,7 +535,13 @@ window.removerJogador = function(lado, index){
 };
 
 window.adicionarJogadorManual = function(lado){
-  const novo = { nome:"", numero:"", posicao:"" };
+  const novo = {
+    nome:"",
+    numero:"",
+    posicao:"",
+    observacao:"Jogador adicionado no dia pelo árbitro"
+  };
+
   if(lado === "A"){
     jogadoresA.push(novo);
     renderJogadores("A");
@@ -628,7 +685,16 @@ async function carregarJogo(){
   document.getElementById("campeonatoInfo").innerText = jogoAtual.campeonato || "";
   document.getElementById("dadosJogoInfo").innerText = `${jogoAtual.categoria || ""} | ${jogoAtual.data || ""} | ${jogoAtual.local || ""}`;
   document.getElementById("nomeArbitro").value = jogoAtual.arbitro || "";
-  document.getElementById("nomeAssistente").value = jogoAtual.assistente || "";
+  document.getElementById("nomeAssistente1").value = jogoAtual.assistente || "";
+  document.getElementById("nomeAssistente2").value = jogoAtual.assistente2 || "";
+  document.getElementById("nomeArbitroAuxiliar").value = jogoAtual.arbitroAuxiliar || "";
+
+  document.getElementById("tecnicoA").value = jogoAtual.tecnicoA || "";
+  document.getElementById("assistenteA1").value = jogoAtual.assistenteA1 || "";
+  document.getElementById("assistenteA2").value = jogoAtual.assistenteA2 || "";
+  document.getElementById("tecnicoB").value = jogoAtual.tecnicoB || "";
+  document.getElementById("assistenteB1").value = jogoAtual.assistenteB1 || "";
+  document.getElementById("assistenteB2").value = jogoAtual.assistenteB2 || "";
 
   if(jogoAtual.logoCampeonato){
     document.getElementById("logoCampeonato").src = jogoAtual.logoCampeonato;
@@ -651,7 +717,8 @@ async function carregarJogo(){
       jogadoresA.push({
         nome: j.nome || "",
         numero: j.numero || "",
-        posicao: j.posicao || ""
+        posicao: j.posicao || "",
+        observacao: ""
       });
     }
 
@@ -659,7 +726,8 @@ async function carregarJogo(){
       jogadoresB.push({
         nome: j.nome || "",
         numero: j.numero || "",
-        posicao: j.posicao || ""
+        posicao: j.posicao || "",
+        observacao: ""
       });
     }
   });
@@ -714,8 +782,19 @@ window.salvarSumula = async function(){
     local: jogoAtual.local || "",
     timeA: jogoAtual.timeA || "",
     timeB: jogoAtual.timeB || "",
-    arbitro: jogoAtual.arbitro || "",
-    assistente: jogoAtual.assistente || "",
+
+    tecnicoA: document.getElementById("tecnicoA").value.trim(),
+    assistenteA1: document.getElementById("assistenteA1").value.trim(),
+    assistenteA2: document.getElementById("assistenteA2").value.trim(),
+    tecnicoB: document.getElementById("tecnicoB").value.trim(),
+    assistenteB1: document.getElementById("assistenteB1").value.trim(),
+    assistenteB2: document.getElementById("assistenteB2").value.trim(),
+
+    arbitro: document.getElementById("nomeArbitro").value.trim(),
+    arbitroAssistente1: document.getElementById("nomeAssistente1").value.trim(),
+    arbitroAssistente2: document.getElementById("nomeAssistente2").value.trim(),
+    arbitroAuxiliar: document.getElementById("nomeArbitroAuxiliar").value.trim(),
+
     logoCampeonato: jogoAtual.logoCampeonato || "",
     golsA: placar.golsMandante,
     golsB: placar.golsVisitante,
@@ -728,8 +807,8 @@ window.salvarSumula = async function(){
     amarelosDetalhadosB: amarelosB,
     vermelhosDetalhadosA: vermelhosA,
     vermelhosDetalhadosB: vermelhosB,
-    amarelos: `${textoCartoes(amarelosA)} ${amarelosA.length && amarelosB.length ? " | " : ""}${textoCartoes(amarelosB)}`.trim(),
-    vermelhos: `${textoCartoes(vermelhosA)} ${vermelhosA.length && vermelhosB.length ? " | " : ""}${textoCartoes(vermelhosB)}`.trim(),
+    amarelos: `${textoCartoes(amarelosA)}${amarelosA.length && amarelosB.length ? " | " : ""}${textoCartoes(amarelosB)}`.trim(),
+    vermelhos: `${textoCartoes(vermelhosA)}${vermelhosA.length && vermelhosB.length ? " | " : ""}${textoCartoes(vermelhosB)}`.trim(),
     artilharia: textoArtilharia(),
     status: "finalizada",
     enviadaEm: new Date().toISOString()
