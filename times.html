@@ -62,10 +62,13 @@ cursor:pointer;
 border:none;
 }
 
-.back{
-display:block;
-margin-top:15px;
-color:#f7c600;
+.btn-voltar{
+display:inline-block;
+margin-bottom:15px;
+background:#f7c600;
+color:black;
+padding:10px 14px;
+border-radius:8px;
 text-decoration:none;
 font-weight:bold;
 }
@@ -318,6 +321,8 @@ margin-top:2px;
 
 <div class="container">
 
+<a href="admin.html" class="btn-voltar">← Voltar</a>
+
 <a class="btn" onclick="toggleFormulario()">+ Novo Time</a>
 
 <input id="buscaTime" placeholder="Pesquisar time..." oninput="carregarTimes()">
@@ -452,8 +457,6 @@ margin-top:2px;
 
 <div class="lista-grid" id="listaTimes"></div>
 
-<a href="admin.html" class="back">← Voltar</a>
-
 </div>
 
 <div class="modal" id="modalVer">
@@ -469,7 +472,7 @@ const firebaseConfig = {
   apiKey: "AIzaSyCyArj4yRlEl-yibkc0VEmL_4UJpRHHQSc",
   authDomain: "liga-goiana-base.firebaseapp.com",
   projectId: "liga-goiana-base",
-  storageBucket: "liga-goiana-base.firebasestorage.app",
+  storageBucket: "liga-goiana-base.appspot.com",
   messagingSenderId: "952863591183",
   appId: "1:952863591183:web:4eea34f494ba2dd754cc7a"
 };
