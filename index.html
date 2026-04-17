@@ -15,7 +15,6 @@
       --line:rgba(255,230,0,.18);
       --shadow:0 14px 32px rgba(0,0,0,.30);
       --sidebar-width:280px;
-      --sidebar-collapsed:88px;
       --blue-bg:#031022;
       --blue-1:#051935;
       --blue-2:#0b2a57;
@@ -47,7 +46,7 @@
     }
 
     body.sidebar-collapsed{
-      --sidebar-width:88px;
+      --sidebar-width:0px;
     }
 
     a{
@@ -61,7 +60,7 @@
     }
 
     .wrap{
-      width:min(1200px, calc(100% - 32px));
+      width:min(1220px, calc(100% - 32px));
       margin:0 auto;
     }
 
@@ -75,7 +74,7 @@
       overflow-y:auto;
       background:linear-gradient(180deg, rgba(3,16,34,.98), rgba(5,25,53,.98));
       border-right:1px solid var(--line);
-      z-index:1200;
+      z-index:1300;
       padding:22px 18px 28px;
       transition:width .35s ease, transform .35s ease, padding .35s ease;
       box-shadow:var(--shadow);
@@ -109,7 +108,6 @@
       flex-direction:column;
       gap:3px;
       min-width:0;
-      transition:opacity .25s ease, width .25s ease;
     }
 
     .brand-text strong{
@@ -131,7 +129,6 @@
       color:var(--yellow);
       margin:18px 0 10px;
       font-weight:700;
-      transition:opacity .25s ease;
     }
 
     .side-menu{
@@ -161,41 +158,19 @@
       transform:translateX(4px);
     }
 
-    /* BARRA LATERAL FECHADA NO DESKTOP */
     body.sidebar-collapsed .sidebar{
-      padding:22px 10px 28px;
-    }
-
-    body.sidebar-collapsed .brand{
-      justify-content:center;
-    }
-
-    body.sidebar-collapsed .brand-text,
-    body.sidebar-collapsed .menu-title{
-      opacity:0;
+      transform:translateX(-100%);
       width:0;
-      height:0;
-      overflow:hidden;
-      margin:0;
       padding:0;
-    }
-
-    body.sidebar-collapsed .side-menu a{
-      text-align:center;
-      padding:12px 8px;
-      font-size:12px;
-    }
-
-    body.sidebar-collapsed .side-menu a:hover,
-    body.sidebar-collapsed .side-menu a.active{
-      transform:none;
+      border-right:none;
+      overflow:hidden;
     }
 
     /* TOPBAR */
     .topbar{
       position:sticky;
       top:0;
-      z-index:1100;
+      z-index:1200;
       background:rgba(3,16,34,.88);
       backdrop-filter:blur(10px);
       border-bottom:1px solid var(--line);
@@ -224,6 +199,7 @@
       cursor:pointer;
       box-shadow:var(--shadow);
       flex-shrink:0;
+      transition:.25s ease;
     }
 
     .menu-toggle:hover{
@@ -262,8 +238,7 @@
 
     .btn-top,
     .btn-primary,
-    .btn-secondary,
-    .btn-save{
+    .btn-secondary{
       border:none;
       cursor:pointer;
       font-weight:700;
@@ -288,64 +263,11 @@
       background:var(--yellow-2);
     }
 
-    /* LAYOUT */
-    .editor-home,
     .hero,
     .conteudo,
     footer{
       margin-left:var(--sidebar-width);
       transition:margin-left .35s ease;
-    }
-
-    /* EDITOR */
-    .editor-home{
-      padding:22px 0 0;
-    }
-
-    .editor-box{
-      background:rgba(255,255,255,.05);
-      border:1px solid var(--line);
-      border-radius:18px;
-      padding:22px;
-      box-shadow:var(--shadow);
-    }
-
-    .editor-box h2{
-      color:var(--yellow);
-      margin-bottom:16px;
-      font-size:24px;
-    }
-
-    .editor-box label{
-      display:block;
-      margin:14px 0 8px;
-      font-weight:700;
-      color:#fff;
-    }
-
-    .editor-box textarea,
-    .editor-box input{
-      width:100%;
-      border:none;
-      outline:none;
-      border-radius:12px;
-      padding:14px;
-      font-size:15px;
-      background:#fff;
-      color:#111;
-    }
-
-    .btn-save{
-      margin-top:16px;
-      padding:13px 18px;
-      border-radius:12px;
-      background:var(--green);
-      color:#fff;
-    }
-
-    .btn-save:hover{
-      background:var(--green-2);
-      transform:translateY(-2px);
     }
 
     /* HERO */
@@ -355,7 +277,7 @@
 
     .hero-panel{
       display:grid;
-      grid-template-columns:1.2fr .9fr;
+      grid-template-columns:1.15fr .95fr;
       gap:22px;
       align-items:center;
       background:linear-gradient(145deg, rgba(8,28,58,.96), rgba(16,45,92,.92));
@@ -363,7 +285,7 @@
       border-radius:26px;
       overflow:hidden;
       box-shadow:var(--shadow);
-      min-height:480px;
+      min-height:500px;
     }
 
     .hero-copy{
@@ -383,8 +305,8 @@
     }
 
     .hero-copy h1{
-      font-size:48px;
-      line-height:1.08;
+      font-size:52px;
+      line-height:1.05;
       color:var(--yellow);
       margin-bottom:14px;
     }
@@ -440,7 +362,7 @@
 
     .hero-art{
       height:100%;
-      min-height:420px;
+      min-height:440px;
       background:rgba(255,255,255,.03);
     }
 
@@ -523,6 +445,7 @@
       border-radius:22px;
       box-shadow:var(--shadow);
       padding:22px;
+      overflow:hidden;
     }
 
     .panel-head{
@@ -643,10 +566,78 @@
       background:var(--yellow);
     }
 
-    .news-list{
+    /* NOTÍCIAS LADO */
+    .news-slider-wrap{
+      overflow:hidden;
+      width:100%;
+      border-radius:16px;
+    }
+
+    .news-slider-track{
+      display:flex;
+      gap:16px;
+      width:max-content;
+      animation:slideNews 28s linear infinite;
+    }
+
+    .news-slide{
+      width:320px;
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:18px;
+      padding:12px;
+      flex-shrink:0;
+    }
+
+    .news-slide img{
+      width:100%;
+      height:180px;
+      object-fit:cover;
+      border-radius:14px;
+      margin-bottom:12px;
+      background:#0b1f3a;
+    }
+
+    .news-slide strong{
+      display:block;
+      color:var(--yellow);
+      font-size:20px;
+      margin-bottom:8px;
+      line-height:1.25;
+    }
+
+    .news-slide p{
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.55;
+      margin-bottom:10px;
+    }
+
+    .news-slide span{
+      color:#fff;
+      font-size:12px;
+      opacity:.8;
+    }
+
+    @keyframes slideNews{
+      from{ transform:translateX(0); }
+      to{ transform:translateX(-50%); }
+    }
+
+    /* NOTÍCIAS CIMA */
+    .news-vertical-wrap{
+      height:440px;
+      overflow:hidden;
+      position:relative;
+      mask-image:linear-gradient(to bottom, transparent 0%, #000 8%, #000 92%, transparent 100%);
+      -webkit-mask-image:linear-gradient(to bottom, transparent 0%, #000 8%, #000 92%, transparent 100%);
+    }
+
+    .news-vertical-track{
       display:flex;
       flex-direction:column;
       gap:14px;
+      animation:scrollUpNews 22s linear infinite;
     }
 
     .news-item{
@@ -693,6 +684,11 @@
       color:#fff;
       font-size:12px;
       opacity:.8;
+    }
+
+    @keyframes scrollUpNews{
+      from{ transform:translateY(0); }
+      to{ transform:translateY(-50%); }
     }
 
     .cta-box{
@@ -759,7 +755,7 @@
     footer a{
       color:var(--muted);
       font-size:14px;
-      line-height:1.8;
+      line-height:1.9;
     }
 
     footer a{
@@ -774,18 +770,26 @@
     .social{
       display:flex;
       gap:10px;
-      margin-top:10px;
+      margin-top:12px;
+      flex-wrap:wrap;
     }
 
     .social a{
-      width:38px;
-      height:38px;
-      border-radius:10px;
+      width:42px;
+      height:42px;
+      border-radius:12px;
       display:flex;
       align-items:center;
       justify-content:center;
       background:rgba(255,255,255,.06);
       font-size:18px;
+      transition:.25s ease;
+    }
+
+    .social a:hover{
+      background:var(--yellow-soft);
+      color:var(--yellow);
+      transform:translateY(-2px);
     }
 
     .copyright{
@@ -796,7 +800,6 @@
       font-size:14px;
     }
 
-    /* RESPONSIVO */
     @media (max-width:1200px){
       .top-links{
         display:none;
@@ -816,7 +819,6 @@
       }
 
       .topbar,
-      .editor-home,
       .hero,
       .conteudo,
       footer{
@@ -825,28 +827,6 @@
 
       .topbar-content{
         justify-content:space-between;
-      }
-
-      body.sidebar-collapsed .brand-text,
-      body.sidebar-collapsed .menu-title{
-        opacity:1;
-        width:auto;
-        height:auto;
-        overflow:visible;
-      }
-
-      body.sidebar-collapsed .side-menu a{
-        text-align:left;
-        padding:12px 14px;
-        font-size:14px;
-      }
-
-      body.sidebar-collapsed .brand{
-        justify-content:flex-start;
-      }
-
-      body.sidebar-collapsed .sidebar{
-        padding:22px 18px 28px;
       }
     }
 
@@ -900,7 +880,7 @@
       }
 
       .hero-copy h1{
-        font-size:34px;
+        font-size:36px;
       }
 
       .subtitle{
@@ -963,7 +943,7 @@
       <a href="tabela.html">Tabelas</a>
       <a href="artilharia.html">Artilharia</a>
       <a href="classificacao.html">Classificação</a>
-      <a href="jogos.html">Jogos que vão acontecer</a>
+      <a href="jogos.html">Jogos</a>
       <a href="campeonatos.html">Campeonato</a>
       <a href="categorias.html">Categoria</a>
       <a href="times.html">Times</a>
@@ -1013,27 +993,11 @@
 
       <div class="top-actions">
         <button class="btn-top" onclick="window.location.href='login.html'">🔐 Login / Cadastro</button>
-        <button class="btn-top admin-only" id="btnEditar" style="display:none;" onclick="window.location.href='admin.html'">⚙️ Painel ADM</button>
       </div>
     </div>
   </header>
 
-  <div id="editorHome" class="editor-home">
-    <div class="wrap">
-      <div class="editor-box">
-        <h2>Editar Página Inicial</h2>
-
-        <label for="editTexto">Texto principal</label>
-        <textarea id="editTexto" rows="5"></textarea>
-
-        <label for="editImagem">Imagem principal (URL)</label>
-        <input id="editImagem" type="text" placeholder="Cole a URL da imagem">
-
-        <button class="btn-save" onclick="salvarEdicao()">Salvar Alterações</button>
-      </div>
-    </div>
-  </div>
-
+  <!-- HERO -->
   <section class="hero">
     <div class="wrap">
       <div class="hero-panel">
@@ -1071,7 +1035,7 @@
             </svg>
           </div>
           <h3>Competição de Alto Nível</h3>
-          <p>Jogos organizados, calendário definido e arbitragem qualificada para valorizar cada atleta.</p>
+          <p>Jogos organizados e arbitragem qualificada para valorizar cada atleta.</p>
         </div>
 
         <div class="pillar">
@@ -1082,7 +1046,7 @@
             </svg>
           </div>
           <h3>Formação de Atletas</h3>
-          <p>Desenvolvimento dentro e fora de campo, com foco em disciplina, evolução e oportunidade.</p>
+          <p>Desenvolvimento dentro e fora de campo, com foco em evolução e oportunidade.</p>
         </div>
 
         <div class="pillar">
@@ -1111,11 +1075,34 @@
             </svg>
           </div>
           <h3>Respeito, União e Propósito</h3>
-          <p>Valores que formam grandes atletas, grandes equipes e campeões para a vida inteira.</p>
+          <p>Valores que formam grandes equipes e campeões para a vida inteira.</p>
         </div>
       </div>
 
+      <!-- NOTÍCIAS HORIZONTAL -->
+      <section class="panel" style="margin-bottom:22px;">
+        <div class="panel-head">
+          <div class="panel-head-title">
+            <div class="panel-head-icon">
+              <svg viewBox="0 0 24 24">
+                <path d="M4 19V5h16v14"></path>
+                <path d="M8 9h8"></path>
+                <path d="M8 13h8"></path>
+                <path d="M8 17h5"></path>
+              </svg>
+            </div>
+            <h2>Últimas Notícias</h2>
+          </div>
+          <a href="noticias.html">Ver notícias →</a>
+        </div>
+
+        <div class="news-slider-wrap">
+          <div class="news-slider-track" id="newsSliderTrack"></div>
+        </div>
+      </section>
+
       <div class="mid-grid">
+        <!-- JOGOS -->
         <section class="panel">
           <div class="panel-head">
             <div class="panel-head-title">
@@ -1141,86 +1128,11 @@
                 <th>Local</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td>20/04 - 09:00</td>
-                <td>
-                  <div class="confronto">
-                    <div class="time-mini">
-                      <img src="atletico-go.png" onerror="this.src='logo-liga.jfif'" class="escudo" alt="Atlético GO">
-                      <span>Atlético GO</span>
-                    </div>
-                    <span class="vs">X</span>
-                    <div class="time-mini">
-                      <img src="vila-nova.png" onerror="this.src='logo-liga.jfif'" class="escudo" alt="Vila Nova">
-                      <span>Vila Nova</span>
-                    </div>
-                  </div>
-                </td>
-                <td><span class="badge">Sub-15</span></td>
-                <td>Campo 01</td>
-              </tr>
-
-              <tr>
-                <td>20/04 - 10:30</td>
-                <td>
-                  <div class="confronto">
-                    <div class="time-mini">
-                      <img src="campinas.png" onerror="this.src='logo-liga.jfif'" class="escudo" alt="Campinas">
-                      <span>Campinas</span>
-                    </div>
-                    <span class="vs">X</span>
-                    <div class="time-mini">
-                      <img src="hidrolandia.png" onerror="this.src='logo-liga.jfif'" class="escudo" alt="Hidrolândia">
-                      <span>Hidrolândia</span>
-                    </div>
-                  </div>
-                </td>
-                <td><span class="badge">Sub-13</span></td>
-                <td>Campo 02</td>
-              </tr>
-
-              <tr>
-                <td>20/04 - 14:00</td>
-                <td>
-                  <div class="confronto">
-                    <div class="time-mini">
-                      <img src="uniao.png" onerror="this.src='logo-liga.jfif'" class="escudo" alt="União">
-                      <span>União</span>
-                    </div>
-                    <span class="vs">X</span>
-                    <div class="time-mini">
-                      <img src="independencia.png" onerror="this.src='logo-liga.jfif'" class="escudo" alt="Independência">
-                      <span>Independência</span>
-                    </div>
-                  </div>
-                </td>
-                <td><span class="badge">Sub-17</span></td>
-                <td>Estádio Regional</td>
-              </tr>
-
-              <tr>
-                <td>21/04 - 08:30</td>
-                <td>
-                  <div class="confronto">
-                    <div class="time-mini">
-                      <img src="ac-esporte.png" onerror="this.src='logo-liga.jfif'" class="escudo" alt="AC Esporte">
-                      <span>AC Esporte</span>
-                    </div>
-                    <span class="vs">X</span>
-                    <div class="time-mini">
-                      <img src="b14.png" onerror="this.src='logo-liga.jfif'" class="escudo" alt="B14 Futebol">
-                      <span>B14 Futebol</span>
-                    </div>
-                  </div>
-                </td>
-                <td><span class="badge">Sub-11</span></td>
-                <td>Campo Principal</td>
-              </tr>
-            </tbody>
+            <tbody id="gamesTableBody"></tbody>
           </table>
         </section>
 
+        <!-- NOTÍCIAS VERTICAL -->
         <aside class="panel">
           <div class="panel-head">
             <div class="panel-head-title">
@@ -1237,33 +1149,8 @@
             <a href="noticias.html">Ver notícias →</a>
           </div>
 
-          <div class="news-list">
-            <div class="news-item">
-              <img src="fundo.png" alt="Abertura oficial">
-              <div>
-                <strong>Abertura oficial da temporada</strong>
-                <p>A Liga Goiana inicia mais um ciclo com grandes expectativas e fortes equipes em todas as categorias.</p>
-                <span>15 Abr 2026</span>
-              </div>
-            </div>
-
-            <div class="news-item">
-              <img src="copa-uniao.jpeg" alt="Copa União">
-              <div>
-                <strong>Copa União de Base confirmada</strong>
-                <p>Categorias definidas e confrontos prometem grandes jogos, emoção e muito talento em campo.</p>
-                <span>10 Abr 2026</span>
-              </div>
-            </div>
-
-            <div class="news-item">
-              <img src="hero-liga.jpeg" alt="Mais clubes">
-              <div>
-                <strong>Mais clubes fortalecem a Liga</strong>
-                <p>Projetos de todo o estado elevam ainda mais o nível técnico da competição e da formação.</p>
-                <span>05 Abr 2026</span>
-              </div>
-            </div>
+          <div class="news-vertical-wrap">
+            <div class="news-vertical-track" id="newsVerticalTrack"></div>
           </div>
         </aside>
       </div>
@@ -1276,7 +1163,13 @@
           </div>
 
           <div>
-            <a href="campeonatos.html" class="btn-primary">🏆 Quero Participar!</a>
+            <a
+              href="https://wa.me/5562981916316?text=Ol%C3%A1%2C%20quero%20participar%20da%20Liga%20Goiana%20de%20Futebol%20de%20Base."
+              class="btn-primary"
+              target="_blank"
+            >
+              🙋 Quero Participar!
+            </a>
           </div>
         </div>
       </section>
@@ -1294,9 +1187,9 @@
             <p>Onde o talento encontra o futuro.</p>
 
             <div class="social">
-              <a href="#">📸</a>
-              <a href="#">📘</a>
-              <a href="#">▶️</a>
+              <a href="instagram://user?username=liga_lgf" title="Instagram">📸</a>
+              <a href="fb://facewebmodal/f?href=https://www.facebook.com/" title="Facebook">📘</a>
+              <a href="vnd.youtube://" title="YouTube">▶️</a>
             </div>
           </div>
         </div>
@@ -1326,9 +1219,10 @@
 
       <div>
         <h4>Contato</h4>
+        <a href="https://wa.me/5562984284785?text=Ol%C3%A1%2C%20vim%20pelo%20site%20da%20Liga%20Goiana%20de%20Futebol%20de%20Base." target="_blank">(62) 98428-4785</a>
+        <a href="mailto:ligagoianaoficial@gmail.com">ligagoianaoficial@gmail.com</a>
+        <a href="https://ligagoianiafutebol.com" target="_blank">ligagoianiafutebol.com</a>
         <p>Goiânia - GO</p>
-        <p>(62) 98428-4785</p>
-        <p>ligagoianaoficial@gmail.com</p>
       </div>
     </div>
 
@@ -1338,61 +1232,241 @@
   </footer>
 
   <script>
+    const noticiasPadrao = [
+      {
+        titulo: "Abertura oficial da temporada",
+        resumo: "A Liga Goiana inicia mais um ciclo com grandes expectativas e fortes equipes em todas as categorias.",
+        data: "15 Abr 2026",
+        imagem: "fundo.png"
+      },
+      {
+        titulo: "Copa União de Base confirmada",
+        resumo: "Categorias definidas e confrontos prometem grandes jogos, emoção e muito talento em campo.",
+        data: "10 Abr 2026",
+        imagem: "copa-uniao.jpeg"
+      },
+      {
+        titulo: "Mais clubes fortalecem a Liga",
+        resumo: "Projetos de todo o estado elevam ainda mais o nível técnico da competição e da formação.",
+        data: "05 Abr 2026",
+        imagem: "hero-liga.jpeg"
+      }
+    ];
+
+    const jogosPadrao = [
+      {
+        data: "2026-04-20",
+        hora: "09:00",
+        mandante: "Atlético GO",
+        visitante: "Vila Nova",
+        categoria: "Sub-15",
+        local: "Campo 01",
+        status: "agendado",
+        escudoMandante: "atletico-go.png",
+        escudoVisitante: "vila-nova.png"
+      },
+      {
+        data: "2026-04-20",
+        hora: "10:30",
+        mandante: "Campinas",
+        visitante: "Hidrolândia",
+        categoria: "Sub-13",
+        local: "Campo 02",
+        status: "agendado",
+        escudoMandante: "campinas.png",
+        escudoVisitante: "hidrolandia.png"
+      },
+      {
+        data: "2026-04-20",
+        hora: "14:00",
+        mandante: "União",
+        visitante: "Independência",
+        categoria: "Sub-17",
+        local: "Estádio Regional",
+        status: "agendado",
+        escudoMandante: "uniao.png",
+        escudoVisitante: "independencia.png"
+      },
+      {
+        data: "2026-04-21",
+        hora: "08:30",
+        mandante: "AC Esporte",
+        visitante: "B14 Futebol",
+        categoria: "Sub-11",
+        local: "Campo Principal",
+        status: "agendado",
+        escudoMandante: "ac-esporte.png",
+        escudoVisitante: "b14.png"
+      }
+    ];
+
     function toggleSidebar() {
       if (window.innerWidth <= 1200) {
         document.getElementById("sidebar").classList.toggle("open");
       } else {
         document.body.classList.toggle("sidebar-collapsed");
+
+        if (document.body.classList.contains("sidebar-collapsed")) {
+          localStorage.setItem("liga_sidebar_state", "fechada");
+        } else {
+          localStorage.setItem("liga_sidebar_state", "aberta");
+        }
       }
     }
 
-    function salvarEdicao() {
-      const texto = document.getElementById("editTexto").value;
-      const imagem = document.getElementById("editImagem").value;
+    function formatarDataBR(dataIso, hora) {
+      try {
+        const [ano, mes, dia] = dataIso.split("-");
+        return `${dia}/${mes} - ${hora}`;
+      } catch {
+        return `${dataIso} - ${hora}`;
+      }
+    }
 
-      if (texto) {
-        const desc = document.querySelector(".hero .desc");
-        if (desc) desc.innerText = texto;
-        localStorage.setItem("liga_home_texto", texto);
+    function carregarNoticias() {
+      try {
+        const noticiasSalvas = JSON.parse(localStorage.getItem("liga_noticias"));
+        if (Array.isArray(noticiasSalvas) && noticiasSalvas.length) {
+          return noticiasSalvas;
+        }
+      } catch (e) {}
+      return noticiasPadrao;
+    }
+
+    function carregarJogos() {
+      try {
+        const jogosSalvos = JSON.parse(localStorage.getItem("liga_jogos"));
+        if (Array.isArray(jogosSalvos) && jogosSalvos.length) {
+          return jogosSalvos;
+        }
+      } catch (e) {}
+      return jogosPadrao;
+    }
+
+    function renderNoticias() {
+      const noticias = carregarNoticias();
+      const slider = document.getElementById("newsSliderTrack");
+      const vertical = document.getElementById("newsVerticalTrack");
+
+      const noticiasDuplicadas = [...noticias, ...noticias];
+
+      slider.innerHTML = noticiasDuplicadas.map(noticia => `
+        <article class="news-slide">
+          <img src="${noticia.imagem || 'fundo.png'}" alt="${noticia.titulo}" onerror="this.src='fundo.png'">
+          <strong>${noticia.titulo}</strong>
+          <p>${noticia.resumo}</p>
+          <span>${noticia.data}</span>
+        </article>
+      `).join("");
+
+      vertical.innerHTML = noticiasDuplicadas.map(noticia => `
+        <div class="news-item">
+          <img src="${noticia.imagem || 'fundo.png'}" alt="${noticia.titulo}" onerror="this.src='fundo.png'">
+          <div>
+            <strong>${noticia.titulo}</strong>
+            <p>${noticia.resumo}</p>
+            <span>${noticia.data}</span>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function renderJogos() {
+      const jogos = carregarJogos();
+      const tabela = document.getElementById("gamesTableBody");
+      const agora = new Date();
+
+      const futuros = jogos.filter(jogo => {
+        if (jogo.status === "encerrado") return false;
+        const dataHora = new Date(`${jogo.data}T${jogo.hora || "00:00"}:00`);
+        return dataHora >= agora;
+      }).sort((a, b) => new Date(`${a.data}T${a.hora}`) - new Date(`${b.data}T${b.hora}`));
+
+      const encerrados = jogos.filter(jogo => {
+        if (jogo.status === "encerrado") return true;
+        const dataHora = new Date(`${jogo.data}T${jogo.hora || "00:00"}:00`);
+        return dataHora < agora;
+      }).sort((a, b) => new Date(`${b.data}T${b.hora}`) - new Date(`${a.data}T${a.hora}`));
+
+      const listaFinal = futuros.length ? futuros.slice(0, 6) : encerrados.slice(0, 6);
+
+      if (!listaFinal.length) {
+        tabela.innerHTML = `
+          <tr>
+            <td colspan="4" style="text-align:center; padding:22px;">
+              Nenhum jogo encontrado no momento.
+            </td>
+          </tr>
+        `;
+        return;
       }
 
-      if (imagem) {
-        const heroImg = document.querySelector(".hero-art img");
-        if (heroImg) heroImg.src = imagem;
-        localStorage.setItem("liga_home_imagem", imagem);
+      tabela.innerHTML = listaFinal.map(jogo => `
+        <tr>
+          <td>${formatarDataBR(jogo.data, jogo.hora)}</td>
+          <td>
+            <div class="confronto">
+              <div class="time-mini">
+                <img src="${jogo.escudoMandante || 'logo-liga.jfif'}" onerror="this.src='logo-liga.jfif'" class="escudo" alt="${jogo.mandante}">
+                <span>${jogo.mandante}</span>
+              </div>
+              <span class="vs">X</span>
+              <div class="time-mini">
+                <img src="${jogo.escudoVisitante || 'logo-liga.jfif'}" onerror="this.src='logo-liga.jfif'" class="escudo" alt="${jogo.visitante}">
+                <span>${jogo.visitante}</span>
+              </div>
+            </div>
+          </td>
+          <td><span class="badge">${jogo.categoria || "-"}</span></td>
+          <td>${jogo.local || "-"}</td>
+        </tr>
+      `).join("");
+    }
+
+    function configurarLinksSociais() {
+      const links = document.querySelectorAll(".social a");
+
+      if (links[0]) {
+        links[0].addEventListener("click", function(e) {
+          e.preventDefault();
+          const appLink = "instagram://user?username=liga_lgf";
+          const webLink = "https://www.instagram.com/liga_lgf?igsh=MWE0M2RiNnU1aWJtaA==";
+          window.location.href = appLink;
+          setTimeout(() => window.open(webLink, "_blank"), 900);
+        });
       }
 
-      alert("Alterações salvas com sucesso!");
+      if (links[1]) {
+        links[1].addEventListener("click", function(e) {
+          e.preventDefault();
+          const appLink = "fb://facewebmodal/f?href=https://www.facebook.com/";
+          const webLink = "https://www.facebook.com/";
+          window.location.href = appLink;
+          setTimeout(() => window.open(webLink, "_blank"), 900);
+        });
+      }
+
+      if (links[2]) {
+        links[2].addEventListener("click", function(e) {
+          e.preventDefault();
+          const appLink = "vnd.youtube://";
+          const webLink = "https://www.youtube.com/";
+          window.location.href = appLink;
+          setTimeout(() => window.open(webLink, "_blank"), 900);
+        });
+      }
     }
 
     window.addEventListener("DOMContentLoaded", () => {
-      const textoSalvo = localStorage.getItem("liga_home_texto");
-      const imagemSalva = localStorage.getItem("liga_home_imagem");
       const sidebarState = localStorage.getItem("liga_sidebar_state");
-      const logado = localStorage.getItem("adminLogado");
-
-      if (textoSalvo) {
-        const desc = document.querySelector(".hero .desc");
-        const campoTexto = document.getElementById("editTexto");
-        if (desc) desc.innerText = textoSalvo;
-        if (campoTexto) campoTexto.value = textoSalvo;
-      }
-
-      if (imagemSalva) {
-        const heroImg = document.querySelector(".hero-art img");
-        const campoImagem = document.getElementById("editImagem");
-        if (heroImg) heroImg.src = imagemSalva;
-        if (campoImagem) campoImagem.value = imagemSalva;
-      }
-
-      if (logado === "true") {
-        const btnEditar = document.getElementById("btnEditar");
-        if (btnEditar) btnEditar.style.display = "inline-flex";
-      }
 
       if (window.innerWidth > 1200 && sidebarState === "fechada") {
         document.body.classList.add("sidebar-collapsed");
       }
+
+      renderNoticias();
+      renderJogos();
+      configurarLinksSociais();
     });
 
     window.addEventListener("resize", () => {
@@ -1402,13 +1476,6 @@
         document.body.classList.remove("sidebar-collapsed");
       } else {
         sidebar.classList.remove("open");
-      }
-    });
-
-    document.getElementById("menuToggle").addEventListener("click", () => {
-      if (window.innerWidth > 1200) {
-        const fechada = document.body.classList.contains("sidebar-collapsed");
-        localStorage.setItem("liga_sidebar_state", fechada ? "aberta" : "fechada");
       }
     });
 
