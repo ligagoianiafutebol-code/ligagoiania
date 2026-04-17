@@ -1,9 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<button onclick="logout()" style="position:absolute;top:15px;right:15px;background:#f7c600;border:none;padding:8px 12px;border-radius:6px;font-weight:bold;cursor:pointer;">
-Sair
-</button>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Painel Admin - LIGA GOIANA DE FUTEBOL DE BASE</title>
@@ -23,6 +20,20 @@ text-align:center;
 font-size:22px;
 font-weight:bold;
 border-bottom:3px solid #f7c600;
+position:relative;
+}
+
+.btn-sair{
+position:absolute;
+top:12px;
+right:15px;
+background:#f7c600;
+border:none;
+padding:8px 12px;
+border-radius:6px;
+font-weight:bold;
+cursor:pointer;
+color:black;
 }
 
 .container{
@@ -79,7 +90,10 @@ background:#153766;
 </head>
 <body>
 
-<header>Painel do Administrador</header>
+<header>
+Painel do Administrador
+<button class="btn-sair" onclick="logout()">Sair</button>
+</header>
 
 <div class="container">
 
@@ -124,7 +138,6 @@ background:#153766;
 </div>
 
 <script type="module">
-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
 import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-auth.js";
 
@@ -144,9 +157,12 @@ window.logout = function() {
   signOut(auth).then(() => {
     alert("Saiu do sistema");
     window.location.href = "index.html";
+  }).catch((error) => {
+    alert("Erro ao sair.");
+    console.error(error);
   });
-}
-
+};
 </script>
+
 </body>
 </html>
