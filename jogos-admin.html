@@ -66,6 +66,22 @@ button{
   text-decoration:none;
   font-weight:bold;
 }
+.bloco-titulo{
+  margin:18px 0 8px;
+  color:#f7c600;
+  font-size:18px;
+  font-weight:bold;
+}
+.btn-voltar{
+  display:inline-block;
+  margin-bottom:15px;
+  background:#f7c600;
+  color:black;
+  padding:10px 14px;
+  border-radius:8px;
+  text-decoration:none;
+  font-weight:bold;
+}
 @media (max-width: 800px){
   .grid{ grid-template-columns:1fr; }
 }
@@ -76,7 +92,9 @@ button{
 <header>Cadastro de Jogos</header>
 
 <div class="container">
+  <a href="painel-admin.html" class="btn-voltar">← Voltar</a>
 
+  <div class="bloco-titulo">Informações do Jogo</div>
   <div class="grid">
     <div>
       <label>Data e hora</label>
@@ -86,6 +104,23 @@ button{
     <div>
       <label>Local</label>
       <input id="localJogo" placeholder="Ex: Campo 1">
+    </div>
+
+    <div>
+      <label>Campeonato</label>
+      <input id="campeonato" placeholder="Ex: Copa União de Base">
+    </div>
+
+    <div>
+      <label>Logo do campeonato (URL)</label>
+      <input id="logoCampeonato" placeholder="Ex: logo-campeonato.png">
+    </div>
+
+    <div>
+      <label>Categoria</label>
+      <select id="categoria">
+        <option value="">Selecione</option>
+      </select>
     </div>
 
     <div>
@@ -101,19 +136,46 @@ button{
         <option value="">Selecione</option>
       </select>
     </div>
+  </div>
 
+  <div class="bloco-titulo">Comissão Técnica - Mandante</div>
+  <div class="grid">
     <div>
-      <label>Categoria</label>
-      <select id="categoria">
-        <option value="">Selecione</option>
-      </select>
+      <label>Técnico</label>
+      <input id="tecnicoA" placeholder="Nome do técnico mandante">
     </div>
 
     <div>
-      <label>Campeonato</label>
-      <input id="campeonato" placeholder="Ex: Copa União de Base">
+      <label>Assistente 1</label>
+      <input id="assistenteA1" placeholder="Nome do assistente 1 mandante">
     </div>
 
+    <div>
+      <label>Assistente 2</label>
+      <input id="assistenteA2" placeholder="Nome do assistente 2 mandante">
+    </div>
+  </div>
+
+  <div class="bloco-titulo">Comissão Técnica - Visitante</div>
+  <div class="grid">
+    <div>
+      <label>Técnico</label>
+      <input id="tecnicoB" placeholder="Nome do técnico visitante">
+    </div>
+
+    <div>
+      <label>Assistente 1</label>
+      <input id="assistenteB1" placeholder="Nome do assistente 1 visitante">
+    </div>
+
+    <div>
+      <label>Assistente 2</label>
+      <input id="assistenteB2" placeholder="Nome do assistente 2 visitante">
+    </div>
+  </div>
+
+  <div class="bloco-titulo">Arbitragem</div>
+  <div class="grid">
     <div>
       <label>Árbitro</label>
       <select id="arbitro">
@@ -122,21 +184,29 @@ button{
     </div>
 
     <div>
-      <label>Assistente</label>
-      <select id="assistente">
+      <label>Árbitro Assistente 1</label>
+      <select id="assistente1">
         <option value="">Selecione</option>
       </select>
     </div>
 
     <div>
-      <label>Logo do campeonato (URL)</label>
-      <input id="logoCampeonato" placeholder="Ex: logo-campeonato.png">
+      <label>Árbitro Assistente 2</label>
+      <select id="assistente2">
+        <option value="">Selecione</option>
+      </select>
+    </div>
+
+    <div>
+      <label>Árbitro Auxiliar</label>
+      <select id="arbitroAuxiliar">
+        <option value="">Selecione</option>
+      </select>
     </div>
   </div>
 
   <div class="top-actions">
     <button onclick="salvarJogo()">Salvar Jogo</button>
-    <a class="link-btn" href="painel-admin.html">Voltar</a>
   </div>
 
   <div id="listaJogos"></div>
@@ -197,20 +267,43 @@ async function carregarCategorias(){
 }
 
 async function carregarUsuarios(){
-  const arb = document.getElementById("arbitro");
-  const ass = document.getElementById("assistente");
-  arb.innerHTML = '<option value="">Selecione</option>';
-  ass.innerHTML = '<option value="">Selecione</option>';
+  const arbitro = document.getElementById("arbitro");
+  const assistente1 = document.getElementById("assistente1");
+  const assistente2 = document.getElementById("assistente2");
+  const arbitroAuxiliar = document.getElementById("arbitroAuxiliar");
+
+  arbitro.innerHTML = '<option value="">Selecione</option>';
+  assistente1.innerHTML = '<option value="">Selecione</option>';
+  assistente2.innerHTML = '<option value="">Selecione</option>';
+  arbitroAuxiliar.innerHTML = '<option value="">Selecione</option>';
 
   const snap = await getDocs(collection(db, "usuarios"));
+  let arbitros = [];
+  let assistentes = [];
+
   snap.forEach(d => {
     const u = d.data();
+
     if(u.tipoUsuario === "arbitro"){
-      arb.innerHTML += `<option value="${u.nome}">${u.nome}</option>`;
+      arbitros.push(u.nome);
     }
+
     if(u.tipoUsuario === "assistente"){
-      ass.innerHTML += `<option value="${u.nome}">${u.nome}</option>`;
+      assistentes.push(u.nome);
     }
+  });
+
+  arbitros.sort((a,b)=>a.localeCompare(b,"pt-BR"));
+  assistentes.sort((a,b)=>a.localeCompare(b,"pt-BR"));
+
+  arbitros.forEach(nome => {
+    arbitro.innerHTML += `<option value="${nome}">${nome}</option>`;
+    arbitroAuxiliar.innerHTML += `<option value="${nome}">${nome}</option>`;
+  });
+
+  assistentes.forEach(nome => {
+    assistente1.innerHTML += `<option value="${nome}">${nome}</option>`;
+    assistente2.innerHTML += `<option value="${nome}">${nome}</option>`;
   });
 }
 
@@ -218,13 +311,25 @@ window.salvarJogo = async function(){
   const jogo = {
     data: document.getElementById("dataJogo").value,
     local: document.getElementById("localJogo").value.trim(),
+    campeonato: document.getElementById("campeonato").value.trim(),
+    logoCampeonato: document.getElementById("logoCampeonato").value.trim(),
+    categoria: document.getElementById("categoria").value,
     timeA: document.getElementById("timeA").value,
     timeB: document.getElementById("timeB").value,
-    categoria: document.getElementById("categoria").value,
-    campeonato: document.getElementById("campeonato").value.trim(),
+
+    tecnicoA: document.getElementById("tecnicoA").value.trim(),
+    assistenteA1: document.getElementById("assistenteA1").value.trim(),
+    assistenteA2: document.getElementById("assistenteA2").value.trim(),
+
+    tecnicoB: document.getElementById("tecnicoB").value.trim(),
+    assistenteB1: document.getElementById("assistenteB1").value.trim(),
+    assistenteB2: document.getElementById("assistenteB2").value.trim(),
+
     arbitro: document.getElementById("arbitro").value,
-    assistente: document.getElementById("assistente").value,
-    logoCampeonato: document.getElementById("logoCampeonato").value.trim(),
+    assistente: document.getElementById("assistente1").value,
+    assistente2: document.getElementById("assistente2").value,
+    arbitroAuxiliar: document.getElementById("arbitroAuxiliar").value,
+
     status: "pendente",
     criadoEm: new Date().toISOString()
   };
@@ -264,8 +369,16 @@ async function carregarJogos(){
         Campeonato: ${j.campeonato || "-"}<br>
         Data: ${j.data || "-"}<br>
         Local: ${j.local || "-"}<br>
+        Técnico Mandante: ${j.tecnicoA || "-"}<br>
+        Assistente 1 Mandante: ${j.assistenteA1 || "-"}<br>
+        Assistente 2 Mandante: ${j.assistenteA2 || "-"}<br>
+        Técnico Visitante: ${j.tecnicoB || "-"}<br>
+        Assistente 1 Visitante: ${j.assistenteB1 || "-"}<br>
+        Assistente 2 Visitante: ${j.assistenteB2 || "-"}<br>
         Árbitro: ${j.arbitro || "-"}<br>
-        Assistente: ${j.assistente || "-"}<br>
+        Árbitro Assistente 1: ${j.assistente || "-"}<br>
+        Árbitro Assistente 2: ${j.assistente2 || "-"}<br>
+        Árbitro Auxiliar: ${j.arbitroAuxiliar || "-"}<br>
         Status: ${j.status || "pendente"}<br><br>
 
         <div class="top-actions">
