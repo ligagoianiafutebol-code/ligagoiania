@@ -2,22 +2,189 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Painel Admin</title>
+  <title>Painel Admin - Liga Goiana</title>
+
   <style>
     body{
       margin:0;
       font-family:Arial;
       background:#031022;
       color:white;
-      padding:40px;
     }
-    h1{ color:#ffe600; }
-    a{ color:#ffe600; }
+
+    header{
+      padding:20px;
+      background:#041734;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      border-bottom:2px solid #ffe600;
+    }
+
+    h1{
+      margin:0;
+      color:#ffe600;
+    }
+
+    button{
+      padding:10px 14px;
+      border:none;
+      border-radius:8px;
+      background:#ffe600;
+      font-weight:bold;
+      cursor:pointer;
+    }
+
+    .container{
+      padding:20px;
+    }
+
+    .filtros{
+      margin-bottom:20px;
+    }
+
+    select{
+      padding:10px;
+      border-radius:8px;
+      border:none;
+    }
+
+    .card{
+      background:#041734;
+      border:1px solid rgba(255,230,0,.2);
+      border-radius:12px;
+      padding:15px;
+      margin-bottom:12px;
+    }
+
+    .card strong{
+      color:#ffe600;
+    }
+
+    .acoes{
+      margin-top:10px;
+      display:flex;
+      gap:10px;
+    }
+
+    .btn-danger{
+      background:#ff4444;
+      color:white;
+    }
+
+    .status{
+      margin-top:6px;
+      font-size:13px;
+    }
   </style>
 </head>
 <body>
+
+<header>
   <h1>Painel Admin</h1>
-  <p>Você entrou como administrador.</p>
-  <a href="index.html">← Voltar para o site</a>
+  <button onclick="logout()">Sair</button>
+</header>
+
+<div class="container">
+
+  <div class="filtros">
+    <select id="filtroTipo" onchange="carregarUsuarios()">
+      <option value="">Todos</option>
+      <option value="jogador">Jogador</option>
+      <option value="tecnico">Técnico</option>
+      <option value="pai_atleta">Pai de Atleta</option>
+      <option value="publico_geral">Público Geral</option>
+    </select>
+  </div>
+
+  <div id="listaUsuarios"></div>
+
+</div>
+
+<script type="module">
+import { auth, db } from "./firebase.js";
+import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { collection, getDocs, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const EMAIL_ADMIN = "ruy.gram@gmail.com";
+const lista = document.getElementById("listaUsuarios");
+
+// PROTEÇÃO ADMIN
+onAuthStateChanged(auth, (user)=>{
+  if(!user || user.email !== EMAIL_ADMIN){
+    alert("Acesso negado");
+    window.location.href = "login.html";
+  }else{
+    carregarUsuarios();
+  }
+});
+
+// LOGOUT
+window.logout = async function(){
+  await signOut(auth);
+  window.location.href = "login.html";
+};
+
+// CARREGAR USUÁRIOS
+window.carregarUsuarios = async function(){
+  lista.innerHTML = "Carregando...";
+
+  const filtro = document.getElementById("filtroTipo").value;
+
+  const querySnapshot = await getDocs(collection(db, "usuarios"));
+
+  lista.innerHTML = "";
+
+  querySnapshot.forEach((docSnap)=>{
+    const u = docSnap.data();
+
+    if(filtro && u.tipoUsuario !== filtro) return;
+
+    const div = document.createElement("div");
+    div.className = "card";
+
+    div.innerHTML = `
+      <strong>${u.nome}</strong><br>
+      ${u.email}<br>
+      Tipo: ${u.tipoUsuario}<br>
+      Time: ${u.time || "-"}<br>
+
+      <div class="status">
+        Status: ${u.status || "ativo"}
+      </div>
+
+      <div class="acoes">
+        <button onclick="mudarStatus('${docSnap.id}', 'ativo')">Ativar</button>
+        <button onclick="mudarStatus('${docSnap.id}', 'bloqueado')">Bloquear</button>
+        <button class="btn-danger" onclick="excluir('${docSnap.id}')">Excluir</button>
+      </div>
+    `;
+
+    lista.appendChild(div);
+  });
+};
+
+// ALTERAR STATUS
+window.mudarStatus = async function(id, status){
+  await updateDoc(doc(db, "usuarios", id), {
+    status: status
+  });
+
+  alert("Status atualizado");
+  carregarUsuarios();
+};
+
+// EXCLUIR
+window.excluir = async function(id){
+  if(!confirm("Deseja excluir este usuário?")) return;
+
+  await deleteDoc(doc(db, "usuarios", id));
+
+  alert("Usuário excluído");
+  carregarUsuarios();
+};
+
+</script>
+
 </body>
 </html>
