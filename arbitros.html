@@ -6,21 +6,70 @@
 <title>Árbitros - Admin</title>
 
 <style>
-body{margin:0;font-family:Arial;background:#0b1f3a;color:white;}
-header{background:#08172c;padding:15px;text-align:center;font-size:22px;font-weight:bold;border-bottom:3px solid #f7c600;}
-.container{padding:15px;max-width:1100px;margin:auto;}
+body{
+margin:0;
+font-family:Arial;
+background:#0b1f3a;
+color:white;
+}
+
+header{
+background:#08172c;
+padding:15px;
+text-align:center;
+font-size:22px;
+font-weight:bold;
+border-bottom:3px solid #f7c600;
+}
+
+.container{
+padding:15px;
+max-width:1100px;
+margin:auto;
+}
 
 input{
-width:100%;padding:12px;margin-bottom:12px;border:none;border-radius:8px;
+width:100%;
+padding:12px;
+margin-bottom:12px;
+border:none;
+border-radius:8px;
+font-size:14px;
+box-sizing:border-box;
 }
 
 button{
-background:#f7c600;color:black;padding:10px;border:none;border-radius:8px;font-weight:bold;cursor:pointer;
+background:#f7c600;
+color:black;
+padding:10px 14px;
+border:none;
+border-radius:8px;
+font-weight:bold;
+cursor:pointer;
+margin-bottom:15px;
 }
 
 .btn{
-background:#f7c600;color:black;padding:10px;border-radius:8px;font-weight:bold;cursor:pointer;margin-bottom:10px;
+background:#f7c600;
+color:black;
+padding:10px 14px;
+border-radius:8px;
+font-weight:bold;
+cursor:pointer;
+margin-bottom:10px;
 display:inline-block;
+text-decoration:none;
+}
+
+.btn-voltar{
+display:inline-block;
+margin-bottom:15px;
+background:#f7c600;
+color:black;
+padding:10px 14px;
+border-radius:8px;
+text-decoration:none;
+font-weight:bold;
 }
 
 .lista-grid{
@@ -30,50 +79,113 @@ gap:12px;
 }
 
 .card{
-background:#102a52;padding:15px;border-radius:10px;
-display:flex;justify-content:space-between;align-items:center;
+background:#102a52;
+padding:15px;
+border-radius:10px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:10px;
 }
 
 .user{
-display:flex;gap:10px;align-items:center;
+display:flex;
+gap:10px;
+align-items:center;
+min-width:0;
+}
+
+.user-info{
+display:flex;
+flex-direction:column;
+gap:4px;
+min-width:0;
+}
+
+.user-info small{
+opacity:.85;
+font-size:12px;
 }
 
 .photo{
-width:60px;height:60px;border-radius:50%;object-fit:cover;background:#1a3f73;
+width:60px;
+height:60px;
+border-radius:50%;
+object-fit:cover;
+background:#1a3f73;
+border:2px solid #ffffff22;
+}
+
+.actions{
+display:flex;
+gap:6px;
+flex-wrap:wrap;
 }
 
 .actions button{
-background:#1a3f73;margin-left:5px;font-size:12px;
+background:#1a3f73;
+padding:6px 10px;
+border-radius:6px;
+color:white;
+border:none;
+font-size:12px;
+margin:0;
 }
 
-.delete{background:#b30000 !important;}
+.delete{
+background:#b30000 !important;
+}
 
 .checkbox-grid{
 display:grid;
 grid-template-columns:repeat(auto-fit, minmax(110px, 1fr));
-gap:8px;margin-bottom:12px;
+gap:8px;
+margin-bottom:12px;
 }
 
 .check-item{
-background:#102a52;padding:8px;border-radius:8px;
-display:flex;align-items:center;gap:8px;
+background:#102a52;
+padding:8px;
+border-radius:8px;
+display:flex;
+align-items:center;
+gap:8px;
+}
+
+.check-item input{
+width:auto;
+margin:0;
 }
 
 .tag{
-background:#1a3f73;padding:4px 8px;border-radius:999px;font-size:12px;margin-right:5px;
+background:#1a3f73;
+padding:4px 8px;
+border-radius:999px;
+font-size:12px;
+margin-right:5px;
+display:inline-block;
 }
 
 .modal{
-display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);
-justify-content:center;align-items:center;
+display:none;
+position:fixed;
+inset:0;
+background:rgba(0,0,0,0.7);
+justify-content:center;
+align-items:center;
+padding:15px;
+z-index:999;
 }
 
 .modal-content{
-background:#102a52;padding:20px;border-radius:12px;text-align:center;
-}
-
-.back{
-display:block;margin-top:15px;color:#f7c600;font-weight:bold;text-decoration:none;
+background:#102a52;
+padding:20px;
+border-radius:12px;
+text-align:center;
+max-width:500px;
+width:100%;
+max-height:85vh;
+overflow:auto;
 }
 </style>
 </head>
@@ -84,13 +196,15 @@ display:block;margin-top:15px;color:#f7c600;font-weight:bold;text-decoration:non
 
 <div class="container">
 
+<a href="admin.html" class="btn-voltar">← Voltar</a>
+
 <a class="btn" onclick="toggleFormulario()">+ Novo Árbitro</a>
 
 <input id="busca" placeholder="Pesquisar..." oninput="carregarArbitros()">
 
 <div id="formulario" style="display:none;">
   <input id="nome" placeholder="Nome">
-  <input id="foto" type="file">
+  <input id="foto" type="file" accept="image/*">
   <input id="cpf" placeholder="CPF">
   <input id="telefone" placeholder="Telefone">
   <input id="email" placeholder="Email">
@@ -101,8 +215,6 @@ display:block;margin-top:15px;color:#f7c600;font-weight:bold;text-decoration:non
 </div>
 
 <div class="lista-grid" id="lista"></div>
-
-<a href="admin.html" class="back">← Voltar</a>
 
 </div>
 
@@ -119,6 +231,9 @@ const firebaseConfig = {
   apiKey: "AIzaSyCyArj4yRlEl-yibkc0VEmL_4UJpRHHQSc",
   authDomain: "liga-goiana-base.firebaseapp.com",
   projectId: "liga-goiana-base",
+  storageBucket: "liga-goiana-base.appspot.com",
+  messagingSenderId: "952863591183",
+  appId: "1:952863591183:web:4eea34f494ba2dd754cc7a"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -128,23 +243,27 @@ const storage = getStorage(app);
 let editandoId = null;
 let fotoAtual = "";
 
-window.toggleFormulario = ()=>{
+window.toggleFormulario = function(){
   const f = document.getElementById("formulario");
   f.style.display = f.style.display === "none" ? "block" : "none";
 }
 
 async function carregarCategorias(){
   const grid = document.getElementById("categoriasGrid");
-  grid.innerHTML="";
+  grid.innerHTML = "";
 
   const snap = await getDocs(collection(db,"categorias"));
-  let lista=[];
+  let lista = [];
 
-  snap.forEach(d=>lista.push(d.data().nome));
-  lista.sort();
+  snap.forEach(d => {
+    const data = d.data();
+    if(data.nome) lista.push(data.nome);
+  });
+
+  lista.sort((a,b)=>a.localeCompare(b, "pt-BR"));
 
   lista.forEach(nome=>{
-    grid.innerHTML+=`
+    grid.innerHTML += `
       <label class="check-item">
         <input type="checkbox" value="${nome}">${nome}
       </label>
@@ -156,11 +275,28 @@ function getCategorias(){
   return Array.from(document.querySelectorAll('#categoriasGrid input:checked')).map(i=>i.value);
 }
 
-window.salvar = async ()=>{
-  const nome = document.getElementById("nome").value;
-  const cpf = document.getElementById("cpf").value;
-  const telefone = document.getElementById("telefone").value;
-  const email = document.getElementById("email").value;
+function marcarCategorias(categorias){
+  document.querySelectorAll('#categoriasGrid input').forEach(i => {
+    i.checked = (categorias || []).includes(i.value);
+  });
+}
+
+function limparFormulario(){
+  document.getElementById("nome").value = "";
+  document.getElementById("foto").value = "";
+  document.getElementById("cpf").value = "";
+  document.getElementById("telefone").value = "";
+  document.getElementById("email").value = "";
+  document.querySelectorAll('#categoriasGrid input').forEach(i => i.checked = false);
+  editandoId = null;
+  fotoAtual = "";
+}
+
+window.salvar = async function(){
+  const nome = document.getElementById("nome").value.trim();
+  const cpf = document.getElementById("cpf").value.trim();
+  const telefone = document.getElementById("telefone").value.trim();
+  const email = document.getElementById("email").value.trim();
   const foto = document.getElementById("foto").files[0];
   const categorias = getCategorias();
 
@@ -172,87 +308,108 @@ window.salvar = async ()=>{
   let url = fotoAtual;
 
   if(foto){
-    const refStorage = ref(storage,"arbitros/"+Date.now());
-    await uploadBytes(refStorage,foto);
+    const refStorage = ref(storage,"arbitros/" + Date.now() + "-" + foto.name);
+    await uploadBytes(refStorage, foto);
     url = await getDownloadURL(refStorage);
   }
 
-  const dados = {nome,cpf,telefone,email,foto:url,categorias};
+  const dados = { nome, cpf, telefone, email, foto:url, categorias };
 
   if(editandoId){
-    await updateDoc(doc(db,"arbitros",editandoId),dados);
+    await updateDoc(doc(db,"arbitros",editandoId), dados);
+    alert("Árbitro atualizado com sucesso!");
   }else{
-    await addDoc(collection(db,"arbitros"),dados);
+    await addDoc(collection(db,"arbitros"), dados);
+    alert("Árbitro salvo com sucesso!");
   }
 
-  alert("Salvo!");
-  location.reload();
+  limparFormulario();
+  carregarArbitros();
 }
 
-window.editar = async (id)=>{
+window.editar = async function(id){
   const snap = await getDocs(collection(db,"arbitros"));
 
   snap.forEach(d=>{
     if(d.id===id){
-      const a=d.data();
-      document.getElementById("nome").value=a.nome;
-      document.getElementById("cpf").value=a.cpf;
-      document.getElementById("telefone").value=a.telefone;
-      document.getElementById("email").value=a.email;
-      fotoAtual=a.foto;
-      editandoId=id;
+      const a = d.data();
+      document.getElementById("nome").value = a.nome || "";
+      document.getElementById("cpf").value = a.cpf || "";
+      document.getElementById("telefone").value = a.telefone || "";
+      document.getElementById("email").value = a.email || "";
+      fotoAtual = a.foto || "";
+      editandoId = id;
+      marcarCategorias(a.categorias || []);
     }
   });
 
-  document.getElementById("formulario").style.display="block";
+  document.getElementById("formulario").style.display = "block";
+  window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-window.excluir = async(id)=>{
-  if(confirm("Excluir?")){
+window.excluir = async function(id){
+  if(confirm("Excluir árbitro?")){
     await deleteDoc(doc(db,"arbitros",id));
     carregarArbitros();
   }
 }
 
-window.ver = async(id)=>{
+window.ver = async function(id){
   const snap = await getDocs(collection(db,"arbitros"));
 
   snap.forEach(d=>{
     if(d.id===id){
-      const a=d.data();
+      const a = d.data();
       const cats = (a.categorias||[]).map(c=>`<span class="tag">${c}</span>`).join("");
 
-      document.getElementById("modalContent").innerHTML=`
-        <img src="${a.foto}" class="photo">
-        <h2>${a.nome}</h2>
-        <p>${a.email}</p>
-        ${cats}
-        <button onclick="fechar()">Fechar</button>
+      document.getElementById("modalContent").innerHTML = `
+        <img src="${a.foto || ''}" class="photo">
+        <h2>${a.nome || ""}</h2>
+        <p>${a.email || "-"}</p>
+        <p>${a.telefone || "-"}</p>
+        <div style="margin-top:10px;">${cats}</div>
+        <button onclick="fechar()" style="margin-top:15px;">Fechar</button>
       `;
 
-      document.getElementById("modal").style.display="flex";
+      document.getElementById("modal").style.display = "flex";
     }
   });
 }
 
-window.fechar = ()=>document.getElementById("modal").style.display="none";
+window.fechar = function(){
+  document.getElementById("modal").style.display = "none";
+}
 
 async function carregarArbitros(){
-  const lista=document.getElementById("lista");
-  lista.innerHTML="";
+  const lista = document.getElementById("lista");
+  lista.innerHTML = "";
 
   const snap = await getDocs(collection(db,"arbitros"));
-  let dados=[];
+  let dados = [];
 
-  snap.forEach(d=>dados.push({id:d.id,...d.data()}));
-  dados.sort((a,b)=>a.nome.localeCompare(b.nome));
+  snap.forEach(d => dados.push({id:d.id, ...d.data()}));
+
+  const busca = (document.getElementById("busca").value || "").toLowerCase().trim();
+
+  if(busca){
+    dados = dados.filter(a =>
+      (a.nome || "").toLowerCase().includes(busca) ||
+      (a.email || "").toLowerCase().includes(busca) ||
+      (a.cpf || "").toLowerCase().includes(busca)
+    );
+  }
+
+  dados.sort((a,b)=>(a.nome || "").localeCompare(b.nome || "", "pt-BR"));
 
   dados.forEach(a=>{
-    lista.innerHTML+=`
+    lista.innerHTML += `
       <div class="card">
         <div class="user">
-          <img src="${a.foto||''}" class="photo">
-          <div>${a.nome}</div>
+          <img src="${a.foto || ''}" class="photo">
+          <div class="user-info">
+            <div>${a.nome || ""}</div>
+            <small>${a.email || "-"}</small>
+          </div>
         </div>
         <div class="actions">
           <button onclick="editar('${a.id}')">Editar</button>
