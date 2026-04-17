@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Liga Goiana de Futebol de Base</title>
-
   <style>
     :root{
       --yellow:#ffe600;
@@ -12,7 +11,7 @@
       --yellow-soft:rgba(255,230,0,.16);
       --white:#ffffff;
       --muted:#dbe3ee;
-      --line:rgba(255,230,0,.14);
+      --line:rgba(255,230,0,.22);
       --shadow:0 12px 28px rgba(0,0,0,.35);
       --sidebar-width:270px;
       --blue-bg:#031022;
@@ -30,12 +29,10 @@
       font-family:Arial, Helvetica, sans-serif;
       background:linear-gradient(180deg, #02101f, #05152b 28%, #06152e 100%);
       color:var(--white);
-      overflow-x: hidden;
     }
 
     a{ text-decoration:none; }
 
-    /* SIDEBAR ATUALIZADA - ORDEM PÚBLICA */
     .sidebar{
       position:fixed;
       top:0;
@@ -43,7 +40,7 @@
       width:var(--sidebar-width);
       height:100vh;
       background:linear-gradient(180deg, rgba(4,15,33,.96), rgba(2,10,24,.98));
-      border-right:1px solid var(--line);
+      border-right:1px solid rgba(255,230,0,.14);
       box-shadow:6px 0 18px rgba(0,0,0,.28);
       overflow-y:auto;
       z-index:1200;
@@ -66,6 +63,23 @@
       height:90px;
       object-fit:contain;
       border-radius:18px;
+      filter:drop-shadow(0 0 12px rgba(255,230,0,.08));
+    }
+
+    .sidebar-logo strong{
+      display:block;
+      color:var(--yellow);
+      text-transform:uppercase;
+      font-size:15px;
+      margin-top:10px;
+      line-height:1.2;
+    }
+
+    .sidebar-logo span{
+      display:block;
+      color:#cfd9e6;
+      font-size:12px;
+      margin-top:4px;
     }
 
     .menu-title{
@@ -93,28 +107,31 @@
       transition:.2s;
     }
 
-    .side-menu a:hover{
-      background:rgba(255,230,0,.1);
+    .side-menu a:hover,
+    .side-menu a.active{
+      background:linear-gradient(90deg, rgba(255,230,0,.16), rgba(255,230,0,.04));
+      border-color:rgba(255,230,0,.24);
       color:var(--yellow);
-      transform:translateX(5px);
+      transform:translateX(3px);
     }
 
     .main{
       margin-left:var(--sidebar-width);
       min-height:100vh;
       transition:margin-left .3s ease;
+      background:linear-gradient(180deg, #04132b 0%, #031022 100%);
     }
 
     .main.expanded{ margin-left:0; }
 
-    /* HEADER & TOPBAR */
     header{
-      background: rgba(2,10,25,0.85);
-      backdrop-filter: blur(10px);
-      position: sticky;
-      top: 0;
-      z-index: 1100;
-      border-bottom: 1px solid var(--line);
+      background:
+        linear-gradient(rgba(2,10,25,.62), rgba(2,10,25,.84)),
+        url("fundo.png");
+      background-size:cover;
+      background-position:center top;
+      border-bottom:1px solid rgba(255,230,0,.16);
+      box-shadow:0 6px 16px rgba(0,0,0,.18);
     }
 
     .topbar{
@@ -124,107 +141,229 @@
       display:flex;
       align-items:center;
       justify-content:space-between;
+      gap:18px;
       padding:10px 0;
+      flex-wrap:wrap;
+    }
+
+    .left-top{
+      display:flex;
+      align-items:center;
+      gap:14px;
+    }
+
+    .menu-toggle{
+      background:linear-gradient(to bottom, #fff04d, var(--yellow-2));
+      color:#111;
+      border:none;
+      padding:12px 14px;
+      border-radius:10px;
+      font-weight:800;
+      font-size:18px;
+      cursor:pointer;
+      box-shadow:0 8px 18px rgba(0,0,0,.25);
+      transition:.2s;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+
+    .brand img{
+      width:64px;
+      height:64px;
+      object-fit:contain;
+      border-radius:16px;
+      filter:drop-shadow(0 0 8px rgba(255,230,0,.12));
+    }
+
+    .brand-text strong{
+      display:block;
+      color:var(--white);
+      text-transform:uppercase;
+      font-size:15px;
+      line-height:1.1;
+      letter-spacing:.2px;
+    }
+
+    .brand-text span{
+      display:block;
+      font-size:12px;
+      color:#d2dceb;
+      margin-top:4px;
     }
 
     .top-links{
       display:flex;
-      gap:10px;
+      gap:6px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:center;
     }
 
     .top-links a{
       color:#fff;
+      padding:11px 12px;
+      border-radius:8px;
       font-weight:bold;
       text-transform:uppercase;
       font-size:13px;
-      padding:8px 12px;
+      transition:.2s;
     }
 
-    .top-links a:hover{ color:var(--yellow); }
+    .top-links a:hover,
+    .top-links a.active{
+      color:var(--yellow);
+      background:rgba(255,255,255,.04);
+    }
 
-    /* HERO CAROUSEL (NOTÍCIAS PRO LADO) */
-    .hero{ padding: 20px 0; }
-    .hero-carousel-container{
-      overflow: hidden;
-      border-radius: 24px;
-      border: 1px solid var(--line);
-      background: #041734;
-      position: relative;
+    .btn-top{
+      background:linear-gradient(to bottom, #fff04d, var(--yellow-2));
+      color:#111;
+      border:none;
+      padding:14px 18px;
+      border-radius:10px;
+      font-weight:800;
+      text-transform:uppercase;
+      font-size:14px;
+      cursor:pointer;
+      box-shadow:0 8px 18px rgba(0,0,0,.25);
+      transition:.2s;
     }
-    .hero-track{
-      display: flex;
-      transition: transform 0.5s ease-in-out;
+
+    .wrap{
+      width:min(1280px, calc(100% - 28px));
+      margin:auto;
     }
-    .hero-slide{
+
+    .hero{
+      background:
+        linear-gradient(rgba(2,10,25,.58), rgba(2,10,25,.82)),
+        url("fundo.png");
+      background-size:cover;
+      background-position:center;
+      padding:26px 0 24px;
+      border-bottom:1px solid rgba(255,255,255,.04);
+    }
+
+    /* ESTILO DO CARROSSEL HERO (PARA O LADO) */
+    .hero-carousel-wrapper {
+        overflow: hidden;
+        width: 100%;
+        border-radius: 24px;
+    }
+    .hero-track {
+        display: flex;
+        transition: transform 0.5s ease-in-out;
+    }
+    .hero-panel{
       min-width: 100%;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      align-items: center;
-      padding: 40px;
+      display:grid;
+      grid-template-columns:1.1fr .9fr;
+      gap:22px;
+      align-items:center;
+      background:linear-gradient(180deg, rgba(4,22,51,.28), rgba(2,12,34,.40));
+      border:1px solid rgba(255,230,0,.14);
+      border-radius:24px;
+      padding:26px;
+      box-shadow:var(--shadow);
+      position:relative;
     }
 
-    /* TICKER VERTICAL (NOTÍCIAS PRA CIMA) */
-    .news-ticker-container{
-      height: 400px;
-      overflow: hidden;
-      position: relative;
+    .hero-copy h1{
+      margin:0;
+      font-size:74px;
+      line-height:.92;
+      text-transform:uppercase;
+      color:var(--yellow);
+      text-shadow: 0 0 12px rgba(255,230,0,.18), 0 4px 18px rgba(0,0,0,.65);
+      letter-spacing:-1px;
     }
-    .news-ticker-track{
-      display: flex;
-      flex-direction: column;
-      animation: scrollUp 15s linear infinite;
-    }
-    .news-ticker-track:hover{ animation-play-state: paused; }
 
+    .btn-primary,
+    .btn-secondary{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:54px;
+      padding:0 22px;
+      border-radius:12px;
+      font-weight:800;
+      text-transform:uppercase;
+      font-size:15px;
+      transition:.2s;
+    }
+
+    .btn-primary{ background:linear-gradient(to bottom, #fff04d, var(--yellow-2)); color:#111; }
+
+    .conteudo{
+      background:linear-gradient(180deg, #031022 0%, #04122a 100%);
+      padding:18px 0 0;
+    }
+
+    .mid-grid{
+      display:grid;
+      grid-template-columns:1.3fr .7fr;
+      gap:18px;
+      margin-top:16px;
+    }
+
+    .panel{
+      background:linear-gradient(180deg, rgba(5,22,52,.98), rgba(2,13,33,.99));
+      border:1px solid rgba(255,230,0,.14);
+      border-radius:20px;
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+
+    /* ESTILO DO TICKER (PARA CIMA) */
+    .ticker-container {
+        height: 450px;
+        overflow: hidden;
+        position: relative;
+    }
+    .ticker-track {
+        display: flex;
+        flex-direction: column;
+        animation: scrollUp 20s linear infinite;
+    }
+    .ticker-track:hover { animation-play-state: paused; }
     @keyframes scrollUp {
-      0% { transform: translateY(0); }
-      100% { transform: translateY(-50%); }
+        0% { transform: translateY(0); }
+        100% { transform: translateY(-50%); }
     }
 
-    /* TABELA DE JOGOS */
-    .match-table{ width:100%; border-collapse:collapse; }
-    .match-table th{ background: var(--green-2); padding: 12px; font-size: 13px; }
-    .match-table td{ padding: 15px; border-bottom: 1px solid rgba(255,255,255,0.05); text-align: center; }
-
-    /* FOOTER & SOCIAL */
-    footer{ background:#010c20; padding: 40px 0; border-top: 1px solid var(--line); }
-    .social-icons{ display: flex; gap: 15px; margin-top: 15px; }
-    .social-icons a { 
-        font-size: 24px; 
-        background: rgba(255,255,255,0.1); 
-        width: 45px; height: 45px; 
-        display: flex; align-items: center; justify-content: center; 
-        border-radius: 50%; color: white;
+    .match-table{
+      width:100%;
+      border-collapse:collapse;
     }
-
-    .btn-whatsapp{
-      background: #25d366;
-      color: white;
-      padding: 12px 20px;
-      border-radius: 10px;
-      font-weight: bold;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
+    .match-table thead th{
+      background:linear-gradient(90deg, var(--green-2), var(--green));
+      color:#f4fff7;
+      padding:14px 10px;
     }
+    .match-table td{ padding:14px 10px; border-top:1px solid rgba(255,255,255,.07); text-align:center; color:#eef6ff; }
 
-    @media (max-width: 1100px){
-      .main{ margin-left: 0; }
-      .sidebar{ transform: translateX(-100%); }
-      .hero-slide{ grid-template-columns: 1fr; text-align: center; }
-    }
+    footer{ background:rgba(1,12,32,.98); border-top:1px solid rgba(255,230,0,.14); padding-bottom: 20px; }
+    .footer-top{ display:grid; grid-template-columns:1.2fr 1fr 1fr 1fr; gap:20px; padding:28px 0; }
+    .social a { font-size: 24px; margin-right: 10px; color: var(--white); }
+
+    @media (max-width: 1200px){ .sidebar{ transform:translateX(-100%); } .sidebar.open{ transform:translateX(0); } .main{ margin-left:0; } }
+    @media (max-width: 1100px){ .hero-panel, .mid-grid, .footer-top{ grid-template-columns:1fr; } }
   </style>
 </head>
 <body>
 
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-logo">
-      <img src="logo-liga.jfif" alt="Logo">
-      <strong>LIGA GOIANA DE BASE</strong>
+      <img src="logo-liga.jfif" alt="Logo Liga Goiana">
+      <strong>Liga Goiana de Base</strong>
       <span>Menu completo do sistema</span>
     </div>
 
-    <div class="menu-title">Navegação Pública</div>
+    <div class="menu-title">Competições</div>
     <div class="side-menu">
       <a href="tabela.html">Tabelas</a>
       <a href="artilharia.html">Artilharia</a>
@@ -240,180 +379,199 @@
       <a href="assistentes.html">Assistente</a>
       <a href="noticias.html">Notícias</a>
     </div>
+
+    <div class="menu-title">Navegação pública</div>
+    <div class="side-menu">
+      <a href="index.html" class="active">Início</a>
+      <a href="https://wa.me/5562984284785">Inscrições</a>
+      <a href="#contato">Contato</a>
+    </div>
   </aside>
 
   <div class="main">
     <header>
       <div class="topbar">
-        <div style="display:flex; align-items:center; gap:15px;">
-          <button onclick="toggleSidebar()" style="background:var(--yellow); border:none; padding:10px; border-radius:8px; cursor:pointer; font-weight:bold;">☰</button>
-          <img src="logo-liga.jfif" width="50" style="border-radius:8px;">
-          <div class="brand-text">
-            <strong>LIGA GOIANA DE FUTEBOL DE BASE</strong>
+        <div class="left-top">
+          <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+          <div class="brand">
+            <img src="logo-liga.jfif" alt="Logo">
+            <div class="brand-text">
+              <strong>LIGA GOIANA DE FUTEBOL DE BASE</strong>
+              <span>O talento encontra o futuro</span>
+            </div>
           </div>
         </div>
 
         <nav class="top-links">
-          <a href="campeonatos.html">Campeonatos</a>
-          <a href="times.html">Equipes</a>
-          <a href="tabela.html">Resultados</a>
+          <a href="tabela.html">Tabelas</a>
+          <a href="artilharia.html">Artilharia</a>
+          <a href="classificacao.html">Classificação</a>
           <a href="noticias.html">Notícias</a>
           <a href="#contato">Contato</a>
         </nav>
 
-        <button class="btn-whatsapp" onclick="window.location.href='https://wa.me/5562984284785'">🔐 Login / Cadastro</button>
+        <button class="btn-top" onclick="window.location.href='https://wa.me/5562984284785'">🔐 LOGIN / CADASTRO</button>
       </div>
     </header>
 
     <section class="hero">
-      <div class="wrap" style="width:min(1280px, 95%); margin:auto;">
-        <div class="hero-carousel-container">
-          <div class="hero-track" id="heroTrack">
-            <div class="hero-slide">
-              <div>
-                <h1>Bem-vindo à Liga Goiana de Base</h1>
-                <p>Onde o talento encontra o futuro!</p>
-                <a href="https://wa.me/5562984284785" class="btn-whatsapp">🏆 Quero Participar!</a>
-              </div>
-              <div style="text-align:center;"><img src="hero-liga.jpeg" style="max-width:100%; border-radius:20px;"></div>
+      <div class="wrap">
+        <div class="hero-carousel-wrapper">
+            <div class="hero-track" id="heroTrack">
+                <div class="hero-panel">
+                  <div class="hero-copy">
+                    <span class="tag">Temporada 2026</span>
+                    <h1>LIGA GOIANA ELITE</h1>
+                    <p class="subtitle">Onde o talento encontra o futuro</p>
+                    <div class="hero-actions">
+                      <a href="https://wa.me/5562984284785" class="btn-primary">🏆 QUERO PARTICIPAR!</a>
+                      <a href="campeonatos.html" class="btn-secondary">VER COMPETIÇÕES</a>
+                    </div>
+                  </div>
+                  <div class="hero-art"><img src="hero-liga.jpeg" alt="Banner"></div>
+                </div>
             </div>
-          </div>
         </div>
       </div>
     </section>
 
     <section class="conteudo">
-      <div class="wrap" style="width:min(1280px, 95%); margin:auto; display:grid; grid-template-columns: 1.3fr 0.7fr; gap:20px;">
-        
-        <div class="panel">
-            <div style="padding:20px; display:flex; justify-content:space-between; align-items:center;">
-                <h2>📅 Próximos Jogos</h2>
-                <a href="jogos.html" style="color:var(--yellow)">Ver todos →</a>
+      <div class="wrap">
+        <div class="mid-grid">
+          
+          <div class="panel">
+            <div class="panel-head">
+              <h2>📅 PRÓXIMOS JOGOS</h2>
+              <a href="jogos.html">Ver todos →</a>
             </div>
             <table class="match-table">
-                <thead>
-                    <tr>
-                        <th>Data/Hora</th>
-                        <th>Confronto</th>
-                        <th>Categoria</th>
-                        <th>Local</th>
-                    </tr>
-                </thead>
-                <tbody id="listaJogos">
-                    <tr><td colspan="4">Carregando jogos...</td></tr>
+              <thead>
+                <tr>
+                  <th>DATA/HORA</th>
+                  <th>CONFRONTO</th>
+                  <th>CATEGORIA</th>
+                  <th>LOCAL</th>
+                </tr>
+              </thead>
+              <tbody id="listaJogos">
                 </tbody>
             </table>
-        </div>
+          </div>
 
-        <div class="panel">
-            <div style="padding:20px;"><h2>📰 Últimas Notícias</h2></div>
-            <div class="news-ticker-container">
-                <div class="news-ticker-track" id="newsTicker">
+          <div class="panel">
+            <div class="panel-head"><h2>📰 ÚLTIMAS NOTÍCIAS</h2></div>
+            <div class="ticker-container">
+                <div class="ticker-track" id="newsTicker">
                     </div>
             </div>
+          </div>
+
+        </div>
+
+        <div class="cta">
+          <div class="cta-box">
+            <div>
+              <h3>FAÇA PARTE DESSA HISTÓRIA!</h3>
+              <p>Inscreva sua equipe e mostre o potencial dos seus atletas.</p>
+            </div>
+            <a href="https://wa.me/5562984284785" class="btn-primary" style="padding: 18px 30px;">QUERO PARTICIPAR</a>
+          </div>
         </div>
       </div>
-    </section>
-
-    <section style="background:linear-gradient(90deg, #06193d, #0d3470); margin: 40px 0; padding: 40px; text-align: center; border-radius: 20px;">
-        <h2 style="font-size: 32px; color: var(--yellow);">FAÇA PARTE DESSA HISTÓRIA!</h2>
-        <p>Inscreva sua equipe e viva o futebol de base no mais alto nível.</p>
-        <button onclick="window.location.href='https://wa.me/5562984284785'" class="btn-whatsapp" style="font-size: 18px; padding: 15px 30px;">🏆 QUERO PARTICIPAR!</button>
     </section>
 
     <footer id="contato">
-      <div class="wrap" style="width:min(1280px, 95%); margin:auto; display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:30px;">
-        <div>
-          <h4>LIGA GOIANA</h4>
-          <p>Onde o talento encontra o futuro.</p>
-          <div class="social-icons">
-            <a href="https://www.instagram.com/liga_lgf?igsh=MWE0M2RiNnU1aWJtaA==">📸</a>
-            <a href="#">📘</a>
-            <a href="https://wa.me/5562984284785">💬</a>
+      <div class="wrap">
+        <div class="footer-top">
+          <div class="footer-brand">
+            <img src="logo-liga.jfif" alt="Logo">
+            <div>
+              <h4>LIGA GOIANA</h4>
+              <p>📍 Goiânia - GO</p>
+              <div class="social">
+                <a href="https://www.instagram.com/liga_lgf?igsh=MWE0M2RiNnU1aWJtaA==" target="_blank">📸</a>
+                <a href="#">📘</a>
+                <a href="https://wa.me/5562984284785">💬</a>
+              </div>
+            </div>
+          </div>
+          <div>
+            <h4>Competições</h4>
+            <a href="tabela.html">Tabelas</a>
+            <a href="artilharia.html">Artilharia</a>
+          </div>
+          <div>
+            <h4>Institucional</h4>
+            <a href="noticias.html">Notícias</a>
+            <a href="#contato">Contato</a>
+          </div>
+          <div>
+            <h4>Contato Direto</h4>
+            <p>✉️ ligagoianiafutebol@gmail.com</p>
+            <p>📞 (62) 98428-4785</p>
           </div>
         </div>
-        <div>
-            <h4>SISTEMA</h4>
-            <a href="categorias.html" style="display:block; color:#ccc; margin-bottom:8px;">Categorias</a>
-            <a href="jogadores.html" style="display:block; color:#ccc; margin-bottom:8px;">Jogadores</a>
-            <a href="tecnicos.html" style="display:block; color:#ccc; margin-bottom:8px;">Técnicos</a>
+        <div class="copyright">
+          © 2026 Liga Goiana de Futebol de Base. Todos os direitos reservados.
         </div>
-        <div>
-          <h4>CONTATO</h4>
-          <p>📍 Goiânia - GO</p>
-          <p>📞 (62) 98428-4785</p>
-          <p>✉️ ligagoianiafutebol@gmail.com</p>
-        </div>
-      </div>
-      <div style="text-align:center; margin-top:40px; font-size:12px; opacity:0.6;">
-        © 2026 Liga Goiana de Futebol de Base.
       </div>
     </footer>
   </div>
 
   <script type="module">
-    import { auth, db } from "./firebase.js";
+    import { db } from "./firebase.js";
     import { collection, query, orderBy, limit, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-    // TOGGLE SIDEBAR
+    // MENU LATERAL
     window.toggleSidebar = function() {
-        const sb = document.getElementById('sidebar');
-        sb.classList.toggle('closed');
-    }
+        document.getElementById('sidebar').classList.toggle('closed');
+    };
 
-    // CARREGAR JOGOS DINÂMICOS
-    const listaJogos = document.getElementById('listaJogos');
-    const qJogos = query(collection(db, "jogos"), orderBy("data_hora", "asc"), limit(5));
-    
-    onSnapshot(qJogos, (snapshot) => {
-        listaJogos.innerHTML = "";
-        snapshot.forEach((doc) => {
-            const jogo = doc.data();
-            listaJogos.innerHTML += `
+    // JOGOS REAIS DO BANCO
+    onSnapshot(query(collection(db, "jogos"), orderBy("data_hora", "asc"), limit(6)), (snapshot) => {
+        const lista = document.getElementById('listaJogos');
+        lista.innerHTML = "";
+        snapshot.forEach(doc => {
+            const j = doc.data();
+            lista.innerHTML += `
                 <tr>
-                    <td>${jogo.data_hora}</td>
-                    <td>${jogo.timeA} x ${jogo.timeB}</td>
-                    <td><span style="background:var(--yellow); color:black; padding:4px 8px; border-radius:5px; font-size:11px; font-weight:bold;">${jogo.categoria}</span></td>
-                    <td>${jogo.local}</td>
-                </tr>
-            `;
+                    <td>${j.data_hora}</td>
+                    <td>${j.timeA} x ${j.timeB}</td>
+                    <td><span class="badge sub15">${j.categoria}</span></td>
+                    <td>${j.local}</td>
+                </tr>`;
         });
     });
 
-    // CARREGAR NOTÍCIAS (CARROSSEL E TICKER)
-    const ticker = document.getElementById('newsTicker');
-    const qNoticias = query(collection(db, "noticias"), orderBy("data", "desc"), limit(6));
-
-    onSnapshot(qNoticias, (snapshot) => {
-        ticker.innerHTML = "";
-        let newsHtml = "";
-        snapshot.forEach((doc) => {
+    // TICKER DE NOTÍCIAS (SOBE)
+    onSnapshot(query(collection(db, "noticias"), orderBy("data", "desc"), limit(5)), (snapshot) => {
+        const ticker = document.getElementById('newsTicker');
+        let html = "";
+        snapshot.forEach(doc => {
             const n = doc.data();
-            newsHtml += `
-                <div style="display:flex; gap:10px; margin-bottom:15px; background:rgba(255,255,255,0.03); padding:10px; border-radius:10px;">
-                    <img src="${n.imagem || 'fundo.png'}" width="80" height="60" style="object-fit:cover; border-radius:5px;">
+            html += `
+                <div class="news-item">
+                    <img src="${n.imagem || 'fundo.png'}" alt="news">
                     <div>
-                        <strong style="color:var(--yellow); font-size:14px;">${n.titulo}</strong>
-                        <p style="font-size:12px; margin:5px 0;">${n.resumo}</p>
+                        <strong>${n.titulo}</strong>
+                        <p>${n.resumo}</p>
+                        <span>${n.data}</span>
                     </div>
-                </div>
-            `;
+                </div>`;
         });
-        // Duplicamos para o efeito de loop infinito no ticker vertical
-        ticker.innerHTML = newsHtml + newsHtml;
+        ticker.innerHTML = html + html; // Duplica para o loop infinito
     });
 
-    // LÓGICA DO CARROSSEL HERO (AUTOMÁTICO)
-    let currentSlide = 0;
+    // CARROSSEL HERO (LADO)
+    let pos = 0;
     setInterval(() => {
         const track = document.getElementById('heroTrack');
-        const slides = document.querySelectorAll('.hero-slide');
+        const slides = document.querySelectorAll('.hero-panel');
         if(slides.length > 1) {
-            currentSlide = (currentSlide + 1) % slides.length;
-            track.style.transform = `translateX(-${currentSlide * 100}%)`;
+            pos = (pos + 1) % slides.length;
+            track.style.transform = `translateX(-${pos * 100}%)`;
         }
     }, 5000);
-
   </script>
 </body>
 </html>
