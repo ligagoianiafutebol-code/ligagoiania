@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Súmula Oficial</title>
+
+<style>
+body{
+  margin:0;
+  font-family:Arial, sans-serif;
+  background:#0b1f3a;
+  color:white;
+}
+.container{
+  max-width:1280px;
+  margin:auto;
+  padding:20px;
+}
+.topo{
+  background:#102a52;
+  border-radius:14px;
+  padding:20px;
+  margin-bottom:20px;
+  border:1px solid rgba(255,230,0,.18);
+}
+.topo-flex{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:20px;
+  flex-wrap:wrap;
+}
+.logo{
+  height:80px;
+  object-fit:contain;
+}
+.meio-topo{
+  flex:1;
+  text-align:center;
+}
+.meio-topo h2{
+  margin:0;
+  color:#f7c600;
+}
+.meio-topo .sub{
+  margin-top:6px;
+  opacity:.92;
+}
+.times{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:20px;
+}
+.time-box{
+  background:#102a52;
+  border-radius:14px;
+  padding:16px;
+  border:1px solid rgba(255,230,0,.12);
+}
+.time-top{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:15px;
+}
+.escudo{
+  width:72px;
+  height:72px;
+  object-fit:contain;
+  border-radius:50%;
+  background:#1a3f73;
+}
+.nome-time{
+  font-size:24px;
+  font-weight:bold;
+  color:#f7c600;
+}
+.bloco{
+  background:#0d2346;
+  border-radius:12px;
+  padding:12px;
+  margin-top:14px;
+}
+.bloco h3{
+  margin:0 0 10px;
+  color:#f7c600;
+  font-size:18px;
+}
+.jogador{
+  display:grid;
+  grid-template-columns:70px 1fr 1fr 1.2fr auto;
+  gap:8px;
+  align-items:center;
+  background:#15325f;
+  padding:8px;
+  border-radius:8px;
+  margin-bottom:8px;
+}
+.jogador input{
+  width:100%;
+  padding:8px;
+  border:none;
+  border-radius:6px;
+  box-sizing:border-box;
+}
+.jogador button{
+  background:#b30000;
+  color:white;
+  border:none;
+  border-radius:6px;
+  padding:8px 10px;
+  cursor:pointer;
+}
+.acao-linha{
+  display:grid;
+  grid-template-columns:90px 1fr 150px auto;
+  gap:8px;
+  align-items:center;
+  background:#15325f;
+  padding:8px;
+  border-radius:8px;
+  margin-bottom:8px;
+}
+.acao-linha input,
+.acao-linha select{
+  width:100%;
+  padding:8px;
+  border:none;
+  border-radius:6px;
+  box-sizing:border-box;
+}
+.acao-linha button{
+  background:#b30000;
+  color:white;
+  border:none;
+  border-radius:6px;
+  padding:8px 10px;
+  cursor:pointer;
+}
+.comissao-linha{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:8px;
+}
+.comissao-linha input{
+  width:100%;
+  padding:10px;
+  border:none;
+  border-radius:6px;
+  box-sizing:border-box;
+}
+.botao-add{
+  background:#f7c600;
+  color:black;
+  border:none;
+  border-radius:8px;
+  padding:10px 14px;
+  font-weight:bold;
+  cursor:pointer;
+  margin-top:8px;
+}
+.infos{
+  background:#102a52;
+  border-radius:14px;
+  padding:16px;
+  margin-top:20px;
+  border:1px solid rgba(255,230,0,.12);
+}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+}
+.grid input,
+.grid textarea{
+  width:100%;
+  padding:12px;
+  border:none;
+  border-radius:8px;
+  box-sizing:border-box;
+}
+.grid textarea{
+  min-height:140px;
+  grid-column:1 / -1;
+  resize:vertical;
+}
+.finalizar{
+  margin-top:16px;
+  background:#f7c600;
+  color:black;
+  border:none;
+  border-radius:8px;
+  padding:12px 16px;
+  font-weight:bold;
+  cursor:pointer;
+}
+.resumo-placar{
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+  margin-top:10px;
+}
+.badge{
+  background:#15325f;
+  padding:8px 12px;
+  border-radius:999px;
+  font-weight:bold;
+}
+.btn-voltar{
+  display:inline-block;
+  margin-bottom:15px;
+  background:#f7c600;
+  color:black;
+  padding:10px 14px;
+  border-radius:8px;
+  text-decoration:none;
+  font-weight:bold;
+}
+@media (max-width: 980px){
+  .times,
+  .grid{
+    grid-template-columns:1fr;
+  }
+  .jogador{
+    grid-template-columns:1fr;
+  }
+  .acao-linha{
+    grid-template-columns:1fr;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <a href="admin.html" class="btn-voltar">← Voltar</a>
+
+  <div class="topo">
+    <div class="topo-flex">
+      <img src="logo-liga.jfif" class="logo" alt="Liga">
+      <div class="meio-topo">
+        <h2>SÚMULA OFICIAL</h2>
+        <div id="campeonatoInfo" class="sub"></div>
+        <div id="dadosJogoInfo" class="sub"></div>
+        <div class="resumo-placar">
+          <div class="badge" id="placarResumo">Placar: 0 x 0</div>
+          <div class="badge" id="statusResumo">Status: pendente</div>
+        </div>
+      </div>
+      <img id="logoCampeonato" src="logo-campeonato.png" class="logo" alt="Campeonato">
+    </div>
+  </div>
+
+  <div class="times">
+    <div class="time-box">
+      <div class="time-top">
+        <img id="escudoA" class="escudo" src="logo-liga.jfif" alt="Escudo A">
+        <div class="nome-time" id="nomeTimeA">Time A</div>
+      </div>
+
+      <div class="bloco">
+        <h3>Comissão Técnica</h3>
+        <div class="comissao-linha">
+          <input id="tecnicoA" placeholder="Técnico do time mandante">
+          <input id="assistenteA1" placeholder="Assistente 1 do time mandante">
+          <input id="assistenteA2" placeholder="Assistente 2 do time mandante">
+        </div>
+      </div>
+
+      <div class="bloco">
+        <h3>Escalação</h3>
+        <div id="listaA"></div>
+        <button class="botao-add" onclick="adicionarJogadorManual('A')">+ Adicionar jogador não inscrito</button>
+      </div>
+
+      <div class="bloco">
+        <h3>Gols</h3>
+        <div id="golsListaA"></div>
+        <button class="botao-add" onclick="adicionarEventoGol('A')">+ Adicionar gol</button>
+      </div>
+
+      <div class="bloco">
+        <h3>Cartões Amarelos</h3>
+        <div id="amarelosListaA"></div>
+        <button class="botao-add" onclick="adicionarCartao('A', 'amarelo')">+ Adicionar amarelo</button>
+      </div>
+
+      <div class="bloco">
+        <h3>Cartões Vermelhos</h3>
+        <div id="vermelhosListaA"></div>
+        <button class="botao-add" onclick="adicionarCartao('A', 'vermelho')">+ Adicionar vermelho</button>
+      </div>
+    </div>
+
+    <div class="time-box">
+      <div class="time-top">
+        <img id="escudoB" class="escudo" src="logo-liga.jfif" alt="Escudo B">
+        <div class="nome-time" id="nomeTimeB">Time B</div>
+      </div>
+
+      <div class="bloco">
+        <h3>Comissão Técnica</h3>
+        <div class="comissao-linha">
+          <input id="tecnicoB" placeholder="Técnico do time visitante">
+          <input id="assistenteB1" placeholder="Assistente 1 do time visitante">
+          <input id="assistenteB2" placeholder="Assistente 2 do time visitante">
+        </div>
+      </div>
+
+      <div class="bloco">
+        <h3>Escalação</h3>
+        <div id="listaB"></div>
+        <button class="botao-add" onclick="adicionarJogadorManual('B')">+ Adicionar jogador não inscrito</button>
+      </div>
+
+      <div class="bloco">
+        <h3>Gols</h3>
+        <div id="golsListaB"></div>
+        <button class="botao-add" onclick="adicionarEventoGol('B')">+ Adicionar gol</button>
+      </div>
+
+      <div class="bloco">
+        <h3>Cartões Amarelos</h3>
+        <div id="amarelosListaB"></div>
+        <button class="botao-add" onclick="adicionarCartao('B', 'amarelo')">+ Adicionar amarelo</button>
+      </div>
+
+      <div class="bloco">
+        <h3>Cartões Vermelhos</h3>
+        <div id="vermelhosListaB"></div>
+        <button class="botao-add" onclick="adicionarCartao('B', 'vermelho')">+ Adicionar vermelho</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="infos">
+    <div class="grid">
+      <div>
+        <label>Árbitro</label>
+        <input id="nomeArbitro" readonly>
+      </div>
+      <div>
+        <label>Árbitro Assistente 1</label>
+        <input id="nomeAssistente1" placeholder="Árbitro Assistente 1">
+      </div>
+      <div>
+        <label>Árbitro Assistente 2</label>
+        <input id="nomeAssistente2" placeholder="Árbitro Assistente 2">
+      </div>
+      <div>
+        <label>Árbitro Auxiliar</label>
+        <input id="nomeArbitroAuxiliar" placeholder="Árbitro Auxiliar">
+      </div>
+      <div style="grid-column:1 / -1;">
+        <label>Observações do árbitro</label>
+        <textarea id="observacoes" placeholder="Digite aqui observações, ocorrências, ajustes do dia, etc."></textarea>
+      </div>
+    </div>
+
+    <button class="finalizar" onclick="salvarSumula()">Finalizar Súmula</button>
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  getDoc,
+  doc,
+  setDoc,
+  updateDoc
+} from "https://www.gstatic.com/firebasejs/12.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCyArj4yRlEl-yibkc0VEmL_4UJpRHHQSc",
+  authDomain: "liga-goiana-base.firebaseapp.com",
+  projectId: "liga-goiana-base",
+  storageBucket: "liga-goiana-base.appspot.com",
+  messagingSenderId: "952863591183",
+  appId: "1:952863591183:web:4eea34f494ba2dd754cc7a"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+let jogoId = "";
+let jogoAtual = null;
+let jogadoresA = [];
+let jogadoresB = [];
+let golsA = [];
+let golsB = [];
+let amarelosA = [];
+let amarelosB = [];
+let vermelhosA = [];
+let vermelhosB = [];
+let todosTimes = [];
+
+function getParametro(nome){
+  const params = new URLSearchParams(window.location.search);
+  return params.get(nome);
+}
+
+function atualizarResumoPlacar(){
+  const placar = calcularPlacar();
+  document.getElementById("placarResumo").innerText = `Placar: ${placar.golsMandante} x ${placar.golsVisitante}`;
+  document.getElementById("statusResumo").innerText = "Status: finalizada";
+}
+
+function calcularPlacar(){
+  let golsMandante = 0;
+  let golsVisitante = 0;
+
+  golsA.forEach(g => {
+    if(g.tipo === "gol"){
+      golsMandante += 1;
+    }else if(g.tipo === "contra"){
+      golsVisitante += 1;
+    }
+  });
+
+  golsB.forEach(g => {
+    if(g.tipo === "gol"){
+      golsVisitante += 1;
+    }else if(g.tipo === "contra"){
+      golsMandante += 1;
+    }
+  });
+
+  return { golsMandante, golsVisitante };
+}
+
+function renderJogadores(lado){
+  const lista = document.getElementById(lado === "A" ? "listaA" : "listaB");
+  const jogadores = lado === "A" ? jogadoresA : jogadoresB;
+
+  lista.innerHTML = "";
+
+  jogadores.forEach((j, index) => {
+    lista.innerHTML += `
+      <div class="jogador">
+        <input value="${j.numero || ""}" placeholder="#" onchange="atualizarCampo('${lado}', ${index}, 'numero', this.value)">
+        <input value="${j.nome || ""}" placeholder="Nome do jogador" onchange="atualizarCampo('${lado}', ${index}, 'nome', this.value)">
+        <input value="${j.posicao || ""}" placeholder="Posição" onchange="atualizarCampo('${lado}', ${index}, 'posicao', this.value)">
+        <input value="${j.observacao || ""}" placeholder="Observação / motivo da inclusão" onchange="atualizarCampo('${lado}', ${index}, 'observacao', this.value)">
+        <button onclick="removerJogador('${lado}', ${index})">X</button>
+      </div>
+    `;
+  });
+}
+
+function nomePorNumero(lado, numero){
+  const jogadores = lado === "A" ? jogadoresA : jogadoresB;
+  const achado = jogadores.find(j => String(j.numero).trim() === String(numero).trim());
+  return achado ? achado.nome : "";
+}
+
+function renderGols(lado){
+  const lista = document.getElementById(lado === "A" ? "golsListaA" : "golsListaB");
+  const gols = lado === "A" ? golsA : golsB;
+
+  lista.innerHTML = "";
+
+  gols.forEach((g, index) => {
+    const nomeDetectado = nomePorNumero(lado, g.numero);
+    if(!g.nome && nomeDetectado){
+      g.nome = nomeDetectado;
+    }
+
+    lista.innerHTML += `
+      <div class="acao-linha">
+        <input value="${g.numero || ""}" placeholder="Número" onchange="atualizarEventoGol('${lado}', ${index}, 'numero', this.value)">
+        <input value="${g.nome || ""}" placeholder="Jogador" onchange="atualizarEventoGol('${lado}', ${index}, 'nome', this.value)">
+        <select onchange="atualizarEventoGol('${lado}', ${index}, 'tipo', this.value)">
+          <option value="gol" ${g.tipo === "gol" ? "selected" : ""}>Gol</option>
+          <option value="contra" ${g.tipo === "contra" ? "selected" : ""}>Gol contra</option>
+        </select>
+        <button onclick="removerEventoGol('${lado}', ${index})">X</button>
+      </div>
+    `;
+  });
+
+  atualizarResumoPlacar();
+}
+
+function renderCartoes(lado, tipo){
+  const listaId =
+    tipo === "amarelo"
+      ? (lado === "A" ? "amarelosListaA" : "amarelosListaB")
+      : (lado === "A" ? "vermelhosListaA" : "vermelhosListaB");
+
+  const lista = document.getElementById(listaId);
+  const eventos =
+    tipo === "amarelo"
+      ? (lado === "A" ? amarelosA : amarelosB)
+      : (lado === "A" ? vermelhosA : vermelhosB);
+
+  lista.innerHTML = "";
+
+  eventos.forEach((e, index) => {
+    const nomeDetectado = nomePorNumero(lado, e.numero);
+    if(!e.nome && nomeDetectado){
+      e.nome = nomeDetectado;
+    }
+
+    lista.innerHTML += `
+      <div class="acao-linha">
+        <input value="${e.numero || ""}" placeholder="Número" onchange="atualizarCartao('${lado}', '${tipo}', ${index}, 'numero', this.value)">
+        <input value="${e.nome || ""}" placeholder="Jogador" onchange="atualizarCartao('${lado}', '${tipo}', ${index}, 'nome', this.value)">
+        <input value="${e.obs || ""}" placeholder="Observação" onchange="atualizarCartao('${lado}', '${tipo}', ${index}, 'obs', this.value)">
+        <button onclick="removerCartao('${lado}', '${tipo}', ${index})">X</button>
+      </div>
+    `;
+  });
+}
+
+window.atualizarCampo = function(lado, index, campo, valor){
+  if(lado === "A"){
+    jogadoresA[index][campo] = valor;
+  }else{
+    jogadoresB[index][campo] = valor;
+  }
+};
+
+window.removerJogador = function(lado, index){
+  if(lado === "A"){
+    jogadoresA.splice(index, 1);
+    renderJogadores("A");
+  }else{
+    jogadoresB.splice(index, 1);
+    renderJogadores("B");
+  }
+};
+
+window.adicionarJogadorManual = function(lado){
+  const novo = {
+    nome:"",
+    numero:"",
+    posicao:"",
+    observacao:"Jogador adicionado no dia pelo árbitro"
+  };
+
+  if(lado === "A"){
+    jogadoresA.push(novo);
+    renderJogadores("A");
+  }else{
+    jogadoresB.push(novo);
+    renderJogadores("B");
+  }
+};
+
+window.adicionarEventoGol = function(lado){
+  const novo = { numero:"", nome:"", tipo:"gol" };
+  if(lado === "A"){
+    golsA.push(novo);
+    renderGols("A");
+  }else{
+    golsB.push(novo);
+    renderGols("B");
+  }
+};
+
+window.atualizarEventoGol = function(lado, index, campo, valor){
+  const lista = lado === "A" ? golsA : golsB;
+  lista[index][campo] = valueOrEmpty(valor);
+
+  if(campo === "numero"){
+    const nome = nomePorNumero(lado, valor);
+    if(nome){
+      lista[index].nome = nome;
+    }
+  }
+
+  renderGols(lado);
+};
+
+window.removerEventoGol = function(lado, index){
+  if(lado === "A"){
+    golsA.splice(index, 1);
+    renderGols("A");
+  }else{
+    golsB.splice(index, 1);
+    renderGols("B");
+  }
+};
+
+window.adicionarCartao = function(lado, tipo){
+  const novo = { numero:"", nome:"", obs:"" };
+
+  if(tipo === "amarelo"){
+    if(lado === "A"){
+      amarelosA.push(novo);
+      renderCartoes("A", "amarelo");
+    }else{
+      amarelosB.push(novo);
+      renderCartoes("B", "amarelo");
+    }
+  }else{
+    if(lado === "A"){
+      vermelhosA.push(novo);
+      renderCartoes("A", "vermelho");
+    }else{
+      vermelhosB.push(novo);
+      renderCartoes("B", "vermelho");
+    }
+  }
+};
+
+window.atualizarCartao = function(lado, tipo, index, campo, valor){
+  const lista =
+    tipo === "amarelo"
+      ? (lado === "A" ? amarelosA : amarelosB)
+      : (lado === "A" ? vermelhosA : vermelhosB);
+
+  lista[index][campo] = valueOrEmpty(valor);
+
+  if(campo === "numero"){
+    const nome = nomePorNumero(lado, valor);
+    if(nome){
+      lista[index].nome = nome;
+    }
+  }
+
+  renderCartoes(lado, tipo);
+};
+
+window.removerCartao = function(lado, tipo, index){
+  if(tipo === "amarelo"){
+    if(lado === "A"){
+      amarelosA.splice(index, 1);
+      renderCartoes("A", "amarelo");
+    }else{
+      amarelosB.splice(index, 1);
+      renderCartoes("B", "amarelo");
+    }
+  }else{
+    if(lado === "A"){
+      vermelhosA.splice(index, 1);
+      renderCartoes("A", "vermelho");
+    }else{
+      vermelhosB.splice(index, 1);
+      renderCartoes("B", "vermelho");
+    }
+  }
+};
+
+function valueOrEmpty(v){
+  return (v ?? "").toString();
+}
+
+async function carregarTimes(){
+  const snap = await getDocs(collection(db, "times"));
+  todosTimes = [];
+  snap.forEach(d => {
+    todosTimes.push(d.data());
+  });
+}
+
+function pegarEscudo(nomeTime){
+  const time = todosTimes.find(t => t.nome === nomeTime);
+  return (time && time.escudo) ? time.escudo : "logo-liga.jfif";
+}
+
+async function carregarJogo(){
+  jogoId = getParametro("id");
+  if(!jogoId){
+    alert("Jogo não informado.");
+    return;
+  }
+
+  const jogoRef = doc(db, "jogos", jogoId);
+  const jogoSnap = await getDoc(jogoRef);
+
+  if(!jogoSnap.exists()){
+    alert("Jogo não encontrado.");
+    return;
+  }
+
+  jogoAtual = jogoSnap.data();
+
+  document.getElementById("nomeTimeA").innerText = jogoAtual.timeA || "Time A";
+  document.getElementById("nomeTimeB").innerText = jogoAtual.timeB || "Time B";
+  document.getElementById("campeonatoInfo").innerText = jogoAtual.campeonato || "";
+  document.getElementById("dadosJogoInfo").innerText = `${jogoAtual.categoria || ""} | ${jogoAtual.data || ""} | ${jogoAtual.local || ""}`;
+  document.getElementById("nomeArbitro").value = jogoAtual.arbitro || "";
+  document.getElementById("nomeAssistente1").value = jogoAtual.assistente || "";
+  document.getElementById("nomeAssistente2").value = jogoAtual.assistente2 || "";
+  document.getElementById("nomeArbitroAuxiliar").value = jogoAtual.arbitroAuxiliar || "";
+
+  document.getElementById("tecnicoA").value = jogoAtual.tecnicoA || "";
+  document.getElementById("assistenteA1").value = jogoAtual.assistenteA1 || "";
+  document.getElementById("assistenteA2").value = jogoAtual.assistenteA2 || "";
+  document.getElementById("tecnicoB").value = jogoAtual.tecnicoB || "";
+  document.getElementById("assistenteB1").value = jogoAtual.assistenteB1 || "";
+  document.getElementById("assistenteB2").value = jogoAtual.assistenteB2 || "";
+
+  if(jogoAtual.logoCampeonato){
+    document.getElementById("logoCampeonato").src = jogoAtual.logoCampeonato;
+  }
+
+  document.getElementById("escudoA").src = pegarEscudo(jogoAtual.timeA);
+  document.getElementById("escudoB").src = pegarEscudo(jogoAtual.timeB);
+
+  const jogadoresSnap = await getDocs(collection(db, "jogadores"));
+
+  jogadoresA = [];
+  jogadoresB = [];
+
+  jogadoresSnap.forEach(d => {
+    const j = d.data();
+    const categoriasJogador = j.categorias || [];
+    const categoriaOk = categoriasJogador.includes(jogoAtual.categoria);
+
+    if(j.time === jogoAtual.timeA && categoriaOk){
+      jogadoresA.push({
+        nome: j.nome || "",
+        numero: j.numero || "",
+        posicao: j.posicao || "",
+        observacao: ""
+      });
+    }
+
+    if(j.time === jogoAtual.timeB && categoriaOk){
+      jogadoresB.push({
+        nome: j.nome || "",
+        numero: j.numero || "",
+        posicao: j.posicao || "",
+        observacao: ""
+      });
+    }
+  });
+
+  jogadoresA.sort((a,b)=>(Number(a.numero)||999)-(Number(b.numero)||999));
+  jogadoresB.sort((a,b)=>(Number(a.numero)||999)-(Number(b.numero)||999));
+
+  renderJogadores("A");
+  renderJogadores("B");
+  renderGols("A");
+  renderGols("B");
+  renderCartoes("A", "amarelo");
+  renderCartoes("B", "amarelo");
+  renderCartoes("A", "vermelho");
+  renderCartoes("B", "vermelho");
+}
+
+function textoArtilharia(){
+  const linhas = [];
+
+  golsA.forEach(g => {
+    if(g.tipo === "gol"){
+      linhas.push(`${g.nome || "Sem nome"} (${jogoAtual.timeA})`);
+    }
+  });
+
+  golsB.forEach(g => {
+    if(g.tipo === "gol"){
+      linhas.push(`${g.nome || "Sem nome"} (${jogoAtual.timeB})`);
+    }
+  });
+
+  return linhas.join(", ");
+}
+
+function textoCartoes(lista){
+  return lista
+    .map(c => `${c.nome || "Sem nome"}${c.obs ? " - " + c.obs : ""}`)
+    .join(", ");
+}
+
+window.salvarSumula = async function(){
+  if(!jogoId || !jogoAtual) return alert("Jogo não carregado.");
+
+  const placar = calcularPlacar();
+
+  const dados = {
+    jogoId: jogoId,
+    campeonato: jogoAtual.campeonato || "",
+    categoria: jogoAtual.categoria || "",
+    data: jogoAtual.data || "",
+    local: jogoAtual.local || "",
+    timeA: jogoAtual.timeA || "",
+    timeB: jogoAtual.timeB || "",
+
+    tecnicoA: document.getElementById("tecnicoA").value.trim(),
+    assistenteA1: document.getElementById("assistenteA1").value.trim(),
+    assistenteA2: document.getElementById("assistenteA2").value.trim(),
+    tecnicoB: document.getElementById("tecnicoB").value.trim(),
+    assistenteB1: document.getElementById("assistenteB1").value.trim(),
+    assistenteB2: document.getElementById("assistenteB2").value.trim(),
+
+    arbitro: document.getElementById("nomeArbitro").value.trim(),
+    arbitroAssistente1: document.getElementById("nomeAssistente1").value.trim(),
+    arbitroAssistente2: document.getElementById("nomeAssistente2").value.trim(),
+    arbitroAuxiliar: document.getElementById("nomeArbitroAuxiliar").value.trim(),
+
+    logoCampeonato: jogoAtual.logoCampeonato || "",
+    golsA: placar.golsMandante,
+    golsB: placar.golsVisitante,
+    observacoes: document.getElementById("observacoes").value.trim(),
+    jogadoresA: jogadoresA,
+    jogadoresB: jogadoresB,
+    golsDetalhadosA: golsA,
+    golsDetalhadosB: golsB,
+    amarelosDetalhadosA: amarelosA,
+    amarelosDetalhadosB: amarelosB,
+    vermelhosDetalhadosA: vermelhosA,
+    vermelhosDetalhadosB: vermelhosB,
+    amarelos: `${textoCartoes(amarelosA)}${amarelosA.length && amarelosB.length ? " | " : ""}${textoCartoes(amarelosB)}`.trim(),
+    vermelhos: `${textoCartoes(vermelhosA)}${vermelhosA.length && vermelhosB.length ? " | " : ""}${textoCartoes(vermelhosB)}`.trim(),
+    artilharia: textoArtilharia(),
+    status: "finalizada",
+    enviadaEm: new Date().toISOString()
+  };
+
+  await setDoc(doc(db, "sumulas", jogoId), dados);
+  await updateDoc(doc(db, "jogos", jogoId), {
+    status: "sumula_enviada",
+    golsA: placar.golsMandante,
+    golsB: placar.golsVisitante
+  });
+
+  alert("Súmula finalizada e salva com sucesso!");
+};
+
+await carregarTimes();
+await carregarJogo();
+</script>
+
+</body>
+</html>
