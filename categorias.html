@@ -35,12 +35,13 @@ margin-bottom:12px;
 border:none;
 border-radius:8px;
 font-size:14px;
+box-sizing:border-box;
 }
 
 button{
 background:#f7c600;
 color:black;
-padding:10px;
+padding:10px 14px;
 border:none;
 border-radius:8px;
 font-weight:bold;
@@ -52,11 +53,23 @@ margin-bottom:10px;
 display:inline-block;
 background:#f7c600;
 color:black;
-padding:10px;
+padding:10px 14px;
 border-radius:8px;
 font-weight:bold;
 cursor:pointer;
 margin-bottom:10px;
+text-decoration:none;
+}
+
+.btn-voltar{
+display:inline-block;
+margin-bottom:15px;
+background:#f7c600;
+color:black;
+padding:10px 14px;
+border-radius:8px;
+text-decoration:none;
+font-weight:bold;
 }
 
 .lista{
@@ -84,14 +97,6 @@ font-size:12px;
 background:#b30000 !important;
 }
 
-.back{
-display:block;
-margin-top:15px;
-color:#f7c600;
-font-weight:bold;
-text-decoration:none;
-}
-
 .modal{
 display:none;
 position:fixed;
@@ -116,6 +121,8 @@ text-align:center;
 
 <div class="container">
 
+<a href="admin.html" class="btn-voltar">← Voltar</a>
+
 <a class="btn" onclick="toggleFormulario()">+ Nova Categoria</a>
 
 <input id="buscaCategoria" placeholder="Pesquisar..." oninput="carregarCategorias()">
@@ -126,8 +133,6 @@ text-align:center;
 </div>
 
 <div class="lista" id="listaCategorias"></div>
-
-<a href="admin.html" class="back">← Voltar</a>
 
 </div>
 
