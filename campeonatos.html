@@ -62,10 +62,13 @@ cursor:pointer;
 border:none;
 }
 
-.back{
-display:block;
-margin-top:15px;
-color:#f7c600;
+.btn-voltar{
+display:inline-block;
+margin-bottom:15px;
+background:#f7c600;
+color:black;
+padding:10px 14px;
+border-radius:8px;
 text-decoration:none;
 font-weight:bold;
 }
@@ -221,6 +224,8 @@ margin:0;
 
 <div class="container">
 
+<a href="painel-admin.html" class="btn-voltar">← Voltar</a>
+
 <a class="btn" onclick="toggleFormulario()">+ Novo Campeonato</a>
 
 <input id="buscaCampeonato" placeholder="Pesquisar campeonato..." oninput="carregarCampeonatos()">
@@ -247,14 +252,14 @@ margin:0;
     <label class="check-item"><input type="checkbox" value="Sub-16">Sub-16</label>
     <label class="check-item"><input type="checkbox" value="Sub-17">Sub-17</label>
     <label class="check-item"><input type="checkbox" value="Sub-18">Sub-18</label>
+    <label class="check-item"><input type="checkbox" value="Sub-19">Sub-19</label>
+    <label class="check-item"><input type="checkbox" value="Sub-21">Sub-21</label>
   </div>
 
   <button id="botaoSalvar" onclick="salvarCampeonato()">Salvar Campeonato</button>
 </div>
 
 <div class="lista-grid" id="listaCampeonatos"></div>
-
-<a href="admin.html" class="back">← Voltar</a>
 
 </div>
 
@@ -271,7 +276,7 @@ const firebaseConfig = {
   apiKey: "AIzaSyCyArj4yRlEl-yibkc0VEmL_4UJpRHHQSc",
   authDomain: "liga-goiana-base.firebaseapp.com",
   projectId: "liga-goiana-base",
-  storageBucket: "liga-goiana-base.firebasestorage.app",
+  storageBucket: "liga-goiana-base.appspot.com",
   messagingSenderId: "952863591183",
   appId: "1:952863591183:web:4eea34f494ba2dd754cc7a"
 };
