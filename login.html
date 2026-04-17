@@ -79,6 +79,20 @@
       font-weight:bold;
       text-decoration:none;
     }
+
+    .msg{
+      margin-top:14px;
+      padding:12px;
+      border-radius:10px;
+      display:none;
+      font-weight:bold;
+    }
+
+    .erro{
+      background:rgba(180,0,0,.22);
+      color:#ffb0b0;
+      border:1px solid rgba(255,120,120,.25);
+    }
   </style>
 </head>
 <body>
@@ -95,23 +109,83 @@
 
     <button onclick="login()">Entrar</button>
 
+    <div id="msgErro" class="msg erro"></div>
+
+    <a href="cadastro.html" class="voltar">Criar conta</a>
     <a href="index.html" class="voltar">← Voltar para o site</a>
   </div>
 
   <script type="module">
-    import { auth } from "./firebase.js";
+    import { auth, db } from "./firebase.js";
     import { signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    const msgErro = document.getElementById("msgErro");
+
+    function mostrarErro(texto){
+      msgErro.style.display = "block";
+      msgErro.innerText = texto;
+    }
 
     window.login = async function(){
-      const email = document.getElementById("email").value;
-      const senha = document.getElementById("senha").value;
+      const email = document.getElementById("email").value.trim();
+      const senha = document.getElementById("senha").value.trim();
+
+      if(!email) return mostrarErro("Digite o email.");
+      if(!senha) return mostrarErro("Digite a senha.");
 
       try{
-        await signInWithEmailAndPassword(auth, email, senha);
-        alert("Login realizado com sucesso!");
+        const cred = await signInWithEmailAndPassword(auth, email, senha);
+        const uid = cred.user.uid;
+
+        const userRef = doc(db, "usuarios", uid);
+        const userSnap = await getDoc(userRef);
+
+        if(!userSnap.exists()){
+          // Se não existir no Firestore, mas existir no Auth
+          // deixa entrar e manda para a home
+          window.location.href = "index.html";
+          return;
+        }
+
+        const dados = userSnap.data();
+        const tipo = dados.tipoUsuario || "";
+
+        if(email === "ruy.gram@gmail.com"){
+          window.location.href = "painel-admin.html";
+          return;
+        }
+
+        if(tipo === "tecnico"){
+          window.location.href = "perfil.html";
+          return;
+        }
+
+        if(tipo === "jogador"){
+          window.location.href = "perfil.html";
+          return;
+        }
+
+        if(tipo === "pai_atleta"){
+          window.location.href = "perfil.html";
+          return;
+        }
+
+        if(tipo === "publico_geral"){
+          window.location.href = "perfil.html";
+          return;
+        }
+
         window.location.href = "index.html";
+
       }catch(e){
-        alert("Erro ao entrar: " + e.message);
+        if(e.code === "auth/invalid-credential"){
+          mostrarErro("Email ou senha inválidos.");
+        }else if(e.code === "auth/invalid-email"){
+          mostrarErro("Email inválido.");
+        }else{
+          mostrarErro("Erro ao entrar: " + e.message);
+        }
       }
     }
   </script>
