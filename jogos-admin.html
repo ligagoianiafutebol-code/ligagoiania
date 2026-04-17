@@ -163,4 +163,125 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-const db =
+const db = getFirestore(app);
+
+async function carregarTimes(){
+  const selectA = document.getElementById("timeA");
+  const selectB = document.getElementById("timeB");
+  selectA.innerHTML = '<option value="">Selecione</option>';
+  selectB.innerHTML = '<option value="">Selecione</option>';
+
+  const snap = await getDocs(collection(db, "times"));
+  let times = [];
+  snap.forEach(d => times.push(d.data()));
+  times.sort((a,b)=>(a.nome||"").localeCompare(b.nome||"", "pt-BR"));
+
+  times.forEach(t => {
+    selectA.innerHTML += `<option value="${t.nome}">${t.nome}</option>`;
+    selectB.innerHTML += `<option value="${t.nome}">${t.nome}</option>`;
+  });
+}
+
+async function carregarCategorias(){
+  const select = document.getElementById("categoria");
+  select.innerHTML = '<option value="">Selecione</option>';
+
+  const snap = await getDocs(collection(db, "categorias"));
+  let categorias = [];
+  snap.forEach(d => categorias.push(d.data()));
+  categorias.sort((a,b)=>(a.nome||"").localeCompare(b.nome||"", "pt-BR"));
+
+  categorias.forEach(c => {
+    select.innerHTML += `<option value="${c.nome}">${c.nome}</option>`;
+  });
+}
+
+async function carregarUsuarios(){
+  const arb = document.getElementById("arbitro");
+  const ass = document.getElementById("assistente");
+  arb.innerHTML = '<option value="">Selecione</option>';
+  ass.innerHTML = '<option value="">Selecione</option>';
+
+  const snap = await getDocs(collection(db, "usuarios"));
+  snap.forEach(d => {
+    const u = d.data();
+    if(u.tipoUsuario === "arbitro"){
+      arb.innerHTML += `<option value="${u.nome}">${u.nome}</option>`;
+    }
+    if(u.tipoUsuario === "assistente"){
+      ass.innerHTML += `<option value="${u.nome}">${u.nome}</option>`;
+    }
+  });
+}
+
+window.salvarJogo = async function(){
+  const jogo = {
+    data: document.getElementById("dataJogo").value,
+    local: document.getElementById("localJogo").value.trim(),
+    timeA: document.getElementById("timeA").value,
+    timeB: document.getElementById("timeB").value,
+    categoria: document.getElementById("categoria").value,
+    campeonato: document.getElementById("campeonato").value.trim(),
+    arbitro: document.getElementById("arbitro").value,
+    assistente: document.getElementById("assistente").value,
+    logoCampeonato: document.getElementById("logoCampeonato").value.trim(),
+    status: "pendente",
+    criadoEm: new Date().toISOString()
+  };
+
+  if(!jogo.data) return alert("Escolha a data e hora.");
+  if(!jogo.local) return alert("Digite o local.");
+  if(!jogo.timeA || !jogo.timeB) return alert("Selecione os times.");
+  if(jogo.timeA === jogo.timeB) return alert("Os times não podem ser iguais.");
+  if(!jogo.categoria) return alert("Selecione a categoria.");
+
+  await addDoc(collection(db, "jogos"), jogo);
+  alert("Jogo criado com sucesso!");
+  location.reload();
+};
+
+window.excluirJogo = async function(id){
+  if(!confirm("Deseja excluir este jogo?")) return;
+  await deleteDoc(doc(db, "jogos", id));
+  carregarJogos();
+};
+
+async function carregarJogos(){
+  const lista = document.getElementById("listaJogos");
+  lista.innerHTML = "";
+
+  const snap = await getDocs(collection(db, "jogos"));
+  let jogos = [];
+  snap.forEach(d => jogos.push({id:d.id, ...d.data()}));
+
+  jogos.sort((a,b)=>(a.data||"").localeCompare(b.data||""));
+
+  jogos.forEach(j => {
+    lista.innerHTML += `
+      <div class="card">
+        <strong>${j.timeA} x ${j.timeB}</strong><br>
+        Categoria: ${j.categoria || "-"}<br>
+        Campeonato: ${j.campeonato || "-"}<br>
+        Data: ${j.data || "-"}<br>
+        Local: ${j.local || "-"}<br>
+        Árbitro: ${j.arbitro || "-"}<br>
+        Assistente: ${j.assistente || "-"}<br>
+        Status: ${j.status || "pendente"}<br><br>
+
+        <div class="top-actions">
+          <a class="link-btn" href="sumula.html?id=${j.id}">Abrir Súmula</a>
+          <button onclick="excluirJogo('${j.id}')">Excluir</button>
+        </div>
+      </div>
+    `;
+  });
+}
+
+await carregarTimes();
+await carregarCategorias();
+await carregarUsuarios();
+await carregarJogos();
+</script>
+
+</body>
+</html>
