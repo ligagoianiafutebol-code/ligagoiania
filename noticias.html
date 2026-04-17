@@ -4,42 +4,424 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Notícias - Admin</title>
+
 <style>
-body{margin:0;font-family:Arial;background:#0b1f3a;color:white;}
-header{background:#08172c;padding:15px;text-align:center;font-size:22px;font-weight:bold;border-bottom:3px solid #f7c600;}
-.container{padding:15px;}
-.btn{background:#f7c600;color:black;padding:10px;border-radius:8px;text-decoration:none;display:inline-block;margin-bottom:15px;font-weight:bold;}
-.card{background:#102a52;padding:15px;border-radius:10px;margin-bottom:10px;}
-.title{font-weight:bold;margin-bottom:6px;}
-.info{font-size:13px;opacity:.85;margin-bottom:8px;}
-.actions a{background:#1a3f73;padding:6px 10px;border-radius:6px;color:white;text-decoration:none;margin-right:5px;font-size:12px;}
-.back{display:block;margin-top:10px;color:#f7c600;text-decoration:none;font-weight:bold;}
+body{
+  margin:0;
+  font-family:Arial;
+  background:#0b1f3a;
+  color:white;
+}
+
+header{
+  background:#08172c;
+  padding:15px;
+  text-align:center;
+  font-size:22px;
+  font-weight:bold;
+  border-bottom:3px solid #f7c600;
+}
+
+.container{
+  padding:15px;
+  max-width:1100px;
+  margin:auto;
+}
+
+input, select, textarea{
+  width:100%;
+  padding:12px;
+  margin-bottom:12px;
+  border:none;
+  border-radius:8px;
+  font-size:14px;
+  box-sizing:border-box;
+}
+
+textarea{
+  min-height:120px;
+  resize:vertical;
+}
+
+button{
+  background:#f7c600;
+  color:black;
+  padding:10px 14px;
+  border:none;
+  border-radius:8px;
+  font-weight:bold;
+  cursor:pointer;
+  margin-bottom:15px;
+}
+
+.btn{
+  background:#f7c600;
+  color:black;
+  padding:10px 14px;
+  border-radius:8px;
+  text-decoration:none;
+  display:inline-block;
+  margin-bottom:12px;
+  font-weight:bold;
+  cursor:pointer;
+  border:none;
+}
+
+.btn-voltar{
+  display:inline-block;
+  margin-bottom:15px;
+  background:#f7c600;
+  color:black;
+  padding:10px 14px;
+  border-radius:8px;
+  text-decoration:none;
+  font-weight:bold;
+}
+
+.preview{
+  width:90px;
+  height:90px;
+  border-radius:10px;
+  object-fit:cover;
+  border:2px solid #ffffff22;
+  background:#1a3f73;
+}
+
+.lista-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(320px, 1fr));
+  gap:12px;
+}
+
+.card{
+  background:#102a52;
+  padding:15px;
+  border-radius:10px;
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+}
+
+.item{
+  display:flex;
+  gap:12px;
+  min-width:0;
+}
+
+.item-info{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  min-width:0;
+}
+
+.item-info small{
+  opacity:.85;
+  font-size:12px;
+}
+
+.actions{
+  display:flex;
+  gap:6px;
+  flex-wrap:wrap;
+  align-content:flex-start;
+}
+
+.actions button{
+  background:#1a3f73;
+  padding:6px 10px;
+  border-radius:6px;
+  color:white;
+  border:none;
+  font-size:12px;
+  margin:0;
+}
+
+.actions .delete{
+  background:#b30000;
+}
+
+.tag{
+  display:inline-block;
+  background:#1a3f73;
+  padding:4px 8px;
+  border-radius:999px;
+  font-size:12px;
+  margin-right:6px;
+}
+
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.7);
+  justify-content:center;
+  align-items:center;
+  padding:15px;
+  z-index:999;
+}
+
+.modal-content{
+  background:#102a52;
+  padding:20px;
+  border-radius:12px;
+  max-width:700px;
+  width:100%;
+  text-align:left;
+  max-height:85vh;
+  overflow:auto;
+}
+
+.modal-content img{
+  width:100%;
+  max-height:260px;
+  object-fit:cover;
+  border-radius:12px;
+  margin-bottom:12px;
+  background:#1a3f73;
+}
 </style>
 </head>
+
 <body>
+
 <header>Notícias</header>
+
 <div class="container">
-<a class="btn">+ Nova Notícia</a>
 
-<div class="card">
-  <div class="title">Abertura da Copa União</div>
-  <div class="info">Publicada em 10/04/2026</div>
-  <div class="actions">
-    <a>Editar</a>
-    <a>Publicar</a>
-  </div>
+<a href="admin.html" class="btn-voltar">← Voltar</a>
+
+<a class="btn" onclick="toggleFormulario()">+ Nova Notícia</a>
+
+<input id="buscaNoticia" placeholder="Pesquisar notícia..." oninput="carregarNoticias()">
+
+<div id="formulario" style="display:none;">
+  <input id="tituloNoticia" placeholder="Título da notícia">
+  <input id="imagemNoticia" type="file" accept="image/*">
+  <input id="campeonatoNoticia" placeholder="Campeonato">
+  <input id="categoriaNoticia" placeholder="Categoria">
+  <input id="rodadaNoticia" placeholder="Rodada (ex: 1)">
+  <select id="statusNoticia">
+    <option value="publicado">Publicado</option>
+    <option value="rascunho">Rascunho</option>
+  </select>
+  <textarea id="textoNoticia" placeholder="Texto da notícia"></textarea>
+
+  <button id="botaoSalvar" onclick="salvarNoticia()">Salvar Notícia</button>
 </div>
 
-<div class="card">
-  <div class="title">Mudança de horário da rodada</div>
-  <div class="info">Publicada em 12/04/2026</div>
-  <div class="actions">
-    <a>Editar</a>
-    <a>Publicar</a>
-  </div>
+<div class="lista-grid" id="listaNoticias"></div>
+
 </div>
 
-<a href="admin.html" class="back">← Voltar</a>
+<div class="modal" id="modalVer">
+  <div class="modal-content" id="modalConteudo"></div>
 </div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
+import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-firestore.js";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-storage.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCyArj4yRlEl-yibkc0VEmL_4UJpRHHQSc",
+  authDomain: "liga-goiana-base.firebaseapp.com",
+  projectId: "liga-goiana-base",
+  storageBucket: "liga-goiana-base.appspot.com",
+  messagingSenderId: "952863591183",
+  appId: "1:952863591183:web:4eea34f494ba2dd754cc7a"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const storage = getStorage(app);
+
+let editandoId = null;
+let imagemAtual = "";
+
+window.toggleFormulario = function(){
+  const f = document.getElementById("formulario");
+  f.style.display = f.style.display === "none" ? "block" : "none";
+};
+
+function limparFormulario(){
+  document.getElementById("tituloNoticia").value = "";
+  document.getElementById("imagemNoticia").value = "";
+  document.getElementById("campeonatoNoticia").value = "";
+  document.getElementById("categoriaNoticia").value = "";
+  document.getElementById("rodadaNoticia").value = "";
+  document.getElementById("statusNoticia").value = "publicado";
+  document.getElementById("textoNoticia").value = "";
+  document.getElementById("botaoSalvar").textContent = "Salvar Notícia";
+  editandoId = null;
+  imagemAtual = "";
+}
+
+function formatarData(dataIso){
+  if(!dataIso) return "-";
+  const data = new Date(dataIso);
+  if(isNaN(data.getTime())) return dataIso;
+  return data.toLocaleDateString("pt-BR");
+}
+
+window.salvarNoticia = async function(){
+  const titulo = document.getElementById("tituloNoticia").value.trim();
+  const imagem = document.getElementById("imagemNoticia").files[0];
+  const campeonato = document.getElementById("campeonatoNoticia").value.trim();
+  const categoria = document.getElementById("categoriaNoticia").value.trim();
+  const rodada = document.getElementById("rodadaNoticia").value.trim();
+  const status = document.getElementById("statusNoticia").value;
+  const texto = document.getElementById("textoNoticia").value.trim();
+
+  if(!titulo) return alert("Digite o título.");
+  if(!texto) return alert("Digite o texto da notícia.");
+
+  let urlImagem = imagemAtual;
+
+  if(imagem){
+    const nomeArquivo = Date.now() + "-" + imagem.name;
+    const storageRef = ref(storage, "noticias/" + nomeArquivo);
+    await uploadBytes(storageRef, imagem);
+    urlImagem = await getDownloadURL(storageRef);
+  }
+
+  const dados = {
+    titulo,
+    imagem: urlImagem || "",
+    campeonato,
+    categoria,
+    rodada,
+    status,
+    texto,
+    dataPublicacao: new Date().toISOString()
+  };
+
+  if(editandoId){
+    await updateDoc(doc(db, "noticias", editandoId), dados);
+    alert("Notícia atualizada com sucesso!");
+  }else{
+    await addDoc(collection(db, "noticias"), dados);
+    alert("Notícia salva com sucesso!");
+  }
+
+  limparFormulario();
+  carregarNoticias();
+};
+
+window.editarNoticia = async function(id){
+  const snap = await getDocs(collection(db, "noticias"));
+
+  snap.forEach((item) => {
+    if(item.id === id){
+      const n = item.data();
+
+      document.getElementById("tituloNoticia").value = n.titulo || "";
+      document.getElementById("campeonatoNoticia").value = n.campeonato || "";
+      document.getElementById("categoriaNoticia").value = n.categoria || "";
+      document.getElementById("rodadaNoticia").value = n.rodada || "";
+      document.getElementById("statusNoticia").value = n.status || "publicado";
+      document.getElementById("textoNoticia").value = n.texto || "";
+      document.getElementById("botaoSalvar").textContent = "Atualizar Notícia";
+
+      imagemAtual = n.imagem || "";
+      editandoId = id;
+
+      document.getElementById("formulario").style.display = "block";
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  });
+};
+
+window.verNoticia = async function(id){
+  const snap = await getDocs(collection(db, "noticias"));
+  let noticia = null;
+
+  snap.forEach((item) => {
+    if(item.id === id){
+      noticia = item.data();
+    }
+  });
+
+  if(!noticia) return;
+
+  document.getElementById("modalConteudo").innerHTML = `
+    ${noticia.imagem ? `<img src="${noticia.imagem}">` : ""}
+    <h2 style="margin:10px 0;">${noticia.titulo || ""}</h2>
+    <p><span class="tag">${noticia.campeonato || "Geral"}</span><span class="tag">${noticia.categoria || "Todas"}</span><span class="tag">Rodada ${noticia.rodada || "-"}</span></p>
+    <p><strong>Data:</strong> ${formatarData(noticia.dataPublicacao)}</p>
+    <p><strong>Status:</strong> ${noticia.status || "-"}</p>
+    <p style="white-space:pre-wrap; line-height:1.6;">${noticia.texto || ""}</p>
+    <button onclick="fecharModal()" style="margin-top:15px;">Fechar</button>
+  `;
+
+  document.getElementById("modalVer").style.display = "flex";
+};
+
+window.fecharModal = function(){
+  document.getElementById("modalVer").style.display = "none";
+};
+
+window.excluirNoticia = async function(id){
+  const confirmar = confirm("Tem certeza que deseja excluir esta notícia?");
+  if(!confirmar) return;
+
+  await deleteDoc(doc(db, "noticias", id));
+  alert("Notícia excluída!");
+  carregarNoticias();
+};
+
+async function carregarNoticias(){
+  const lista = document.getElementById("listaNoticias");
+  lista.innerHTML = "";
+
+  const querySnapshot = await getDocs(collection(db, "noticias"));
+  let noticias = [];
+
+  querySnapshot.forEach((docSnap) => {
+    noticias.push({ id: docSnap.id, ...docSnap.data() });
+  });
+
+  const busca = (document.getElementById("buscaNoticia").value || "").toLowerCase().trim();
+
+  if(busca){
+    noticias = noticias.filter(n =>
+      (n.titulo || "").toLowerCase().includes(busca) ||
+      (n.texto || "").toLowerCase().includes(busca) ||
+      (n.campeonato || "").toLowerCase().includes(busca) ||
+      (n.categoria || "").toLowerCase().includes(busca)
+    );
+  }
+
+  noticias.sort((a, b) => (b.dataPublicacao || "").localeCompare(a.dataPublicacao || ""));
+
+  noticias.forEach((noticia) => {
+    lista.innerHTML += `
+      <div class="card">
+        <div class="item">
+          <img src="${noticia.imagem || 'logo-liga.jfif'}" class="preview" alt="Imagem da notícia">
+          <div class="item-info">
+            <div style="font-weight:bold;font-size:16px;">${noticia.titulo || ""}</div>
+            <small>${(noticia.texto || "").slice(0, 110)}...</small>
+            <small>${formatarData(noticia.dataPublicacao)}</small>
+            <div>
+              <span class="tag">${noticia.campeonato || "Geral"}</span>
+              <span class="tag">${noticia.categoria || "Todas"}</span>
+              <span class="tag">Rodada ${noticia.rodada || "-"}</span>
+            </div>
+          </div>
+        </div>
+        <div class="actions">
+          <button onclick="editarNoticia('${noticia.id}')">Editar</button>
+          <button onclick="verNoticia('${noticia.id}')">Ver</button>
+          <button class="delete" onclick="excluirNoticia('${noticia.id}')">Excluir</button>
+        </div>
+      </div>
+    `;
+  });
+}
+
+carregarNoticias();
+</script>
+
 </body>
 </html>
