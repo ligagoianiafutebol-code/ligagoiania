@@ -15,6 +15,7 @@
       --line:rgba(255,230,0,.18);
       --shadow:0 14px 32px rgba(0,0,0,.30);
       --sidebar-width:280px;
+      --sidebar-collapsed:88px;
       --blue-bg:#031022;
       --blue-1:#051935;
       --blue-2:#0b2a57;
@@ -22,7 +23,6 @@
       --card:rgba(8,28,58,.94);
       --green:#10a542;
       --green-2:#0b7c31;
-      --danger:#d62828;
       --radius:18px;
     }
 
@@ -43,6 +43,11 @@
         url("fundo.png") center/cover no-repeat fixed;
       color:var(--white);
       min-height:100vh;
+      overflow-x:hidden;
+    }
+
+    body.sidebar-collapsed{
+      --sidebar-width:88px;
     }
 
     a{
@@ -72,7 +77,7 @@
       border-right:1px solid var(--line);
       z-index:1200;
       padding:22px 18px 28px;
-      transition:transform .35s ease;
+      transition:width .35s ease, transform .35s ease, padding .35s ease;
       box-shadow:var(--shadow);
     }
 
@@ -86,6 +91,7 @@
       display:flex;
       align-items:center;
       gap:12px;
+      min-width:0;
     }
 
     .brand img{
@@ -95,12 +101,15 @@
       object-fit:cover;
       border:2px solid var(--yellow);
       background:#fff;
+      flex-shrink:0;
     }
 
     .brand-text{
       display:flex;
       flex-direction:column;
       gap:3px;
+      min-width:0;
+      transition:opacity .25s ease, width .25s ease;
     }
 
     .brand-text strong{
@@ -122,6 +131,7 @@
       color:var(--yellow);
       margin:18px 0 10px;
       font-weight:700;
+      transition:opacity .25s ease;
     }
 
     .side-menu{
@@ -138,6 +148,9 @@
       border:1px solid transparent;
       transition:.25s ease;
       font-size:14px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
     }
 
     .side-menu a:hover,
@@ -146,6 +159,36 @@
       color:var(--yellow);
       border-color:var(--line);
       transform:translateX(4px);
+    }
+
+    /* BARRA LATERAL FECHADA NO DESKTOP */
+    body.sidebar-collapsed .sidebar{
+      padding:22px 10px 28px;
+    }
+
+    body.sidebar-collapsed .brand{
+      justify-content:center;
+    }
+
+    body.sidebar-collapsed .brand-text,
+    body.sidebar-collapsed .menu-title{
+      opacity:0;
+      width:0;
+      height:0;
+      overflow:hidden;
+      margin:0;
+      padding:0;
+    }
+
+    body.sidebar-collapsed .side-menu a{
+      text-align:center;
+      padding:12px 8px;
+      font-size:12px;
+    }
+
+    body.sidebar-collapsed .side-menu a:hover,
+    body.sidebar-collapsed .side-menu a.active{
+      transform:none;
     }
 
     /* TOPBAR */
@@ -157,6 +200,7 @@
       backdrop-filter:blur(10px);
       border-bottom:1px solid var(--line);
       margin-left:var(--sidebar-width);
+      transition:margin-left .35s ease;
     }
 
     .topbar-content{
@@ -169,17 +213,22 @@
     }
 
     .menu-toggle{
-      display:none;
       border:none;
       background:var(--yellow);
       color:#031022;
-      width:44px;
-      height:44px;
+      width:46px;
+      height:46px;
       border-radius:12px;
       font-size:24px;
       font-weight:700;
       cursor:pointer;
       box-shadow:var(--shadow);
+      flex-shrink:0;
+    }
+
+    .menu-toggle:hover{
+      background:var(--yellow-2);
+      transform:translateY(-2px);
     }
 
     .top-links{
@@ -245,6 +294,7 @@
     .conteudo,
     footer{
       margin-left:var(--sidebar-width);
+      transition:margin-left .35s ease;
     }
 
     /* EDITOR */
@@ -527,7 +577,6 @@
       color:var(--yellow);
     }
 
-    /* TABELA JOGOS */
     .match-table{
       width:100%;
       border-collapse:collapse;
@@ -594,7 +643,6 @@
       background:var(--yellow);
     }
 
-    /* NOTÍCIAS */
     .news-list{
       display:flex;
       flex-direction:column;
@@ -647,7 +695,6 @@
       opacity:.8;
     }
 
-    /* CTA */
     .cta-box{
       display:flex;
       align-items:center;
@@ -673,7 +720,6 @@
       line-height:1.6;
     }
 
-    /* FOOTER */
     footer{
       margin-top:26px;
       background:rgba(2,10,22,.96);
@@ -756,10 +802,9 @@
         display:none;
       }
 
-      .menu-toggle{
-        display:inline-flex;
-        align-items:center;
-        justify-content:center;
+      body,
+      body.sidebar-collapsed{
+        --sidebar-width:280px;
       }
 
       .sidebar{
@@ -780,6 +825,28 @@
 
       .topbar-content{
         justify-content:space-between;
+      }
+
+      body.sidebar-collapsed .brand-text,
+      body.sidebar-collapsed .menu-title{
+        opacity:1;
+        width:auto;
+        height:auto;
+        overflow:visible;
+      }
+
+      body.sidebar-collapsed .side-menu a{
+        text-align:left;
+        padding:12px 14px;
+        font-size:14px;
+      }
+
+      body.sidebar-collapsed .brand{
+        justify-content:flex-start;
+      }
+
+      body.sidebar-collapsed .sidebar{
+        padding:22px 18px 28px;
       }
     }
 
@@ -918,7 +985,7 @@
   <!-- TOPO -->
   <header class="topbar">
     <div class="wrap topbar-content">
-      <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+      <button class="menu-toggle" id="menuToggle" onclick="toggleSidebar()">☰</button>
 
       <div class="brand">
         <img src="logo-liga.jfif" alt="Logo Liga Goiana">
@@ -951,7 +1018,6 @@
     </div>
   </header>
 
-  <!-- EDITOR HOME -->
   <div id="editorHome" class="editor-home">
     <div class="wrap">
       <div class="editor-box">
@@ -968,7 +1034,6 @@
     </div>
   </div>
 
-  <!-- HERO -->
   <section class="hero">
     <div class="wrap">
       <div class="hero-panel">
@@ -1001,7 +1066,7 @@
         <div class="pillar">
           <div class="pillar-icon">
             <svg viewBox="0 0 24 24">
-              <path d="M12 3l1.8 3.6 4 .6-2.9 2.8.7 4-3.6-1.9-3.6 1.9.7-4-2.9-2.8 4-.6z"></path>
+              <path d="M12 3l1.8 3.6 4 .6-2.9 2.8.7 4-3.6-1.9-3.6 1.9.7-4-2.9-2.8 4-.6"></path>
               <path d="M7 15c1.2 2.7 2.9 4 5 4s3.8-1.3 5-4"></path>
             </svg>
           </div>
@@ -1274,7 +1339,11 @@
 
   <script>
     function toggleSidebar() {
-      document.getElementById("sidebar").classList.toggle("open");
+      if (window.innerWidth <= 1200) {
+        document.getElementById("sidebar").classList.toggle("open");
+      } else {
+        document.body.classList.toggle("sidebar-collapsed");
+      }
     }
 
     function salvarEdicao() {
@@ -1299,6 +1368,8 @@
     window.addEventListener("DOMContentLoaded", () => {
       const textoSalvo = localStorage.getItem("liga_home_texto");
       const imagemSalva = localStorage.getItem("liga_home_imagem");
+      const sidebarState = localStorage.getItem("liga_sidebar_state");
+      const logado = localStorage.getItem("adminLogado");
 
       if (textoSalvo) {
         const desc = document.querySelector(".hero .desc");
@@ -1314,16 +1385,36 @@
         if (campoImagem) campoImagem.value = imagemSalva;
       }
 
-      const logado = localStorage.getItem("adminLogado");
       if (logado === "true") {
         const btnEditar = document.getElementById("btnEditar");
         if (btnEditar) btnEditar.style.display = "inline-flex";
+      }
+
+      if (window.innerWidth > 1200 && sidebarState === "fechada") {
+        document.body.classList.add("sidebar-collapsed");
+      }
+    });
+
+    window.addEventListener("resize", () => {
+      const sidebar = document.getElementById("sidebar");
+
+      if (window.innerWidth <= 1200) {
+        document.body.classList.remove("sidebar-collapsed");
+      } else {
+        sidebar.classList.remove("open");
+      }
+    });
+
+    document.getElementById("menuToggle").addEventListener("click", () => {
+      if (window.innerWidth > 1200) {
+        const fechada = document.body.classList.contains("sidebar-collapsed");
+        localStorage.setItem("liga_sidebar_state", fechada ? "aberta" : "fechada");
       }
     });
 
     document.addEventListener("click", function(e){
       const sidebar = document.getElementById("sidebar");
-      const button = document.querySelector(".menu-toggle");
+      const button = document.getElementById("menuToggle");
 
       if (window.innerWidth <= 1200 && sidebar.classList.contains("open")) {
         if (!sidebar.contains(e.target) && !button.contains(e.target)) {
