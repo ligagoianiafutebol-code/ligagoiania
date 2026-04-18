@@ -355,6 +355,28 @@ select{
   border-radius:999px;
   font-size:12px;
 }
+.acoes-jogo{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:12px;
+}
+.btn-acao{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:10px 14px;
+  border-radius:8px;
+  text-decoration:none;
+  font-weight:bold;
+  font-size:13px;
+  border:none;
+  cursor:pointer;
+}
+.btn-sumula{
+  background:#f7c600;
+  color:black;
+}
 @media (max-width: 900px){
   .filtros{
     grid-template-columns:1fr;
@@ -844,6 +866,14 @@ function renderJogos(){
         <div class="status ${finalizado ? "finalizado" : "agendado"}">
           ${finalizado ? "Finalizado" : "Agendado"}
         </div>
+
+        ${finalizado ? `
+          <div class="acoes-jogo">
+            <a class="btn-acao btn-sumula" href="sumula-publica.html?id=${j.id}">
+              Ver Súmula
+            </a>
+          </div>
+        ` : ""}
       `;
       lista.appendChild(card);
     });
@@ -1050,6 +1080,11 @@ function renderHistorico(){
             ${item.campeonato || "-"}<br>
             ${item.data || "-"} | ${item.local || "-"}<br>
             Árbitro: ${item.arbitro || "-"}
+          </div>
+          <div class="acoes-jogo">
+            <a class="btn-acao btn-sumula" href="sumula-publica.html?id=${item.jogoId || item.id}">
+              Ver Súmula
+            </a>
           </div>
         </div>
       `).join("")}
