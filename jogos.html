@@ -188,7 +188,13 @@ background:#f7c600;
 color:black;
 }
 
-.btn-sumula:hover{
+.btn-secundario{
+background:#1a3f73;
+color:white;
+}
+
+.btn-sumula:hover,
+.btn-secundario:hover{
 opacity:.92;
 }
 
@@ -277,6 +283,7 @@ const db = getFirestore(app);
 
 let jogos = [];
 let times = [];
+let campeonatos = [];
 
 function getParametro(nome){
   const params = new URLSearchParams(window.location.search);
@@ -291,6 +298,27 @@ function normalizarTexto(texto){
     .replace(/[\u0300-\u036f]/g, "");
 }
 
+function montarLinkPagina(pagina, campeonato, categoria){
+  const params = new URLSearchParams();
+
+  if(campeonato){
+    params.set("campeonato", campeonato);
+  }
+
+  if(categoria){
+    params.set("categoria", categoria);
+  }
+
+  const query = params.toString();
+  return query ? `${pagina}?${query}` : pagina;
+}
+
+function montarLinkCampeonatoPublico(campeonato){
+  const camp = campeonatos.find(c => normalizarTexto(c.nome) === normalizarTexto(campeonato));
+  if(!camp) return "campeonatos.html";
+  return `campeonato-publico.html?id=${camp.id}`;
+}
+
 async function carregarDados(){
   const snapJogos = await getDocs(collection(db, "jogos"));
   jogos = [];
@@ -303,6 +331,12 @@ async function carregarDados(){
   snapTimes.forEach(docSnap => {
     times.push({ id: docSnap.id, ...docSnap.data() });
   });
+
+  const snapCampeonatos = await getDocs(collection(db, "campeonatos"));
+  campeonatos = [];
+  snapCampeonatos.forEach(docSnap => {
+    campeonatos.push({ id: docSnap.id, ...docSnap.data() });
+  });
 }
 
 function pegarEscudo(nomeTime){
@@ -313,11 +347,11 @@ function pegarEscudo(nomeTime){
 function preencherFiltros(){
   const selectCamp = document.getElementById("filtroCampeonato");
 
-  const campeonatos = [...new Set(jogos.map(j => j.campeonato).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"pt-BR"));
+  const campeonatosLista = [...new Set(jogos.map(j => j.campeonato).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"pt-BR"));
 
   selectCamp.innerHTML = '<option value="">Selecione o campeonato</option>';
 
-  campeonatos.forEach(c => {
+  campeonatosLista.forEach(c => {
     selectCamp.innerHTML += `<option value="${c}">${c}</option>`;
   });
 }
@@ -416,6 +450,11 @@ window.carregarJogos = function(){
         ? `${Number(j.golsA || 0)} x ${Number(j.golsB || 0)}`
         : "x";
 
+      const linkCampeonato = montarLinkCampeonatoPublico(j.campeonato || "");
+      const linkTabela = montarLinkPagina("tabela.html", j.campeonato || "", j.categoria || "");
+      const linkJogos = montarLinkPagina("jogos.html", j.campeonato || "", j.categoria || "");
+      const linkSuspensos = montarLinkPagina("suspensos.html", j.campeonato || "", j.categoria || "");
+
       lista.innerHTML += `
         <div class="jogo">
           <div class="topo-jogo">
@@ -444,13 +483,25 @@ window.carregarJogos = function(){
             ${finalizado ? "Finalizado" : "Agendado"}
           </div>
 
-          ${finalizado ? `
-            <div class="acoes-jogo">
+          <div class="acoes-jogo">
+            ${finalizado ? `
               <a class="btn-acao btn-sumula" href="sumula-publica.html?id=${j.id}">
                 Ver Súmula
               </a>
-            </div>
-          ` : ""}
+            ` : ""}
+            <a class="btn-acao btn-secundario" href="${linkCampeonato}">
+              Campeonato
+            </a>
+            <a class="btn-acao btn-secundario" href="${linkTabela}">
+              Tabela
+            </a>
+            <a class="btn-acao btn-secundario" href="${linkJogos}">
+              Jogos
+            </a>
+            <a class="btn-acao btn-secundario" href="${linkSuspensos}">
+              Suspensos
+            </a>
+          </div>
         </div>
       `;
     });
