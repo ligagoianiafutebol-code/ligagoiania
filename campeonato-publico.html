@@ -126,6 +126,31 @@ flex-wrap:wrap;
 margin-top:16px;
 }
 
+.bloco-categoria{
+margin-top:16px;
+display:flex;
+flex-direction:column;
+gap:8px;
+max-width:320px;
+}
+
+.bloco-categoria label{
+font-size:13px;
+font-weight:bold;
+color:#f7c600;
+}
+
+.bloco-categoria select{
+width:100%;
+padding:12px;
+border:none;
+border-radius:8px;
+box-sizing:border-box;
+font-size:14px;
+background:white;
+color:black;
+}
+
 .grid{
 display:grid;
 grid-template-columns:1fr 1fr;
@@ -338,6 +363,7 @@ const db = getFirestore(app);
 let times = [];
 let jogos = [];
 let sumulas = [];
+let campeonatoAtual = null;
 
 function getParametro(nome){
   const params = new URLSearchParams(window.location.search);
@@ -387,9 +413,47 @@ function formatarData(valor){
   return `${dia}/${mes}/${ano}`;
 }
 
-function montarLinkComCampeonato(pagina, nomeCampeonato){
-  return `${pagina}?campeonato=${encodeURIComponent(nomeCampeonato || "")}`;
+function montarLink(pagina, nomeCampeonato, categoria){
+  const params = new URLSearchParams();
+
+  if(nomeCampeonato){
+    params.set("campeonato", nomeCampeonato);
+  }
+
+  if(categoria){
+    params.set("categoria", categoria);
+  }
+
+  const query = params.toString();
+  return query ? `${pagina}?${query}` : pagina;
 }
+
+function atualizarLinksDeAcesso(){
+  if(!campeonatoAtual) return;
+
+  const select = document.getElementById("categoriaSelecionada");
+  const categoria = select ? select.value : "";
+
+  const linkTabela = document.getElementById("linkTabela");
+  const linkJogos = document.getElementById("linkJogos");
+  const linkSuspensos = document.getElementById("linkSuspensos");
+
+  if(linkTabela){
+    linkTabela.href = montarLink("tabela.html", campeonatoAtual.nome, categoria);
+  }
+
+  if(linkJogos){
+    linkJogos.href = montarLink("jogos.html", campeonatoAtual.nome, categoria);
+  }
+
+  if(linkSuspensos){
+    linkSuspensos.href = montarLink("suspensos.html", campeonatoAtual.nome, categoria);
+  }
+}
+
+window.atualizarCategoriaPublica = function(){
+  atualizarLinksDeAcesso();
+};
 
 async function carregarBases(){
   const snapTimes = await getDocs(collection(db, "times"));
@@ -469,6 +533,34 @@ function getEstatisticasCampeonato(campeonato){
     times: timesSet.size,
     gols
   };
+}
+
+function renderSelectCategorias(campeonato, stats){
+  const categoriasBase = Array.isArray(campeonato.categorias) ? campeonato.categorias : [];
+  const categoriasJogos = Array.isArray(stats.categorias) ? stats.categorias : [];
+
+  const mapa = new Map();
+  [...categoriasBase, ...categoriasJogos].forEach(categoria => {
+    if(categoria){
+      mapa.set(normalizarTexto(categoria), categoria);
+    }
+  });
+
+  const categorias = Array.from(mapa.values()).sort((a,b) => a.localeCompare(b, "pt-BR"));
+
+  if(!categorias.length){
+    return "";
+  }
+
+  return `
+    <div class="bloco-categoria">
+      <label for="categoriaSelecionada">Escolha a categoria</label>
+      <select id="categoriaSelecionada" onchange="atualizarCategoriaPublica()">
+        <option value="">Todas as categorias</option>
+        ${categorias.map(c => `<option value="${c}">${c}</option>`).join("")}
+      </select>
+    </div>
+  `;
 }
 
 function renderTimesParticipantes(campeonato){
@@ -551,28 +643,30 @@ async function carregarCampeonato(){
       return;
     }
 
-    const campeonato = { id: snapCampeonato.id, ...snapCampeonato.data() };
-    const stats = getEstatisticasCampeonato(campeonato);
+    campeonatoAtual = { id: snapCampeonato.id, ...snapCampeonato.data() };
+    const stats = getEstatisticasCampeonato(campeonatoAtual);
 
     box.innerHTML = `
       <div class="hero">
         <div class="hero-top">
-          <img src="${escapar(campeonato.logo || 'logo-liga.jfif')}" class="hero-logo" alt="${escapar(campeonato.nome || "Campeonato")}">
+          <img src="${escapar(campeonatoAtual.logo || 'logo-liga.jfif')}" class="hero-logo" alt="${escapar(campeonatoAtual.nome || "Campeonato")}">
           <div class="hero-info">
-            <div class="hero-titulo">${escapar(campeonato.nome || "Campeonato")}</div>
+            <div class="hero-titulo">${escapar(campeonatoAtual.nome || "Campeonato")}</div>
             <div class="hero-sub">
-              Temporada: ${escapar(campeonato.temporada || "-")}<br>
-              Status: ${escapar(campeonato.status || "-")}
+              Temporada: ${escapar(campeonatoAtual.temporada || "-")}<br>
+              Status: ${escapar(campeonatoAtual.status || "-")}
             </div>
 
             <div class="hero-tags">
-              ${(campeonato.categorias || []).map(c => `<div class="hero-tag">${escapar(c)}</div>`).join("") || `<div class="hero-tag">Sem categoria</div>`}
+              ${(campeonatoAtual.categorias || []).map(c => `<div class="hero-tag">${escapar(c)}</div>`).join("") || `<div class="hero-tag">Sem categoria</div>`}
             </div>
 
+            ${renderSelectCategorias(campeonatoAtual, stats)}
+
             <div class="hero-links">
-              <a class="btn-secundario" href="${montarLinkComCampeonato('tabela.html', campeonato.nome)}">Tabela</a>
-              <a class="btn-secundario" href="${montarLinkComCampeonato('jogos.html', campeonato.nome)}">Jogos</a>
-              <a class="btn-secundario" href="${montarLinkComCampeonato('suspensos.html', campeonato.nome)}">Suspensos</a>
+              <a class="btn-secundario" id="linkTabela" href="#">Tabela</a>
+              <a class="btn-secundario" id="linkJogos" href="#">Jogos</a>
+              <a class="btn-secundario" id="linkSuspensos" href="#">Suspensos</a>
             </div>
           </div>
         </div>
@@ -582,7 +676,7 @@ async function carregarCampeonato(){
         <div class="card">
           <h3>Estatísticas</h3>
           <div class="stats-grid">
-            <div class="stat-card"><strong>Temporada</strong><span>${escapar(campeonato.temporada || "-")}</span></div>
+            <div class="stat-card"><strong>Temporada</strong><span>${escapar(campeonatoAtual.temporada || "-")}</span></div>
             <div class="stat-card"><strong>Times</strong><span>${stats.times}</span></div>
             <div class="stat-card"><strong>Jogos</strong><span>${stats.jogosCadastrados}</span></div>
             <div class="stat-card"><strong>Finalizados</strong><span>${stats.jogosFinalizados}</span></div>
@@ -591,21 +685,23 @@ async function carregarCampeonato(){
           </div>
 
           <div class="hero-tags" style="margin-top:14px;">
-            ${(stats.categorias.length ? stats.categorias : (campeonato.categorias || [])).map(c => `<div class="hero-tag">${escapar(c)}</div>`).join("")}
+            ${(stats.categorias.length ? stats.categorias : (campeonatoAtual.categorias || [])).map(c => `<div class="hero-tag">${escapar(c)}</div>`).join("")}
           </div>
         </div>
 
         <div class="card">
           <h3>Últimos Jogos</h3>
-          ${renderUltimosJogos(campeonato)}
+          ${renderUltimosJogos(campeonatoAtual)}
         </div>
 
         <div class="card coluna-unica">
           <h3>Times Participantes</h3>
-          ${renderTimesParticipantes(campeonato)}
+          ${renderTimesParticipantes(campeonatoAtual)}
         </div>
       </div>
     `;
+
+    atualizarLinksDeAcesso();
   }catch(erro){
     console.error(erro);
     box.innerHTML = `<div class="loading">Erro ao carregar o campeonato.</div>`;
