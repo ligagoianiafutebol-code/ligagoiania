@@ -4,15 +4,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Liga Goiana de Futebol de Base</title>
-
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
   <style>
     :root{
       --yellow:#ffd400;
       --yellow-2:#ffe600;
-      --yellow-soft:rgba(255,212,0,.14);
-      --yellow-line:rgba(255,212,0,.28);
+      --yellow-soft:rgba(255,212,0,.12);
+      --yellow-line:rgba(255,212,0,.22);
       --white:#ffffff;
       --muted:#d8e1ef;
       --text-soft:#a8b6cf;
@@ -22,37 +21,30 @@
       --card:#03112d;
       --card-2:#07183b;
       --green:#13a61b;
-      --blue-badge:#1d67d9;
-      --purple-badge:#7616c9;
-      --gold-badge:#b98916;
-      --shadow:0 16px 36px rgba(0,0,0,.35);
-      --shadow-2:0 20px 50px rgba(0,0,0,.45);
-      --line:rgba(255,255,255,.07);
-      --sidebar-width:320px;
+      --shadow:0 12px 30px rgba(0,0,0,.35);
+      --radius:18px;
+      --radius-lg:24px;
+      --transition:.25s ease;
+      --max:1280px;
     }
 
     *{
       margin:0;
       padding:0;
       box-sizing:border-box;
-      -webkit-tap-highlight-color:transparent;
     }
 
     html{
       scroll-behavior:smooth;
-      max-width:100%;
     }
 
     body{
-      font-family:Arial, Helvetica, sans-serif;
+      font-family: Arial, Helvetica, sans-serif;
       background:
-        linear-gradient(rgba(1,9,24,.94), rgba(1,9,24,.98)),
-        url("fundo.png") center/cover no-repeat fixed;
+        linear-gradient(rgba(1,9,24,.86), rgba(1,9,24,.95)),
+        url("fundo.png") center/cover fixed no-repeat;
       color:var(--white);
-      min-height:100vh;
       overflow-x:hidden;
-      max-width:100%;
-      -webkit-text-size-adjust:100%;
     }
 
     a{
@@ -62,98 +54,44 @@
 
     img{
       max-width:100%;
-      height:auto;
       display:block;
     }
 
-    button{
-      font-family:inherit;
-    }
-
-    table{
-      width:100%;
-    }
-
     .wrap{
-      width:min(1250px, calc(100% - 24px));
+      width:min(100% - 32px, var(--max));
       margin:0 auto;
-    }
-
-    .logo-link{
-      display:flex;
-      align-items:center;
-      gap:14px;
-      min-width:0;
-    }
-
-    .logo-link img{
-      width:86px;
-      height:86px;
-      object-fit:contain;
-      flex-shrink:0;
-      filter:drop-shadow(0 8px 16px rgba(0,0,0,.35));
-    }
-
-    .logo-text{
-      display:flex;
-      flex-direction:column;
-      gap:3px;
-      min-width:0;
-    }
-
-    .logo-text strong{
-      color:#fff;
-      font-size:15px;
-      line-height:1.2;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-      font-weight:900;
-      text-transform:uppercase;
-    }
-
-    .logo-text span{
-      color:var(--muted);
-      font-size:12px;
-      line-height:1.2;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-      font-weight:700;
     }
 
     .sidebar-overlay{
       position:fixed;
       inset:0;
-      background:rgba(0,0,0,.5);
-      backdrop-filter:blur(2px);
-      z-index:1390;
+      background:rgba(0,0,0,.55);
       opacity:0;
       visibility:hidden;
-      pointer-events:none;
-      transition:.28s ease;
+      transition:var(--transition);
+      z-index:998;
     }
 
     .sidebar-overlay.show{
       opacity:1;
       visibility:visible;
-      pointer-events:auto;
     }
 
     .sidebar{
       position:fixed;
       top:0;
       left:0;
-      width:min(88vw, var(--sidebar-width));
+      width:320px;
+      max-width:88%;
       height:100vh;
-      overflow-y:auto;
-      background:linear-gradient(180deg, rgba(1,9,24,.99), rgba(4,19,45,.99));
+      background:linear-gradient(180deg, #04132d 0%, #021022 100%);
       border-right:1px solid var(--yellow-line);
-      z-index:1400;
+      box-shadow:var(--shadow);
       padding:22px 18px 28px;
-      box-shadow:var(--shadow-2);
-      transform:translateX(-100%);
-      transition:transform .30s ease;
+      overflow-y:auto;
+      transform:translateX(-105%);
+      transition:var(--transition);
+      z-index:999;
     }
 
     .sidebar.open{
@@ -162,1218 +100,721 @@
 
     .sidebar-header{
       display:flex;
-      align-items:flex-start;
       justify-content:space-between;
-      gap:10px;
-      padding-bottom:18px;
-      border-bottom:1px solid var(--yellow-line);
-      margin-bottom:18px;
-    }
-
-    .sidebar-close{
-      width:40px;
-      height:40px;
-      border:none;
-      border-radius:12px;
-      background:rgba(255,255,255,.08);
-      color:#fff;
-      cursor:pointer;
-      font-size:20px;
-      flex-shrink:0;
-      transition:.2s ease;
-    }
-
-    .sidebar-close:hover{
-      background:var(--yellow);
-      color:#031022;
-    }
-
-    .sidebar-block{
-      margin-bottom:18px;
-      padding-bottom:14px;
+      align-items:flex-start;
+      gap:12px;
+      margin-bottom:20px;
+      padding-bottom:16px;
       border-bottom:1px solid rgba(255,255,255,.08);
     }
 
-    .sidebar-block:last-child{
-      border-bottom:none;
-      margin-bottom:0;
-      padding-bottom:0;
+    .sidebar-brand{
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+
+    .sidebar-brand img{
+      width:54px;
+      height:54px;
+      object-fit:cover;
+      border-radius:14px;
+      border:2px solid var(--yellow);
+      background:#fff;
+    }
+
+    .sidebar-brand-text strong{
+      display:block;
+      font-size:16px;
+      color:var(--yellow);
+      line-height:1.25;
+    }
+
+    .sidebar-brand-text span{
+      display:block;
+      margin-top:4px;
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.35;
+    }
+
+    .sidebar-close{
+      width:36px;
+      height:36px;
+      border:none;
+      border-radius:50%;
+      background:rgba(255,255,255,.08);
+      color:#fff;
+      font-size:24px;
+      cursor:pointer;
+      transition:var(--transition);
+    }
+
+    .sidebar-close:hover{
+      background:rgba(255,255,255,.16);
+    }
+
+    .sidebar-block{
+      margin-bottom:22px;
+      background:rgba(255,255,255,.03);
+      border:1px solid rgba(255,255,255,.06);
+      border-radius:16px;
+      padding:14px;
     }
 
     .sidebar-title{
-      font-size:12px;
-      text-transform:uppercase;
-      letter-spacing:.10em;
+      font-size:14px;
+      font-weight:700;
       color:var(--yellow);
-      margin-bottom:10px;
-      font-weight:900;
-      display:flex;
-      align-items:center;
-      gap:8px;
+      margin-bottom:12px;
     }
 
     .side-menu{
       display:flex;
       flex-direction:column;
-      gap:7px;
+      gap:8px;
     }
 
     .side-menu a{
       display:flex;
       align-items:center;
       gap:10px;
-      padding:12px 14px;
+      padding:11px 12px;
       border-radius:12px;
-      color:#fff;
-      background:rgba(255,255,255,.04);
+      color:var(--muted);
+      transition:var(--transition);
       border:1px solid transparent;
-      transition:.22s ease;
-      font-size:14px;
-      font-weight:800;
     }
 
-    .side-menu a:hover,
-    .side-menu a.active{
+    .side-menu a:hover{
       background:var(--yellow-soft);
-      color:var(--yellow);
+      color:#fff;
       border-color:var(--yellow-line);
-      transform:translateX(4px);
+      transform:translateX(3px);
     }
 
     .side-icon{
       width:20px;
       text-align:center;
+      color:var(--yellow);
       flex-shrink:0;
     }
-.topbar{
+
+    .topbar{
       position:sticky;
       top:0;
-      z-index:1200;
-      background:rgba(1,9,24,.96);
-      border-bottom:1px solid rgba(255,212,0,.24);
-      box-shadow:0 8px 22px rgba(0,0,0,.22);
+      z-index:100;
+      backdrop-filter:blur(12px);
+      background:rgba(1,9,24,.88);
+      border-bottom:1px solid rgba(255,255,255,.08);
     }
 
-    .topbar-content{
-      min-height:92px;
-      display:grid;
-      grid-template-columns:auto 1fr auto;
-      align-items:center;
-      gap:18px;
-      padding:8px 0;
-    }
-
-    .top-left{
+    .topbar-inner{
+      min-height:84px;
       display:flex;
       align-items:center;
-      gap:16px;
+      justify-content:space-between;
+      gap:18px;
+    }
+
+    .topbar-left{
+      display:flex;
+      align-items:center;
+      gap:14px;
       min-width:0;
     }
 
     .menu-toggle{
-      width:50px;
-      height:50px;
-      border:none;
+      width:46px;
+      height:46px;
       border-radius:14px;
-      background:var(--yellow);
-      color:#031022;
-      font-size:24px;
-      font-weight:900;
+      border:1px solid var(--yellow-line);
+      background:var(--yellow-soft);
+      color:var(--yellow);
+      font-size:20px;
       cursor:pointer;
-      box-shadow:var(--shadow);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      transition:var(--transition);
       flex-shrink:0;
-      transition:.22s ease;
     }
 
     .menu-toggle:hover{
-      background:var(--yellow-2);
       transform:translateY(-2px);
+      background:rgba(255,212,0,.18);
+    }
+
+    .topbar-logo{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-width:0;
+    }
+
+    .topbar-logo img{
+      width:58px;
+      height:58px;
+      border-radius:14px;
+      object-fit:cover;
+      border:2px solid var(--yellow);
+      background:#fff;
+      flex-shrink:0;
+    }
+
+    .logo-text{
+      min-width:0;
+    }
+
+    .logo-text strong{
+      display:block;
+      font-size:17px;
+      color:#fff;
+      line-height:1.2;
+    }
+
+    .logo-text span{
+      display:block;
+      margin-top:4px;
+      color:var(--yellow);
+      font-size:13px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
     }
 
     .top-nav{
       display:flex;
-      justify-content:center;
       align-items:center;
-      gap:10px;
+      gap:6px;
       flex-wrap:wrap;
-      min-width:0;
+      justify-content:center;
     }
 
     .nav-link{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      padding:11px 14px;
-      color:#fff;
-      font-weight:900;
-      font-size:14px;
-      text-transform:uppercase;
-      transition:.22s ease;
-      position:relative;
+      padding:10px 14px;
+      border-radius:12px;
+      color:var(--muted);
+      font-weight:600;
+      transition:var(--transition);
     }
 
     .nav-link:hover,
     .nav-link.active{
-      color:var(--yellow);
-    }
-
-    .nav-link.active::after,
-    .nav-link:hover::after{
-      content:"";
-      position:absolute;
-      left:10px;
-      right:10px;
-      bottom:-8px;
-      height:3px;
-      border-radius:999px;
-      background:var(--yellow);
-      box-shadow:0 0 10px rgba(255,212,0,.45);
+      color:#fff;
+      background:var(--yellow-soft);
+      border:1px solid var(--yellow-line);
     }
 
     .top-actions{
       display:flex;
       align-items:center;
       gap:10px;
-      justify-content:flex-end;
-      flex-wrap:wrap;
+      flex-shrink:0;
     }
 
-    .btn-login-top{
-      border:none;
-      cursor:pointer;
-      font-weight:900;
-      transition:.22s ease;
+    .btn-top-main,
+    .btn-primary,
+    .btn-secondary,
+    .btn-login-chip{
       display:inline-flex;
       align-items:center;
       justify-content:center;
       gap:10px;
-      text-decoration:none;
-      white-space:nowrap;
-      text-transform:uppercase;
-      padding:16px 22px;
-      border-radius:10px;
-      background:transparent;
+      border-radius:14px;
+      transition:var(--transition);
+      font-weight:700;
+      cursor:pointer;
+    }
+
+    .btn-top-main,
+    .btn-primary{
+      background:linear-gradient(135deg, var(--yellow), var(--yellow-2));
+      color:#08172c;
+      padding:14px 18px;
+      box-shadow:0 10px 22px rgba(255,212,0,.22);
+    }
+
+    .btn-top-main:hover,
+    .btn-primary:hover{
+      transform:translateY(-2px);
+      filter:brightness(1.04);
+    }
+
+    .btn-login-chip{
+      padding:10px 14px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(255,255,255,.06);
+      color:#fff;
+    }
+
+    .btn-login-chip:hover{
+      background:rgba(255,255,255,.12);
+    }
+
+    .login-avatar{
+      width:28px;
+      height:28px;
+      border-radius:50%;
+      background:rgba(255,255,255,.12);
+      display:flex;
+      align-items:center;
+      justify-content:center;
       color:var(--yellow);
-      font-size:15px;
-      border:2px solid rgba(255,212,0,.42);
-      box-shadow:var(--shadow);
-    }
-
-    .btn-login-top:hover{
-      background:var(--yellow);
-      color:#031022;
-      transform:translateY(-2px);
-    }
-
-    .btn-top-main{
-      border:none;
-      cursor:pointer;
-      font-weight:900;
-      transition:.22s ease;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:10px;
-      text-decoration:none;
-      white-space:nowrap;
-      text-transform:uppercase;
-      padding:16px 24px;
-      border-radius:10px;
-      background:var(--yellow);
-      color:#031022;
-      font-size:15px;
-      box-shadow:var(--shadow);
-    }
-
-    .btn-top-main:hover{
-      background:var(--yellow-2);
-      transform:translateY(-2px);
     }
 
     .hero{
-      position:relative;
+      padding:34px 0 20px;
+    }
+
+    .hero-card{
+      background:linear-gradient(135deg, rgba(7,28,68,.9), rgba(3,17,45,.92));
+      border:1px solid var(--yellow-line);
+      border-radius:30px;
+      box-shadow:var(--shadow);
       overflow:hidden;
-      background:
-        linear-gradient(90deg, rgba(1,9,24,.78) 0%, rgba(1,9,24,.55) 42%, rgba(1,9,24,.28) 100%),
-        url("fundo.png") center/cover no-repeat;
-      border-bottom:1px solid rgba(255,255,255,.05);
     }
 
-    .hero::before{
-      content:"";
-      position:absolute;
-      inset:0;
-      background:
-        radial-gradient(circle at 4% 28%, rgba(255,255,255,.30), transparent 11%),
-        radial-gradient(circle at 96% 28%, rgba(255,255,255,.28), transparent 11%),
-        linear-gradient(180deg, rgba(255,212,0,.05), transparent 40%);
-      pointer-events:none;
-      mix-blend-mode:screen;
-      opacity:.95;
-    }
-
-    .hero::after{
-      content:"";
-      position:absolute;
-      left:0;
-      right:0;
-      bottom:0;
-      height:140px;
-      background:linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,.24));
-      pointer-events:none;
-    }
-
-    .hero-panel{
-      position:relative;
-      z-index:1;
+    .hero-grid{
       display:grid;
-      grid-template-columns:1.05fr .95fr;
-      gap:20px;
+      grid-template-columns:1.15fr .85fr;
+      gap:26px;
       align-items:center;
-      min-height:565px;
-      padding:18px 0 16px;
+      padding:34px;
     }
 
-    .hero-copy{
-      padding:0 0 0 4px;
-      max-width:720px;
-    }
-
-    .hero-tag{
+    .eyebrow{
       display:inline-flex;
       align-items:center;
-      padding:8px 16px;
+      gap:8px;
+      padding:8px 14px;
       border-radius:999px;
-      font-size:14px;
-      font-weight:900;
-      color:#fff;
-      background:rgba(0,0,0,.34);
-      border:1px solid rgba(255,212,0,.36);
-      box-shadow:0 8px 18px rgba(0,0,0,.24);
-      margin-bottom:16px;
-      text-transform:uppercase;
-    }
-
-    .hero-copy h1{
-      font-size:76px;
-      line-height:.93;
+      background:rgba(255,212,0,.12);
+      border:1px solid var(--yellow-line);
       color:var(--yellow);
-      margin-bottom:10px;
-      font-weight:900;
-      text-transform:uppercase;
-      letter-spacing:-2px;
-      text-shadow:
-        0 3px 0 rgba(0,0,0,.22),
-        0 10px 24px rgba(0,0,0,.42);
+      font-size:13px;
+      font-weight:700;
+      margin-bottom:16px;
     }
 
-    .hero-subtitle{
-      font-size:27px;
-      font-weight:900;
+    .hero h1{
+      font-size:46px;
+      line-height:1.08;
+      margin-bottom:12px;
       color:#fff;
-      margin-bottom:14px;
-      text-transform:uppercase;
-      text-shadow:0 6px 18px rgba(0,0,0,.34);
     }
 
-    .hero-desc{
-      font-size:19px;
-      line-height:1.7;
-      color:#f3f7ff;
-      max-width:590px;
-      text-shadow:0 4px 14px rgba(0,0,0,.28);
+    .hero h1 span{
+      color:var(--yellow);
     }
-.hero-actions{
+
+    .hero p{
+      color:var(--muted);
+      font-size:18px;
+      line-height:1.7;
+      max-width:700px;
+    }
+
+    .hero-actions{
       display:flex;
       flex-wrap:wrap;
       gap:14px;
-      margin-top:24px;
-    }
-
-    .btn-primary,
-    .btn-secondary{
-      border:none;
-      cursor:pointer;
-      font-weight:900;
-      transition:.22s ease;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:10px;
-      text-decoration:none;
-      text-transform:uppercase;
-    }
-
-    .btn-primary{
-      padding:16px 24px;
-      border-radius:10px;
-      background:var(--yellow);
-      color:#031022;
-      font-size:16px;
-      box-shadow:var(--shadow);
-    }
-
-    .btn-primary:hover{
-      transform:translateY(-2px);
-      background:var(--yellow-2);
+      margin-top:26px;
     }
 
     .btn-secondary{
-      padding:16px 24px;
-      border-radius:10px;
-      background:rgba(0,0,0,.26);
+      padding:14px 18px;
+      border:1px solid var(--yellow-line);
       color:#fff;
-      border:2px solid rgba(255,212,0,.42);
-      font-size:16px;
+      background:rgba(255,255,255,.06);
     }
 
     .btn-secondary:hover{
-      background:rgba(255,255,255,.10);
       transform:translateY(-2px);
+      background:rgba(255,255,255,.1);
     }
 
     .hero-art{
       position:relative;
-      min-height:530px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
     }
 
     .hero-art img{
-      max-width:min(650px, 100%);
       width:100%;
-      filter:
-        drop-shadow(0 18px 36px rgba(0,0,0,.48))
-        saturate(1.06)
-        contrast(1.04);
-    }
-
-    .home-content{
-      padding:18px 0 30px;
+      height:100%;
+      min-height:360px;
+      object-fit:cover;
+      border-radius:24px;
+      border:1px solid rgba(255,255,255,.08);
+      box-shadow:var(--shadow);
     }
 
     .cards-pilares{
       display:grid;
       grid-template-columns:repeat(4, 1fr);
-      gap:14px;
-      margin-bottom:18px;
+      gap:18px;
+      margin:28px 0 10px;
     }
 
     .pillar{
-      background:linear-gradient(180deg, rgba(5,18,45,.98), rgba(3,14,36,.98));
-      border:1px solid rgba(255,212,0,.10);
-      border-radius:12px;
-      padding:18px 16px;
-      box-shadow:0 12px 28px rgba(0,0,0,.26);
-      transition:.22s ease;
-      min-height:118px;
-      display:grid;
-      grid-template-columns:54px 1fr;
-      gap:12px;
+      background:linear-gradient(180deg, rgba(7,24,59,.94), rgba(3,17,45,.96));
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:20px;
+      padding:22px 18px;
+      display:flex;
+      gap:14px;
       align-items:flex-start;
-    }
-
-    .pillar:hover{
-      transform:translateY(-4px);
-      border-color:rgba(255,212,0,.26);
+      box-shadow:var(--shadow);
     }
 
     .pillar-icon{
-      width:54px;
-      height:54px;
-      border-radius:12px;
+      width:52px;
+      height:52px;
+      border-radius:16px;
       display:flex;
       align-items:center;
       justify-content:center;
+      background:var(--yellow-soft);
       color:var(--yellow);
-      font-size:35px;
+      font-size:22px;
       flex-shrink:0;
     }
 
     .pillar-text h3{
-      color:var(--yellow);
-      font-size:15px;
-      line-height:1.15;
-      margin-bottom:7px;
-      font-weight:900;
-      text-transform:uppercase;
+      font-size:18px;
+      margin-bottom:8px;
+      color:#fff;
     }
 
     .pillar-text p{
-      color:#d6e0ef;
-      line-height:1.35;
-      font-size:12px;
-      font-weight:700;
+      font-size:14px;
+      line-height:1.6;
+      color:var(--muted);
     }
 
-    .mid-grid{
+    .content-grid{
       display:grid;
-      grid-template-columns:1.32fr .68fr;
-      gap:16px;
-      margin-bottom:18px;
+      grid-template-columns:1.3fr .9fr;
+      gap:22px;
+      margin:28px 0;
     }
 
     .panel{
-      background:linear-gradient(180deg, rgba(3,16,40,.98), rgba(2,12,32,.98));
-      border:1px solid rgba(255,212,0,.10);
-      border-radius:14px;
-      box-shadow:0 12px 30px rgba(0,0,0,.25);
-      padding:14px;
-      overflow:hidden;
+      background:linear-gradient(180deg, rgba(7,24,59,.94), rgba(3,17,45,.96));
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:24px;
+      box-shadow:var(--shadow);
+      padding:22px;
     }
 
     .panel-head{
       display:flex;
-      align-items:center;
       justify-content:space-between;
-      gap:16px;
-      margin-bottom:12px;
+      align-items:center;
+      gap:12px;
+      margin-bottom:18px;
       flex-wrap:wrap;
-      padding:2px 4px 8px;
     }
 
     .panel-head-title{
       display:flex;
       align-items:center;
-      gap:10px;
+      gap:12px;
     }
 
     .panel-head-icon{
+      width:46px;
+      height:46px;
+      border-radius:14px;
+      background:var(--yellow-soft);
       color:var(--yellow);
+      display:flex;
+      align-items:center;
+      justify-content:center;
       font-size:20px;
     }
 
-    .panel h2{
-      color:var(--yellow);
-      font-size:18px;
-      text-transform:uppercase;
-      font-weight:900;
-      letter-spacing:.4px;
+    .panel-head h2{
+      font-size:28px;
+      color:#fff;
     }
 
     .panel-head a{
-      color:#d9e1ee;
-      font-weight:900;
-      font-size:13px;
-      text-transform:uppercase;
-    }
-
-    .panel-head a:hover{
       color:var(--yellow);
+      font-weight:700;
     }
 
     .match-table{
       width:100%;
       border-collapse:collapse;
       overflow:hidden;
-      border-radius:12px;
-      border:1px solid rgba(255,255,255,.05);
+      border-radius:16px;
     }
 
     .match-table thead th{
-      text-align:center;
-      background:linear-gradient(180deg, #15aa18, #0f8514);
-      color:#fff;
-      padding:14px 10px;
-      font-size:13px;
-      border-right:1px solid rgba(255,255,255,.12);
-      text-transform:uppercase;
-      font-weight:900;
-    }
-
-    .match-table thead th:last-child{
-      border-right:none;
+      background:rgba(255,212,0,.12);
+      color:var(--yellow);
+      text-align:left;
+      padding:14px 12px;
+      font-size:14px;
     }
 
     .match-table tbody td{
-      padding:16px 10px;
-      border-top:1px solid rgba(255,255,255,.06);
-      border-right:1px solid rgba(255,255,255,.05);
-      color:#fff;
-      vertical-align:middle;
+      padding:14px 12px;
+      border-top:1px solid rgba(255,255,255,.08);
+      color:var(--muted);
       font-size:14px;
-      text-align:center;
-      font-weight:700;
-      background:rgba(3,18,46,.74);
     }
 
-    .match-table tbody td:last-child{
-      border-right:none;
+    .match-table tbody tr:hover{
+      background:rgba(255,255,255,.04);
     }
-
-    .match-table tbody tr{
-      cursor:pointer;
-      transition:.2s ease;
-    }
-
-    .match-table tbody tr:hover td{
-      background:rgba(11,32,76,.92);
-    }
-.time-info{
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:10px;
-      flex-wrap:wrap;
-    }
-
-    .team-line{
-      display:flex;
-      align-items:center;
-      gap:8px;
-      min-width:max-content;
-    }
-
-    .escudo{
-      width:34px;
-      height:34px;
-      border-radius:50%;
-      object-fit:cover;
-      background:#fff;
-      border:1px solid rgba(255,255,255,.18);
-      flex-shrink:0;
-    }
-
-    .vs{
-      color:var(--yellow);
-      font-weight:900;
-      padding:0 3px;
-    }
-
-    .game-date{
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:8px;
-      color:#ffe08e;
-      font-weight:900;
-    }
-
-    .badge{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      padding:6px 11px;
-      border-radius:999px;
-      font-size:12px;
-      font-weight:900;
-      color:#fff;
-      min-width:74px;
-      text-transform:uppercase;
-    }
-
-    .badge.sub11{ background:var(--purple-badge); }
-    .badge.sub13{ background:var(--green); }
-    .badge.sub15{ background:var(--blue-badge); }
-    .badge.sub17{ background:var(--gold-badge); }
 
     .news-list{
       display:flex;
       flex-direction:column;
-      gap:10px;
+      gap:14px;
     }
 
-    .news-card{
-      display:grid;
-      grid-template-columns:132px 1fr;
-      gap:12px;
-      align-items:start;
-      background:rgba(6,20,49,.82);
-      border:1px solid rgba(255,255,255,.05);
-      border-radius:10px;
-      padding:10px;
-      transition:.22s ease;
-      cursor:pointer;
+    .news-item{
+      padding:16px;
+      border-radius:18px;
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.06);
+      transition:var(--transition);
     }
 
-    .news-card:hover{
-      border-color:rgba(255,212,0,.22);
+    .news-item:hover{
       transform:translateY(-2px);
+      background:rgba(255,255,255,.06);
     }
 
-    .news-card img{
-      width:132px;
-      height:82px;
-      object-fit:cover;
-      border-radius:8px;
-      background:#0b1f3a;
-    }
-
-    .news-info{
-      min-width:0;
-    }
-
-    .news-tag{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      padding:4px 8px;
-      background:var(--yellow);
-      color:#031022;
-      font-size:11px;
-      font-weight:900;
-      border-radius:5px;
-      margin-bottom:6px;
-      text-transform:uppercase;
-    }
-
-    .news-info strong{
-      display:block;
+    .news-item h3{
+      font-size:17px;
       color:#fff;
-      font-size:15px;
-      line-height:1.22;
-      margin-bottom:4px;
-      font-weight:900;
+      margin-bottom:8px;
     }
 
-    .news-info p{
-      color:#cfd8ea;
-      font-size:13px;
-      line-height:1.38;
-      margin-bottom:4px;
-      font-weight:700;
-    }
-
-    .news-info span{
-      color:#c8d0dc;
-      font-size:12px;
-      font-weight:900;
-      text-transform:uppercase;
+    .news-item p{
+      color:var(--muted);
+      line-height:1.6;
+      font-size:14px;
     }
 
     .cta-banner{
-      margin-bottom:18px;
-      border-radius:16px;
-      overflow:hidden;
-      border:2px solid rgba(255,212,0,.42);
-      box-shadow:0 14px 28px rgba(0,0,0,.22);
-      background:
-        linear-gradient(90deg, rgba(1,9,24,.86), rgba(1,9,24,.52)),
-        url("fundo.png") center/cover no-repeat;
+      margin:10px 0 34px;
     }
 
     .cta-banner-inner{
-      display:grid;
-      grid-template-columns:1.08fr auto;
-      gap:18px;
+      display:flex;
+      justify-content:space-between;
       align-items:center;
-      padding:18px 24px;
-      min-height:120px;
+      gap:20px;
+      flex-wrap:wrap;
+      background:linear-gradient(135deg, rgba(255,212,0,.16), rgba(255,255,255,.05));
+      border:1px solid var(--yellow-line);
+      border-radius:24px;
+      padding:26px;
+      box-shadow:var(--shadow);
     }
 
-    .cta-banner h3{
-      color:var(--yellow);
-      font-size:22px;
-      line-height:1.1;
-      margin-bottom:6px;
-      font-weight:900;
-      text-transform:uppercase;
+    .cta-banner-inner h3{
+      font-size:30px;
+      color:#fff;
+      margin-bottom:8px;
     }
 
-    .cta-banner p{
-      color:#edf2fb;
-      font-size:16px;
-      line-height:1.55;
-      font-weight:700;
-    }
-
-    .cta-banner .btn-primary{
-      min-width:260px;
-      font-size:15px;
+    .cta-banner-inner p{
+      color:var(--muted);
+      line-height:1.6;
     }
 
     footer{
-      margin-top:0;
-      background:linear-gradient(180deg, rgba(1,8,22,.98), rgba(0,5,16,.99));
-      border-top:1px solid rgba(255,255,255,.06);
-      padding-top:18px;
+      background:linear-gradient(180deg, rgba(2,10,24,.96), rgba(1,9,24,1));
+      border-top:1px solid rgba(255,255,255,.08);
+      padding:40px 0 18px;
     }
 
-    .footer-top{
+    .footer-grid{
       display:grid;
-      grid-template-columns:1.2fr 1fr 1fr 1fr;
-      gap:16px;
-      padding-bottom:16px;
-      align-items:stretch;
+      grid-template-columns:1.2fr .8fr .8fr .8fr;
+      gap:20px;
     }
 
     .footer-card{
-      background:rgba(6,18,43,.72);
+      background:rgba(255,255,255,.03);
       border:1px solid rgba(255,255,255,.06);
-      border-radius:14px;
-      padding:18px;
-      min-height:100%;
+      border-radius:22px;
+      padding:22px;
+    }
+
+    .footer-card h4{
+      color:var(--yellow);
+      margin-bottom:14px;
+      font-size:18px;
     }
 
     .footer-brand{
       display:flex;
       gap:14px;
-      align-items:flex-start;
+      align-items:center;
+      margin-bottom:14px;
     }
 
     .footer-brand img{
-      width:86px;
-      height:86px;
-      object-fit:contain;
-      flex-shrink:0;
+      width:62px;
+      height:62px;
+      border-radius:16px;
+      border:2px solid var(--yellow);
+      object-fit:cover;
+      background:#fff;
     }
 
-    footer h4{
-      color:var(--yellow);
-      font-size:17px;
-      margin-bottom:10px;
-      font-weight:900;
-      text-transform:uppercase;
+    .footer-brand-text h3{
+      font-size:20px;
+      margin-bottom:6px;
+      color:#fff;
     }
 
-    footer p,
-    footer a{
-      color:#d7e0ee;
+    .footer-brand-text p{
+      color:var(--muted);
+      line-height:1.5;
       font-size:14px;
-      line-height:1.8;
-      font-weight:700;
     }
 
-    footer a{
+    .footer-card a{
       display:block;
-      margin-bottom:2px;
+      color:var(--muted);
+      margin-bottom:10px;
+      transition:var(--transition);
     }
 
-    footer a:hover{
-      color:var(--yellow);
+    .footer-card a:hover{
+      color:#fff;
     }
-.footer-social{
+
+    .footer-contact-line{
+      display:flex !important;
+      align-items:center;
+      gap:10px;
+      margin-bottom:12px !important;
+    }
+
+    .footer-social{
       display:flex;
       gap:10px;
-      margin-top:12px;
       flex-wrap:wrap;
+      margin-top:12px;
     }
 
     .footer-social a{
       width:42px;
       height:42px;
       border-radius:12px;
+      background:rgba(255,255,255,.07);
       display:flex;
       align-items:center;
       justify-content:center;
-      background:rgba(255,255,255,.08);
-      font-size:20px;
-      transition:.22s ease;
+      color:var(--yellow);
       margin-bottom:0;
     }
 
     .footer-social a:hover{
-      background:var(--yellow-soft);
-      color:var(--yellow);
-      transform:translateY(-2px);
-    }
-
-    .footer-contact-line{
-      display:flex;
-      align-items:flex-start;
-      gap:10px;
-      margin-bottom:8px;
-      color:#d7e0ee;
-      font-size:14px;
-      line-height:1.6;
-      font-weight:700;
-    }
-
-    .footer-contact-line i{
-      color:var(--yellow);
-      margin-top:3px;
-      width:18px;
-      flex-shrink:0;
-    }
-
-    .footer-contact-line i.fa-whatsapp{
-      color:#25D366;
+      background:var(--yellow);
+      color:#08172c;
     }
 
     .copyright{
+      margin-top:18px;
+      padding-top:18px;
       border-top:1px solid rgba(255,255,255,.08);
-      padding:14px 0 18px;
-      color:#d2dae6;
       text-align:center;
+      color:var(--text-soft);
       font-size:14px;
-      font-weight:700;
     }
 
-    @media (max-width:1180px){
-      .topbar-content{
-        grid-template-columns:auto 1fr;
+    #menuAdmin{
+      display:none;
+    }
+
+    @media (max-width: 1180px){
+      .top-nav{
+        display:none;
       }
 
-      .top-actions{
-        grid-column:1 / -1;
-        justify-content:flex-start;
-      }
-
-      .hero-panel{
-        grid-template-columns:1fr;
-        min-height:auto;
-        padding:24px 0 18px;
-      }
-
-      .hero-copy{
-        max-width:100%;
-      }
-
-      .hero-copy h1{
-        font-size:58px;
-        line-height:1;
-      }
-
-      .hero-art{
-        min-height:320px;
-      }
-
-      .hero-art img{
-        max-width:540px;
-        margin:0 auto;
-      }
-
+      .hero-grid,
+      .content-grid,
+      .footer-grid,
       .cards-pilares{
-        grid-template-columns:repeat(2, 1fr);
-      }
-
-      .mid-grid{
-        grid-template-columns:1fr;
-      }
-
-      .footer-top{
-        grid-template-columns:repeat(2, 1fr);
-      }
-
-      .cta-banner-inner{
-        grid-template-columns:1fr;
-      }
-
-      .cta-banner .btn-primary{
-        width:100%;
-        min-width:unset;
+        grid-template-columns:1fr 1fr;
       }
     }
 
-    @media (max-width:860px){
-      .topbar-content{
-        display:flex;
-        flex-direction:column;
-        align-items:flex-start;
-        gap:14px;
-        padding:12px 0;
-      }
-
-      .top-left{
-        width:100%;
-      }
-
-      .top-nav{
-        width:100%;
-        justify-content:flex-start;
-        gap:6px;
-      }
-
-      .nav-link{
-        font-size:13px;
-        padding:8px 10px;
-      }
-
-      .top-actions{
-        width:100%;
-        justify-content:flex-start;
-      }
-
-      .btn-top-main,
-      .btn-login-top{
-        padding:12px 16px;
-        font-size:13px;
-      }
-
-      .hero-copy h1{
-        font-size:46px;
-        letter-spacing:-1px;
-      }
-
-      .hero-subtitle{
-        font-size:21px;
-      }
-
-      .hero-desc{
-        font-size:17px;
-      }
-
-      .logo-link img{
-        width:62px;
-        height:62px;
-      }
-    }
-
-    @media (max-width:700px){
-      .wrap{
-        width:min(100% - 16px, 1250px);
-      }
-
-      .logo-link{
-        gap:10px;
-      }
-
-      .logo-link img{
-        width:52px;
-        height:52px;
-      }
-
-      .logo-text strong{
-        font-size:12px;
-        white-space:normal;
-      }
-
-      .logo-text span{
-        font-size:10px;
-        white-space:normal;
-      }
-
-      .menu-toggle{
-        width:46px;
-        height:46px;
-        font-size:22px;
-      }
-
-      .top-nav{
-        display:flex;
-        flex-wrap:wrap;
-      }
-
-      .nav-link{
-        font-size:12px;
-        padding:7px 8px;
-      }
-
-      .btn-top-main,
-      .btn-login-top{
-        width:100%;
-        justify-content:center;
-        font-size:12px;
-        padding:12px 14px;
-      }
-
-      .hero{
-        padding-top:8px;
-      }
-
-      .hero-panel{
-        gap:12px;
-        padding:14px 0 12px;
-      }
-
-      .hero-copy{
-        padding:0;
-      }
-
-      .hero-tag{
-        font-size:11px;
-        padding:7px 12px;
-        margin-bottom:12px;
-      }
-
-      .hero-copy h1{
-        font-size:34px;
-        line-height:1;
-      }
-
-      .hero-subtitle{
-        font-size:17px;
-        margin-bottom:10px;
-      }
-
-      .hero-desc{
-        font-size:15px;
-        line-height:1.6;
-      }
-
-      .hero-actions{
-        flex-direction:column;
-        gap:10px;
-      }
-
-      .btn-primary,
-      .btn-secondary{
-        width:100%;
-        font-size:14px;
-        padding:14px 16px;
-      }
-.hero-art{
-        min-height:auto;
-      }
-
-      .hero-art img{
-        max-width:100%;
-      }
-
+    @media (max-width: 900px){
+      .hero-grid,
+      .content-grid,
+      .footer-grid,
       .cards-pilares{
         grid-template-columns:1fr;
-        gap:10px;
       }
 
-      .pillar{
-        grid-template-columns:42px 1fr;
-        gap:10px;
-        padding:14px;
-        min-height:auto;
+      .hero h1{
+        font-size:36px;
       }
 
-      .pillar-icon{
-        width:42px;
-        height:42px;
+      .panel-head h2{
         font-size:24px;
       }
 
-      .pillar-text h3{
-        font-size:14px;
+      .topbar-inner{
+        flex-wrap:wrap;
+        padding:14px 0;
       }
 
-      .pillar-text p{
-        font-size:12px;
+      .top-actions{
+        width:100%;
+        justify-content:flex-start;
+      }
+    }
+
+    @media (max-width: 600px){
+      .wrap{
+        width:min(100% - 20px, var(--max));
       }
 
-      .panel{
-        padding:10px;
+      .hero-grid{
+        padding:20px;
       }
 
-      .panel-head{
-        gap:8px;
-        padding:0 2px 8px;
+      .hero h1{
+        font-size:30px;
       }
 
-      .panel h2{
-        font-size:16px;
+      .btn-top-main,
+      .btn-primary,
+      .btn-secondary{
+        width:100%;
       }
 
-      .panel-head a{
+      .top-actions{
+        flex-direction:column;
+        align-items:stretch;
+      }
+
+      .btn-login-chip{
+        justify-content:center;
+      }
+
+      .logo-text strong{
+        font-size:15px;
+      }
+
+      .logo-text span{
         font-size:12px;
       }
 
       .match-table{
         display:block;
         overflow-x:auto;
-        white-space:nowrap;
-        border-radius:10px;
-      }
-
-      .match-table thead th,
-      .match-table tbody td{
-        font-size:12px;
-        padding:12px 8px;
-      }
-
-      .time-info{
-        gap:8px;
-      }
-
-      .team-line{
-        gap:6px;
-      }
-
-      .escudo{
-        width:28px;
-        height:28px;
-      }
-
-      .news-card{
-        grid-template-columns:1fr;
-      }
-
-      .news-card img{
-        width:100%;
-        height:170px;
-      }
-
-      .news-info strong{
-        font-size:14px;
-      }
-
-      .news-info p{
-        font-size:12px;
-      }
-
-      .cta-banner-inner{
-        padding:16px;
-      }
-
-      .cta-banner h3{
-        font-size:18px;
-      }
-
-      .cta-banner p{
-        font-size:13px;
-      }
-
-      .footer-top{
-        grid-template-columns:1fr;
-      }
-
-      .footer-card{
-        padding:14px;
-      }
-
-      .footer-brand{
-        flex-direction:column;
-        align-items:flex-start;
-      }
-
-      .footer-brand img{
-        width:72px;
-        height:72px;
-      }
-
-      .footer-social{
-        gap:8px;
-      }
-
-      .footer-social a{
-        width:38px;
-        height:38px;
-        font-size:18px;
-      }
-
-      .copyright{
-        font-size:12px;
-        line-height:1.5;
-      }
-    }
-
-    @media (max-width:430px){
-      .hero-copy h1{
-        font-size:29px;
-      }
-
-      .hero-subtitle{
-        font-size:15px;
-      }
-
-      .hero-desc{
-        font-size:14px;
-      }
-
-      .btn-primary,
-      .btn-secondary,
-      .btn-top-main,
-      .btn-login-top{
-        font-size:13px;
-      }
-
-      .nav-link{
-        font-size:11px;
-      }
-
-      .panel h2{
-        font-size:15px;
-      }
-
-      .match-table thead th,
-      .match-table tbody td{
-        font-size:11px;
       }
     }
   </style>
@@ -1384,48 +825,48 @@
 
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-header">
-      <a href="index.html" class="logo-link">
+      <div class="sidebar-brand">
         <img src="logo-liga.jfif" alt="Logo Liga Goiana">
-        <div class="logo-text">
+        <div class="sidebar-brand-text">
           <strong>Liga Goiana de Futebol de Base</strong>
           <span>Onde o talento encontra o futuro</span>
         </div>
-      </a>
-
+      </div>
       <button class="sidebar-close" id="sidebarClose" type="button">×</button>
     </div>
 
     <div class="sidebar-block">
       <div class="sidebar-title">🏆 Competição</div>
       <div class="side-menu">
-        <a href="campeonatos.html"><span class="side-icon"><i class="fa-solid fa-trophy"></i></span>Campeonatos</a>
         <a href="classificacao.html"><span class="side-icon"><i class="fa-solid fa-ranking-star"></i></span>Classificação</a>
         <a href="tabela.html"><span class="side-icon"><i class="fa-solid fa-table"></i></span>Tabelas</a>
-        <a href="jogos.html"><span class="side-icon"><i class="fa-solid fa-calendar-days"></i></span>Jogos</a>
+        <a href="jogos.html"><span class="side-icon"><i class="fa-solid fa-calendar-days"></i></span>Tabela de Jogos</a>
         <a href="artilharia.html"><span class="side-icon"><i class="fa-solid fa-futbol"></i></span>Artilharia</a>
         <a href="cartoes.html"><span class="side-icon"><i class="fa-solid fa-id-card"></i></span>Cartões</a>
         <a href="suspensos.html"><span class="side-icon"><i class="fa-solid fa-ban"></i></span>Suspensos</a>
+        <a href="campeonatos.html"><span class="side-icon"><i class="fa-solid fa-trophy"></i></span>Campeonatos</a>
+        <a href="arbitros.html"><span class="side-icon"><i class="fa-solid fa-whistle"></i></span>Árbitros</a>
         <a href="sumula.html"><span class="side-icon"><i class="fa-solid fa-file-signature"></i></span>Súmula</a>
         <a href="sumulas.html"><span class="side-icon"><i class="fa-solid fa-file-lines"></i></span>Súmulas</a>
       </div>
     </div>
 
     <div class="sidebar-block">
-      <div class="sidebar-title">👥 Cadastro e Equipes</div>
+      <div class="sidebar-title">📂 Informações</div>
       <div class="side-menu">
         <a href="categorias.html"><span class="side-icon"><i class="fa-solid fa-layer-group"></i></span>Categorias</a>
         <a href="times.html"><span class="side-icon"><i class="fa-solid fa-shield-halved"></i></span>Times</a>
-        <a href="jogadores.html"><span class="side-icon"><i class="fa-solid fa-person-running"></i></span>Jogadores</a>
-        <a href="tecnicos.html"><span class="side-icon"><i class="fa-solid fa-clipboard-user"></i></span>Técnicos</a>
-        <a href="arbitros.html"><span class="side-icon"><i class="fa-solid fa-whistle"></i></span>Árbitros</a>
+        <a href="jogadores.html"><span class="side-icon"><i class="fa-solid fa-users"></i></span>Jogadores</a>
+        <a href="regulamento.html"><span class="side-icon"><i class="fa-solid fa-book"></i></span>Regulamento</a>
+        <a href="tecnicos.html"><span class="side-icon"><i class="fa-solid fa-user-tie"></i></span>Técnicos</a>
         <a href="assistentes.html"><span class="side-icon"><i class="fa-solid fa-user-group"></i></span>Assistentes</a>
       </div>
     </div>
-<div class="sidebar-block">
-      <div class="sidebar-title">📰 Informações</div>
+
+    <div class="sidebar-block">
+      <div class="sidebar-title">📰 Suporte</div>
       <div class="side-menu">
         <a href="noticias.html"><span class="side-icon"><i class="fa-solid fa-newspaper"></i></span>Notícias</a>
-        <a href="regulamento.html"><span class="side-icon"><i class="fa-solid fa-scroll"></i></span>Regulamento</a>
         <a href="#contato"><span class="side-icon"><i class="fa-solid fa-phone"></i></span>Contato</a>
         <a href="sobre.html"><span class="side-icon"><i class="fa-solid fa-circle-info"></i></span>Sobre a Liga</a>
       </div>
@@ -1442,11 +883,11 @@
   </aside>
 
   <header class="topbar">
-    <div class="wrap topbar-content">
-      <div class="top-left">
+    <div class="wrap topbar-inner">
+      <div class="topbar-left">
         <button class="menu-toggle" id="menuToggle" type="button">☰</button>
 
-        <a href="index.html" class="logo-link">
+        <a href="index.html" class="topbar-logo">
           <img src="logo-liga.jfif" alt="Logo Liga Goiana">
           <div class="logo-text">
             <strong>Liga Goiana de Futebol de Base</strong>
@@ -1460,587 +901,303 @@
         <a href="campeonatos.html" class="nav-link">Campeonatos</a>
         <a href="times.html" class="nav-link">Equipes</a>
         <a href="jogos.html" class="nav-link">Resultados</a>
-        <a href="noticias.html" class="nav-link">Notícias</a>
+        <a href="arbitros.html" class="nav-link">Árbitros</a>
         <a href="#contato" class="nav-link">Contato</a>
       </nav>
 
       <div class="top-actions">
-        <a href="login.html" class="btn-login-top">
-          <i class="fa-solid fa-user"></i> Login / Cadastro
+        <a href="https://wa.me/5562981916316" target="_blank" class="btn-top-main">
+          <i class="fa-solid fa-trophy"></i> Inscrever Agora
         </a>
 
-        <a href="https://wa.me/5562981916316" target="_blank" class="btn-top-main">
-          <i class="fa-brands fa-whatsapp"></i> Inscrever Agora
+        <a href="login.html" class="btn-login-chip">
+          <span class="login-avatar"><i class="fa-solid fa-user"></i></span>
+          <span>Login</span>
         </a>
       </div>
     </div>
   </header>
 
-  <section class="hero">
-    <div class="wrap">
-      <div class="hero-panel">
-        <div class="hero-copy">
-          <span class="hero-tag">Liga Oficial</span>
-          <h1>Bem-vindo à Liga Goiana de Base</h1>
-          <div class="hero-subtitle">Onde o talento encontra o futuro!</div>
-          <p class="hero-desc">
-            Competição, formação e desenvolvimento para revelar talentos
-            e fortalecer o futebol de base em Goiás.
-          </p>
+  <main>
+    <section class="hero">
+      <div class="wrap">
+        <div class="hero-card">
+          <div class="hero-grid">
+            <div class="hero-content">
+              <div class="eyebrow">
+                <i class="fa-solid fa-trophy"></i>
+                Liga Oficial
+              </div>
 
-          <div class="hero-actions">
-            <a href="campeonatos.html" class="btn-primary"><i class="fa-solid fa-trophy"></i> Ver Campeonatos</a>
-            <a href="times.html" class="btn-secondary"><i class="fa-solid fa-users"></i> Conhecer Equipes</a>
-          </div>
-        </div>
+              <h1>Bem-vindo à <span>Liga Goiana de Base</span></h1>
 
-        <div class="hero-art">
-          <img src="hero-liga.jpeg" alt="Liga Goiana Elite de Base" onerror="this.src='fundo.png'">
-        </div>
-      </div>
-    </div>
-  </section>
+              <p>
+                Onde o talento encontra o futuro!
+              </p>
 
-  <section class="home-content">
-    <main class="wrap">
+              <p>
+                Competição, formação e desenvolvimento para revelar talentos
+                e fortalecer o futebol de base em Goiás.
+              </p>
 
-      <div class="cards-pilares">
-        <div class="pillar">
-          <div class="pillar-icon"><i class="fa-solid fa-trophy"></i></div>
-          <div class="pillar-text">
-            <h3>Competição de alto nível</h3>
-            <p>Jogos organizados e arbitragem qualificada.</p>
-          </div>
-        </div>
-
-        <div class="pillar">
-          <div class="pillar-icon"><i class="fa-solid fa-shield-halved"></i></div>
-          <div class="pillar-text">
-            <h3>Formação de atletas</h3>
-            <p>Desenvolvimento dentro e fora de campo.</p>
-          </div>
-        </div>
-
-        <div class="pillar">
-          <div class="pillar-icon"><i class="fa-solid fa-chart-line"></i></div>
-          <div class="pillar-text">
-            <h3>Desenvolvimento que transforma</h3>
-            <p>Estrutura que impulsiona sonhos e resultados.</p>
-          </div>
-        </div>
-
-        <div class="pillar">
-          <div class="pillar-icon"><i class="fa-solid fa-handshake"></i></div>
-          <div class="pillar-text">
-            <h3>Respeito, união e propósito</h3>
-            <p>Valores que constroem campeões para a vida.</p>
-          </div>
-        </div>
-      </div>
-<div class="mid-grid">
-        <section class="panel">
-          <div class="panel-head">
-            <div class="panel-head-title">
-              <div class="panel-head-icon"><i class="fa-solid fa-calendar-days"></i></div>
-              <h2>Próximos Jogos</h2>
+              <div class="hero-actions">
+                <a href="campeonatos.html" class="btn-primary">
+                  <i class="fa-solid fa-trophy"></i> Ver Campeonatos
+                </a>
+                <a href="times.html" class="btn-secondary">
+                  <i class="fa-solid fa-users"></i> Conhecer Equipes
+                </a>
+              </div>
             </div>
-            <a href="jogos.html">Ver todos <i class="fa-solid fa-arrow-right"></i></a>
+
+            <div class="hero-art">
+              <img src="hero-liga.jpeg" alt="Liga Goiana Elite de Base" onerror="this.src='fundo.png'">
+            </div>
+          </div>
+        </div>
+
+        <div class="cards-pilares">
+          <div class="pillar">
+            <div class="pillar-icon"><i class="fa-solid fa-trophy"></i></div>
+            <div class="pillar-text">
+              <h3>Competição de alto nível</h3>
+              <p>Jogos organizados e arbitragem qualificada.</p>
+            </div>
           </div>
 
-          <table class="match-table">
-            <thead>
-              <tr>
-                <th>Data e Hora</th>
-                <th>Confronto</th>
-                <th>Categoria</th>
-                <th>Local</th>
-              </tr>
-            </thead>
-            <tbody id="gamesTableBody"></tbody>
-          </table>
+          <div class="pillar">
+            <div class="pillar-icon"><i class="fa-solid fa-shield-halved"></i></div>
+            <div class="pillar-text">
+              <h3>Formação de atletas</h3>
+              <p>Desenvolvimento dentro e fora de campo.</p>
+            </div>
+          </div>
+
+          <div class="pillar">
+            <div class="pillar-icon"><i class="fa-solid fa-chart-line"></i></div>
+            <div class="pillar-text">
+              <h3>Desenvolvimento que transforma</h3>
+              <p>Estrutura que impulsiona sonhos e resultados.</p>
+            </div>
+          </div>
+
+          <div class="pillar">
+            <div class="pillar-icon"><i class="fa-solid fa-handshake"></i></div>
+            <div class="pillar-text">
+              <h3>Respeito, união e propósito</h3>
+              <p>Valores que constroem campeões para a vida.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="content-grid">
+          <section class="panel">
+            <div class="panel-head">
+              <div class="panel-head-title">
+                <div class="panel-head-icon"><i class="fa-solid fa-calendar-days"></i></div>
+                <h2>Próximos Jogos</h2>
+              </div>
+              <a href="jogos.html">Ver todos <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+
+            <table class="match-table">
+              <thead>
+                <tr>
+                  <th>Data e Hora</th>
+                  <th>Confronto</th>
+                  <th>Categoria</th>
+                  <th>Local</th>
+                </tr>
+              </thead>
+              <tbody id="gamesTableBody"></tbody>
+            </table>
+          </section>
+
+          <aside class="panel">
+            <div class="panel-head">
+              <div class="panel-head-title">
+                <div class="panel-head-icon"><i class="fa-solid fa-newspaper"></i></div>
+                <h2>Últimas Notícias</h2>
+              </div>
+              <a href="noticias.html">Ver notícias <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+
+            <div class="news-list" id="newsList"></div>
+          </aside>
+        </div>
+
+        <section class="cta-banner">
+          <div class="cta-banner-inner">
+            <div>
+              <h3>Faça parte dessa história!</h3>
+              <p>Inscreva sua equipe e viva o futebol de base no mais alto nível.</p>
+            </div>
+
+            <a
+              href="https://wa.me/5562981916316?text=Ol%C3%A1%2C%20quero%20participar%20da%20Liga%20Goiana%20de%20Futebol%20de%20Base."
+              class="btn-primary"
+              target="_blank"
+            >
+              <i class="fa-solid fa-trophy"></i> Quero Participar!
+            </a>
+          </div>
         </section>
-
-        <aside class="panel">
-          <div class="panel-head">
-            <div class="panel-head-title">
-              <div class="panel-head-icon"><i class="fa-solid fa-newspaper"></i></div>
-              <h2>Últimas Notícias</h2>
-            </div>
-            <a href="noticias.html">Ver notícias <i class="fa-solid fa-arrow-right"></i></a>
-          </div>
-
-          <div class="news-list" id="newsList"></div>
-        </aside>
       </div>
-
-      <section class="cta-banner">
-        <div class="cta-banner-inner">
-          <div>
-            <h3>Faça parte dessa história!</h3>
-            <p>Inscreva sua equipe e viva o futebol de base no mais alto nível.</p>
-          </div>
-
-          <a
-            href="https://wa.me/5562981916316?text=Ol%C3%A1%2C%20quero%20participar%20da%20Liga%20Goiana%20de%20Futebol%20de%20Base."
-            class="btn-primary"
-            target="_blank"
-          >
-            <i class="fa-solid fa-trophy"></i> Quero Participar!
-          </a>
-        </div>
-      </section>
-
-    </main>
-  </section>
+    </section>
+  </main>
 
   <footer id="contato">
-    <div class="wrap footer-top">
-      <div class="footer-card">
-        <div class="footer-brand">
-          <img src="logo-liga.jfif" alt="Logo da Liga">
-          <div>
-            <h4>Liga Goiana de Futebol de Base</h4>
-            <p>Onde o talento encontra o futuro!</p>
-
-            <div class="footer-social">
-              <a href="https://www.instagram.com/" target="_blank" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
-              <a href="https://www.facebook.com/" target="_blank" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
-              <a href="https://www.youtube.com/" target="_blank" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
+    <div class="wrap">
+      <div class="footer-grid">
+        <div class="footer-card">
+          <div class="footer-brand">
+            <img src="logo-liga.jfif" alt="Logo da Liga">
+            <div class="footer-brand-text">
+              <h3>Liga Goiana de Futebol de Base</h3>
+              <p>Onde o talento encontra o futuro!</p>
             </div>
+          </div>
+
+          <div class="footer-social">
+            <a href="https://www.instagram.com/" target="_blank" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+            <a href="https://www.facebook.com/" target="_blank" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+            <a href="https://www.youtube.com/" target="_blank" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
+          </div>
+        </div>
+
+        <div class="footer-card">
+          <h4>Acesso Rápido</h4>
+          <a href="index.html">Início</a>
+          <a href="campeonatos.html">Campeonatos</a>
+          <a href="times.html">Equipes</a>
+          <a href="jogos.html">Resultados</a>
+          <a href="arbitros.html">Árbitros</a>
+          <a href="#contato">Contato</a>
+        </div>
+
+        <div class="footer-card">
+          <h4>Contato</h4>
+
+          <a href="https://wa.me/5562984284785" target="_blank" class="footer-contact-line">
+            <i class="fa-brands fa-whatsapp"></i>
+            <span>(62) 98428-4785</span>
+          </a>
+
+          <a href="mailto:ligagoianiafutebol@gmail.com" class="footer-contact-line">
+            <i class="fa-solid fa-envelope"></i>
+            <span>ligagoianiafutebol@gmail.com</span>
+          </a>
+
+          <div class="footer-contact-line">
+            <i class="fa-solid fa-location-dot"></i>
+            <span>Goiânia - GO</span>
+          </div>
+        </div>
+
+        <div class="footer-card">
+          <h4>Siga a Liga</h4>
+          <p style="color: var(--muted); line-height:1.6; margin-bottom:12px;">Acompanhe nossas redes sociais</p>
+
+          <div class="footer-social">
+            <a href="https://www.instagram.com/" target="_blank" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+            <a href="https://www.facebook.com/" target="_blank" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+            <a href="https://www.youtube.com/" target="_blank" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
           </div>
         </div>
       </div>
 
-      <div class="footer-card">
-        <h4>Acesso Rápido</h4>
-        <a href="index.html">Início</a>
-        <a href="campeonatos.html">Campeonatos</a>
-        <a href="times.html">Equipes</a>
-        <a href="jogos.html">Resultados</a>
-        <a href="noticias.html">Notícias</a>
-        <a href="#contato">Contato</a>
+      <div class="copyright">
+        © 2026 Liga Goiana de Futebol de Base. Todos os direitos reservados.
       </div>
-
-      <div class="footer-card">
-        <h4>Contato</h4>
-
-        <div class="footer-contact-line">
-          <i class="fa-solid fa-location-dot"></i>
-          <span>Goiânia - GO</span>
-        </div>
-
-        <a href="https://wa.me/5562984284785" target="_blank" class="footer-contact-line">
-          <i class="fa-brands fa-whatsapp"></i>
-          <span>(62) 98428-4785</span>
-        </a>
-
-        <a href="mailto:ligagoianiafutebol@gmail.com" class="footer-contact-line">
-          <i class="fa-solid fa-envelope"></i>
-          <span>ligagoianiafutebol@gmail.com</span>
-        </a>
-      </div>
-
-      <div class="footer-card">
-        <h4>Siga a Liga</h4>
-        <p>Acompanhe nossas redes sociais</p>
-
-        <div class="footer-social">
-          <a href="https://www.instagram.com/" target="_blank" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
-          <a href="https://www.facebook.com/" target="_blank" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
-          <a href="https://www.youtube.com/" target="_blank" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
-        </div>
-      </div>
-    </div>
-
-    <div class="wrap copyright">
-      © 2026 Liga Goiana de Futebol de Base. Todos os direitos reservados.
     </div>
   </footer>
-<script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
-    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-firestore.js";
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyCyArj4yRlEl-yibkc0VEmL_4UJpRHHQSc",
-      authDomain: "liga-goiana-base.firebaseapp.com",
-      projectId: "liga-goiana-base",
-      storageBucket: "liga-goiana-base.appspot.com",
-      messagingSenderId: "952863591183",
-      appId: "1:952863591183:web:4eea34f494ba2dd754cc7a"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-
-    const noticiasPadrao = [
-      {
-        titulo: "Abertura oficial da temporada",
-        resumo: "Liga Goiana inicia mais um ciclo com grandes expectativas.",
-        data: "15 Abr 2026",
-        imagem: "fundo.png",
-        tag: "Temporada 2026"
-      },
-      {
-        titulo: "Copa União de Base confirmada",
-        resumo: "Categorias definidas e confrontos prometem grandes jogos.",
-        data: "10 Abr 2026",
-        imagem: "copa-uniao.jpeg",
-        tag: "Copa União"
-      },
-      {
-        titulo: "Mais clubes fortalecem a Liga",
-        resumo: "Projetos de todo o estado elevam ainda mais o nível da competição.",
-        data: "05 Abr 2026",
-        imagem: "hero-liga.jpeg",
-        tag: "Novas Equipes"
-      }
-    ];
-
-    const jogosPadrao = [
-      {
-        data: "2026-04-20",
-        hora: "09:00",
-        mandante: "Atlético GO",
-        visitante: "Vila Nova",
-        categoria: "Sub-15",
-        campeonato: "Copa União",
-        local: "Campo 01",
-        status: "agendado",
-        escudoMandante: "atletico-go.png",
-        escudoVisitante: "vila-nova.png"
-      },
-      {
-        data: "2026-04-20",
-        hora: "10:30",
-        mandante: "Campinas",
-        visitante: "Hidrolândia",
-        categoria: "Sub-13",
-        campeonato: "Copa União",
-        local: "Campo 02",
-        status: "agendado",
-        escudoMandante: "campinas.png",
-        escudoVisitante: "hidrolandia.png"
-      },
-      {
-        data: "2026-04-20",
-        hora: "14:00",
-        mandante: "União",
-        visitante: "Independência",
-        categoria: "Sub-17",
-        campeonato: "Liga Goiânia Elite",
-        local: "Estádio Regional",
-        status: "agendado",
-        escudoMandante: "uniao.png",
-        escudoVisitante: "independencia.png"
-      },
-      {
-        data: "2026-04-21",
-        hora: "08:30",
-        mandante: "AC Esporte",
-        visitante: "B14 Futebol",
-        categoria: "Sub-11",
-        campeonato: "Liga Goiânia Elite",
-        local: "Campo Principal",
-        status: "agendado",
-        escudoMandante: "ac-esporte.png",
-        escudoVisitante: "b14.png"
-      }
-    ];
-
-    let jogosCache = [];
-    let noticiasCache = [];
-
+  <script>
     const sidebar = document.getElementById("sidebar");
     const sidebarOverlay = document.getElementById("sidebarOverlay");
     const menuToggle = document.getElementById("menuToggle");
     const sidebarClose = document.getElementById("sidebarClose");
-    const menuAdmin = document.getElementById("menuAdmin");
 
-    function abrirSidebar() {
-      if (!sidebar || !sidebarOverlay) return;
+    function openSidebar() {
       sidebar.classList.add("open");
       sidebarOverlay.classList.add("show");
     }
 
-    function fecharSidebar() {
-      if (!sidebar || !sidebarOverlay) return;
+    function closeSidebar() {
       sidebar.classList.remove("open");
       sidebarOverlay.classList.remove("show");
     }
 
-    function toggleSidebar(event) {
-      if (event) event.stopPropagation();
-      if (!sidebar || !sidebarOverlay) return;
+    menuToggle.addEventListener("click", openSidebar);
+    sidebarClose.addEventListener("click", closeSidebar);
+    sidebarOverlay.addEventListener("click", closeSidebar);
 
-      if (sidebar.classList.contains("open")) {
-        fecharSidebar();
-      } else {
-        abrirSidebar();
+    const games = [
+      {
+        dataHora: "20/04/2026 - 08:00",
+        confronto: "Atlético GO x Vila Nova",
+        categoria: "Sub-15",
+        local: "Campo 1"
+      },
+      {
+        dataHora: "20/04/2026 - 10:00",
+        confronto: "Campinas x Hidrolândia",
+        categoria: "Sub-13",
+        local: "Campo 2"
+      },
+      {
+        dataHora: "21/04/2026 - 09:30",
+        confronto: "Goiás x Bela Vista",
+        categoria: "Sub-17",
+        local: "Arena Central"
+      },
+      {
+        dataHora: "21/04/2026 - 14:00",
+        confronto: "Trindade x Aparecida",
+        categoria: "Sub-11",
+        local: "Campo Municipal"
       }
-    }
+    ];
 
-    if (menuToggle) menuToggle.addEventListener("click", toggleSidebar);
-
-    if (sidebarClose) {
-      sidebarClose.addEventListener("click", function(e) {
-        e.stopPropagation();
-        fecharSidebar();
-      });
-    }
-
-    if (sidebarOverlay) sidebarOverlay.addEventListener("click", fecharSidebar);
-
-    document.addEventListener("click", function(e) {
-      if (sidebar && sidebar.classList.contains("open")) {
-        const clicouNoMenu = sidebar.contains(e.target);
-        const clicouNoBotao = menuToggle && menuToggle.contains(e.target);
-        if (!clicouNoMenu && !clicouNoBotao) fecharSidebar();
+    const news = [
+      {
+        titulo: "Liga Goiana inicia nova temporada com grandes expectativas",
+        texto: "A abertura da competição promete movimentar o futebol de base com organização, talento e muita emoção."
+      },
+      {
+        titulo: "Categorias de base seguem em expansão em Goiás",
+        texto: "A Liga Goiana fortalece o desenvolvimento esportivo e amplia oportunidades para atletas de várias idades."
+      },
+      {
+        titulo: "Inscrições abertas para equipes interessadas",
+        texto: "Clubes e projetos já podem entrar em contato para participar da próxima edição da Liga Goiana de Futebol de Base."
       }
+    ];
+
+    const gamesTableBody = document.getElementById("gamesTableBody");
+    const newsList = document.getElementById("newsList");
+
+    games.forEach(jogo => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${jogo.dataHora}</td>
+        <td>${jogo.confronto}</td>
+        <td>${jogo.categoria}</td>
+        <td>${jogo.local}</td>
+      `;
+      gamesTableBody.appendChild(tr);
     });
 
-    function formatarDataBR(dataIso, hora) {
-      try {
-        const [ano, mes, dia] = String(dataIso).split("-");
-        if (ano && mes && dia) {
-          return `${dia}/${mes} • ${hora || "00:00"}`;
-        }
-        return `${dataIso} • ${hora || "00:00"}`;
-      } catch {
-        return `${dataIso} • ${hora || "00:00"}`;
-      }
-    }
-
-    function formatarDataNoticia(valor) {
-      if (!valor) return "";
-      if (typeof valor === "string") return valor;
-
-      try {
-        if (valor.seconds) {
-          const data = new Date(valor.seconds * 1000);
-          return data.toLocaleDateString("pt-BR");
-        }
-      } catch {}
-
-      return String(valor);
-    }
-
-    function normalizarStatus(status) {
-      return String(status || "").toLowerCase().trim();
-    }
-function carregarNoticiasLocalStorage() {
-      try {
-        const noticiasSalvas = JSON.parse(localStorage.getItem("liga_noticias"));
-        if (Array.isArray(noticiasSalvas) && noticiasSalvas.length) return noticiasSalvas;
-      } catch {}
-      return [];
-    }
-
-    function carregarJogosLocalStorage() {
-      try {
-        const jogosSalvos = JSON.parse(localStorage.getItem("liga_jogos"));
-        if (Array.isArray(jogosSalvos) && jogosSalvos.length) return jogosSalvos;
-      } catch {}
-      return [];
-    }
-
-    async function buscarNoticiasFirebase() {
-      try {
-        const snap = await getDocs(collection(db, "noticias"));
-        const lista = [];
-
-        snap.forEach((docSnap) => {
-          const data = docSnap.data() || {};
-          const publicada =
-            data.publicada === true ||
-            data.publicado === true ||
-            String(data.status || "").toLowerCase() === "publicada" ||
-            String(data.status || "").toLowerCase() === "publicado";
-
-          if (publicada || (!("publicada" in data) && !("publicado" in data) && !data.status)) {
-            lista.push({
-              id: docSnap.id,
-              titulo: data.titulo || "Sem título",
-              resumo: data.resumo || data.descricao || "Sem resumo.",
-              data: formatarDataNoticia(data.data || data.criadaEm || data.publicadaEm),
-              imagem: data.imagem || data.capa || "fundo.png",
-              tag: data.tag || data.categoria || "Liga"
-            });
-          }
-        });
-
-        return lista.length ? lista : [];
-      } catch (erro) {
-        console.error("Erro ao buscar notícias no Firebase:", erro);
-        return [];
-      }
-    }
-
-    async function buscarJogosFirebase() {
-      try {
-        const snap = await getDocs(collection(db, "jogos"));
-        const lista = [];
-
-        snap.forEach((docSnap) => {
-          const data = docSnap.data() || {};
-
-          let dataJogo = "";
-          let horaJogo = "";
-
-          if (typeof data.data === "string") {
-            if (data.data.includes("T")) {
-              const [parteData, parteHora] = data.data.split("T");
-              dataJogo = parteData;
-              horaJogo = (parteHora || "").slice(0, 5);
-            } else {
-              dataJogo = data.data;
-            }
-          }
-
-          if (!horaJogo && data.hora) horaJogo = data.hora;
-
-          lista.push({
-            id: docSnap.id,
-            data: dataJogo || data.data || "",
-            hora: horaJogo || "00:00",
-            mandante: data.timeA || data.mandante || "Time A",
-            visitante: data.timeB || data.visitante || "Time B",
-            categoria: data.categoria || "",
-            campeonato: data.campeonato || "",
-            local: data.local || "",
-            status: data.status || "agendado",
-            escudoMandante: data.escudoMandante || "",
-            escudoVisitante: data.escudoVisitante || ""
-          });
-        });
-
-        return lista.length ? lista : [];
-      } catch (erro) {
-        console.error("Erro ao buscar jogos no Firebase:", erro);
-        return [];
-      }
-    }
-
-    function obterNoticias() {
-      const noticiasLocal = carregarNoticiasLocalStorage();
-      if (noticiasCache.length) return noticiasCache;
-      if (noticiasLocal.length) return noticiasLocal;
-      return noticiasPadrao;
-    }
-
-    function obterJogos() {
-      const jogosLocal = carregarJogosLocalStorage();
-      if (jogosCache.length) return jogosCache;
-      if (jogosLocal.length) return jogosLocal;
-      return jogosPadrao;
-    }
-
-    function classeCategoria(cat) {
-      const valor = String(cat || "").toLowerCase().replace(/\s/g, "").replace("-", "");
-      if (valor.includes("11")) return "sub11";
-      if (valor.includes("13")) return "sub13";
-      if (valor.includes("15")) return "sub15";
-      if (valor.includes("17")) return "sub17";
-      return "sub15";
-    }
-
-    function renderNoticias() {
-      const noticias = obterNoticias().slice(0, 3);
-      const lista = document.getElementById("newsList");
-      if (!lista) return;
-
-      lista.innerHTML = noticias.map(noticia => `
-        <article class="news-card" onclick="window.location.href='noticias.html'">
-          <img src="${noticia.imagem || 'fundo.png'}" alt="${noticia.titulo}" onerror="this.src='fundo.png'">
-          <div class="news-info">
-            <span class="news-tag">${noticia.tag || "Liga"}</span>
-            <strong>${noticia.titulo || "Sem título"}</strong>
-            <p>${noticia.resumo || "Sem resumo."}</p>
-            <span>${noticia.data || ""}</span>
-          </div>
-        </article>
-      `).join("");
-    }
-
-    function renderJogos() {
-      const jogos = obterJogos();
-      const tabela = document.getElementById("gamesTableBody");
-      if (!tabela) return;
-
-      const agora = new Date();
-
-      const futuros = jogos.filter(jogo => {
-        if (normalizarStatus(jogo.status) === "encerrado") return false;
-        if (!jogo.data) return false;
-
-        const dataHora = new Date(`${jogo.data}T${jogo.hora || "00:00"}:00`);
-        if (isNaN(dataHora.getTime())) return true;
-        return dataHora >= agora;
-      }).sort((a, b) => new Date(`${a.data}T${a.hora || "00:00"}:00`) - new Date(`${b.data}T${b.hora || "00:00"}:00`));
-
-      const encerrados = jogos.filter(jogo => {
-        if (normalizarStatus(jogo.status) === "encerrado" || normalizarStatus(jogo.status) === "sumula_enviada") return true;
-        if (!jogo.data) return false;
-
-        const dataHora = new Date(`${jogo.data}T${jogo.hora || "00:00"}:00`);
-        if (isNaN(dataHora.getTime())) return false;
-        return dataHora < agora;
-      }).sort((a, b) => new Date(`${b.data}T${b.hora || "00:00"}:00`) - new Date(`${a.data}T${a.hora || "00:00"}:00`));
-
-      const listaFinal = futuros.length ? futuros.slice(0, 4) : encerrados.slice(0, 4);
-
-      if (!listaFinal.length) {
-        tabela.innerHTML = `
-          <tr>
-            <td colspan="4" style="text-align:center; padding:22px;">Nenhum jogo encontrado no momento.</td>
-          </tr>
-        `;
-        return;
-      }
-
-      tabela.innerHTML = listaFinal.map(jogo => `
-        <tr onclick="window.location.href='jogos.html'">
-          <td>
-            <div class="game-date">
-              <i class="fa-regular fa-calendar"></i>
-              <span>${formatarDataBR(jogo.data, jogo.hora)}</span>
-            </div>
-          </td>
-          <td>
-            <div class="time-info">
-              <div class="team-line">
-                <span>${jogo.mandante}</span>
-                <img src="${jogo.escudoMandante || 'logo-liga.jfif'}" onerror="this.src='logo-liga.jfif'" class="escudo" alt="${jogo.mandante}">
-              </div>
-              <span class="vs">X</span>
-              <div class="team-line">
-                <img src="${jogo.escudoVisitante || 'logo-liga.jfif'}" onerror="this.src='logo-liga.jfif'" class="escudo" alt="${jogo.visitante}">
-                <span>${jogo.visitante}</span>
-              </div>
-            </div>
-          </td>
-          <td><span class="badge ${classeCategoria(jogo.categoria)}">${jogo.categoria || "-"}</span></td>
-          <td>${jogo.local || "-"}</td>
-        </tr>
-      `).join("");
-    }
-
-    function configurarPainelAdmin() {
-      if (menuAdmin) {
-        menuAdmin.style.display = "flex";
-      }
-    }
-
-    async function iniciarDadosPagina() {
-      noticiasCache = await buscarNoticiasFirebase();
-      jogosCache = await buscarJogosFirebase();
-      renderNoticias();
-      renderJogos();
-      configurarPainelAdmin();
-    }
-
-    window.addEventListener("DOMContentLoaded", async () => {
-      await iniciarDadosPagina();
+    news.forEach(item => {
+      const article = document.createElement("div");
+      article.className = "news-item";
+      article.innerHTML = `
+        <h3>${item.titulo}</h3>
+        <p>${item.texto}</p>
+      `;
+      newsList.appendChild(article);
     });
   </script>
+
 </body>
 </html>
