@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Time - LIGA GOIANA DE FUTEBOL DE BASE</title>
+
+<style>
+body{
+margin:0;
+font-family:Arial, sans-serif;
+background:#0b1f3a;
+color:white;
+}
+
+header{
+background:#08172c;
+padding:18px;
+text-align:center;
+font-size:24px;
+font-weight:bold;
+border-bottom:3px solid #f7c600;
+}
+
+.container{
+max-width:1200px;
+margin:auto;
+padding:20px;
+}
+
+.top-actions{
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+margin-bottom:16px;
+}
+
+.btn{
+display:inline-flex;
+align-items:center;
+justify-content:center;
+padding:10px 14px;
+border-radius:8px;
+text-decoration:none;
+font-weight:bold;
+background:#f7c600;
+color:black;
+border:none;
+cursor:pointer;
+}
+
+.hero{
+background:linear-gradient(135deg,#102a52,#0d2346);
+border:1px solid rgba(255,230,0,.12);
+border-radius:16px;
+padding:20px;
+margin-bottom:20px;
+}
+
+.hero-top{
+display:flex;
+align-items:center;
+gap:16px;
+flex-wrap:wrap;
+}
+
+.hero-logo{
+width:90px;
+height:90px;
+border-radius:50%;
+object-fit:cover;
+background:#1a3f73;
+border:2px solid rgba(255,255,255,.14);
+}
+
+.hero-info{
+flex:1;
+}
+
+.hero-titulo{
+font-size:28px;
+font-weight:bold;
+color:#f7c600;
+margin-bottom:6px;
+}
+
+.hero-sub{
+font-size:14px;
+opacity:.9;
+line-height:1.5;
+}
+
+.hero-tags,
+.color-list{
+display:flex;
+gap:8px;
+flex-wrap:wrap;
+margin-top:12px;
+}
+
+.hero-tag{
+background:#0b1f3a;
+padding:8px 12px;
+border-radius:999px;
+font-size:12px;
+font-weight:bold;
+}
+
+.color-dot{
+width:24px;
+height:24px;
+border-radius:50%;
+border:2px solid rgba(255,255,255,.25);
+}
+
+.grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:18px;
+}
+
+.card{
+background:#102a52;
+border-radius:14px;
+padding:16px;
+border:1px solid rgba(255,230,0,.12);
+}
+
+.card h3{
+margin:0 0 12px;
+color:#f7c600;
+font-size:20px;
+}
+
+.stats-grid{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:10px;
+}
+
+.stat-card{
+background:#0b1f3a;
+border-radius:10px;
+padding:12px;
+border:1px solid rgba(255,255,255,.08);
+}
+
+.stat-card strong{
+display:block;
+color:#f7c600;
+font-size:13px;
+margin-bottom:4px;
+}
+
+.stat-card span{
+font-size:16px;
+font-weight:bold;
+}
+
+.players-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+gap:12px;
+}
+
+.player-card{
+background:#0b1f3a;
+border-radius:12px;
+padding:12px;
+display:flex;
+align-items:center;
+gap:12px;
+border:1px solid rgba(255,255,255,.08);
+}
+
+.player-photo{
+width:52px;
+height:52px;
+border-radius:50%;
+object-fit:cover;
+background:#1a3f73;
+}
+
+.player-info{
+display:flex;
+flex-direction:column;
+gap:4px;
+min-width:0;
+}
+
+.player-info strong{
+font-size:15px;
+}
+
+.player-info small{
+opacity:.9;
+font-size:12px;
+}
+
+.jogo-item{
+background:#0b1f3a;
+border-radius:12px;
+padding:12px;
+margin-bottom:10px;
+border:1px solid rgba(255,255,255,.08);
+}
+
+.jogo-top{
+display:flex;
+justify-content:space-between;
+gap:10px;
+flex-wrap:wrap;
+font-weight:bold;
+}
+
+.placar{
+color:#f7c600;
+font-size:18px;
+font-weight:bold;
+}
+
+.tags{
+display:flex;
+gap:6px;
+flex-wrap:wrap;
+margin-top:8px;
+}
+
+.tag{
+background:#1a3f73;
+padding:4px 8px;
+border-radius:999px;
+font-size:12px;
+}
+
+.vazio{
+background:#0b1f3a;
+border-radius:12px;
+padding:16px;
+text-align:center;
+opacity:.9;
+}
+
+.loading{
+background:#102a52;
+border-radius:12px;
+padding:30px;
+text-align:center;
+}
+
+.coluna-unica{
+grid-column:1 / -1;
+}
+
+@media (max-width:900px){
+.grid{
+grid-template-columns:1fr;
+}
+
+.stats-grid{
+grid-template-columns:1fr 1fr;
+}
+}
+
+@media (max-width:600px){
+.stats-grid{
+grid-template-columns:1fr;
+}
+}
+</style>
+</head>
+<body>
+
+<header>LIGA GOIANA DE FUTEBOL DE BASE</header>
+
+<div class="container">
+  <div class="top-actions">
+    <a href="times.html" class="btn">← Voltar para Times</a>
+  </div>
+
+  <div id="conteudoTime" class="loading">Carregando time...</div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  getDoc,
+  doc
+} from "https://www.gstatic.com/firebasejs/12.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCyArj4yRlEl-yibkc0VEmL_4UJpRHHQSc",
+  authDomain: "liga-goiana-base.firebaseapp.com",
+  projectId: "liga-goiana-base",
+  storageBucket: "liga-goiana-base.appspot.com",
+  messagingSenderId: "952863591183",
+  appId: "1:952863591183:web:4eea34f494ba2dd754cc7a"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+let jogadores = [];
+let jogos = [];
+let sumulas = [];
+
+function getParametro(nome){
+  const params = new URLSearchParams(window.location.search);
+  return params.get(nome);
+}
+
+function escapar(texto){
+  return String(texto || "")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;");
+}
+
+function normalizarTexto(texto){
+  return String(texto || "")
+    .trim()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+}
+
+function parseDataFlex(valor){
+  if(!valor) return new Date(0);
+
+  const dataIso = new Date(valor);
+  if(!isNaN(dataIso.getTime())) return dataIso;
+
+  const texto = String(valor).trim();
+  const matchBR = texto.match(/^(\d{2})\/(\d{2})\/(\d{4})(?:\s*-\s*(\d{2}):(\d{2}))?$/);
+
+  if(matchBR){
+    const [, dia, mes, ano, hora = "00", minuto = "00"] = matchBR;
+    return new Date(`${ano}-${mes}-${dia}T${hora}:${minuto}:00`);
+  }
+
+  return new Date(0);
+}
+
+function formatarData(valor){
+  if(!valor) return "-";
+  const data = parseDataFlex(valor);
+  if(isNaN(data.getTime())) return valor;
+
+  const dia = String(data.getDate()).padStart(2, "0");
+  const mes = String(data.getMonth() + 1).padStart(2, "0");
+  const ano = data.getFullYear();
+  return `${dia}/${mes}/${ano}`;
+}
+
+async function carregarBases(){
+  const snapJogadores = await getDocs(collection(db, "jogadores"));
+  jogadores = [];
+  snapJogadores.forEach(docSnap => jogadores.push({ id: docSnap.id, ...docSnap.data() }));
+
+  const snapJogos = await getDocs(collection(db, "jogos"));
+  jogos = [];
+  snapJogos.forEach(docSnap => jogos.push({ id: docSnap.id, ...docSnap.data() }));
+
+  const snapSumulas = await getDocs(collection(db, "sumulas"));
+  sumulas = [];
+  snapSumulas.forEach(docSnap => sumulas.push({ id: docSnap.id, ...docSnap.data() }));
+}
+
+function getEstatisticasTime(nomeTime){
+  const jogosFinalizados = jogos.filter(j =>
+    j.status === "sumula_enviada" &&
+    (normalizarTexto(j.timeA) === normalizarTexto(nomeTime) || normalizarTexto(j.timeB) === normalizarTexto(nomeTime))
+  );
+
+  let pontos = 0;
+  let vitorias = 0;
+  let empates = 0;
+  let derrotas = 0;
+  let golsPro = 0;
+  let golsContra = 0;
+
+  jogosFinalizados.forEach(j => {
+    const ehMandante = normalizarTexto(j.timeA) === normalizarTexto(nomeTime);
+    const golsTime = Number(ehMandante ? j.golsA || 0 : j.golsB || 0);
+    const golsAdv = Number(ehMandante ? j.golsB || 0 : j.golsA || 0);
+
+    golsPro += golsTime;
+    golsContra += golsAdv;
+
+    if(golsTime > golsAdv){
+      vitorias++;
+      pontos += 3;
+    }else if(golsTime === golsAdv){
+      empates++;
+      pontos += 1;
+    }else{
+      derrotas++;
+    }
+  });
+
+  return {
+    jogos: jogosFinalizados.length,
+    pontos,
+    vitorias,
+    empates,
+    derrotas,
+    golsPro,
+    golsContra,
+    saldo: golsPro - golsContra
+  };
+}
+
+function getUltimosJogos(nomeTime){
+  return jogos
+    .filter(j =>
+      normalizarTexto(j.timeA) === normalizarTexto(nomeTime) ||
+      normalizarTexto(j.timeB) === normalizarTexto(nomeTime)
+    )
+    .sort((a,b) => parseDataFlex(b.data || "") - parseDataFlex(a.data || ""))
+    .slice(0, 8);
+}
+
+function renderUltimosJogos(nomeTime){
+  const lista = getUltimosJogos(nomeTime);
+
+  if(!lista.length){
+    return `<div class="vazio">Nenhum jogo encontrado para esse time.</div>`;
+  }
+
+  return lista.map(j => {
+    const finalizado = j.status === "sumula_enviada";
+    const placar = finalizado
+      ? `${Number(j.golsA || 0)} x ${Number(j.golsB || 0)}`
+      : "x";
+
+    return `
+      <div class="jogo-item">
+        <div class="jogo-top">
+          <div>${escapar(j.timeA || "-")} x ${escapar(j.timeB || "-")}</div>
+          <div class="placar">${placar}</div>
+        </div>
+        <div style="margin-top:8px;font-size:13px;opacity:.9;">
+          ${formatarData(j.data)} | ${escapar(j.local || "-")}
+        </div>
+        <div class="tags">
+          <div class="tag">${escapar(j.campeonato || "-")}</div>
+          <div class="tag">${escapar(j.categoria || "-")}</div>
+          <div class="tag">${finalizado ? "Finalizado" : "Agendado"}</div>
+        </div>
+      </div>
+    `;
+  }).join("");
+}
+
+function renderElenco(nomeTime){
+  const elenco = jogadores
+    .filter(j => normalizarTexto(j.time) === normalizarTexto(nomeTime))
+    .sort((a,b) => {
+      const na = Number(a.numero || 999);
+      const nb = Number(b.numero || 999);
+      if(na !== nb) return na - nb;
+      return String(a.nome || "").localeCompare(String(b.nome || ""), "pt-BR");
+    });
+
+  if(!elenco.length){
+    return `<div class="vazio">Nenhum jogador cadastrado nesse time.</div>`;
+  }
+
+  return `
+    <div class="players-grid">
+      ${elenco.map(j => `
+        <div class="player-card">
+          <img src="${escapar(j.foto || '')}" class="player-photo" onerror="this.src=''">
+          <div class="player-info">
+            <strong>${escapar(j.numero || "-")} - ${escapar(j.nome || "Sem nome")}</strong>
+            <small>Posição: ${escapar(j.posicao || "-")}</small>
+            <small>Jogos: ${Number(j.jogos || 0)} | Gols: ${Number(j.gols || 0)}</small>
+            <small>Assistências: ${Number(j.assistencias || 0)}</small>
+          </div>
+        </div>
+      `).join("")}
+    </div>
+  `;
+}
+
+async function carregarTime(){
+  const timeId = getParametro("id");
+  const box = document.getElementById("conteudoTime");
+
+  if(!timeId){
+    box.innerHTML = `<div class="loading">ID do time não informado.</div>`;
+    return;
+  }
+
+  try{
+    const refTime = doc(db, "times", timeId);
+    const snapTime = await getDoc(refTime);
+
+    if(!snapTime.exists()){
+      box.innerHTML = `<div class="loading">Time não encontrado.</div>`;
+      return;
+    }
+
+    const time = { id: snapTime.id, ...snapTime.data() };
+    const stats = getEstatisticasTime(time.nome || "");
+    const totalJogadores = jogadores.filter(j => normalizarTexto(j.time) === normalizarTexto(time.nome)).length;
+
+    box.innerHTML = `
+      <div class="hero">
+        <div class="hero-top">
+          <img src="${escapar(time.escudo || 'logo-liga.jfif')}" class="hero-logo" alt="${escapar(time.nome || "Time")}">
+          <div class="hero-info">
+            <div class="hero-titulo">${escapar(time.nome || "Time")}</div>
+            <div class="hero-sub">Página pública da equipe.</div>
+
+            <div class="hero-tags">
+              ${(time.categorias || []).map(c => `<div class="hero-tag">${escapar(c)}</div>`).join("") || `<div class="hero-tag">Sem categoria</div>`}
+            </div>
+
+            <div class="color-list">
+              ${(time.cores || []).map(cor => `<div class="color-dot" style="background:${cor};"></div>`).join("") || ""}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid">
+        <div class="card">
+          <h3>Estatísticas</h3>
+          <div class="stats-grid">
+            <div class="stat-card"><strong>Pontos</strong><span>${stats.pontos}</span></div>
+            <div class="stat-card"><strong>Jogos</strong><span>${stats.jogos}</span></div>
+            <div class="stat-card"><strong>Vitórias</strong><span>${stats.vitorias}</span></div>
+            <div class="stat-card"><strong>Empates</strong><span>${stats.empates}</span></div>
+            <div class="stat-card"><strong>Derrotas</strong><span>${stats.derrotas}</span></div>
+            <div class="stat-card"><strong>Gols Pró</strong><span>${stats.golsPro}</span></div>
+            <div class="stat-card"><strong>Gols Contra</strong><span>${stats.golsContra}</span></div>
+            <div class="stat-card"><strong>Saldo</strong><span>${stats.saldo}</span></div>
+          </div>
+          <div class="hero-tags" style="margin-top:14px;">
+            <div class="hero-tag">Jogadores: ${totalJogadores}</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Últimos Jogos</h3>
+          ${renderUltimosJogos(time.nome || "")}
+        </div>
+
+        <div class="card coluna-unica">
+          <h3>Elenco</h3>
+          ${renderElenco(time.nome || "")}
+        </div>
+      </div>
+    `;
+  }catch(erro){
+    console.error(erro);
+    box.innerHTML = `<div class="loading">Erro ao carregar o time.</div>`;
+  }
+}
+
+await carregarBases();
+await carregarTime();
+</script>
+
+</body>
+</html>
