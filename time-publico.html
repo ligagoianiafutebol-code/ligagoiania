@@ -49,6 +49,21 @@ border:none;
 cursor:pointer;
 }
 
+.btn-secundario{
+display:inline-flex;
+align-items:center;
+justify-content:center;
+padding:8px 12px;
+border-radius:8px;
+text-decoration:none;
+font-weight:bold;
+background:#1a3f73;
+color:white;
+border:none;
+cursor:pointer;
+font-size:13px;
+}
+
 .hero{
 background:linear-gradient(135deg,#102a52,#0d2346);
 border:1px solid rgba(255,230,0,.12);
@@ -159,7 +174,7 @@ font-weight:bold;
 
 .players-grid{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
 gap:12px;
 }
 
@@ -169,8 +184,17 @@ border-radius:12px;
 padding:12px;
 display:flex;
 align-items:center;
+justify-content:space-between;
 gap:12px;
 border:1px solid rgba(255,255,255,.08);
+}
+
+.player-left{
+display:flex;
+align-items:center;
+gap:12px;
+min-width:0;
+flex:1;
 }
 
 .player-photo{
@@ -179,6 +203,7 @@ height:52px;
 border-radius:50%;
 object-fit:cover;
 background:#1a3f73;
+flex-shrink:0;
 }
 
 .player-info{
@@ -265,6 +290,15 @@ grid-template-columns:1fr 1fr;
 @media (max-width:600px){
 .stats-grid{
 grid-template-columns:1fr;
+}
+
+.player-card{
+flex-direction:column;
+align-items:flex-start;
+}
+
+.player-left{
+width:100%;
 }
 }
 </style>
@@ -473,13 +507,19 @@ function renderElenco(nomeTime){
     <div class="players-grid">
       ${elenco.map(j => `
         <div class="player-card">
-          <img src="${escapar(j.foto || '')}" class="player-photo" onerror="this.src=''">
-          <div class="player-info">
-            <strong>${escapar(j.numero || "-")} - ${escapar(j.nome || "Sem nome")}</strong>
-            <small>Posição: ${escapar(j.posicao || "-")}</small>
-            <small>Jogos: ${Number(j.jogos || 0)} | Gols: ${Number(j.gols || 0)}</small>
-            <small>Assistências: ${Number(j.assistencias || 0)}</small>
+          <div class="player-left">
+            <img src="${escapar(j.foto || '')}" class="player-photo" onerror="this.src=''">
+            <div class="player-info">
+              <strong>${escapar(j.numero || "-")} - ${escapar(j.nome || "Sem nome")}</strong>
+              <small>Posição: ${escapar(j.posicao || "-")}</small>
+              <small>Jogos: ${Number(j.jogos || 0)} | Gols: ${Number(j.gols || 0)}</small>
+              <small>Assistências: ${Number(j.assistencias || 0)}</small>
+            </div>
           </div>
+
+          <a class="btn-secundario" href="jogador-publico.html?id=${j.id}">
+            Ver Jogador
+          </a>
         </div>
       `).join("")}
     </div>
