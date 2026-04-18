@@ -22,7 +22,6 @@
       --card:#03112d;
       --card-2:#07183b;
       --green:#13a61b;
-      --green-2:#0d7f13;
       --blue-badge:#1d67d9;
       --purple-badge:#7616c9;
       --gold-badge:#b98916;
@@ -36,10 +35,12 @@
       margin:0;
       padding:0;
       box-sizing:border-box;
+      -webkit-tap-highlight-color:transparent;
     }
 
     html{
       scroll-behavior:smooth;
+      max-width:100%;
     }
 
     body{
@@ -50,6 +51,8 @@
       color:var(--white);
       min-height:100vh;
       overflow-x:hidden;
+      max-width:100%;
+      -webkit-text-size-adjust:100%;
     }
 
     a{
@@ -59,6 +62,7 @@
 
     img{
       max-width:100%;
+      height:auto;
       display:block;
     }
 
@@ -66,8 +70,12 @@
       font-family:inherit;
     }
 
+    table{
+      width:100%;
+    }
+
     .wrap{
-      width:min(1250px, calc(100% - 28px));
+      width:min(1250px, calc(100% - 24px));
       margin:0 auto;
     }
 
@@ -136,7 +144,7 @@
       position:fixed;
       top:0;
       left:0;
-      width:var(--sidebar-width);
+      width:min(88vw, var(--sidebar-width));
       height:100vh;
       overflow-y:auto;
       background:linear-gradient(180deg, rgba(1,9,24,.99), rgba(4,19,45,.99));
@@ -237,9 +245,9 @@
       text-align:center;
       flex-shrink:0;
     }
-
-    .topbar{
-      position:relative;
+.topbar{
+      position:sticky;
+      top:0;
       z-index:1200;
       background:rgba(1,9,24,.96);
       border-bottom:1px solid rgba(255,212,0,.24);
@@ -330,6 +338,33 @@
       flex-wrap:wrap;
     }
 
+    .btn-login-top{
+      border:none;
+      cursor:pointer;
+      font-weight:900;
+      transition:.22s ease;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      text-decoration:none;
+      white-space:nowrap;
+      text-transform:uppercase;
+      padding:16px 22px;
+      border-radius:10px;
+      background:transparent;
+      color:var(--yellow);
+      font-size:15px;
+      border:2px solid rgba(255,212,0,.42);
+      box-shadow:var(--shadow);
+    }
+
+    .btn-login-top:hover{
+      background:var(--yellow);
+      color:#031022;
+      transform:translateY(-2px);
+    }
+
     .btn-top-main{
       border:none;
       cursor:pointer;
@@ -354,7 +389,8 @@
       background:var(--yellow-2);
       transform:translateY(-2px);
     }
-.hero{
+
+    .hero{
       position:relative;
       overflow:hidden;
       background:
@@ -447,8 +483,7 @@
       max-width:590px;
       text-shadow:0 4px 14px rgba(0,0,0,.28);
     }
-
-    .hero-actions{
+.hero-actions{
       display:flex;
       flex-wrap:wrap;
       gap:14px;
@@ -650,7 +685,8 @@
     .match-table thead th:last-child{
       border-right:none;
     }
-.match-table tbody td{
+
+    .match-table tbody td{
       padding:16px 10px;
       border-top:1px solid rgba(255,255,255,.06);
       border-right:1px solid rgba(255,255,255,.05);
@@ -674,8 +710,7 @@
     .match-table tbody tr:hover td{
       background:rgba(11,32,76,.92);
     }
-
-    .time-info{
+.time-info{
       display:flex;
       align-items:center;
       justify-content:center;
@@ -952,6 +987,10 @@
       flex-shrink:0;
     }
 
+    .footer-contact-line i.fa-whatsapp{
+      color:#25D366;
+    }
+
     .copyright{
       border-top:1px solid rgba(255,255,255,.08);
       padding:14px 0 18px;
@@ -968,7 +1007,7 @@
 
       .top-actions{
         grid-column:1 / -1;
-        justify-content:flex-end;
+        justify-content:flex-start;
       }
 
       .hero-panel{
@@ -977,12 +1016,22 @@
         padding:24px 0 18px;
       }
 
-      .hero-art{
-        min-height:320px;
+      .hero-copy{
+        max-width:100%;
       }
 
       .hero-copy h1{
         font-size:58px;
+        line-height:1;
+      }
+
+      .hero-art{
+        min-height:320px;
+      }
+
+      .hero-art img{
+        max-width:540px;
+        margin:0 auto;
       }
 
       .cards-pilares{
@@ -1002,46 +1051,33 @@
       }
 
       .cta-banner .btn-primary{
-        min-width:unset;
         width:100%;
+        min-width:unset;
       }
     }
 
     @media (max-width:860px){
+      .topbar-content{
+        display:flex;
+        flex-direction:column;
+        align-items:flex-start;
+        gap:14px;
+        padding:12px 0;
+      }
+
+      .top-left{
+        width:100%;
+      }
+
       .top-nav{
+        width:100%;
         justify-content:flex-start;
+        gap:6px;
       }
 
       .nav-link{
         font-size:13px;
-        padding:10px 12px;
-      }
-
-      .hero-copy h1{
-        font-size:46px;
-      }
-
-      .hero-subtitle{
-        font-size:22px;
-      }
-
-      .logo-link img{
-        width:68px;
-        height:68px;
-      }
-    }
-
-    @media (max-width:700px){
-      .wrap{
-        width:min(100% - 18px, 1250px);
-      }
-
-      .logo-text strong{
-        font-size:13px;
-      }
-
-      .logo-text span{
-        font-size:11px;
+        padding:8px 10px;
       }
 
       .top-actions{
@@ -1049,65 +1085,199 @@
         justify-content:flex-start;
       }
 
-      .btn-top-main{
+      .btn-top-main,
+      .btn-login-top{
+        padding:12px 16px;
+        font-size:13px;
+      }
+
+      .hero-copy h1{
+        font-size:46px;
+        letter-spacing:-1px;
+      }
+
+      .hero-subtitle{
+        font-size:21px;
+      }
+
+      .hero-desc{
+        font-size:17px;
+      }
+
+      .logo-link img{
+        width:62px;
+        height:62px;
+      }
+    }
+
+    @media (max-width:700px){
+      .wrap{
+        width:min(100% - 16px, 1250px);
+      }
+
+      .logo-link{
+        gap:10px;
+      }
+
+      .logo-link img{
+        width:52px;
+        height:52px;
+      }
+
+      .logo-text strong{
         font-size:12px;
-        padding:11px 14px;
+        white-space:normal;
+      }
+
+      .logo-text span{
+        font-size:10px;
+        white-space:normal;
+      }
+
+      .menu-toggle{
+        width:46px;
+        height:46px;
+        font-size:22px;
+      }
+
+      .top-nav{
+        display:flex;
+        flex-wrap:wrap;
+      }
+
+      .nav-link{
+        font-size:12px;
+        padding:7px 8px;
+      }
+
+      .btn-top-main,
+      .btn-login-top{
+        width:100%;
+        justify-content:center;
+        font-size:12px;
+        padding:12px 14px;
+      }
+
+      .hero{
+        padding-top:8px;
       }
 
       .hero-panel{
-        padding:18px 0 16px;
+        gap:12px;
+        padding:14px 0 12px;
       }
 
       .hero-copy{
         padding:0;
       }
 
+      .hero-tag{
+        font-size:11px;
+        padding:7px 12px;
+        margin-bottom:12px;
+      }
+
       .hero-copy h1{
-        font-size:36px;
-        letter-spacing:-1px;
+        font-size:34px;
+        line-height:1;
       }
 
       .hero-subtitle{
-        font-size:18px;
+        font-size:17px;
+        margin-bottom:10px;
       }
 
       .hero-desc{
-        font-size:16px;
+        font-size:15px;
+        line-height:1.6;
       }
 
       .hero-actions{
         flex-direction:column;
-        align-items:stretch;
+        gap:10px;
       }
 
       .btn-primary,
       .btn-secondary{
         width:100%;
+        font-size:14px;
+        padding:14px 16px;
+      }
+.hero-art{
+        min-height:auto;
+      }
+
+      .hero-art img{
+        max-width:100%;
       }
 
       .cards-pilares{
         grid-template-columns:1fr;
+        gap:10px;
       }
 
       .pillar{
-        grid-template-columns:46px 1fr;
-        padding:16px;
+        grid-template-columns:42px 1fr;
+        gap:10px;
+        padding:14px;
+        min-height:auto;
       }
 
       .pillar-icon{
-        width:46px;
-        height:46px;
-        font-size:28px;
+        width:42px;
+        height:42px;
+        font-size:24px;
       }
 
       .pillar-text h3{
-        font-size:15px;
+        font-size:14px;
+      }
+
+      .pillar-text p{
+        font-size:12px;
+      }
+
+      .panel{
+        padding:10px;
+      }
+
+      .panel-head{
+        gap:8px;
+        padding:0 2px 8px;
+      }
+
+      .panel h2{
+        font-size:16px;
+      }
+
+      .panel-head a{
+        font-size:12px;
       }
 
       .match-table{
         display:block;
         overflow-x:auto;
         white-space:nowrap;
+        border-radius:10px;
+      }
+
+      .match-table thead th,
+      .match-table tbody td{
+        font-size:12px;
+        padding:12px 8px;
+      }
+
+      .time-info{
+        gap:8px;
+      }
+
+      .team-line{
+        gap:6px;
+      }
+
+      .escudo{
+        width:28px;
+        height:28px;
       }
 
       .news-card{
@@ -1116,24 +1286,94 @@
 
       .news-card img{
         width:100%;
-        height:180px;
+        height:170px;
+      }
+
+      .news-info strong{
+        font-size:14px;
+      }
+
+      .news-info p{
+        font-size:12px;
+      }
+
+      .cta-banner-inner{
+        padding:16px;
+      }
+
+      .cta-banner h3{
+        font-size:18px;
+      }
+
+      .cta-banner p{
+        font-size:13px;
       }
 
       .footer-top{
         grid-template-columns:1fr;
       }
 
-      .cta-banner h3{
-        font-size:20px;
+      .footer-card{
+        padding:14px;
       }
 
-      .cta-banner p{
+      .footer-brand{
+        flex-direction:column;
+        align-items:flex-start;
+      }
+
+      .footer-brand img{
+        width:72px;
+        height:72px;
+      }
+
+      .footer-social{
+        gap:8px;
+      }
+
+      .footer-social a{
+        width:38px;
+        height:38px;
+        font-size:18px;
+      }
+
+      .copyright{
+        font-size:12px;
+        line-height:1.5;
+      }
+    }
+
+    @media (max-width:430px){
+      .hero-copy h1{
+        font-size:29px;
+      }
+
+      .hero-subtitle{
+        font-size:15px;
+      }
+
+      .hero-desc{
         font-size:14px;
       }
 
-      .logo-link img{
-        width:56px;
-        height:56px;
+      .btn-primary,
+      .btn-secondary,
+      .btn-top-main,
+      .btn-login-top{
+        font-size:13px;
+      }
+
+      .nav-link{
+        font-size:11px;
+      }
+
+      .panel h2{
+        font-size:15px;
+      }
+
+      .match-table thead th,
+      .match-table tbody td{
+        font-size:11px;
       }
     }
   </style>
@@ -1158,36 +1398,45 @@
     <div class="sidebar-block">
       <div class="sidebar-title">🏆 Competição</div>
       <div class="side-menu">
-        <a href="classificacao.html"><span class="side-icon"><i class="fa-solid fa-trophy"></i></span>Classificação</a>
-        <a href="tabela.html"><span class="side-icon"><i class="fa-solid fa-calendar-days"></i></span>Tabela de Jogos</a>
+        <a href="campeonatos.html"><span class="side-icon"><i class="fa-solid fa-trophy"></i></span>Campeonatos</a>
+        <a href="classificacao.html"><span class="side-icon"><i class="fa-solid fa-ranking-star"></i></span>Classificação</a>
+        <a href="tabela.html"><span class="side-icon"><i class="fa-solid fa-table"></i></span>Tabelas</a>
+        <a href="jogos.html"><span class="side-icon"><i class="fa-solid fa-calendar-days"></i></span>Jogos</a>
         <a href="artilharia.html"><span class="side-icon"><i class="fa-solid fa-futbol"></i></span>Artilharia</a>
-        <a href="cartoes.html"><span class="side-icon"><i class="fa-solid fa-id-card"></i></span>Cartões / Suspensos</a>
+        <a href="cartoes.html"><span class="side-icon"><i class="fa-solid fa-id-card"></i></span>Cartões</a>
+        <a href="suspensos.html"><span class="side-icon"><i class="fa-solid fa-ban"></i></span>Suspensos</a>
+        <a href="sumula.html"><span class="side-icon"><i class="fa-solid fa-file-signature"></i></span>Súmula</a>
+        <a href="sumulas.html"><span class="side-icon"><i class="fa-solid fa-file-lines"></i></span>Súmulas</a>
       </div>
     </div>
 
     <div class="sidebar-block">
-      <div class="sidebar-title">📂 Informações</div>
+      <div class="sidebar-title">👥 Cadastro e Equipes</div>
       <div class="side-menu">
-        <a href="categorias.html"><span class="side-icon"><i class="fa-solid fa-folder-open"></i></span>Categorias</a>
-        <a href="times.html"><span class="side-icon"><i class="fa-solid fa-shield-halved"></i></span>Clubes / Times</a>
+        <a href="categorias.html"><span class="side-icon"><i class="fa-solid fa-layer-group"></i></span>Categorias</a>
+        <a href="times.html"><span class="side-icon"><i class="fa-solid fa-shield-halved"></i></span>Times</a>
+        <a href="jogadores.html"><span class="side-icon"><i class="fa-solid fa-person-running"></i></span>Jogadores</a>
+        <a href="tecnicos.html"><span class="side-icon"><i class="fa-solid fa-clipboard-user"></i></span>Técnicos</a>
+        <a href="arbitros.html"><span class="side-icon"><i class="fa-solid fa-whistle"></i></span>Árbitros</a>
+        <a href="assistentes.html"><span class="side-icon"><i class="fa-solid fa-user-group"></i></span>Assistentes</a>
+      </div>
+    </div>
+<div class="sidebar-block">
+      <div class="sidebar-title">📰 Informações</div>
+      <div class="side-menu">
+        <a href="noticias.html"><span class="side-icon"><i class="fa-solid fa-newspaper"></i></span>Notícias</a>
         <a href="regulamento.html"><span class="side-icon"><i class="fa-solid fa-scroll"></i></span>Regulamento</a>
-      </div>
-    </div>
-
-    <div class="sidebar-block">
-      <div class="sidebar-title">📰 Ajuda</div>
-      <div class="side-menu">
-        <a href="noticias.html"><span class="side-icon"><i class="fa-solid fa-newspaper"></i></span>Notícias / Avisos</a>
-        <a href="#contato"><span class="side-icon"><i class="fa-solid fa-phone"></i></span>Contato / Localização</a>
+        <a href="#contato"><span class="side-icon"><i class="fa-solid fa-phone"></i></span>Contato</a>
         <a href="sobre.html"><span class="side-icon"><i class="fa-solid fa-circle-info"></i></span>Sobre a Liga</a>
       </div>
     </div>
 
     <div class="sidebar-block">
-      <div class="sidebar-title">👤 Área Restrita</div>
+      <div class="sidebar-title">⚙️ Sistema</div>
       <div class="side-menu">
         <a href="login.html"><span class="side-icon"><i class="fa-solid fa-user"></i></span>Login / Cadastro</a>
-        <a href="admin.html" id="menuAdmin"><span class="side-icon"><i class="fa-solid fa-gear"></i></span>Painel Administrativo</a>
+        <a href="admin.html" id="menuAdmin"><span class="side-icon"><i class="fa-solid fa-gears"></i></span>Painel do Administrador</a>
+        <a href="configuracoes.html"><span class="side-icon"><i class="fa-solid fa-sliders"></i></span>Configurações</a>
       </div>
     </div>
   </aside>
@@ -1216,11 +1465,18 @@
       </nav>
 
       <div class="top-actions">
-        <a href="inscricoes.html" class="btn-top-main"><i class="fa-solid fa-trophy"></i> Inscrever Agora</a>
+        <a href="login.html" class="btn-login-top">
+          <i class="fa-solid fa-user"></i> Login / Cadastro
+        </a>
+
+        <a href="https://wa.me/5562981916316" target="_blank" class="btn-top-main">
+          <i class="fa-brands fa-whatsapp"></i> Inscrever Agora
+        </a>
       </div>
     </div>
   </header>
-<section class="hero">
+
+  <section class="hero">
     <div class="wrap">
       <div class="hero-panel">
         <div class="hero-copy">
@@ -1281,8 +1537,7 @@
           </div>
         </div>
       </div>
-
-      <div class="mid-grid">
+<div class="mid-grid">
         <section class="panel">
           <div class="panel-head">
             <div class="panel-head-title">
@@ -1368,9 +1623,21 @@
 
       <div class="footer-card">
         <h4>Contato</h4>
-        <div class="footer-contact-line"><i class="fa-solid fa-location-dot"></i><span>Aparecida de Goiânia - GO</span></div>
-        <div class="footer-contact-line"><i class="fa-solid fa-phone"></i><span>(61) 98100-0000</span></div>
-        <div class="footer-contact-line"><i class="fa-solid fa-envelope"></i><span>ligagoianaoficial@gmail.com</span></div>
+
+        <div class="footer-contact-line">
+          <i class="fa-solid fa-location-dot"></i>
+          <span>Goiânia - GO</span>
+        </div>
+
+        <a href="https://wa.me/5562984284785" target="_blank" class="footer-contact-line">
+          <i class="fa-brands fa-whatsapp"></i>
+          <span>(62) 98428-4785</span>
+        </a>
+
+        <a href="mailto:ligagoianiafutebol@gmail.com" class="footer-contact-line">
+          <i class="fa-solid fa-envelope"></i>
+          <span>ligagoianiafutebol@gmail.com</span>
+        </a>
       </div>
 
       <div class="footer-card">
@@ -1560,8 +1827,7 @@
     function normalizarStatus(status) {
       return String(status || "").toLowerCase().trim();
     }
-
-    function carregarNoticiasLocalStorage() {
+function carregarNoticiasLocalStorage() {
       try {
         const noticiasSalvas = JSON.parse(localStorage.getItem("liga_noticias"));
         if (Array.isArray(noticiasSalvas) && noticiasSalvas.length) return noticiasSalvas;
@@ -1759,8 +2025,9 @@
     }
 
     function configurarPainelAdmin() {
-      const adminAtivo = localStorage.getItem("liga_admin_logado") === "true";
-      if (menuAdmin) menuAdmin.style.display = adminAtivo ? "flex" : "none";
+      if (menuAdmin) {
+        menuAdmin.style.display = "flex";
+      }
     }
 
     async function iniciarDadosPagina() {
