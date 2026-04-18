@@ -122,6 +122,9 @@ body{
   border-radius:8px;
   margin-bottom:8px;
 }
+.acao-linha.input-4{
+  grid-template-columns:90px 1fr 1fr auto;
+}
 .acao-linha input,
 .acao-linha select{
   width:100%;
@@ -225,7 +228,8 @@ body{
   .jogador{
     grid-template-columns:1fr;
   }
-  .acao-linha{
+  .acao-linha,
+  .acao-linha.input-4{
     grid-template-columns:1fr;
   }
 }
@@ -512,7 +516,7 @@ function renderAssistencias(lado){
     }
 
     lista.innerHTML += `
-      <div class="acao-linha">
+      <div class="acao-linha input-4">
         <input value="${a.numero || ""}" placeholder="Número" onchange="atualizarAssistencia('${lado}', ${index}, 'numero', this.value)">
         <input value="${a.nome || ""}" placeholder="Jogador" onchange="atualizarAssistencia('${lado}', ${index}, 'nome', this.value)">
         <input value="${a.obs || ""}" placeholder="Observação" onchange="atualizarAssistencia('${lado}', ${index}, 'obs', this.value)">
@@ -543,7 +547,7 @@ function renderCartoes(lado, tipo){
     }
 
     lista.innerHTML += `
-      <div class="acao-linha">
+      <div class="acao-linha input-4">
         <input value="${e.numero || ""}" placeholder="Número" onchange="atualizarCartao('${lado}', '${tipo}', ${index}, 'numero', this.value)">
         <input value="${e.nome || ""}" placeholder="Jogador" onchange="atualizarCartao('${lado}', '${tipo}', ${index}, 'nome', this.value)">
         <input value="${e.obs || ""}" placeholder="Observação" onchange="atualizarCartao('${lado}', '${tipo}', ${index}, 'obs', this.value)">
@@ -912,7 +916,96 @@ window.salvarSumula = async function(){
     golsB: placar.golsVisitante
   });
 
-  alert("Súmula finalizada e salva com sucesso!");
+  const snapJogadores = await getDocs(collection(db, "jogadores"));
+
+  for (const docSnap of snapJogadores.docs) {
+    const jogador = docSnap.data();
+    let atualizar = false;
+
+    let gols = Number(jogador.gols || 0);
+    let assistencias = Number(jogador.assistencias || 0);
+    let amarelos = Number(jogador.amarelos || 0);
+    let vermelhos = Number(jogador.vermelhos || 0);
+    let jogos = Number(jogador.jogos || 0);
+
+    const jogou =
+      jogadoresA.some(j => j.nome === jogador.nome && j.time !== "") ||
+      jogadoresA.some(j => j.nome === jogador.nome) ||
+      jogadoresB.some(j => j.nome === jogador.nome);
+
+    if (jogou) {
+      jogos += 1;
+      atualizar = true;
+    }
+
+    golsA.forEach(g => {
+      if (g.nome === jogador.nome && g.tipo === "gol") {
+        gols += 1;
+        atualizar = true;
+      }
+    });
+
+    golsB.forEach(g => {
+      if (g.nome === jogador.nome && g.tipo === "gol") {
+        gols += 1;
+        atualizar = true;
+      }
+    });
+
+    assistenciasA.forEach(a => {
+      if (a.nome === jogador.nome) {
+        assistencias += 1;
+        atualizar = true;
+      }
+    });
+
+    assistenciasB.forEach(a => {
+      if (a.nome === jogador.nome) {
+        assistencias += 1;
+        atualizar = true;
+      }
+    });
+
+    amarelosA.forEach(c => {
+      if (c.nome === jogador.nome) {
+        amarelos += 1;
+        atualizar = true;
+      }
+    });
+
+    amarelosB.forEach(c => {
+      if (c.nome === jogador.nome) {
+        amarelos += 1;
+        atualizar = true;
+      }
+    });
+
+    vermelhosA.forEach(c => {
+      if (c.nome === jogador.nome) {
+        vermelhos += 1;
+        atualizar = true;
+      }
+    });
+
+    vermelhosB.forEach(c => {
+      if (c.nome === jogador.nome) {
+        vermelhos += 1;
+        atualizar = true;
+      }
+    });
+
+    if (atualizar) {
+      await updateDoc(doc(db, "jogadores", docSnap.id), {
+        gols,
+        assistencias,
+        amarelos,
+        vermelhos,
+        jogos
+      });
+    }
+  }
+
+  alert("Súmula finalizada e estatísticas atualizadas com sucesso!");
 };
 
 await carregarTimes();
