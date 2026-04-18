@@ -322,16 +322,28 @@ function preencherFiltros(){
   });
 }
 
-function aplicarCampeonatoDaURL(){
+function aplicarFiltrosDaURL(){
   const campeonatoURL = getParametro("campeonato");
-  if(!campeonatoURL) return;
+  const categoriaURL = getParametro("categoria");
 
-  const selectCamp = document.getElementById("filtroCampeonato");
-  const opcoes = Array.from(selectCamp.options);
-  const opcaoEncontrada = opcoes.find(op => normalizarTexto(op.value) === normalizarTexto(campeonatoURL));
+  if(campeonatoURL){
+    const selectCamp = document.getElementById("filtroCampeonato");
+    const opcoesCamp = Array.from(selectCamp.options);
+    const opcaoCamp = opcoesCamp.find(op => normalizarTexto(op.value) === normalizarTexto(campeonatoURL));
 
-  if(opcaoEncontrada){
-    selectCamp.value = opcaoEncontrada.value;
+    if(opcaoCamp){
+      selectCamp.value = opcaoCamp.value;
+    }
+  }
+
+  if(categoriaURL){
+    const selectCat = document.getElementById("filtroCategoria");
+    const opcoesCat = Array.from(selectCat.options);
+    const opcaoCat = opcoesCat.find(op => normalizarTexto(op.value) === normalizarTexto(categoriaURL));
+
+    if(opcaoCat){
+      selectCat.value = opcaoCat.value;
+    }
   }
 }
 
@@ -447,7 +459,7 @@ window.carregarJogos = function(){
 
 await carregarDados();
 preencherFiltros();
-aplicarCampeonatoDaURL();
+aplicarFiltrosDaURL();
 carregarJogos();
 </script>
 
