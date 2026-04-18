@@ -240,6 +240,11 @@ let sumulas = [];
 let jogadores = [];
 let times = [];
 
+function getParametro(nome){
+  const params = new URLSearchParams(window.location.search);
+  return params.get(nome);
+}
+
 function normalizarTexto(texto){
   return String(texto || "")
     .trim()
@@ -288,6 +293,19 @@ function preencherFiltroCampeonato(){
   listaCampeonatos.forEach(c => {
     select.innerHTML += `<option value="${c}">${c}</option>`;
   });
+}
+
+function aplicarCampeonatoDaURL(){
+  const campeonatoURL = getParametro("campeonato");
+  if(!campeonatoURL) return;
+
+  const selectCamp = document.getElementById("filtroCampeonato");
+  const opcoes = Array.from(selectCamp.options);
+  const opcaoEncontrada = opcoes.find(op => normalizarTexto(op.value) === normalizarTexto(campeonatoURL));
+
+  if(opcaoEncontrada){
+    selectCamp.value = opcaoEncontrada.value;
+  }
 }
 
 function getFiltros(){
@@ -514,6 +532,7 @@ async function iniciarPagina(){
     snapTimes.forEach(docSnap => times.push({ id: docSnap.id, ...docSnap.data() }));
 
     preencherFiltroCampeonato();
+    aplicarCampeonatoDaURL();
     carregarSuspensos();
   }catch(erro){
     console.error(erro);
