@@ -10,18 +10,21 @@
       --yellow:#ffe600;
       --yellow-2:#ffd000;
       --yellow-soft:rgba(255,230,0,.14);
+      --yellow-soft-2:rgba(255,230,0,.08);
       --white:#ffffff;
       --muted:#d7dfeb;
       --line:rgba(255,230,0,.18);
+      --line-soft:rgba(255,255,255,.08);
       --shadow:0 14px 32px rgba(0,0,0,.30);
-      --sidebar-width:280px;
+      --shadow-2:0 20px 40px rgba(0,0,0,.45);
+      --sidebar-width:320px;
       --blue-bg:#031022;
       --blue-1:#051935;
       --blue-2:#0b2a57;
       --blue-3:#102d5c;
+      --blue-4:#0c2347;
       --card:rgba(8,28,58,.94);
-      --green:#10a542;
-      --green-2:#0b7c31;
+      --card-2:rgba(9,32,66,.94);
       --radius:18px;
     }
 
@@ -45,10 +48,6 @@
       overflow-x:hidden;
     }
 
-    body.sidebar-collapsed{
-      --sidebar-width:0px;
-    }
-
     a{
       text-decoration:none;
       color:inherit;
@@ -59,9 +58,72 @@
       display:block;
     }
 
+    button{
+      font-family:inherit;
+    }
+
     .wrap{
-      width:min(1220px, calc(100% - 32px));
+      width:min(1240px, calc(100% - 32px));
       margin:0 auto;
+    }
+
+    .logo-link{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-width:0;
+    }
+
+    .logo-link img{
+      width:56px;
+      height:56px;
+      border-radius:50%;
+      object-fit:cover;
+      border:2px solid var(--yellow);
+      background:#fff;
+      flex-shrink:0;
+    }
+
+    .logo-text{
+      display:flex;
+      flex-direction:column;
+      min-width:0;
+      gap:2px;
+    }
+
+    .logo-text strong{
+      color:var(--white);
+      font-size:15px;
+      line-height:1.2;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .logo-text span{
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.2;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    /* OVERLAY */
+    .sidebar-overlay{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,.48);
+      backdrop-filter:blur(2px);
+      z-index:1390;
+      opacity:0;
+      pointer-events:none;
+      transition:.28s ease;
+    }
+
+    .sidebar-overlay.show{
+      opacity:1;
+      pointer-events:auto;
     }
 
     /* SIDEBAR */
@@ -72,82 +134,88 @@
       width:var(--sidebar-width);
       height:100vh;
       overflow-y:auto;
-      background:linear-gradient(180deg, rgba(3,16,34,.98), rgba(5,25,53,.98));
+      background:linear-gradient(180deg, rgba(3,16,34,.985), rgba(5,25,53,.985));
       border-right:1px solid var(--line);
-      z-index:1300;
+      z-index:1400;
       padding:22px 18px 28px;
-      transition:width .35s ease, transform .35s ease, padding .35s ease;
-      box-shadow:var(--shadow);
+      box-shadow:var(--shadow-2);
+      transform:translateX(-100%);
+      transition:transform .30s ease;
+    }
+
+    .sidebar.open{
+      transform:translateX(0);
     }
 
     .sidebar-header{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:10px;
       padding-bottom:18px;
       border-bottom:1px solid var(--line);
       margin-bottom:18px;
     }
 
-    .brand{
+    .sidebar-close{
+      width:40px;
+      height:40px;
+      border:none;
+      border-radius:12px;
+      background:rgba(255,255,255,.08);
+      color:#fff;
+      cursor:pointer;
+      font-size:20px;
+      flex-shrink:0;
+      transition:.2s ease;
+    }
+
+    .sidebar-close:hover{
+      background:var(--yellow);
+      color:#031022;
+    }
+
+    .sidebar-block{
+      margin-bottom:18px;
+      padding-bottom:14px;
+      border-bottom:1px solid rgba(255,255,255,.08);
+    }
+
+    .sidebar-block:last-child{
+      border-bottom:none;
+      margin-bottom:0;
+      padding-bottom:0;
+    }
+
+    .sidebar-title{
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:.10em;
+      color:var(--yellow);
+      margin-bottom:10px;
+      font-weight:700;
       display:flex;
       align-items:center;
-      gap:12px;
-      min-width:0;
-    }
-
-    .brand img{
-      width:58px;
-      height:58px;
-      border-radius:50%;
-      object-fit:cover;
-      border:2px solid var(--yellow);
-      background:#fff;
-      flex-shrink:0;
-    }
-
-    .brand-text{
-      display:flex;
-      flex-direction:column;
-      gap:3px;
-      min-width:0;
-    }
-
-    .brand-text strong{
-      color:var(--yellow);
-      font-size:15px;
-      line-height:1.2;
-    }
-
-    .brand-text span{
-      color:var(--muted);
-      font-size:12px;
-      line-height:1.2;
-    }
-
-    .menu-title{
-      font-size:13px;
-      text-transform:uppercase;
-      letter-spacing:.08em;
-      color:var(--yellow);
-      margin:18px 0 10px;
-      font-weight:700;
+      gap:8px;
     }
 
     .side-menu{
       display:flex;
       flex-direction:column;
-      gap:8px;
+      gap:7px;
     }
 
     .side-menu a{
+      display:flex;
+      align-items:center;
+      gap:10px;
       padding:12px 14px;
       border-radius:12px;
       color:#fff;
       background:rgba(255,255,255,.04);
       border:1px solid transparent;
-      transition:.25s ease;
+      transition:.22s ease;
       font-size:14px;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
     }
 
     .side-menu a:hover,
@@ -158,48 +226,51 @@
       transform:translateX(4px);
     }
 
-    body.sidebar-collapsed .sidebar{
-      transform:translateX(-100%);
-      width:0;
-      padding:0;
-      border-right:none;
-      overflow:hidden;
+    .side-icon{
+      width:20px;
+      text-align:center;
+      flex-shrink:0;
     }
 
-    /* TOPBAR */
+    /* HEADER */
     .topbar{
       position:sticky;
       top:0;
       z-index:1200;
       background:rgba(3,16,34,.88);
-      backdrop-filter:blur(10px);
+      backdrop-filter:blur(12px);
       border-bottom:1px solid var(--line);
-      margin-left:var(--sidebar-width);
-      transition:margin-left .35s ease;
     }
 
     .topbar-content{
-      min-height:86px;
-      display:flex;
+      min-height:92px;
+      display:grid;
+      grid-template-columns:auto 1fr auto;
       align-items:center;
-      justify-content:space-between;
-      gap:18px;
+      gap:16px;
       padding:14px 0;
     }
 
+    .top-left{
+      display:flex;
+      align-items:center;
+      gap:14px;
+      min-width:0;
+    }
+
     .menu-toggle{
+      width:48px;
+      height:48px;
       border:none;
+      border-radius:14px;
       background:var(--yellow);
       color:#031022;
-      width:46px;
-      height:46px;
-      border-radius:12px;
       font-size:24px;
       font-weight:700;
       cursor:pointer;
       box-shadow:var(--shadow);
       flex-shrink:0;
-      transition:.25s ease;
+      transition:.22s ease;
     }
 
     .menu-toggle:hover{
@@ -207,53 +278,101 @@
       transform:translateY(-2px);
     }
 
-    .top-links{
+    .top-nav{
       display:flex;
-      flex-wrap:wrap;
       justify-content:center;
-      gap:10px;
-      flex:1;
+      align-items:center;
+      gap:8px;
+      flex-wrap:wrap;
+      min-width:0;
     }
 
-    .top-links a{
+    .nav-link,
+    .nav-dropdown-btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      padding:11px 14px;
+      border-radius:12px;
       color:#fff;
+      font-weight:700;
       font-size:14px;
-      padding:10px 12px;
-      border-radius:10px;
-      transition:.25s ease;
+      transition:.22s ease;
+      border:1px solid transparent;
+      background:transparent;
+      cursor:pointer;
     }
 
-    .top-links a:hover,
-    .top-links a.active{
+    .nav-link:hover,
+    .nav-link.active,
+    .nav-dropdown-btn:hover,
+    .nav-dropdown.open .nav-dropdown-btn{
       color:var(--yellow);
       background:rgba(255,255,255,.05);
+      border-color:rgba(255,255,255,.06);
+    }
+
+    .nav-dropdown{
+      position:relative;
+    }
+
+    .nav-dropdown-menu{
+      position:absolute;
+      top:calc(100% + 10px);
+      left:0;
+      min-width:220px;
+      background:rgba(4,23,52,.98);
+      border:1px solid var(--line);
+      border-radius:16px;
+      box-shadow:var(--shadow-2);
+      padding:10px;
+      display:none;
+      flex-direction:column;
+      gap:6px;
+      z-index:1250;
+    }
+
+    .nav-dropdown.open .nav-dropdown-menu{
+      display:flex;
+    }
+
+    .nav-dropdown-menu a{
+      padding:12px 14px;
+      border-radius:12px;
+      color:#fff;
+      font-size:14px;
+      transition:.2s ease;
+    }
+
+    .nav-dropdown-menu a:hover{
+      background:var(--yellow-soft);
+      color:var(--yellow);
     }
 
     .top-actions{
       display:flex;
       align-items:center;
       gap:10px;
-      flex-shrink:0;
-      flex-wrap:wrap;
       justify-content:flex-end;
+      flex-wrap:wrap;
     }
 
-    .btn-top,
-    .btn-primary,
-    .btn-secondary,
-    .btn-outline{
+    .btn-login,
+    .btn-highlight{
       border:none;
       cursor:pointer;
       font-weight:700;
-      transition:.25s ease;
+      transition:.22s ease;
       display:inline-flex;
       align-items:center;
       justify-content:center;
       gap:8px;
       text-decoration:none;
+      white-space:nowrap;
     }
 
-    .btn-top{
+    .btn-login{
       padding:12px 16px;
       border-radius:12px;
       background:var(--yellow);
@@ -262,12 +381,12 @@
       box-shadow:var(--shadow);
     }
 
-    .btn-top:hover{
-      transform:translateY(-2px);
+    .btn-login:hover{
       background:var(--yellow-2);
+      transform:translateY(-2px);
     }
 
-    .btn-outline{
+    .btn-highlight{
       padding:12px 16px;
       border-radius:12px;
       background:rgba(255,255,255,.08);
@@ -276,16 +395,39 @@
       font-size:14px;
     }
 
-    .btn-outline:hover{
+    .btn-highlight:hover{
       background:rgba(255,255,255,.14);
       transform:translateY(-2px);
     }
+    /* FAIXA DE DESTAQUE */
+    .ticker{
+      background:linear-gradient(90deg, rgba(255,230,0,.14), rgba(255,255,255,.03));
+      border-bottom:1px solid var(--line);
+    }
 
-    .hero,
-    .conteudo,
-    footer{
-      margin-left:var(--sidebar-width);
-      transition:margin-left .35s ease;
+    .ticker-content{
+      min-height:48px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:12px;
+      text-align:center;
+      color:#fff;
+      font-weight:700;
+      font-size:14px;
+    }
+
+    .ticker-badge{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:6px 12px;
+      border-radius:999px;
+      background:var(--yellow);
+      color:#031022;
+      font-size:12px;
+      font-weight:800;
+      letter-spacing:.04em;
     }
 
     /* HERO */
@@ -295,7 +437,7 @@
 
     .hero-panel{
       display:grid;
-      grid-template-columns:1.15fr .95fr;
+      grid-template-columns:1.08fr .92fr;
       gap:22px;
       align-items:center;
       background:linear-gradient(145deg, rgba(8,28,58,.96), rgba(16,45,92,.92));
@@ -303,14 +445,14 @@
       border-radius:26px;
       overflow:hidden;
       box-shadow:var(--shadow);
-      min-height:500px;
+      min-height:520px;
     }
 
     .hero-copy{
       padding:42px;
     }
 
-    .tag{
+    .hero-tag{
       display:inline-flex;
       align-items:center;
       padding:8px 14px;
@@ -329,14 +471,14 @@
       margin-bottom:14px;
     }
 
-    .subtitle{
+    .hero-subtitle{
       font-size:24px;
       font-weight:700;
       color:#fff;
       margin-bottom:14px;
     }
 
-    .desc{
+    .hero-desc{
       font-size:18px;
       line-height:1.7;
       color:var(--muted);
@@ -348,6 +490,19 @@
       flex-wrap:wrap;
       gap:14px;
       margin-top:28px;
+    }
+
+    .btn-primary,
+    .btn-secondary{
+      border:none;
+      cursor:pointer;
+      font-weight:700;
+      transition:.22s ease;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      text-decoration:none;
     }
 
     .btn-primary{
@@ -380,14 +535,22 @@
 
     .hero-art{
       height:100%;
-      min-height:440px;
+      min-height:460px;
       background:rgba(255,255,255,.03);
+      position:relative;
     }
 
     .hero-art img{
       width:100%;
       height:100%;
       object-fit:cover;
+    }
+
+    .hero-glow{
+      position:absolute;
+      inset:0;
+      background:linear-gradient(180deg, rgba(0,0,0,.00), rgba(0,0,0,.18));
+      pointer-events:none;
     }
 
     /* CONTEÚDO */
@@ -408,7 +571,9 @@
       border-radius:20px;
       padding:24px 18px;
       box-shadow:var(--shadow);
-      transition:.25s ease;
+      transition:.22s ease;
+      text-decoration:none;
+      color:inherit;
     }
 
     .pillar:hover{
@@ -425,16 +590,7 @@
       justify-content:center;
       margin-bottom:16px;
       border:1px solid var(--line);
-    }
-
-    .pillar-icon svg{
-      width:28px;
-      height:28px;
-      fill:none;
-      stroke:var(--yellow);
-      stroke-width:1.8;
-      stroke-linecap:round;
-      stroke-linejoin:round;
+      font-size:24px;
     }
 
     .pillar h3{
@@ -491,22 +647,14 @@
       align-items:center;
       justify-content:center;
       flex-shrink:0;
-    }
-
-    .panel-head-icon svg{
-      width:24px;
-      height:24px;
-      fill:none;
-      stroke:var(--yellow);
-      stroke-width:1.8;
-      stroke-linecap:round;
-      stroke-linejoin:round;
+      font-size:22px;
     }
 
     .panel h2{
       color:var(--yellow);
       font-size:28px;
     }
+
     .panel-head a{
       color:#fff;
       font-weight:700;
@@ -539,6 +687,11 @@
       color:#fff;
       vertical-align:middle;
       font-size:14px;
+    }
+
+    .match-table tbody tr{
+      cursor:pointer;
+      transition:.2s ease;
     }
 
     .match-table tbody tr:hover{
@@ -644,7 +797,6 @@
       from{opacity:.25; transform:translateX(10px);}
       to{opacity:1; transform:translateX(0);}
     }
-
     .news-vertical-wrap{
       height:440px;
       overflow:hidden;
@@ -669,7 +821,7 @@
       border:1px solid rgba(255,255,255,.08);
       border-radius:16px;
       padding:12px;
-      transition:.25s ease;
+      transition:.22s ease;
       cursor:pointer;
     }
 
@@ -746,7 +898,7 @@
 
     .footer-top{
       display:grid;
-      grid-template-columns:1.2fr 1fr 1fr 1fr;
+      grid-template-columns:1.15fr 1fr 1fr 1fr;
       gap:22px;
       padding-bottom:26px;
     }
@@ -804,8 +956,7 @@
       justify-content:center;
       background:rgba(255,255,255,.06);
       font-size:18px;
-      transition:.25s ease;
-      transition:.25s ease;
+      transition:.22s ease;
     }
 
     .social a:hover{
@@ -822,37 +973,16 @@
       font-size:14px;
     }
 
-    @media (max-width:1200px){
-      .top-links{
-        display:none;
-      }
-
-      body,
-      body.sidebar-collapsed{
-        --sidebar-width:280px;
-      }
-
-      .sidebar{
-        transform:translateX(-100%);
-      }
-
-      .sidebar.open{
-        transform:translateX(0);
-      }
-
-      .topbar,
-      .hero,
-      .conteudo,
-      footer{
-        margin-left:0;
-      }
-
+    @media (max-width:1180px){
       .topbar-content{
-        justify-content:space-between;
+        grid-template-columns:auto 1fr;
       }
-    }
 
-    @media (max-width:1024px){
+      .top-actions{
+        grid-column:1 / -1;
+        justify-content:flex-end;
+      }
+
       .hero-panel{
         grid-template-columns:1fr;
       }
@@ -878,26 +1008,38 @@
       }
     }
 
-    @media (max-width:700px){
-      .wrap{
-        width:min(100% - 20px, 1200px);
+    @media (max-width:860px){
+      .top-nav{
+        justify-content:flex-start;
       }
 
-      .brand-text strong{
+      .nav-link,
+      .nav-dropdown-btn{
+        font-size:13px;
+        padding:10px 12px;
+      }
+    }
+
+    @media (max-width:700px){
+      .wrap{
+        width:min(100% - 20px, 1240px);
+      }
+
+      .logo-text strong{
         font-size:13px;
       }
 
-      .brand-text span{
+      .logo-text span{
         font-size:11px;
       }
 
       .top-actions{
-        flex-wrap:wrap;
-        justify-content:flex-end;
+        width:100%;
+        justify-content:flex-start;
       }
 
-      .btn-top,
-      .btn-outline{
+      .btn-login,
+      .btn-highlight{
         font-size:13px;
         padding:11px 14px;
       }
@@ -906,11 +1048,11 @@
         font-size:36px;
       }
 
-      .subtitle{
+      .hero-subtitle{
         font-size:20px;
       }
 
-      .desc{
+      .hero-desc{
         font-size:16px;
       }
 
@@ -948,81 +1090,120 @@
       .news-slide img{
         height:180px;
       }
+
+      .nav-dropdown-menu{
+        min-width:200px;
+      }
     }
   </style>
 </head>
 <body>
 
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-header">
-      <div class="brand">
+      <a href="index.html" class="logo-link">
         <img src="logo-liga.jfif" alt="Logo Liga Goiana">
-        <div class="brand-text">
+        <div class="logo-text">
           <strong>Liga Goiana de Futebol de Base</strong>
           <span>Onde o talento encontra o futuro</span>
         </div>
+      </a>
+
+      <button class="sidebar-close" id="sidebarClose" type="button">×</button>
+    </div>
+
+    <div class="sidebar-block">
+      <div class="sidebar-title">🏆 Competição</div>
+      <div class="side-menu">
+        <a href="classificacao.html"><span class="side-icon">🏆</span>Classificação</a>
+        <a href="tabela.html"><span class="side-icon">📅</span>Tabela de Jogos</a>
+        <a href="artilharia.html"><span class="side-icon">⚽</span>Artilharia</a>
+        <a href="cartoes.html"><span class="side-icon">🟨</span>Cartões / Suspensos</a>
       </div>
     </div>
 
-    <div class="menu-title">Mais páginas públicas</div>
-    <div class="side-menu">
-      <a href="categorias.html">Categoria</a>
-      <a href="tabela.html">Tabelas</a>
-      <a href="classificacao.html">Classificação</a>
-      <a href="cartoes.html">Cartões</a>
-      <a href="login.html">Login / Cadastro</a>
-      <a href="admin.html">Painel ADM</a>
+    <div class="sidebar-block">
+      <div class="sidebar-title">📂 Informações</div>
+      <div class="side-menu">
+        <a href="categorias.html"><span class="side-icon">📂</span>Categorias</a>
+        <a href="times.html"><span class="side-icon">🛡️</span>Clubes / Times</a>
+        <a href="regulamento.html"><span class="side-icon">📜</span>Regulamento</a>
+      </div>
     </div>
 
-    <div class="menu-title">Atalhos</div>
-    <div class="side-menu">
-      <a href="index.html" class="active">Página Inicial</a>
-      <a href="#contato">Contato</a>
+    <div class="sidebar-block">
+      <div class="sidebar-title">📰 Ajuda</div>
+      <div class="side-menu">
+        <a href="noticias.html"><span class="side-icon">📰</span>Notícias / Avisos</a>
+        <a href="#contato"><span class="side-icon">📞</span>Contato / Localização</a>
+        <a href="sobre.html"><span class="side-icon">ℹ️</span>Sobre a Liga</a>
+      </div>
+    </div>
+
+    <div class="sidebar-block">
+      <div class="sidebar-title">👤 Área Restrita</div>
+      <div class="side-menu">
+        <a href="login.html"><span class="side-icon">👤</span>Login / Cadastro</a>
+        <a href="admin.html" id="menuAdmin"><span class="side-icon">⚙️</span>Painel Administrativo</a>
+      </div>
     </div>
   </aside>
 
   <header class="topbar">
     <div class="wrap topbar-content">
-      <button class="menu-toggle" id="menuToggle" onclick="toggleSidebar()">☰</button>
+      <div class="top-left">
+        <button class="menu-toggle" id="menuToggle" type="button">☰</button>
 
-      <div class="brand">
-        <img src="logo-liga.jfif" alt="Logo Liga Goiana">
-        <div class="brand-text">
-          <strong>Liga Goiana de Futebol de Base</strong>
-          <span>Onde o talento encontra o futuro</span>
+        <a href="index.html" class="logo-link">
+          <img src="logo-liga.jfif" alt="Logo Liga Goiana">
+          <div class="logo-text">
+            <strong>Liga Goiana de Futebol de Base</strong>
+            <span>Onde o talento encontra o futuro</span>
+          </div>
+        </a>
+      </div>
+      <nav class="top-nav">
+        <a href="index.html" class="nav-link active">Início</a>
+        <a href="campeonatos.html" class="nav-link">Campeonatos</a>
+        <a href="jogos.html" class="nav-link">Tabela / Jogos</a>
+        <a href="classificacao.html" class="nav-link">Classificação</a>
+
+        <div class="nav-dropdown" id="estatisticasDropdown">
+          <button class="nav-dropdown-btn" type="button">Estatísticas ▼</button>
+          <div class="nav-dropdown-menu">
+            <a href="artilharia.html">Artilharia</a>
+            <a href="cartoes.html">Cartões</a>
+            <a href="suspensos.html">Suspensos</a>
+          </div>
         </div>
-      </div>
 
-      <div class="top-links">
-        <a href="index.html" class="active">Início</a>
-        <a href="campeonatos.html">Campeonato</a>
-        <a href="times.html">Times</a>
-        <a href="jogadores.html">Jogadores</a>
-        <a href="tecnicos.html">Técnicos</a>
-        <a href="arbitros.html">Árbitros</a>
-        <a href="assistentes.html">Assistentes</a>
-        <a href="sumulas-publicas.html">Súmulas</a>
-        <a href="artilharia.html">Artilharia</a>
-        <a href="jogos.html">Jogos</a>
-        <a href="noticias.html">Notícias</a>
-        <a href="#contato">Contato</a>
-      </div>
+        <a href="times.html" class="nav-link">Clubes / Times</a>
+      </nav>
 
       <div class="top-actions">
-        <a class="btn-outline" href="javascript:history.back()">← Voltar</a>
-        <a class="btn-top" href="index.html">🏠 Início</a>
+        <a href="login.html" class="btn-login">🔐 Login / Cadastro</a>
+        <a href="inscricoes.html" class="btn-highlight">📣 Inscrições Abertas</a>
       </div>
     </div>
   </header>
+
+  <div class="ticker" id="tickerFaixa" style="display:none;">
+    <div class="wrap ticker-content">
+      <span class="ticker-badge" id="tickerBadge">RESULTADOS</span>
+      <span id="tickerTexto">Últimos jogos atualizados.</span>
+    </div>
+  </div>
 
   <section class="hero">
     <div class="wrap">
       <div class="hero-panel">
         <div class="hero-copy">
-          <span class="tag">Liga Oficial</span>
+          <span class="hero-tag">Liga Oficial</span>
           <h1>Bem-vindo à Liga Goiana de Base</h1>
-          <div class="subtitle">Onde o talento encontra o futuro!</div>
-          <p class="desc">
+          <div class="hero-subtitle">Onde o talento encontra o futuro!</div>
+          <p class="hero-desc">
             Competição, formação e desenvolvimento para revelar talentos
             e fortalecer o futebol de base em Goiás.
           </p>
@@ -1030,13 +1211,13 @@
           <div class="hero-actions">
             <a href="campeonatos.html" class="btn-primary">🏆 Ver Campeonatos</a>
             <a href="times.html" class="btn-secondary">👥 Conhecer Equipes</a>
-            <a href="jogadores.html" class="btn-secondary">🧍 Ver Jogadores</a>
             <a href="jogos.html" class="btn-secondary">📅 Ver Jogos</a>
           </div>
         </div>
 
         <div class="hero-art">
           <img src="hero-liga.jpeg" alt="Hero Liga Goiana" onerror="this.src='fundo.png'">
+          <div class="hero-glow"></div>
         </div>
       </div>
     </div>
@@ -1048,14 +1229,7 @@
       <section class="panel" style="margin-bottom:22px;">
         <div class="panel-head">
           <div class="panel-head-title">
-            <div class="panel-head-icon">
-              <svg viewBox="0 0 24 24">
-                <path d="M4 19V5h16v14"></path>
-                <path d="M8 9h8"></path>
-                <path d="M8 13h8"></path>
-                <path d="M8 17h5"></path>
-              </svg>
-            </div>
+            <div class="panel-head-icon">📰</div>
             <h2>Últimas Notícias</h2>
           </div>
           <a href="noticias.html">Ver notícias →</a>
@@ -1070,14 +1244,7 @@
         <section class="panel">
           <div class="panel-head">
             <div class="panel-head-title">
-              <div class="panel-head-icon">
-                <svg viewBox="0 0 24 24">
-                  <rect x="3" y="5" width="18" height="16" rx="2"></rect>
-                  <path d="M8 3v4"></path>
-                  <path d="M16 3v4"></path>
-                  <path d="M3 10h18"></path>
-                </svg>
-              </div>
+              <div class="panel-head-icon">📅</div>
               <h2>Próximos Jogos</h2>
             </div>
             <a href="jogos.html">Ver todos →</a>
@@ -1099,14 +1266,7 @@
         <aside class="panel">
           <div class="panel-head">
             <div class="panel-head-title">
-              <div class="panel-head-icon">
-                <svg viewBox="0 0 24 24">
-                  <path d="M4 19V5h16v14"></path>
-                  <path d="M8 9h8"></path>
-                  <path d="M8 13h8"></path>
-                  <path d="M8 17h5"></path>
-                </svg>
-              </div>
+              <div class="panel-head-icon">📢</div>
               <h2>Últimas Notícias</h2>
             </div>
             <a href="noticias.html">Ver notícias →</a>
@@ -1138,60 +1298,34 @@
       </section>
 
       <div class="cards-pilares">
-        <a class="pillar" href="campeonatos.html" style="text-decoration:none;color:inherit;">
-          <div class="pillar-icon">
-            <svg viewBox="0 0 24 24">
-              <path d="M12 3l1.8 3.6 4 .6-2.9 2.8.7 4-3.6-1.9-3.6 1.9.7-4-2.9-2.8 4-.6"></path>
-              <path d="M7 15c1.2 2.7 2.9 4 5 4s3.8-1.3 5-4"></path>
-            </svg>
-          </div>
-          <h3>Campeonatos Publicados</h3>
-          <p>Veja os campeonatos ativos, categorias participantes e acesse a página pública de cada competição.</p>
+        <a class="pillar" href="classificacao.html">
+          <div class="pillar-icon">🏆</div>
+          <h3>Classificação</h3>
+          <p>Veja a pontuação atual, posições, vitórias, empates, derrotas e saldo de gols das equipes.</p>
         </a>
 
-        <a class="pillar" href="times.html" style="text-decoration:none;color:inherit;">
-          <div class="pillar-icon">
-            <svg viewBox="0 0 24 24">
-              <path d="M12 3l7 3v5c0 5-3.5 8-7 10-3.5-2-7-5-7-10V6z"></path>
-              <path d="M9.5 12.5l1.7 1.7 3.3-3.7"></path>
-            </svg>
-          </div>
-          <h3>Times Participantes</h3>
-          <p>Abra os escudos, categorias, elenco e estatísticas públicas de cada equipe cadastrada.</p>
+        <a class="pillar" href="jogos.html">
+          <div class="pillar-icon">📅</div>
+          <h3>Tabela / Jogos</h3>
+          <p>Acompanhe próximas rodadas, resultados, horários, locais e categorias de cada confronto.</p>
         </a>
 
-        <a class="pillar" href="jogadores.html" style="text-decoration:none;color:inherit;">
-          <div class="pillar-icon">
-            <svg viewBox="0 0 24 24">
-              <path d="M4 18h16"></path>
-              <path d="M6 16V9"></path>
-              <path d="M12 16V6"></path>
-              <path d="M18 16V11"></path>
-              <path d="M14 8l4-4"></path>
-              <path d="M18 4h-4"></path>
-              <path d="M18 4v4"></path>
-            </svg>
-          </div>
-          <h3>Jogadores</h3>
-          <p>Consulte atletas, posições, números, categorias e estatísticas públicas atualizadas.</p>
+        <a class="pillar" href="artilharia.html">
+          <div class="pillar-icon">⚽</div>
+          <h3>Artilharia</h3>
+          <p>Destaque para os atletas que estão decidindo os campeonatos com gols e grandes atuações.</p>
         </a>
 
-        <a class="pillar" href="tabela.html" style="text-decoration:none;color:inherit;">
-          <div class="pillar-icon">
-            <svg viewBox="0 0 24 24">
-              <path d="M8 12l2-2a2 2 0 0 1 3 0l3 3"></path>
-              <path d="M7 13l-2 2a2 2 0 0 0 0 3"></path>
-              <path d="M17 11l2-2a2 2 0 0 1 0-3"></path>
-              <path d="M9 17l1 1a2 2 0 0 0 3 0l1-1"></path>
-            </svg>
-          </div>
-          <h3>Tabelas e Classificação</h3>
-          <p>Acompanhe classificação, jogos, artilharia, cartões e histórico por campeonato e categoria.</p>
+        <a class="pillar" href="times.html">
+          <div class="pillar-icon">🛡️</div>
+          <h3>Clubes / Times</h3>
+          <p>Consulte escudos, equipes participantes, categorias e informações públicas dos clubes da Liga.</p>
         </a>
       </div>
 
     </main>
   </section>
+
   <footer id="contato">
     <div class="wrap footer-top">
       <div>
@@ -1203,128 +1337,478 @@
             <p>Onde o talento encontra o futuro.</p>
 
             <div class="social">
-              <a href="#">📸</a>
-              <a href="#">📘</a>
-              <a href="#">▶️</a>
+              <a href="https://www.instagram.com/" target="_blank">📸</a>
+              <a href="https://www.facebook.com/" target="_blank">📘</a>
+              <a href="https://www.youtube.com/" target="_blank">▶️</a>
             </div>
           </div>
         </div>
       </div>
 
       <div>
-        <h4>Acesso Rápido</h4>
+        <h4>Menu Principal</h4>
         <a href="index.html">Início</a>
-        <a href="campeonatos.html">Campeonato</a>
-        <a href="times.html">Times</a>
-        <a href="jogos.html">Jogos</a>
-        <a href="tabela.html">Tabelas</a>
-        <a href="noticias.html">Notícias</a>
+        <a href="campeonatos.html">Campeonatos</a>
+        <a href="jogos.html">Tabela / Jogos</a>
+        <a href="classificacao.html">Classificação</a>
+        <a href="artilharia.html">Artilharia</a>
+        <a href="times.html">Clubes / Times</a>
       </div>
 
       <div>
-        <h4>Menu Público</h4>
-        <a href="jogadores.html">Jogadores</a>
-        <a href="tecnicos.html">Técnicos</a>
-        <a href="arbitros.html">Árbitros</a>
-        <a href="assistentes.html">Assistentes</a>
-        <a href="sumulas-publicas.html">Súmulas</a>
-        <a href="artilharia.html">Artilharia</a>
+        <h4>Páginas Públicas</h4>
+        <a href="categorias.html">Categorias</a>
+        <a href="cartoes.html">Cartões</a>
+        <a href="suspensos.html">Suspensos</a>
+        <a href="noticias.html">Notícias</a>
+        <a href="regulamento.html">Regulamento</a>
+        <a href="sobre.html">Sobre a Liga</a>
       </div>
 
       <div>
         <h4>Contato</h4>
-        <a href="https://wa.me/5562981916316" target="_blank">(62) 98191-6316</a>
+        <a href="https://wa.me/5562984284785?text=Ol%C3%A1%2C%20vim%20pelo%20site%20da%20Liga%20Goiana%20de%20Futebol%20de%20Base." target="_blank">(62) 98428-4785</a>
         <a href="mailto:ligagoianaoficial@gmail.com">ligagoianaoficial@gmail.com</a>
         <p>Goiânia - GO</p>
       </div>
     </div>
 
     <div class="wrap copyright">
-      © 2026 Liga Goiana de Futebol de Base
+      © 2026 Liga Goiana de Futebol de Base. Todos os direitos reservados.
     </div>
   </footer>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
+    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-firestore.js";
 
-<script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyCyArj4yRlEl-yibkc0VEmL_4UJpRHHQSc",
+      authDomain: "liga-goiana-base.firebaseapp.com",
+      projectId: "liga-goiana-base",
+      storageBucket: "liga-goiana-base.appspot.com",
+      messagingSenderId: "952863591183",
+      appId: "1:952863591183:web:4eea34f494ba2dd754cc7a"
+    };
 
-// SIDEBAR
-function toggleSidebar(){
-  document.getElementById("sidebar").classList.toggle("open");
-}
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
 
-// ================= NOTÍCIAS =================
-const noticias = [
-{
-titulo:"Abertura oficial da temporada",
-resumo:"A Liga Goiana inicia mais um ciclo com grandes equipes.",
-data:"Abr 2026",
-imagem:"fundo.png"
-},
-{
-titulo:"Copa União confirmada",
-resumo:"Categorias definidas com grandes confrontos.",
-data:"Abr 2026",
-imagem:"hero-liga.jpeg"
-}
-];
+    const noticiasPadrao = [
+      {
+        titulo: "Abertura oficial da temporada",
+        resumo: "A Liga Goiana inicia mais um ciclo com grandes expectativas e fortes equipes em todas as categorias.",
+        data: "15 Abr 2026",
+        imagem: "fundo.png"
+      },
+      {
+        titulo: "Copa União de Base confirmada",
+        resumo: "Categorias definidas e confrontos prometem grandes jogos, emoção e muito talento em campo.",
+        data: "10 Abr 2026",
+        imagem: "copa-uniao.jpeg"
+      },
+      {
+        titulo: "Mais clubes fortalecem a Liga",
+        resumo: "Projetos de todo o estado elevam ainda mais o nível técnico da competição e da formação.",
+        data: "05 Abr 2026",
+        imagem: "hero-liga.jpeg"
+      }
+    ];
 
-const slider = document.getElementById("newsSliderTrack");
-const vertical = document.getElementById("newsVerticalTrack");
+    const jogosPadrao = [
+      {
+        data: "2026-04-20",
+        hora: "09:00",
+        mandante: "Atlético GO",
+        visitante: "Vila Nova",
+        categoria: "Sub-15",
+        campeonato: "Copa União",
+        local: "Campo 01",
+        status: "agendado",
+        escudoMandante: "atletico-go.png",
+        escudoVisitante: "vila-nova.png"
+      },
+      {
+        data: "2026-04-20",
+        hora: "10:30",
+        mandante: "Campinas",
+        visitante: "Hidrolândia",
+        categoria: "Sub-13",
+        campeonato: "Copa União",
+        local: "Campo 02",
+        status: "agendado",
+        escudoMandante: "campinas.png",
+        escudoVisitante: "hidrolandia.png"
+      },
+      {
+        data: "2026-04-20",
+        hora: "14:00",
+        mandante: "União",
+        visitante: "Independência",
+        categoria: "Sub-17",
+        campeonato: "Liga Goiânia Elite",
+        local: "Estádio Regional",
+        status: "agendado",
+        escudoMandante: "uniao.png",
+        escudoVisitante: "independencia.png"
+      }
+    ];
 
-if(slider){
-slider.innerHTML = noticias.map((n,i)=>`
-<article class="news-slide ${i==0?"active":""}">
-<img src="${n.imagem}">
-<strong>${n.titulo}</strong>
-<p>${n.resumo}</p>
-<span>${n.data}</span>
-</article>
-`).join("");
-}
+    let noticiaAtual = 0;
+    let timerNoticias = null;
+    let jogosCache = [];
+    let noticiasCache = [];
 
-if(vertical){
-vertical.innerHTML = [...noticias,...noticias].map(n=>`
-<div class="news-item">
-<img src="${n.imagem}">
-<div>
-<strong>${n.titulo}</strong>
-<p>${n.resumo}</p>
-<span>${n.data}</span>
-</div>
-</div>
-`).join("");
-}
+    const sidebar = document.getElementById("sidebar");
+    const sidebarOverlay = document.getElementById("sidebarOverlay");
+    const menuToggle = document.getElementById("menuToggle");
+    const sidebarClose = document.getElementById("sidebarClose");
+    const estatisticasDropdown = document.getElementById("estatisticasDropdown");
+    const menuAdmin = document.getElementById("menuAdmin");
 
-// SLIDER AUTO
-let i=0;
-setInterval(()=>{
-const slides=document.querySelectorAll(".news-slide");
-if(!slides.length)return;
+    function abrirSidebar(){
+      sidebar.classList.add("open");
+      sidebarOverlay.classList.add("show");
+    }
 
-slides[i].classList.remove("active");
-i=(i+1)%slides.length;
-slides[i].classList.add("active");
-},3500);
+    function fecharSidebar(){
+      sidebar.classList.remove("open");
+      sidebarOverlay.classList.remove("show");
+    }
 
-// ================= JOGOS =================
-const jogos = [
-{data:"20/04",hora:"09:00",a:"Atlético GO",b:"Vila Nova",cat:"Sub-15",local:"Campo 1"},
-{data:"20/04",hora:"10:30",a:"Campinas",b:"Hidrolândia",cat:"Sub-13",local:"Campo 2"}
-];
+    function toggleSidebar(){
+      if(sidebar.classList.contains("open")){
+        fecharSidebar();
+      }else{
+        abrirSidebar();
+      }
+    }
 
-const tabela = document.getElementById("gamesTableBody");
+    menuToggle?.addEventListener("click", toggleSidebar);
+    sidebarClose?.addEventListener("click", fecharSidebar);
+    sidebarOverlay?.addEventListener("click", fecharSidebar);
 
-if(tabela){
-tabela.innerHTML = jogos.map(j=>`
-<tr>
-<td>${j.data} ${j.hora}</td>
-<td>${j.a} x ${j.b}</td>
-<td><span class="badge">${j.cat}</span></td>
-<td>${j.local}</td>
-</tr>
-`).join("");
-}
+    document.addEventListener("click", function(e){
+      if(sidebar.classList.contains("open")){
+        const clicouNoMenu = sidebar.contains(e.target);
+        const clicouNoBotao = menuToggle.contains(e.target);
+        if(!clicouNoMenu && !clicouNoBotao){
+          fecharSidebar();
+        }
+      }
 
-</script>
+      if(estatisticasDropdown && !estatisticasDropdown.contains(e.target)){
+        estatisticasDropdown.classList.remove("open");
+      }
+    });
 
+    estatisticasDropdown?.querySelector(".nav-dropdown-btn")?.addEventListener("click", function(e){
+      e.stopPropagation();
+      estatisticasDropdown.classList.toggle("open");
+    });
+
+    function formatarDataBR(dataIso, hora){
+      try{
+        const [ano, mes, dia] = String(dataIso).split("-");
+        if(ano && mes && dia){
+          return `${dia}/${mes} - ${hora || "00:00"}`;
+        }
+        return `${dataIso} - ${hora || "00:00"}`;
+      }catch{
+        return `${dataIso} - ${hora || "00:00"}`;
+      }
+    }
+
+    function formatarDataNoticia(valor){
+      if(!valor) return "";
+      if(typeof valor === "string") return valor;
+
+      try{
+        if(valor.seconds){
+          const data = new Date(valor.seconds * 1000);
+          return data.toLocaleDateString("pt-BR");
+        }
+      }catch{}
+
+      return String(valor);
+    }
+
+    function normalizarStatus(status){
+      return String(status || "").toLowerCase().trim();
+    }
+
+    function montarLinkJogo(jogo){
+      return `jogos.html?campeonato=${encodeURIComponent(jogo.campeonato || "")}&categoria=${encodeURIComponent(jogo.categoria || "")}`;
+    }
+
+    function carregarNoticiasLocalStorage(){
+      try{
+        const noticiasSalvas = JSON.parse(localStorage.getItem("liga_noticias"));
+        if(Array.isArray(noticiasSalvas) && noticiasSalvas.length){
+          return noticiasSalvas;
+        }
+      }catch{}
+      return [];
+    }
+
+    function carregarJogosLocalStorage(){
+      try{
+        const jogosSalvos = JSON.parse(localStorage.getItem("liga_jogos"));
+        if(Array.isArray(jogosSalvos) && jogosSalvos.length){
+          return jogosSalvos;
+        }
+      }catch{}
+      return [];
+    }
+
+    async function buscarNoticiasFirebase(){
+      try{
+        const snap = await getDocs(collection(db, "noticias"));
+        const lista = [];
+
+        snap.forEach((docSnap) => {
+          const data = docSnap.data() || {};
+          const publicada =
+            data.publicada === true ||
+            data.publicado === true ||
+            String(data.status || "").toLowerCase() === "publicada" ||
+            String(data.status || "").toLowerCase() === "publicado";
+
+          if(publicada || (!("publicada" in data) && !("publicado" in data) && !data.status)){
+            lista.push({
+              id: docSnap.id,
+              titulo: data.titulo || "Sem título",
+              resumo: data.resumo || data.descricao || "Sem resumo.",
+              data: formatarDataNoticia(data.data || data.criadaEm || data.publicadaEm),
+              imagem: data.imagem || data.capa || "fundo.png"
+            });
+          }
+        });
+
+        lista.sort((a, b) => String(b.data || "").localeCompare(String(a.data || "")));
+        return lista;
+      }catch(erro){
+        console.error("Erro ao buscar notícias no Firebase:", erro);
+        return [];
+      }
+    }
+
+    async function buscarJogosFirebase(){
+      try{
+        const snap = await getDocs(collection(db, "jogos"));
+        const lista = [];
+
+        snap.forEach((docSnap) => {
+          const data = docSnap.data() || {};
+
+          let dataJogo = "";
+          let horaJogo = "";
+
+          if(typeof data.data === "string"){
+            if(data.data.includes("T")){
+              const [parteData, parteHora] = data.data.split("T");
+              dataJogo = parteData;
+              horaJogo = (parteHora || "").slice(0, 5);
+            }else{
+              dataJogo = data.data;
+            }
+          }
+
+          if(!horaJogo && data.hora){
+            horaJogo = data.hora;
+          }
+
+          lista.push({
+            id: docSnap.id,
+            data: dataJogo || data.data || "",
+            hora: horaJogo || "00:00",
+            mandante: data.timeA || data.mandante || "Time A",
+            visitante: data.timeB || data.visitante || "Time B",
+            categoria: data.categoria || "",
+            campeonato: data.campeonato || "",
+            local: data.local || "",
+            status: data.status || "agendado",
+            escudoMandante: data.escudoMandante || "",
+            escudoVisitante: data.escudoVisitante || ""
+          });
+        });
+
+        return lista;
+      }catch(erro){
+        console.error("Erro ao buscar jogos no Firebase:", erro);
+        return [];
+      }
+    }
+
+    function obterNoticias(){
+      const noticiasLocal = carregarNoticiasLocalStorage();
+      if(noticiasCache.length) return noticiasCache;
+      if(noticiasLocal.length) return noticiasLocal;
+      return noticiasPadrao;
+    }
+
+    function obterJogos(){
+      const jogosLocal = carregarJogosLocalStorage();
+      if(jogosCache.length) return jogosCache;
+      if(jogosLocal.length) return jogosLocal;
+      return jogosPadrao;
+    }
+
+    function renderNoticias(){
+      const noticias = obterNoticias();
+      const slider = document.getElementById("newsSliderTrack");
+      const vertical = document.getElementById("newsVerticalTrack");
+
+      if(!slider || !vertical) return;
+
+      const noticiasDuplicadas = [...noticias, ...noticias];
+
+      slider.innerHTML = noticias.map((noticia, index) => `
+        <article class="news-slide ${index === 0 ? "active" : ""}" onclick="window.location.href='noticias.html'">
+          <img src="${noticia.imagem || 'fundo.png'}" alt="${noticia.titulo}" onerror="this.src='fundo.png'">
+          <strong>${noticia.titulo || "Sem título"}</strong>
+          <p>${noticia.resumo || "Sem resumo."}</p>
+          <span>${noticia.data || ""}</span>
+        </article>
+      `).join("");
+
+      vertical.innerHTML = noticiasDuplicadas.map(noticia => `
+        <div class="news-item" onclick="window.location.href='noticias.html'">
+          <img src="${noticia.imagem || 'fundo.png'}" alt="${noticia.titulo}" onerror="this.src='fundo.png'">
+          <div>
+            <strong>${noticia.titulo || "Sem título"}</strong>
+            <p>${noticia.resumo || "Sem resumo."}</p>
+            <span>${noticia.data || ""}</span>
+          </div>
+        </div>
+      `).join("");
+
+      iniciarSliderNoticias();
+    }
+
+    function iniciarSliderNoticias(){
+      const slides = document.querySelectorAll("#newsSliderTrack .news-slide");
+      if(!slides.length) return;
+
+      if(timerNoticias){
+        clearInterval(timerNoticias);
+      }
+
+      noticiaAtual = 0;
+
+      timerNoticias = setInterval(() => {
+        slides[noticiaAtual].classList.remove("active");
+        noticiaAtual = (noticiaAtual + 1) % slides.length;
+        slides[noticiaAtual].classList.add("active");
+      }, 3500);
+    }
+
+    function renderJogos(){
+      const jogos = obterJogos();
+      const tabela = document.getElementById("gamesTableBody");
+      const tickerFaixa = document.getElementById("tickerFaixa");
+      const tickerBadge = document.getElementById("tickerBadge");
+      const tickerTexto = document.getElementById("tickerTexto");
+      if(!tabela) return;
+
+      const agora = new Date();
+
+      const futuros = jogos.filter(jogo => {
+        if(normalizarStatus(jogo.status) === "encerrado") return false;
+        if(!jogo.data) return false;
+
+        const dataHora = new Date(`${jogo.data}T${jogo.hora || "00:00"}:00`);
+        if(isNaN(dataHora.getTime())) return true;
+
+        return dataHora >= agora;
+      }).sort((a, b) => new Date(`${a.data}T${a.hora || "00:00"}:00`) - new Date(`${b.data}T${b.hora || "00:00"}:00`));
+
+      const encerrados = jogos.filter(jogo => {
+        if(normalizarStatus(jogo.status) === "encerrado" || normalizarStatus(jogo.status) === "sumula_enviada") return true;
+        if(!jogo.data) return false;
+
+        const dataHora = new Date(`${jogo.data}T${jogo.hora || "00:00"}:00`);
+        if(isNaN(dataHora.getTime())) return false;
+
+        return dataHora < agora;
+      }).sort((a, b) => new Date(`${b.data}T${b.hora || "00:00"}:00`) - new Date(`${a.data}T${a.hora || "00:00"}:00`));
+
+      if(tickerFaixa && tickerBadge && tickerTexto){
+        if(futuros.length){
+          tickerFaixa.style.display = "block";
+          tickerBadge.textContent = "AO VIVO";
+          tickerTexto.textContent = "Acompanhe jogos, categorias e rodadas da Liga Goiana de Futebol de Base.";
+        }else if(encerrados.length){
+          tickerFaixa.style.display = "block";
+          tickerBadge.textContent = "RESULTADOS";
+          tickerTexto.textContent = "Últimos jogos atualizados e prontos para consulta.";
+        }
+      }
+
+      const listaFinal = futuros.length ? futuros.slice(0, 6) : encerrados.slice(0, 6);
+
+      if(!listaFinal.length){
+        tabela.innerHTML = `
+          <tr>
+            <td colspan="4" style="text-align:center; padding:22px;">
+              Nenhum jogo encontrado no momento.
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tabela.innerHTML = listaFinal.map(jogo => {
+        const linkJogo = montarLinkJogo(jogo);
+
+        return `
+          <tr onclick="window.location.href='${linkJogo}'">
+            <td>${formatarDataBR(jogo.data, jogo.hora)}</td>
+            <td>
+              <div class="confronto">
+                <div class="time-mini">
+                  <img src="${jogo.escudoMandante || 'logo-liga.jfif'}" onerror="this.src='logo-liga.jfif'" class="escudo" alt="${jogo.mandante}">
+                  <span>${jogo.mandante}</span>
+                </div>
+                <span class="vs">X</span>
+                <div class="time-mini">
+                  <img src="${jogo.escudoVisitante || 'logo-liga.jfif'}" onerror="this.src='logo-liga.jfif'" class="escudo" alt="${jogo.visitante}">
+                  <span>${jogo.visitante}</span>
+                </div>
+              </div>
+            </td>
+            <td><span class="badge">${jogo.categoria || "-"}</span></td>
+            <td>${jogo.local || "-"}</td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    function configurarPainelAdmin(){
+      const adminAtivo = localStorage.getItem("liga_admin_logado") === "true";
+      if(menuAdmin){
+        menuAdmin.style.display = adminAtivo ? "flex" : "none";
+      }
+    }
+
+    async function iniciarDadosPagina(){
+      noticiasCache = await buscarNoticiasFirebase();
+      jogosCache = await buscarJogosFirebase();
+      renderNoticias();
+      renderJogos();
+      configurarPainelAdmin();
+    }
+
+    window.addEventListener("DOMContentLoaded", async () => {
+      await iniciarDadosPagina();
+    });
+
+    window.addEventListener("resize", () => {
+      if(window.innerWidth > 700){
+        if(estatisticasDropdown){
+          estatisticasDropdown.classList.remove("open");
+        }
+      }
+    });
+  </script>
 </body>
 </html>
