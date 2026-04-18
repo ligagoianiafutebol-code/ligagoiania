@@ -246,8 +246,8 @@
       flex-shrink:0;
     }
 .topbar{
-      position:relative;
-      top:auto;
+      position:sticky;
+      top:0;
       z-index:1200;
       background:rgba(1,9,24,.96);
       border-bottom:1px solid rgba(255,212,0,.24);
@@ -259,7 +259,7 @@
       display:grid;
       grid-template-columns:auto 1fr auto;
       align-items:center;
-      gap:16px;
+      gap:18px;
       padding:8px 0;
     }
 
@@ -294,7 +294,7 @@
       display:flex;
       justify-content:center;
       align-items:center;
-      gap:2px;
+      gap:10px;
       flex-wrap:wrap;
       min-width:0;
     }
@@ -303,14 +303,13 @@
       display:inline-flex;
       align-items:center;
       justify-content:center;
-      padding:10px 12px;
+      padding:11px 14px;
       color:#fff;
       font-weight:900;
-      font-size:13px;
+      font-size:14px;
       text-transform:uppercase;
       transition:.22s ease;
       position:relative;
-      white-space:nowrap;
     }
 
     .nav-link:hover,
@@ -351,7 +350,7 @@
       text-decoration:none;
       white-space:nowrap;
       text-transform:uppercase;
-      padding:15px 20px;
+      padding:16px 22px;
       border-radius:10px;
       background:transparent;
       color:var(--yellow);
@@ -378,7 +377,7 @@
       text-decoration:none;
       white-space:nowrap;
       text-transform:uppercase;
-      padding:15px 22px;
+      padding:16px 24px;
       border-radius:10px;
       background:var(--yellow);
       color:#031022;
@@ -423,7 +422,8 @@
       background:linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,.24));
       pointer-events:none;
     }
-.hero-panel{
+
+    .hero-panel{
       position:relative;
       z-index:1;
       display:grid;
@@ -483,8 +483,7 @@
       max-width:590px;
       text-shadow:0 4px 14px rgba(0,0,0,.28);
     }
-
-    .hero-actions{
+.hero-actions{
       display:flex;
       flex-wrap:wrap;
       gap:14px;
@@ -607,7 +606,8 @@
       font-size:12px;
       font-weight:700;
     }
-.mid-grid{
+
+    .mid-grid{
       display:grid;
       grid-template-columns:1.32fr .68fr;
       gap:16px;
@@ -710,8 +710,7 @@
     .match-table tbody tr:hover td{
       background:rgba(11,32,76,.92);
     }
-
-    .time-info{
+.time-info{
       display:flex;
       align-items:center;
       justify-content:center;
@@ -774,7 +773,8 @@
       flex-direction:column;
       gap:10px;
     }
-.news-card{
+
+    .news-card{
       display:grid;
       grid-template-columns:132px 1fr;
       gap:12px;
@@ -1144,7 +1144,8 @@
         display:flex;
         flex-wrap:wrap;
       }
-.nav-link{
+
+      .nav-link{
         font-size:12px;
         padding:7px 8px;
       }
@@ -1202,8 +1203,7 @@
         font-size:14px;
         padding:14px 16px;
       }
-
-      .hero-art{
+.hero-art{
         min-height:auto;
       }
 
@@ -1316,7 +1316,8 @@
       .footer-card{
         padding:14px;
       }
-.footer-brand{
+
+      .footer-brand{
         flex-direction:column;
         align-items:flex-start;
       }
@@ -1397,35 +1398,34 @@
     <div class="sidebar-block">
       <div class="sidebar-title">🏆 Competição</div>
       <div class="side-menu">
+        <a href="campeonatos.html"><span class="side-icon"><i class="fa-solid fa-trophy"></i></span>Campeonatos</a>
         <a href="classificacao.html"><span class="side-icon"><i class="fa-solid fa-ranking-star"></i></span>Classificação</a>
         <a href="tabela.html"><span class="side-icon"><i class="fa-solid fa-table"></i></span>Tabelas</a>
-        <a href="jogos.html"><span class="side-icon"><i class="fa-solid fa-calendar-days"></i></span>Tabela de Jogos</a>
+        <a href="jogos.html"><span class="side-icon"><i class="fa-solid fa-calendar-days"></i></span>Jogos</a>
         <a href="artilharia.html"><span class="side-icon"><i class="fa-solid fa-futbol"></i></span>Artilharia</a>
         <a href="cartoes.html"><span class="side-icon"><i class="fa-solid fa-id-card"></i></span>Cartões</a>
         <a href="suspensos.html"><span class="side-icon"><i class="fa-solid fa-ban"></i></span>Suspensos</a>
-        <a href="campeonatos.html"><span class="side-icon"><i class="fa-solid fa-trophy"></i></span>Campeonatos</a>
         <a href="sumula.html"><span class="side-icon"><i class="fa-solid fa-file-signature"></i></span>Súmula</a>
         <a href="sumulas.html"><span class="side-icon"><i class="fa-solid fa-file-lines"></i></span>Súmulas</a>
       </div>
     </div>
 
     <div class="sidebar-block">
-      <div class="sidebar-title">📂 Informações</div>
+      <div class="sidebar-title">👥 Cadastro e Equipes</div>
       <div class="side-menu">
         <a href="categorias.html"><span class="side-icon"><i class="fa-solid fa-layer-group"></i></span>Categorias</a>
         <a href="times.html"><span class="side-icon"><i class="fa-solid fa-shield-halved"></i></span>Times</a>
         <a href="jogadores.html"><span class="side-icon"><i class="fa-solid fa-person-running"></i></span>Jogadores</a>
-        <a href="regulamento.html"><span class="side-icon"><i class="fa-solid fa-scroll"></i></span>Regulamento</a>
         <a href="tecnicos.html"><span class="side-icon"><i class="fa-solid fa-clipboard-user"></i></span>Técnicos</a>
         <a href="arbitros.html"><span class="side-icon"><i class="fa-solid fa-whistle"></i></span>Árbitros</a>
         <a href="assistentes.html"><span class="side-icon"><i class="fa-solid fa-user-group"></i></span>Assistentes</a>
       </div>
     </div>
-
-    <div class="sidebar-block">
-      <div class="sidebar-title">📰 Suporte</div>
+<div class="sidebar-block">
+      <div class="sidebar-title">📰 Informações</div>
       <div class="side-menu">
         <a href="noticias.html"><span class="side-icon"><i class="fa-solid fa-newspaper"></i></span>Notícias</a>
+        <a href="regulamento.html"><span class="side-icon"><i class="fa-solid fa-scroll"></i></span>Regulamento</a>
         <a href="#contato"><span class="side-icon"><i class="fa-solid fa-phone"></i></span>Contato</a>
         <a href="sobre.html"><span class="side-icon"><i class="fa-solid fa-circle-info"></i></span>Sobre a Liga</a>
       </div>
@@ -1440,7 +1440,8 @@
       </div>
     </div>
   </aside>
-<header class="topbar">
+
+  <header class="topbar">
     <div class="wrap topbar-content">
       <div class="top-left">
         <button class="menu-toggle" id="menuToggle" type="button">☰</button>
@@ -1457,12 +1458,10 @@
       <nav class="top-nav">
         <a href="index.html" class="nav-link active">Início</a>
         <a href="campeonatos.html" class="nav-link">Campeonatos</a>
-        <a href="tabela.html" class="nav-link">Tabelas</a>
-        <a href="jogos.html" class="nav-link">Jogos</a>
-        <a href="classificacao.html" class="nav-link">Classificação</a>
-        <a href="artilharia.html" class="nav-link">Artilharia</a>
-        <a href="cartoes.html" class="nav-link">Cartões / Suspensos</a>
-        <a href="times.html" class="nav-link">Times / Jogadores</a>
+        <a href="times.html" class="nav-link">Equipes</a>
+        <a href="jogos.html" class="nav-link">Resultados</a>
+        <a href="noticias.html" class="nav-link">Notícias</a>
+        <a href="#contato" class="nav-link">Contato</a>
       </nav>
 
       <div class="top-actions">
@@ -1538,8 +1537,7 @@
           </div>
         </div>
       </div>
-
-      <div class="mid-grid">
+<div class="mid-grid">
         <section class="panel">
           <div class="panel-head">
             <div class="panel-head-title">
@@ -1594,7 +1592,8 @@
 
     </main>
   </section>
-<footer id="contato">
+
+  <footer id="contato">
     <div class="wrap footer-top">
       <div class="footer-card">
         <div class="footer-brand">
@@ -1625,6 +1624,11 @@
       <div class="footer-card">
         <h4>Contato</h4>
 
+        <div class="footer-contact-line">
+          <i class="fa-solid fa-location-dot"></i>
+          <span>Goiânia - GO</span>
+        </div>
+
         <a href="https://wa.me/5562984284785" target="_blank" class="footer-contact-line">
           <i class="fa-brands fa-whatsapp"></i>
           <span>(62) 98428-4785</span>
@@ -1634,11 +1638,6 @@
           <i class="fa-solid fa-envelope"></i>
           <span>ligagoianiafutebol@gmail.com</span>
         </a>
-
-        <div class="footer-contact-line">
-          <i class="fa-solid fa-location-dot"></i>
-          <span>Goiânia - GO</span>
-        </div>
       </div>
 
       <div class="footer-card">
@@ -1657,8 +1656,7 @@
       © 2026 Liga Goiana de Futebol de Base. Todos os direitos reservados.
     </div>
   </footer>
-
-  <script type="module">
+<script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
     import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-firestore.js";
 
@@ -1756,6 +1754,7 @@
     const sidebarOverlay = document.getElementById("sidebarOverlay");
     const menuToggle = document.getElementById("menuToggle");
     const sidebarClose = document.getElementById("sidebarClose");
+    const menuAdmin = document.getElementById("menuAdmin");
 
     function abrirSidebar() {
       if (!sidebar || !sidebarOverlay) return;
@@ -1828,8 +1827,7 @@
     function normalizarStatus(status) {
       return String(status || "").toLowerCase().trim();
     }
-
-    function carregarNoticiasLocalStorage() {
+function carregarNoticiasLocalStorage() {
       try {
         const noticiasSalvas = JSON.parse(localStorage.getItem("liga_noticias"));
         if (Array.isArray(noticiasSalvas) && noticiasSalvas.length) return noticiasSalvas;
@@ -2026,11 +2024,18 @@
       `).join("");
     }
 
+    function configurarPainelAdmin() {
+      if (menuAdmin) {
+        menuAdmin.style.display = "flex";
+      }
+    }
+
     async function iniciarDadosPagina() {
       noticiasCache = await buscarNoticiasFirebase();
       jogosCache = await buscarJogosFirebase();
       renderNoticias();
       renderJogos();
+      configurarPainelAdmin();
     }
 
     window.addEventListener("DOMContentLoaded", async () => {
