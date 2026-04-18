@@ -28,7 +28,7 @@ max-width:1100px;
 margin:auto;
 }
 
-input, select{
+input{
 width:100%;
 padding:12px;
 margin-bottom:12px;
@@ -47,19 +47,6 @@ border-radius:8px;
 font-weight:bold;
 cursor:pointer;
 margin-bottom:15px;
-}
-
-.btn{
-background:#f7c600;
-color:black;
-padding:10px 14px;
-border-radius:8px;
-text-decoration:none;
-display:inline-block;
-margin-bottom:12px;
-font-weight:bold;
-cursor:pointer;
-border:none;
 }
 
 .btn-voltar{
@@ -153,7 +140,7 @@ z-index:999;
 background:#102a52;
 padding:20px;
 border-radius:12px;
-max-width:560px;
+max-width:620px;
 width:100%;
 text-align:center;
 max-height:85vh;
@@ -276,151 +263,12 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 let jogadoresCache = [];
-let sumulasCache = [];
-let estatisticasJogadores = {};
-
-function normalizarTexto(texto) {
-  return String(texto || "")
-    .trim()
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "");
-}
-
-function chaveJogador(nome, time, numero) {
-  return `${normalizarTexto(nome)}|${normalizarTexto(time)}|${String(numero || "").trim()}`;
-}
-
-function jogadorEstaNaLista(jogador, lista = []) {
-  const nomeJogador = normalizarTexto(jogador.nome);
-  const numeroJogador = String(jogador.numero || "").trim();
-
-  return lista.some(item => {
-    const nomeItem = normalizarTexto(item.nome);
-    const numeroItem = String(item.numero || "").trim();
-
-    if (numeroJogador && numeroItem) {
-      return nomeJogador === nomeItem && numeroJogador === numeroItem;
-    }
-
-    return nomeJogador === nomeItem;
-  });
-}
-
-function contarEventosDoJogador(jogador, lista = [], tipoGol = null) {
-  const nomeJogador = normalizarTexto(jogador.nome);
-  const numeroJogador = String(jogador.numero || "").trim();
-
-  return lista.filter(item => {
-    const nomeItem = normalizarTexto(item.nome);
-    const numeroItem = String(item.numero || "").trim();
-
-    const nomeBate = nomeJogador === nomeItem;
-    const numeroBate = numeroJogador && numeroItem ? numeroJogador === numeroItem : true;
-    const tipoBate = tipoGol ? item.tipo === tipoGol : true;
-
-    return nomeBate && numeroBate && tipoBate;
-  }).length;
-}
-
-function calcularEstatisticas() {
-  estatisticasJogadores = {};
-
-  jogadoresCache.forEach(jogador => {
-    const chave = chaveJogador(jogador.nome, jogador.time, jogador.numero);
-    estatisticasJogadores[chave] = {
-      jogos: 0,
-      gols: 0,
-      assistencias: 0,
-      amarelos: 0,
-      vermelhos: 0,
-      categorias: new Set()
-    };
-  });
-
-  sumulasCache.forEach(sumula => {
-    const categoriaJogo = sumula.categoria || "";
-    const timeA = sumula.timeA || "";
-    const timeB = sumula.timeB || "";
-
-    jogadoresCache.forEach(jogador => {
-      const chave = chaveJogador(jogador.nome, jogador.time, jogador.numero);
-
-      if (!estatisticasJogadores[chave]) {
-        estatisticasJogadores[chave] = {
-          jogos: 0,
-          gols: 0,
-          assistencias: 0,
-          amarelos: 0,
-          vermelhos: 0,
-          categorias: new Set()
-        };
-      }
-
-      let jogou = false;
-
-      if (normalizarTexto(jogador.time) === normalizarTexto(timeA)) {
-        jogou = jogadorEstaNaLista(jogador, sumula.jogadoresA || []);
-        if (jogou) {
-          estatisticasJogadores[chave].gols += contarEventosDoJogador(jogador, sumula.golsDetalhadosA || [], "gol");
-          estatisticasJogadores[chave].assistencias += contarEventosDoJogador(jogador, sumula.assistenciasDetalhadasA || []);
-          estatisticasJogadores[chave].amarelos += contarEventosDoJogador(jogador, sumula.amarelosDetalhadosA || []);
-          estatisticasJogadores[chave].vermelhos += contarEventosDoJogador(jogador, sumula.vermelhosDetalhadosA || []);
-        }
-      }
-
-      if (normalizarTexto(jogador.time) === normalizarTexto(timeB)) {
-        jogou = jogadorEstaNaLista(jogador, sumula.jogadoresB || []) || jogou;
-        if (jogou) {
-          estatisticasJogadores[chave].gols += contarEventosDoJogador(jogador, sumula.golsDetalhadosB || [], "gol");
-          estatisticasJogadores[chave].assistencias += contarEventosDoJogador(jogador, sumula.assistenciasDetalhadasB || []);
-          estatisticasJogadores[chave].amarelos += contarEventosDoJogador(jogador, sumula.amarelosDetalhadosB || []);
-          estatisticasJogadores[chave].vermelhos += contarEventosDoJogador(jogador, sumula.vermelhosDetalhadosB || []);
-        }
-      }
-
-      if (jogou) {
-        estatisticasJogadores[chave].jogos += 1;
-        if (categoriaJogo) {
-          estatisticasJogadores[chave].categorias.add(categoriaJogo);
-        }
-      }
-    });
-  });
-}
-
-function obterStatsJogador(jogador) {
-  const chave = chaveJogador(jogador.nome, jogador.time, jogador.numero);
-  const stats = estatisticasJogadores[chave];
-
-  if (!stats) {
-    return {
-      jogos: 0,
-      gols: 0,
-      assistencias: 0,
-      amarelos: 0,
-      vermelhos: 0,
-      categorias: []
-    };
-  }
-
-  return {
-    jogos: stats.jogos || 0,
-    gols: stats.gols || 0,
-    assistencias: stats.assistencias || 0,
-    amarelos: stats.amarelos || 0,
-    vermelhos: stats.vermelhos || 0,
-    categorias: Array.from(stats.categorias || [])
-  };
-}
 
 window.verJogador = function(id) {
   const jogador = jogadoresCache.find(j => j.id === id);
   if (!jogador) return;
 
-  const categoriasCadastro = (jogador.categorias || []).map(c => `<div class="tag">${c}</div>`).join("");
-  const stats = obterStatsJogador(jogador);
-  const categoriasJogadas = stats.categorias.map(c => `<div class="tag">${c}</div>`).join("");
+  const categorias = (jogador.categorias || []).map(c => `<div class="tag">${c}</div>`).join("");
 
   document.getElementById("modalConteudo").innerHTML = `
     <img src="${jogador.foto || ''}" onerror="this.src=''">
@@ -429,34 +277,29 @@ window.verJogador = function(id) {
     <div class="subtitle">Posição: ${jogador.posicao || "-"}</div>
     <div class="subtitle">Número: ${jogador.numero || "-"}</div>
 
-    <div class="tags">${categoriasCadastro || ""}</div>
+    <div class="tags">${categorias || ""}</div>
 
     <div class="stats-box">
       <div class="stat-card">
         <strong>Jogos</strong>
-        <span>${stats.jogos}</span>
+        <span>${Number(jogador.jogos || 0)}</span>
       </div>
       <div class="stat-card">
         <strong>Gols</strong>
-        <span>${stats.gols}</span>
+        <span>${Number(jogador.gols || 0)}</span>
       </div>
       <div class="stat-card">
         <strong>Assistências</strong>
-        <span>${stats.assistencias}</span>
+        <span>${Number(jogador.assistencias || 0)}</span>
       </div>
       <div class="stat-card">
         <strong>Amarelos</strong>
-        <span>${stats.amarelos}</span>
+        <span>${Number(jogador.amarelos || 0)}</span>
       </div>
       <div class="stat-card">
         <strong>Vermelhos</strong>
-        <span>${stats.vermelhos}</span>
+        <span>${Number(jogador.vermelhos || 0)}</span>
       </div>
-    </div>
-
-    <div style="margin-top:16px;">
-      <div class="subtitle">Categorias em que jogou</div>
-      <div class="tags">${categoriasJogadas || '<div class="tag">Sem jogos</div>'}</div>
     </div>
 
     <button onclick="fecharModal()" style="margin-top:15px;">Fechar</button>
@@ -469,10 +312,8 @@ window.fecharModal = function() {
   document.getElementById("modalVer").style.display = "none";
 }
 
-async function carregarJogadores() {
+window.carregarJogadores = function() {
   const lista = document.getElementById("listaJogadores");
-  lista.innerHTML = "<div class='sem-item'>Carregando jogadores...</div>";
-
   let jogadores = [...jogadoresCache];
 
   const busca = (document.getElementById("buscaJogador").value || "").toLowerCase().trim();
@@ -496,7 +337,6 @@ async function carregarJogadores() {
 
   jogadores.forEach((jogador) => {
     const categorias = (jogador.categorias || []).map(c => `<span class="tag">${c}</span>`).join("");
-    const stats = obterStatsJogador(jogador);
 
     lista.innerHTML += `
       <div class="card">
@@ -507,9 +347,9 @@ async function carregarJogadores() {
             <small>Time: ${jogador.time || "-"}</small>
             <small>Posição: ${jogador.posicao || "-"}</small>
             <small>Número: ${jogador.numero || "-"}</small>
-            <small>Jogos: ${stats.jogos} | Gols: ${stats.gols}</small>
-            <small>Assistências: ${stats.assistencias}</small>
-            <small>Amarelos: ${stats.amarelos} | Vermelhos: ${stats.vermelhos}</small>
+            <small>Jogos: ${Number(jogador.jogos || 0)} | Gols: ${Number(jogador.gols || 0)}</small>
+            <small>Assistências: ${Number(jogador.assistencias || 0)}</small>
+            <small>Amarelos: ${Number(jogador.amarelos || 0)} | Vermelhos: ${Number(jogador.vermelhos || 0)}</small>
             <div class="tags">${categorias}</div>
           </div>
         </div>
@@ -528,17 +368,11 @@ async function iniciarPagina() {
   try {
     const snapJogadores = await getDocs(collection(db, "jogadores"));
     jogadoresCache = [];
+
     snapJogadores.forEach((docSnap) => {
       jogadoresCache.push({ id: docSnap.id, ...docSnap.data() });
     });
 
-    const snapSumulas = await getDocs(collection(db, "sumulas"));
-    sumulasCache = [];
-    snapSumulas.forEach((docSnap) => {
-      sumulasCache.push({ id: docSnap.id, ...docSnap.data() });
-    });
-
-    calcularEstatisticas();
     carregarJogadores();
   } catch (erro) {
     console.error(erro);
