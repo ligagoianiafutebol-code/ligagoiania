@@ -90,9 +90,17 @@
       cursor:pointer;
     }
 
+    button:hover{
+      filter:brightness(1.04);
+    }
+
     .btn-sec{
       background:#1a335f;
       color:white;
+    }
+
+    .btn-sec:hover{
+      background:#24457b;
     }
 
     .links{
@@ -112,6 +120,7 @@
       border-radius:10px;
       display:none;
       font-weight:bold;
+      line-height:1.5;
     }
 
     .erro{
@@ -124,6 +133,21 @@
       background:rgba(0,120,0,.22);
       color:#b8ffbe;
       border:1px solid rgba(120,255,140,.25);
+    }
+
+    .info{
+      margin-top:18px;
+      padding:14px;
+      border-radius:12px;
+      background:rgba(255,230,0,.08);
+      border:1px solid rgba(255,230,0,.18);
+      color:#f3f6ff;
+      font-size:14px;
+      line-height:1.6;
+    }
+
+    .hidden{
+      display:none;
     }
 
     @media (max-width: 700px){
@@ -173,16 +197,19 @@
 
         <div>
           <label for="tipoUsuario">Tipo de usuário</label>
-          <select id="tipoUsuario">
+          <select id="tipoUsuario" onchange="atualizarCamposCadastro()">
             <option value="">Selecione</option>
             <option value="pai_atleta">Pai de Atleta</option>
             <option value="jogador">Jogador</option>
             <option value="tecnico">Técnico</option>
-            <option value="publico_geral">Público Geral</option>
+            <option value="torcedor">Torcedor</option>
+            <option value="arbitro">Árbitro</option>
+            <option value="assistente">Árbitro Assistente</option>
+            <option value="admin">Administrador</option>
           </select>
         </div>
 
-        <div>
+        <div id="blocoCategoria">
           <label for="categoria">Categoria</label>
           <select id="categoria">
             <option value="">Selecione</option>
@@ -197,10 +224,14 @@
           </select>
         </div>
 
-        <div class="full">
+        <div class="full" id="blocoTime">
           <label for="time">Time</label>
           <input type="text" id="time" placeholder="Digite o nome do time">
         </div>
+      </div>
+
+      <div class="info" id="infoTipoUsuario">
+        Escolha o tipo de usuário para continuar o cadastro.
       </div>
 
       <div class="acoes">
@@ -220,10 +251,21 @@
   <script type="module">
     import { auth, db } from "./firebase.js";
     import { createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-    import { doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { doc, setDoc, getDocs, collection, query, where } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
     const msgErro = document.getElementById("msgErro");
     const msgSucesso = document.getElementById("msgSucesso");
+    const tipoUsuarioSelect = document.getElementById("tipoUsuario");
+    const blocoCategoria = document.getElementById("blocoCategoria");
+    const blocoTime = document.getElementById("blocoTime");
+    const infoTipoUsuario = document.getElementById("infoTipoUsuario");
+
+    function limparMensagens(){
+      msgErro.style.display = "none";
+      msgErro.innerText = "";
+      msgSucesso.style.display = "none";
+      msgSucesso.innerText = "";
+    }
 
     function mostrarErro(texto){
       msgSucesso.style.display = "none";
@@ -237,12 +279,86 @@
       msgSucesso.innerText = texto;
     }
 
+    function somenteNumeros(valor){
+      return valor.replace(/\D/g, "");
+    }
+
+    function formatarCPF(valor){
+      const numeros = somenteNumeros(valor).slice(0, 11);
+      return numeros
+        .replace(/^(\d{3})(\d)/, "$1.$2")
+        .replace(/^(\d{3})\.(\d{3})(\d)/, "$1.$2.$3")
+        .replace(/\.(\d{3})(\d)/, ".$1-$2");
+    }
+
+    function formatarTelefone(valor){
+      const numeros = somenteNumeros(valor).slice(0, 11);
+
+      if(numeros.length <= 10){
+        return numeros
+          .replace(/^(\d{2})(\d)/g, "($1) $2")
+          .replace(/(\d{4})(\d)/, "$1-$2");
+      }
+
+      return numeros
+        .replace(/^(\d{2})(\d)/g, "($1) $2")
+        .replace(/(\d{5})(\d)/, "$1-$2");
+    }
+
+    function atualizarCamposCadastro(){
+      const tipo = tipoUsuarioSelect.value;
+
+      const precisaCategoria = ["jogador", "tecnico", "pai_atleta"].includes(tipo);
+      const precisaTime = ["jogador", "tecnico", "pai_atleta"].includes(tipo);
+
+      blocoCategoria.classList.toggle("hidden", !precisaCategoria);
+      blocoTime.classList.toggle("hidden", !precisaTime);
+
+      if(tipo === "admin"){
+        infoTipoUsuario.innerText = "Cadastro de administrador fica pendente até aprovação do admin principal.";
+      }else if(tipo === "arbitro"){
+        infoTipoUsuario.innerText = "Cadastro de árbitro fica pendente até aprovação do administrador.";
+      }else if(tipo === "assistente"){
+        infoTipoUsuario.innerText = "Cadastro de árbitro assistente fica pendente até aprovação do administrador.";
+      }else if(tipo === "jogador"){
+        infoTipoUsuario.innerText = "Jogador pode acompanhar perfil, categoria, time e estatísticas.";
+      }else if(tipo === "tecnico"){
+        infoTipoUsuario.innerText = "Técnico pode acompanhar time, desempenho, posição e próximos jogos.";
+      }else if(tipo === "pai_atleta"){
+        infoTipoUsuario.innerText = "Pai de atleta pode acompanhar dados do atleta, time e categoria.";
+      }else if(tipo === "torcedor"){
+        infoTipoUsuario.innerText = "Torcedor terá acesso às informações públicas do sistema.";
+      }else{
+        infoTipoUsuario.innerText = "Escolha o tipo de usuário para continuar o cadastro.";
+      }
+    }
+
+    async function cpfJaExiste(cpf){
+      const usuariosRef = collection(db, "usuarios");
+      const q = query(usuariosRef, where("cpf", "==", cpf));
+      const resultado = await getDocs(q);
+      return !resultado.empty;
+    }
+
+    document.getElementById("cpf").addEventListener("input", function(e){
+      e.target.value = formatarCPF(e.target.value);
+    });
+
+    document.getElementById("telefone").addEventListener("input", function(e){
+      e.target.value = formatarTelefone(e.target.value);
+    });
+
+    window.atualizarCamposCadastro = atualizarCamposCadastro;
+
     window.cadastrarUsuario = async function(){
+      limparMensagens();
+
       const nome = document.getElementById("nome").value.trim();
-      const email = document.getElementById("email").value.trim();
+      const email = document.getElementById("email").value.trim().toLowerCase();
       const senha = document.getElementById("senha").value.trim();
       const telefone = document.getElementById("telefone").value.trim();
       const cpf = document.getElementById("cpf").value.trim();
+      const cpfNumerico = somenteNumeros(cpf);
       const dataNascimento = document.getElementById("dataNascimento").value;
       const tipoUsuario = document.getElementById("tipoUsuario").value;
       const categoria = document.getElementById("categoria").value;
@@ -254,11 +370,30 @@
       if(senha.length < 6) return mostrarErro("A senha precisa ter pelo menos 6 caracteres.");
       if(!telefone) return mostrarErro("Preencha o telefone.");
       if(!cpf) return mostrarErro("Preencha o CPF.");
+      if(cpfNumerico.length !== 11) return mostrarErro("CPF inválido.");
       if(!dataNascimento) return mostrarErro("Preencha a data de nascimento.");
       if(!tipoUsuario) return mostrarErro("Selecione o tipo de usuário.");
 
+      if(["jogador", "tecnico", "pai_atleta"].includes(tipoUsuario) && !categoria){
+        return mostrarErro("Selecione a categoria.");
+      }
+
+      if(["jogador", "tecnico", "pai_atleta"].includes(tipoUsuario) && !time){
+        return mostrarErro("Informe o time.");
+      }
+
       try{
+        const cpfDuplicado = await cpfJaExiste(cpf);
+        if(cpfDuplicado){
+          mostrarErro("Esse CPF já está cadastrado no sistema.");
+          return;
+        }
+
         const cred = await createUserWithEmailAndPassword(auth, email, senha);
+
+        const precisaAprovacao = ["admin", "arbitro", "assistente"].includes(tipoUsuario);
+        const aprovado = !precisaAprovacao;
+        const permissaoPainelAdm = false;
 
         await setDoc(doc(db, "usuarios", cred.user.uid), {
           uid: cred.user.uid,
@@ -266,15 +401,22 @@
           email: email,
           telefone: telefone,
           cpf: cpf,
+          cpfNumerico: cpfNumerico,
           dataNascimento: dataNascimento,
           tipoUsuario: tipoUsuario,
           categoria: categoria || "",
           time: time || "",
+          aprovado: aprovado,
+          permissaoPainelAdm: permissaoPainelAdm,
           status: "ativo",
           criadoEm: new Date().toISOString()
         });
 
-        mostrarSucesso("Cadastro realizado com sucesso! Você será levado para o login.");
+        if(precisaAprovacao){
+          mostrarSucesso("Cadastro realizado com sucesso! Seu acesso ficará pendente até aprovação do administrador.");
+        }else{
+          mostrarSucesso("Cadastro realizado com sucesso! Você será levado para o login.");
+        }
 
         setTimeout(() => {
           window.location.href = "login.html";
@@ -292,6 +434,8 @@
         }
       }
     };
+
+    atualizarCamposCadastro();
   </script>
 
 </body>
