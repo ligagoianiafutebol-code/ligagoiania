@@ -245,21 +245,21 @@
       text-align:center;
       flex-shrink:0;
     }
-
-    .topbar{
-      position:sticky;
-      top:0;
+.topbar{
+      position:relative;
+      top:auto;
       z-index:1200;
       background:rgba(1,9,24,.96);
       border-bottom:1px solid rgba(255,212,0,.24);
       box-shadow:0 8px 22px rgba(0,0,0,.22);
     }
-.topbar-content{
+
+    .topbar-content{
       min-height:92px;
       display:grid;
       grid-template-columns:auto 1fr auto;
       align-items:center;
-      gap:18px;
+      gap:16px;
       padding:8px 0;
     }
 
@@ -294,40 +294,32 @@
       display:flex;
       justify-content:center;
       align-items:center;
-      gap:10px;
+      gap:2px;
       flex-wrap:wrap;
       min-width:0;
     }
 
-    .nav-link,
-    .nav-dropdown-toggle{
+    .nav-link{
       display:inline-flex;
       align-items:center;
       justify-content:center;
-      padding:11px 14px;
+      padding:10px 12px;
       color:#fff;
       font-weight:900;
-      font-size:14px;
+      font-size:13px;
       text-transform:uppercase;
       transition:.22s ease;
       position:relative;
-      background:none;
-      border:none;
-      cursor:pointer;
-      font-family:inherit;
+      white-space:nowrap;
     }
 
     .nav-link:hover,
-    .nav-link.active,
-    .nav-dropdown:hover .nav-dropdown-toggle,
-    .nav-dropdown.open .nav-dropdown-toggle{
+    .nav-link.active{
       color:var(--yellow);
     }
 
     .nav-link.active::after,
-    .nav-link:hover::after,
-    .nav-dropdown:hover .nav-dropdown-toggle::after,
-    .nav-dropdown.open .nav-dropdown-toggle::after{
+    .nav-link:hover::after{
       content:"";
       position:absolute;
       left:10px;
@@ -337,55 +329,6 @@
       border-radius:999px;
       background:var(--yellow);
       box-shadow:0 0 10px rgba(255,212,0,.45);
-    }
-
-    .nav-dropdown{
-      position:relative;
-      display:flex;
-      align-items:center;
-    }
-
-    .nav-dropdown-toggle{
-      gap:8px;
-    }
-
-    .nav-dropdown-menu{
-      position:absolute;
-      top:calc(100% + 12px);
-      left:0;
-      min-width:210px;
-      background:linear-gradient(180deg, rgba(1,9,24,.99), rgba(4,19,45,.99));
-      border:1px solid rgba(255,212,0,.22);
-      border-radius:12px;
-      box-shadow:var(--shadow-2);
-      padding:10px;
-      display:none;
-      flex-direction:column;
-      gap:6px;
-      z-index:1300;
-    }
-
-    .nav-dropdown:hover .nav-dropdown-menu,
-    .nav-dropdown.open .nav-dropdown-menu{
-      display:flex;
-    }
-
-    .nav-dropdown-menu a{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      padding:10px 12px;
-      border-radius:10px;
-      color:#fff;
-      font-weight:800;
-      font-size:13px;
-      text-transform:uppercase;
-      transition:.2s ease;
-    }
-
-    .nav-dropdown-menu a:hover{
-      background:var(--yellow-soft);
-      color:var(--yellow);
     }
 
     .top-actions{
@@ -408,7 +351,7 @@
       text-decoration:none;
       white-space:nowrap;
       text-transform:uppercase;
-      padding:16px 22px;
+      padding:15px 20px;
       border-radius:10px;
       background:transparent;
       color:var(--yellow);
@@ -435,7 +378,7 @@
       text-decoration:none;
       white-space:nowrap;
       text-transform:uppercase;
-      padding:16px 24px;
+      padding:15px 22px;
       border-radius:10px;
       background:var(--yellow);
       color:#031022;
@@ -469,7 +412,8 @@
       mix-blend-mode:screen;
       opacity:.95;
     }
-.hero::after{
+
+    .hero::after{
       content:"";
       position:absolute;
       left:0;
@@ -479,8 +423,7 @@
       background:linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,.24));
       pointer-events:none;
     }
-
-    .hero-panel{
+.hero-panel{
       position:relative;
       z-index:1;
       display:grid;
@@ -648,7 +591,8 @@
       font-size:35px;
       flex-shrink:0;
     }
-.pillar-text h3{
+
+    .pillar-text h3{
       color:var(--yellow);
       font-size:15px;
       line-height:1.15;
@@ -663,8 +607,7 @@
       font-size:12px;
       font-weight:700;
     }
-
-    .mid-grid{
+.mid-grid{
       display:grid;
       grid-template-columns:1.32fr .68fr;
       gap:16px;
@@ -825,13 +768,13 @@
     .badge.sub13{ background:var(--green); }
     .badge.sub15{ background:var(--blue-badge); }
     .badge.sub17{ background:var(--gold-badge); }
-.news-list{
+
+    .news-list{
       display:flex;
       flex-direction:column;
       gap:10px;
     }
-
-    .news-card{
+.news-card{
       display:grid;
       grid-template-columns:132px 1fr;
       gap:12px;
@@ -1000,14 +943,14 @@
     footer a:hover{
       color:var(--yellow);
     }
-
-    .footer-social{
+.footer-social{
       display:flex;
       gap:10px;
       margin-top:12px;
       flex-wrap:wrap;
     }
-.footer-social a{
+
+    .footer-social a{
       width:42px;
       height:42px;
       border-radius:12px;
@@ -1132,8 +1075,7 @@
         gap:6px;
       }
 
-      .nav-link,
-      .nav-dropdown-toggle{
+      .nav-link{
         font-size:13px;
         padding:8px 10px;
       }
@@ -1202,16 +1144,9 @@
         display:flex;
         flex-wrap:wrap;
       }
-.nav-link,
-      .nav-dropdown-toggle{
+.nav-link{
         font-size:12px;
         padding:7px 8px;
-      }
-
-      .nav-dropdown-menu{
-        position:static;
-        margin-top:8px;
-        min-width:100%;
       }
 
       .btn-top-main,
@@ -1427,8 +1362,7 @@
         font-size:13px;
       }
 
-      .nav-link,
-      .nav-dropdown-toggle{
+      .nav-link{
         font-size:11px;
       }
 
@@ -1501,7 +1435,7 @@
       <div class="sidebar-title">⚙️ Sistema</div>
       <div class="side-menu">
         <a href="login.html"><span class="side-icon"><i class="fa-solid fa-user"></i></span>Login / Cadastro</a>
-        <a href="admin.html" id="menuAdmin" style="display:none;"><span class="side-icon"><i class="fa-solid fa-gears"></i></span>Painel do Administrador</a>
+        <a href="admin.html" id="menuAdmin"><span class="side-icon"><i class="fa-solid fa-gears"></i></span>Painel do Administrador</a>
         <a href="configuracoes.html"><span class="side-icon"><i class="fa-solid fa-sliders"></i></span>Configurações</a>
       </div>
     </div>
@@ -1526,18 +1460,8 @@
         <a href="tabela.html" class="nav-link">Tabelas</a>
         <a href="jogos.html" class="nav-link">Jogos</a>
         <a href="classificacao.html" class="nav-link">Classificação</a>
-
-        <div class="nav-dropdown" id="statsDropdown">
-          <button class="nav-dropdown-toggle" type="button">
-            Estatísticas <i class="fa-solid fa-chevron-down"></i>
-          </button>
-          <div class="nav-dropdown-menu">
-            <a href="artilharia.html"><i class="fa-solid fa-futbol"></i> Artilharia</a>
-            <a href="cartoes.html"><i class="fa-solid fa-id-card"></i> Cartões</a>
-            <a href="suspensos.html"><i class="fa-solid fa-ban"></i> Suspensos</a>
-          </div>
-        </div>
-
+        <a href="artilharia.html" class="nav-link">Artilharia</a>
+        <a href="cartoes.html" class="nav-link">Cartões / Suspensos</a>
         <a href="times.html" class="nav-link">Times / Jogadores</a>
       </nav>
 
@@ -1832,8 +1756,6 @@
     const sidebarOverlay = document.getElementById("sidebarOverlay");
     const menuToggle = document.getElementById("menuToggle");
     const sidebarClose = document.getElementById("sidebarClose");
-    const menuAdmin = document.getElementById("menuAdmin");
-    const statsDropdown = document.getElementById("statsDropdown");
 
     function abrirSidebar() {
       if (!sidebar || !sidebarOverlay) return;
@@ -1875,24 +1797,7 @@
         const clicouNoBotao = menuToggle && menuToggle.contains(e.target);
         if (!clicouNoMenu && !clicouNoBotao) fecharSidebar();
       }
-
-      if (statsDropdown && statsDropdown.classList.contains("open")) {
-        const clicouDentroDropdown = statsDropdown.contains(e.target);
-        if (!clicouDentroDropdown) {
-          statsDropdown.classList.remove("open");
-        }
-      }
     });
-
-    if (statsDropdown) {
-      const botaoDropdown = statsDropdown.querySelector(".nav-dropdown-toggle");
-      if (botaoDropdown) {
-        botaoDropdown.addEventListener("click", function(e) {
-          e.stopPropagation();
-          statsDropdown.classList.toggle("open");
-        });
-      }
-    }
 
     function formatarDataBR(dataIso, hora) {
       try {
@@ -2121,22 +2026,11 @@
       `).join("");
     }
 
-    function configurarPainelAdmin() {
-      if (!menuAdmin) return;
-
-      const adminLogado =
-        localStorage.getItem("liga_admin_logado") === "true" ||
-        localStorage.getItem("liga_usuario_tipo") === "admin";
-
-      menuAdmin.style.display = adminLogado ? "flex" : "none";
-    }
-
     async function iniciarDadosPagina() {
       noticiasCache = await buscarNoticiasFirebase();
       jogosCache = await buscarJogosFirebase();
       renderNoticias();
       renderJogos();
-      configurarPainelAdmin();
     }
 
     window.addEventListener("DOMContentLoaded", async () => {
