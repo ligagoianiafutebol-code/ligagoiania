@@ -28,7 +28,7 @@ max-width:1100px;
 margin:auto;
 }
 
-input, select{
+input{
 width:100%;
 padding:12px;
 margin-bottom:12px;
@@ -46,20 +46,7 @@ border:none;
 border-radius:8px;
 font-weight:bold;
 cursor:pointer;
-margin-bottom:15px;
-}
-
-.btn{
-background:#f7c600;
-color:black;
-padding:10px 14px;
-border-radius:8px;
-text-decoration:none;
-display:inline-block;
-margin-bottom:12px;
-font-weight:bold;
-cursor:pointer;
-border:none;
+margin-bottom:10px;
 }
 
 .btn-voltar{
@@ -156,7 +143,7 @@ z-index:999;
 background:#102a52;
 padding:20px;
 border-radius:12px;
-max-width:650px;
+max-width:720px;
 width:100%;
 text-align:center;
 max-height:85vh;
@@ -177,7 +164,8 @@ background:#1a3f73;
 display:flex;
 gap:6px;
 flex-wrap:wrap;
-margin-top:8px;
+justify-content:center;
+margin-top:10px;
 }
 
 .tag{
@@ -225,12 +213,31 @@ opacity:.85;
 font-size:13px;
 }
 
-.topo-publico{
-display:flex;
+.stats-grid{
+display:grid;
+grid-template-columns:repeat(3, 1fr);
 gap:10px;
-flex-wrap:wrap;
-align-items:center;
-margin-bottom:12px;
+margin-top:16px;
+text-align:left;
+}
+
+.stat-card{
+background:#0b1f3a;
+border-radius:10px;
+padding:10px;
+border:1px solid rgba(255,255,255,.08);
+}
+
+.stat-card strong{
+display:block;
+color:#f7c600;
+font-size:13px;
+margin-bottom:4px;
+}
+
+.stat-card span{
+font-size:15px;
+font-weight:bold;
 }
 
 @media (max-width:700px){
@@ -242,6 +249,10 @@ flex-direction:column;
 width:100%;
 justify-content:flex-start;
 }
+
+.stats-grid{
+grid-template-columns:1fr;
+}
 }
 </style>
 </head>
@@ -252,13 +263,11 @@ justify-content:flex-start;
 
 <div class="container">
 
-  <div class="topo-publico">
-    <a href="index.html" class="btn-voltar">← Voltar</a>
-  </div>
+<a href="index.html" class="btn-voltar">← Voltar</a>
 
-  <input id="buscaCampeonato" placeholder="Pesquisar campeonato..." oninput="carregarCampeonatos()">
+<input id="buscaCampeonato" placeholder="Pesquisar campeonato..." oninput="carregarCampeonatos()">
 
-  <div class="lista-grid" id="listaCampeonatos"></div>
+<div class="lista-grid" id="listaCampeonatos"></div>
 
 </div>
 
@@ -284,6 +293,17 @@ const db = getFirestore(app);
 
 let campeonatosCache = [];
 let timesCache = [];
+let jogosCache = [];
+let sumulasCache = [];
+let estatisticasCampeonatos = {};
+
+function normalizarTexto(texto) {
+  return String(texto || "")
+    .trim()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+}
 
 function statusPublico(status = "") {
   const s = String(status).trim().toLowerCase();
@@ -299,24 +319,18 @@ function campeonatoEhPublico(campeonato) {
 }
 
 function obterNomeTime(time) {
-  return (
-    time.nome ||
-    time.nomeTime ||
-    time.time ||
-    time.titulo ||
-    "Time sem nome"
-  );
+  return time.nome || time.nomeTime || time.time || time.titulo || "Time sem nome";
 }
 
 function timePertenceAoCampeonato(time, campeonato) {
   const campeonatoId = campeonato.id;
-  const campeonatoNome = (campeonato.nome || "").trim().toLowerCase();
+  const campeonatoNome = normalizarTexto(campeonato.nome);
 
   const campoCampeonatoId = String(time.campeonatoId || "").trim();
-  const campoCampeonato = String(time.campeonato || "").trim().toLowerCase();
-  const campoCampeonatoNome = String(time.campeonatoNome || "").trim().toLowerCase();
+  const campoCampeonato = normalizarTexto(time.campeonato || "");
+  const campoCampeonatoNome = normalizarTexto(time.campeonatoNome || "");
 
-  const listaCampeonatos = Array.isArray(time.campeonatos) ? time.campeonatos.map(v => String(v).trim().toLowerCase()) : [];
+  const listaCampeonatos = Array.isArray(time.campeonatos) ? time.campeonatos.map(v => normalizarTexto(v)) : [];
   const listaCampeonatoIds = Array.isArray(time.campeonatoIds) ? time.campeonatoIds.map(v => String(v).trim()) : [];
 
   if (campoCampeonatoId && campoCampeonatoId === campeonatoId) return true;
@@ -332,27 +346,104 @@ function obterTimesDoCampeonato(campeonato) {
   return timesCache.filter(time => timePertenceAoCampeonato(time, campeonato));
 }
 
+function calcularEstatisticasCampeonatos() {
+  estatisticasCampeonatos = {};
+
+  campeonatosCache.forEach(campeonato => {
+    estatisticasCampeonatos[campeonato.id] = {
+      jogos: 0,
+      gols: 0,
+      categorias: new Set(),
+      times: new Set()
+    };
+  });
+
+  sumulasCache.forEach(sumula => {
+    const campeonatoNome = normalizarTexto(sumula.campeonato || "");
+    const timeA = sumula.timeA || "";
+    const timeB = sumula.timeB || "";
+    const categoria = sumula.categoria || "";
+    const golsA = Number(sumula.golsA || 0);
+    const golsB = Number(sumula.golsB || 0);
+
+    campeonatosCache.forEach(campeonato => {
+      if (normalizarTexto(campeonato.nome) === campeonatoNome) {
+        if (!estatisticasCampeonatos[campeonato.id]) {
+          estatisticasCampeonatos[campeonato.id] = {
+            jogos: 0,
+            gols: 0,
+            categorias: new Set(),
+            times: new Set()
+          };
+        }
+
+        estatisticasCampeonatos[campeonato.id].jogos += 1;
+        estatisticasCampeonatos[campeonato.id].gols += golsA + golsB;
+        if (categoria) estatisticasCampeonatos[campeonato.id].categorias.add(categoria);
+        if (timeA) estatisticasCampeonatos[campeonato.id].times.add(timeA);
+        if (timeB) estatisticasCampeonatos[campeonato.id].times.add(timeB);
+      }
+    });
+  });
+}
+
+function obterStatsCampeonato(campeonato) {
+  const stats = estatisticasCampeonatos[campeonato.id];
+
+  if (!stats) {
+    return {
+      jogos: 0,
+      gols: 0,
+      categorias: [],
+      times: []
+    };
+  }
+
+  return {
+    jogos: stats.jogos || 0,
+    gols: stats.gols || 0,
+    categorias: Array.from(stats.categorias || []),
+    times: Array.from(stats.times || [])
+  };
+}
+
 window.verCampeonato = function(id) {
   const campeonato = campeonatosCache.find(c => c.id === id);
   if (!campeonato) return;
 
-  const categorias = (campeonato.categorias || []).map(c => `<div class="tag">${c}</div>`).join("");
-  const times = obterTimesDoCampeonato(campeonato);
+  const categoriasCadastro = (campeonato.categorias || []).map(c => `<div class="tag">${c}</div>`).join("");
+  const timesDoCadastro = obterTimesDoCampeonato(campeonato);
+  const stats = obterStatsCampeonato(campeonato);
 
-  const htmlTimes = times.length
-    ? times.map(time => `<div class="time-tag">${obterNomeTime(time)}</div>`).join("")
+  const htmlTimesCadastro = timesDoCadastro.length
+    ? timesDoCadastro.map(time => `<div class="time-tag">${obterNomeTime(time)}</div>`).join("")
     : `<div class="sem-item">Nenhum time participante encontrado.</div>`;
+
+  const htmlCategoriasJogo = stats.categorias.length
+    ? stats.categorias.map(c => `<div class="tag">${c}</div>`).join("")
+    : `<div class="tag">Sem jogos</div>`;
 
   document.getElementById("modalConteudo").innerHTML = `
     <img src="${campeonato.logo || ''}" onerror="this.src=''">
     <h2 style="margin:10px 0;">${campeonato.nome || "-"}</h2>
     <div class="subtitle">Temporada: ${campeonato.temporada || "-"}</div>
     <div class="subtitle">Status: ${campeonato.status || "-"}</div>
-    <div class="tags">${categorias || '<div class="tag">Sem categorias</div>'}</div>
+    <div class="tags">${categoriasCadastro || '<div class="tag">Sem categorias</div>'}</div>
+
+    <div class="stats-grid">
+      <div class="stat-card"><strong>Jogos</strong><span>${stats.jogos}</span></div>
+      <div class="stat-card"><strong>Gols</strong><span>${stats.gols}</span></div>
+      <div class="stat-card"><strong>Times</strong><span>${stats.times.length || timesDoCadastro.length}</span></div>
+    </div>
+
+    <div style="margin-top:16px;">
+      <div class="subtitle">Categorias com jogos</div>
+      <div class="tags">${htmlCategoriasJogo}</div>
+    </div>
 
     <div class="times-box">
       <h3>Times participantes</h3>
-      <div class="times-lista">${htmlTimes}</div>
+      <div class="times-lista">${htmlTimesCadastro}</div>
     </div>
 
     <button onclick="fecharModal()" style="margin-top:15px;">Fechar</button>
@@ -365,24 +456,9 @@ window.fecharModal = function() {
   document.getElementById("modalVer").style.display = "none";
 }
 
-async function carregarTimes() {
-  timesCache = [];
-  const querySnapshot = await getDocs(collection(db, "times"));
-  querySnapshot.forEach((docSnap) => {
-    timesCache.push({ id: docSnap.id, ...docSnap.data() });
-  });
-}
-
 async function carregarCampeonatos() {
   const lista = document.getElementById("listaCampeonatos");
   lista.innerHTML = "<div class='sem-item'>Carregando campeonatos...</div>";
-
-  const querySnapshot = await getDocs(collection(db, "campeonatos"));
-  campeonatosCache = [];
-
-  querySnapshot.forEach((docSnap) => {
-    campeonatosCache.push({ id: docSnap.id, ...docSnap.data() });
-  });
 
   let campeonatos = campeonatosCache.filter(campeonatoEhPublico);
 
@@ -407,10 +483,12 @@ async function carregarCampeonatos() {
 
   campeonatos.forEach((campeonato) => {
     const categorias = (campeonato.categorias || []).map(c => `<span class="tag">${c}</span>`).join("");
-    const times = obterTimesDoCampeonato(campeonato);
-    const nomesTimes = times.slice(0, 6).map(t => `<span class="tag">${obterNomeTime(t)}</span>`).join("");
-    const resumoTimes = times.length
-      ? nomesTimes + (times.length > 6 ? `<span class="tag">+${times.length - 6} times</span>` : "")
+    const timesDoCadastro = obterTimesDoCampeonato(campeonato);
+    const stats = obterStatsCampeonato(campeonato);
+
+    const nomesTimes = timesDoCadastro.slice(0, 6).map(t => `<span class="tag">${obterNomeTime(t)}</span>`).join("");
+    const resumoTimes = timesDoCadastro.length
+      ? nomesTimes + (timesDoCadastro.length > 6 ? `<span class="tag">+${timesDoCadastro.length - 6} times</span>` : "")
       : `<span class="tag">Sem times informados</span>`;
 
     lista.innerHTML += `
@@ -421,6 +499,7 @@ async function carregarCampeonatos() {
             <div class="nome-campeonato">${campeonato.nome || "-"}</div>
             <small>Temporada: ${campeonato.temporada || "-"}</small>
             <small>Status: ${campeonato.status || "-"}</small>
+            <small>Jogos: ${stats.jogos} | Gols: ${stats.gols}</small>
             <div class="tags">${categorias || '<span class="tag">Sem categorias</span>'}</div>
             <div class="tags">${resumoTimes}</div>
           </div>
@@ -435,8 +514,24 @@ async function carregarCampeonatos() {
 
 async function iniciarPagina() {
   try {
-    await carregarTimes();
-    await carregarCampeonatos();
+    const snapCampeonatos = await getDocs(collection(db, "campeonatos"));
+    campeonatosCache = [];
+    snapCampeonatos.forEach(docSnap => campeonatosCache.push({ id: docSnap.id, ...docSnap.data() }));
+
+    const snapTimes = await getDocs(collection(db, "times"));
+    timesCache = [];
+    snapTimes.forEach(docSnap => timesCache.push({ id: docSnap.id, ...docSnap.data() }));
+
+    const snapJogos = await getDocs(collection(db, "jogos"));
+    jogosCache = [];
+    snapJogos.forEach(docSnap => jogosCache.push({ id: docSnap.id, ...docSnap.data() }));
+
+    const snapSumulas = await getDocs(collection(db, "sumulas"));
+    sumulasCache = [];
+    snapSumulas.forEach(docSnap => sumulasCache.push({ id: docSnap.id, ...docSnap.data() }));
+
+    calcularEstatisticasCampeonatos();
+    carregarCampeonatos();
   } catch (erro) {
     document.getElementById("listaCampeonatos").innerHTML = "<div class='sem-item'>Erro ao carregar os campeonatos.</div>";
     console.error(erro);
