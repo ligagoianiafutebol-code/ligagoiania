@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Jogadores</title>
+<title>Jogadores - LIGA GOIANA DE FUTEBOL DE BASE</title>
 
 <style>
 body{
@@ -22,72 +22,89 @@ font-weight:bold;
 border-bottom:3px solid #f7c600;
 }
 
+.menu{
+display:flex;
+justify-content:center;
+gap:10px;
+background:#102a52;
+padding:12px;
+flex-wrap:wrap;
+border-bottom:1px solid rgba(255,255,255,0.08);
+}
+
+.menu a{
+color:white;
+text-decoration:none;
+font-weight:bold;
+font-size:14px;
+background:#0d2346;
+padding:10px 14px;
+border-radius:8px;
+}
+
+.menu a.ativo{
+background:#f7c600;
+color:black;
+}
+
 .container{
-padding:15px;
-max-width:1100px;
+padding:20px;
+max-width:1200px;
 margin:auto;
 }
 
-input{
+.hero{
+background:linear-gradient(135deg,#102a52,#0d2346);
+border:1px solid rgba(255,230,0,.12);
+border-radius:16px;
+padding:20px;
+margin-bottom:20px;
+}
+
+.hero h2{
+margin:0 0 8px;
+color:#f7c600;
+font-size:26px;
+}
+
+.hero p{
+margin:0;
+opacity:.92;
+line-height:1.6;
+font-size:14px;
+}
+
+.filtros{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:12px;
+margin-bottom:20px;
+}
+
+input, select{
 width:100%;
 padding:12px;
-margin-bottom:12px;
 border:none;
 border-radius:8px;
 font-size:14px;
 box-sizing:border-box;
 }
 
-button{
-background:#f7c600;
-color:black;
-padding:10px 14px;
-border:none;
-border-radius:8px;
-font-weight:bold;
-cursor:pointer;
-margin-bottom:15px;
-}
-
-.btn-voltar{
-display:inline-block;
-margin-bottom:15px;
-background:#f7c600;
-color:black;
-padding:10px 14px;
-border-radius:8px;
-text-decoration:none;
-font-weight:bold;
-}
-
-.photo{
-width:60px;
-height:60px;
-border-radius:50%;
-object-fit:cover;
-border:2px solid #ffffff22;
-background:#1a3f73;
-}
-
-.nome-jogador{
-font-weight:bold;
-font-size:16px;
-}
-
 .lista-grid{
 display:grid;
 grid-template-columns:repeat(auto-fit, minmax(320px, 1fr));
-gap:12px;
+gap:14px;
 }
 
 .card{
 background:#102a52;
-padding:15px;
-border-radius:10px;
+padding:16px;
+border-radius:14px;
 display:flex;
 justify-content:space-between;
 align-items:center;
-gap:10px;
+gap:12px;
+border:1px solid rgba(255,230,0,.12);
 }
 
 .player{
@@ -95,74 +112,42 @@ display:flex;
 align-items:center;
 gap:12px;
 min-width:0;
+flex:1;
+}
+
+.photo{
+width:64px;
+height:64px;
+border-radius:50%;
+object-fit:cover;
+border:2px solid rgba(255,255,255,.15);
+background:#1a3f73;
+flex-shrink:0;
 }
 
 .player-info{
 display:flex;
 flex-direction:column;
-gap:4px;
+gap:5px;
 min-width:0;
 }
 
+.nome-jogador{
+font-weight:bold;
+font-size:17px;
+color:#ffffff;
+}
+
 .player-info small{
-opacity:.85;
+opacity:.9;
 font-size:12px;
-}
-
-.actions{
-display:flex;
-gap:6px;
-flex-wrap:wrap;
-}
-
-.actions button{
-background:#1a3f73;
-padding:6px 10px;
-border-radius:6px;
-color:white;
-border:none;
-font-size:12px;
-margin:0;
-}
-
-.modal{
-display:none;
-position:fixed;
-inset:0;
-background:rgba(0,0,0,0.7);
-justify-content:center;
-align-items:center;
-padding:15px;
-z-index:999;
-}
-
-.modal-content{
-background:#102a52;
-padding:20px;
-border-radius:12px;
-max-width:620px;
-width:100%;
-text-align:center;
-max-height:85vh;
-overflow:auto;
-}
-
-.modal-content img{
-width:100px;
-height:100px;
-border-radius:50%;
-object-fit:cover;
-border:2px solid #ffffff22;
-margin-bottom:12px;
-background:#1a3f73;
 }
 
 .tags{
 display:flex;
 gap:6px;
 flex-wrap:wrap;
-justify-content:center;
-margin-top:10px;
+margin-top:4px;
 }
 
 .tag{
@@ -172,45 +157,43 @@ border-radius:999px;
 font-size:12px;
 }
 
-.subtitle{
-opacity:.85;
-font-size:13px;
-margin-bottom:10px;
+.actions{
+display:flex;
+gap:8px;
+flex-wrap:wrap;
+justify-content:flex-end;
 }
 
-.sem-item{
-opacity:.85;
-font-size:13px;
-}
-
-.stats-box{
-display:grid;
-grid-template-columns:repeat(2, 1fr);
-gap:10px;
-margin-top:14px;
-text-align:left;
-}
-
-.stat-card{
-background:#0b1f3a;
-border-radius:10px;
-padding:10px;
-border:1px solid rgba(255,255,255,.08);
-}
-
-.stat-card strong{
-display:block;
-color:#f7c600;
-margin-bottom:4px;
-font-size:13px;
-}
-
-.stat-card span{
-font-size:15px;
+.btn-acao{
+display:inline-flex;
+align-items:center;
+justify-content:center;
+padding:10px 14px;
+border-radius:8px;
+text-decoration:none;
 font-weight:bold;
+font-size:13px;
+border:none;
+cursor:pointer;
 }
 
-@media (max-width:700px){
+.btn-ver{
+background:#f7c600;
+color:black;
+}
+
+.vazio{
+background:#102a52;
+padding:30px;
+border-radius:12px;
+text-align:center;
+}
+
+@media (max-width:800px){
+.filtros{
+grid-template-columns:1fr;
+}
+
 .card{
 flex-direction:column;
 align-items:flex-start;
@@ -220,30 +203,53 @@ align-items:flex-start;
 width:100%;
 justify-content:flex-start;
 }
-
-.stats-box{
-grid-template-columns:1fr;
-}
 }
 </style>
 </head>
-
 <body>
 
-<header>Jogadores</header>
+<header>LIGA GOIANA DE FUTEBOL DE BASE</header>
+
+<div class="menu">
+<a href="index.html">Campeonatos</a>
+<a href="tabela.html">Tabela</a>
+<a href="jogos.html">Jogos</a>
+<a href="artilharia.html">Artilharia</a>
+<a href="cartoes.html">Cartões</a>
+<a href="suspensos.html">Suspensos</a>
+<a href="times.html">Times</a>
+<a href="jogadores.html" class="ativo">Jogadores</a>
+<a href="login.html">Login</a>
+</div>
 
 <div class="container">
 
-<a href="index.html" class="btn-voltar">← Voltar</a>
+<div class="hero">
+  <h2>Jogadores</h2>
+  <p>Veja os atletas cadastrados, filtre por categoria e abra a página pública de cada jogador.</p>
+</div>
 
-<input id="buscaJogador" placeholder="Pesquisar jogador..." oninput="carregarJogadores()">
+<div class="filtros">
+  <input id="buscaJogador" placeholder="Pesquisar jogador..." oninput="carregarJogadores()">
+
+  <select id="filtroCategoria" onchange="carregarJogadores()">
+    <option value="">Selecione a categoria</option>
+    <option value="Sub-11">Sub-11</option>
+    <option value="Sub-12">Sub-12</option>
+    <option value="Sub-13">Sub-13</option>
+    <option value="Sub-14">Sub-14</option>
+    <option value="Sub-15">Sub-15</option>
+    <option value="Sub-16">Sub-16</option>
+    <option value="Sub-17">Sub-17</option>
+    <option value="Sub-18">Sub-18</option>
+    <option value="Sub-19">Sub-19</option>
+    <option value="Sub-20">Sub-20</option>
+    <option value="Sub-21">Sub-21</option>
+  </select>
+</div>
 
 <div class="lista-grid" id="listaJogadores"></div>
 
-</div>
-
-<div class="modal" id="modalVer">
-  <div class="modal-content" id="modalConteudo"></div>
 </div>
 
 <script type="module">
@@ -264,59 +270,12 @@ const db = getFirestore(app);
 
 let jogadoresCache = [];
 
-window.verJogador = function(id) {
-  const jogador = jogadoresCache.find(j => j.id === id);
-  if (!jogador) return;
-
-  const categorias = (jogador.categorias || []).map(c => `<div class="tag">${c}</div>`).join("");
-
-  document.getElementById("modalConteudo").innerHTML = `
-    <img src="${jogador.foto || ''}" onerror="this.src=''">
-    <h2 style="margin:10px 0;">${jogador.nome || "-"}</h2>
-    <div class="subtitle">Time: ${jogador.time || "-"}</div>
-    <div class="subtitle">Posição: ${jogador.posicao || "-"}</div>
-    <div class="subtitle">Número: ${jogador.numero || "-"}</div>
-
-    <div class="tags">${categorias || ""}</div>
-
-    <div class="stats-box">
-      <div class="stat-card">
-        <strong>Jogos</strong>
-        <span>${Number(jogador.jogos || 0)}</span>
-      </div>
-      <div class="stat-card">
-        <strong>Gols</strong>
-        <span>${Number(jogador.gols || 0)}</span>
-      </div>
-      <div class="stat-card">
-        <strong>Assistências</strong>
-        <span>${Number(jogador.assistencias || 0)}</span>
-      </div>
-      <div class="stat-card">
-        <strong>Amarelos</strong>
-        <span>${Number(jogador.amarelos || 0)}</span>
-      </div>
-      <div class="stat-card">
-        <strong>Vermelhos</strong>
-        <span>${Number(jogador.vermelhos || 0)}</span>
-      </div>
-    </div>
-
-    <button onclick="fecharModal()" style="margin-top:15px;">Fechar</button>
-  `;
-
-  document.getElementById("modalVer").style.display = "flex";
-}
-
-window.fecharModal = function() {
-  document.getElementById("modalVer").style.display = "none";
-}
-
-window.carregarJogadores = function() {
+window.carregarJogadores = function(){
   const lista = document.getElementById("listaJogadores");
-  let jogadores = [...jogadoresCache];
-
   const busca = (document.getElementById("buscaJogador").value || "").toLowerCase().trim();
+  const categoria = document.getElementById("filtroCategoria").value;
+
+  let jogadores = [...jogadoresCache];
 
   if (busca) {
     jogadores = jogadores.filter(j =>
@@ -326,57 +285,66 @@ window.carregarJogadores = function() {
     );
   }
 
-  jogadores.sort((a, b) => (a.nome || "").localeCompare((b.nome || ""), 'pt-BR'));
+  if (categoria) {
+    jogadores = jogadores.filter(j => Array.isArray(j.categorias) && j.categorias.includes(categoria));
+  }
+
+  jogadores.sort((a, b) => {
+    const na = Number(a.numero || 999);
+    const nb = Number(b.numero || 999);
+    if (na !== nb) return na - nb;
+    return (a.nome || "").localeCompare((b.nome || ""), "pt-BR");
+  });
 
   if (!jogadores.length) {
-    lista.innerHTML = "<div class='sem-item'>Nenhum jogador encontrado.</div>";
+    lista.innerHTML = `<div class="vazio">Nenhum jogador encontrado.</div>`;
     return;
   }
 
   lista.innerHTML = "";
 
-  jogadores.forEach((jogador) => {
+  jogadores.forEach(jogador => {
     const categorias = (jogador.categorias || []).map(c => `<span class="tag">${c}</span>`).join("");
 
     lista.innerHTML += `
       <div class="card">
         <div class="player">
-          <img src="${jogador.foto || ''}" class="photo" alt="Foto do jogador" onerror="this.src=''">
+          <img src="${jogador.foto || ''}" class="photo" alt="${jogador.nome || 'Jogador'}" onerror="this.src=''">
           <div class="player-info">
-            <div class="nome-jogador">${jogador.nome || "-"}</div>
+            <div class="nome-jogador">${jogador.numero || "-"} - ${jogador.nome || "-"}</div>
             <small>Time: ${jogador.time || "-"}</small>
             <small>Posição: ${jogador.posicao || "-"}</small>
-            <small>Número: ${jogador.numero || "-"}</small>
-            <small>Jogos: ${Number(jogador.jogos || 0)} | Gols: ${Number(jogador.gols || 0)}</small>
-            <small>Assistências: ${Number(jogador.assistencias || 0)}</small>
+            <small>Jogos: ${Number(jogador.jogos || 0)} | Gols: ${Number(jogador.gols || 0)} | Assistências: ${Number(jogador.assistencias || 0)}</small>
             <small>Amarelos: ${Number(jogador.amarelos || 0)} | Vermelhos: ${Number(jogador.vermelhos || 0)}</small>
-            <div class="tags">${categorias}</div>
+            <div class="tags">${categorias || '<span class="tag">Sem categoria</span>'}</div>
           </div>
         </div>
+
         <div class="actions">
-          <button onclick="verJogador('${jogador.id}')">Ver</button>
+          <a class="btn-acao btn-ver" href="jogador-publico.html?id=${jogador.id}">
+            Ver Jogador
+          </a>
         </div>
       </div>
     `;
   });
-}
+};
 
-async function iniciarPagina() {
+async function iniciarPagina(){
   const lista = document.getElementById("listaJogadores");
-  lista.innerHTML = "<div class='sem-item'>Carregando jogadores...</div>";
+  lista.innerHTML = `<div class="vazio">Carregando jogadores...</div>`;
 
-  try {
-    const snapJogadores = await getDocs(collection(db, "jogadores"));
+  try{
+    const snap = await getDocs(collection(db, "jogadores"));
     jogadoresCache = [];
-
-    snapJogadores.forEach((docSnap) => {
+    snap.forEach(docSnap => {
       jogadoresCache.push({ id: docSnap.id, ...docSnap.data() });
     });
 
     carregarJogadores();
-  } catch (erro) {
+  }catch(erro){
     console.error(erro);
-    lista.innerHTML = "<div class='sem-item'>Erro ao carregar jogadores.</div>";
+    lista.innerHTML = `<div class="vazio">Erro ao carregar os jogadores.</div>`;
   }
 }
 
