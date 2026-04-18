@@ -1,168 +1,409 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Painel Admin - LIGA GOIANA DE FUTEBOL DE BASE</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel Admin - LIGA GOIANA DE FUTEBOL DE BASE</title>
 
-<style>
-body{
-margin:0;
-font-family:Arial, sans-serif;
-background:#0b1f3a;
-color:white;
-}
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-header{
-background:#08172c;
-padding:15px;
-text-align:center;
-font-size:22px;
-font-weight:bold;
-border-bottom:3px solid #f7c600;
-position:relative;
-}
+  <style>
+    :root{
+      --bg:#0b1f3a;
+      --bg-dark:#08172c;
+      --card:#102a52;
+      --card-hover:#153766;
+      --gold:#f7c600;
+      --gold-soft:rgba(247,198,0,.12);
+      --gold-line:rgba(247,198,0,.30);
+      --white:#ffffff;
+      --muted:#d6def0;
+      --shadow:0 8px 22px rgba(0,0,0,.28);
+      --radius:14px;
+      --transition:.25s ease;
+      --max:1280px;
+    }
 
-.btn-sair{
-position:absolute;
-top:12px;
-right:15px;
-background:#f7c600;
-border:none;
-padding:8px 12px;
-border-radius:6px;
-font-weight:bold;
-cursor:pointer;
-color:black;
-}
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
 
-.container{
-padding:15px;
-}
+    body{
+      font-family:Arial, sans-serif;
+      background:
+        linear-gradient(rgba(11,31,58,.88), rgba(11,31,58,.94)),
+        url("fundo.png") center/cover fixed no-repeat;
+      color:var(--white);
+    }
 
-.grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
-gap:12px;
-margin-bottom:20px;
-}
+    a{
+      text-decoration:none;
+      color:inherit;
+    }
 
-.card{
-background:#102a52;
-border-radius:12px;
-padding:15px;
-text-align:center;
-box-shadow:0 2px 8px rgba(0,0,0,0.2);
-}
+    button{
+      font-family:inherit;
+      cursor:pointer;
+      transition:var(--transition);
+    }
 
-.card h3{
-margin:0;
-font-size:26px;
-color:#f7c600;
-}
+    .wrap{
+      width:min(100% - 30px, var(--max));
+      margin:0 auto;
+    }
 
-.card p{
-margin:8px 0 0;
-font-size:14px;
-}
+    header{
+      background:rgba(8,23,44,.96);
+      border-bottom:3px solid var(--gold);
+      box-shadow:var(--shadow);
+    }
 
-.menu{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
-gap:12px;
-}
+    .header-inner{
+      min-height:82px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      flex-wrap:wrap;
+      padding:14px 0;
+    }
 
-.menu a{
-background:#102a52;
-color:white;
-text-decoration:none;
-padding:14px;
-border-radius:10px;
-text-align:center;
-font-weight:bold;
-display:block;
-}
+    .header-left,
+    .header-right{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+    }
 
-.menu a:hover{
-background:#153766;
-}
-</style>
+    .header-title{
+      flex:1;
+      text-align:center;
+      font-size:22px;
+      font-weight:700;
+      color:var(--white);
+    }
+
+    .top-btn{
+      border:none;
+      padding:10px 16px;
+      border-radius:10px;
+      font-weight:bold;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+    }
+
+    .btn-light{
+      background:#fff4cf;
+      color:#111;
+    }
+
+    .btn-light:hover{
+      background:var(--gold);
+      transform:translateY(-2px);
+    }
+
+    .btn-gold{
+      background:var(--gold);
+      color:#111;
+    }
+
+    .btn-gold:hover{
+      filter:brightness(1.05);
+      transform:translateY(-2px);
+    }
+
+    .container{
+      padding:22px 0 30px;
+    }
+
+    .hero-panel{
+      background:linear-gradient(180deg, rgba(16,42,82,.95), rgba(10,28,56,.96));
+      border:1px solid var(--gold-line);
+      border-radius:20px;
+      padding:22px;
+      box-shadow:var(--shadow);
+      margin-bottom:22px;
+    }
+
+    .hero-panel h2{
+      font-size:28px;
+      color:var(--white);
+      margin-bottom:8px;
+    }
+
+    .hero-panel p{
+      color:var(--muted);
+      line-height:1.6;
+      max-width:900px;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+      gap:14px;
+      margin-bottom:24px;
+    }
+
+    .card{
+      background:linear-gradient(180deg, rgba(16,42,82,.96), rgba(12,33,64,.96));
+      border-radius:16px;
+      padding:18px;
+      text-align:center;
+      box-shadow:var(--shadow);
+      border:1px solid rgba(255,255,255,.05);
+      transition:var(--transition);
+    }
+
+    .card:hover{
+      transform:translateY(-3px);
+      border-color:var(--gold-line);
+    }
+
+    .card h3{
+      margin:0;
+      font-size:34px;
+      color:var(--gold);
+    }
+
+    .card p{
+      margin:10px 0 0;
+      font-size:15px;
+      color:var(--muted);
+      font-weight:600;
+    }
+
+    .section-title{
+      font-size:20px;
+      color:var(--gold);
+      margin:0 0 14px;
+      font-weight:700;
+    }
+
+    .menu{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
+      gap:14px;
+    }
+
+    .menu a{
+      background:linear-gradient(180deg, rgba(16,42,82,.96), rgba(12,33,64,.96));
+      color:white;
+      padding:15px 16px;
+      border-radius:14px;
+      text-align:left;
+      font-weight:bold;
+      display:flex;
+      align-items:center;
+      gap:12px;
+      box-shadow:var(--shadow);
+      border:1px solid rgba(255,255,255,.05);
+      transition:var(--transition);
+    }
+
+    .menu a i{
+      color:var(--gold);
+      width:20px;
+      text-align:center;
+      flex-shrink:0;
+    }
+
+    .menu a:hover{
+      background:var(--card-hover);
+      border-color:var(--gold-line);
+      color:var(--gold);
+      transform:translateY(-2px);
+    }
+
+    .menu a:hover i{
+      color:var(--gold);
+    }
+
+    .admin-block{
+      background:rgba(16,42,82,.45);
+      border:1px solid rgba(255,255,255,.05);
+      border-radius:18px;
+      padding:18px;
+      margin-bottom:18px;
+    }
+
+    .footer-note{
+      margin-top:20px;
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.6;
+      text-align:center;
+    }
+
+    @media (max-width: 900px){
+      .header-title{
+        order:3;
+        width:100%;
+        text-align:center;
+      }
+
+      .header-left,
+      .header-right{
+        width:100%;
+        justify-content:center;
+      }
+
+      .hero-panel h2{
+        font-size:24px;
+      }
+    }
+
+    @media (max-width: 600px){
+      .top-btn{
+        width:100%;
+        justify-content:center;
+      }
+
+      .header-left,
+      .header-right{
+        flex-direction:column;
+        align-items:stretch;
+      }
+
+      .menu{
+        grid-template-columns:1fr;
+      }
+
+      .grid{
+        grid-template-columns:1fr 1fr;
+      }
+    }
+  </style>
 </head>
 <body>
 
-<header>
-Painel do Administrador
-<button class="btn-sair" onclick="logout()">Sair</button>
-</header>
+  <header>
+    <div class="wrap header-inner">
+      <div class="header-left">
+        <button class="top-btn btn-light" type="button" onclick="voltarPagina()">
+          <i class="fa-solid fa-arrow-left"></i> Voltar
+        </button>
 
-<div class="container">
+        <a href="index.html" class="top-btn btn-light">
+          <i class="fa-solid fa-house"></i> Página Inicial
+        </a>
+      </div>
 
-<div class="grid">
-<div class="card">
-<h3>2</h3>
-<p>Campeonatos</p>
-</div>
+      <div class="header-title">Painel do Administrador</div>
 
-<div class="card">
-<h3>8</h3>
-<p>Categorias</p>
-</div>
+      <div class="header-right">
+        <button class="top-btn btn-gold" onclick="logout()">
+          <i class="fa-solid fa-right-from-bracket"></i> Sair
+        </button>
+      </div>
+    </div>
+  </header>
 
-<div class="card">
-<h3>0</h3>
-<p>Times</p>
-</div>
+  <div class="wrap container">
 
-<div class="card">
-<h3>0</h3>
-<p>Jogadores</p>
-</div>
-</div>
+    <section class="hero-panel">
+      <h2>Gestão Geral da Liga</h2>
+      <p>
+        Aqui você administra campeonatos, categorias, equipes, jogadores, comissão técnica,
+        arbitragem, jogos, súmulas, tabelas, notícias e configurações do sistema.
+      </p>
+    </section>
 
-<div class="menu">
-<a href="campeonatos.html">Campeonatos</a>
-<a href="categorias.html">Categorias</a>
-<a href="times.html">Times</a>
-<a href="jogadores.html">Jogadores</a>
-<a href="tecnicos.html">Técnicos</a>
-<a href="arbitros.html">Árbitros</a>
-<a href="assistentes.html">Assistentes</a>
-<a href="jogos-admin.html">Jogos</a>
-<a href="sumula.html">Súmula</a>
-<a href="sumulas.html">Súmulas</a>
-<a href="tabelas-admin.html">Tabelas</a>
-<a href="noticias.html">Notícias</a>
-<a href="configuracoes.html">Configurações</a>
-</div>
+    <div class="grid">
+      <div class="card">
+        <h3>2</h3>
+        <p>Campeonatos</p>
+      </div>
 
-</div>
+      <div class="card">
+        <h3>8</h3>
+        <p>Categorias</p>
+      </div>
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
-import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-auth.js";
+      <div class="card">
+        <h3>0</h3>
+        <p>Times</p>
+      </div>
 
-const firebaseConfig = {
-  apiKey: "AIzaSyCyArj4yRlEl-yibkc0VEmL_4UJpRHHQSc",
-  authDomain: "liga-goiana-base.firebaseapp.com",
-  projectId: "liga-goiana-base",
-  storageBucket: "liga-goiana-base.firebasestorage.app",
-  messagingSenderId: "952863591183",
-  appId: "1:952863591183:web:4eea34f494ba2dd754cc7a"
-};
+      <div class="card">
+        <h3>0</h3>
+        <p>Jogadores</p>
+      </div>
+    </div>
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
+    <div class="admin-block">
+      <h3 class="section-title">Cadastros e Estrutura</h3>
+      <div class="menu">
+        <a href="campeonatos.html"><i class="fa-solid fa-trophy"></i> Campeonatos</a>
+        <a href="categorias.html"><i class="fa-solid fa-layer-group"></i> Categorias</a>
+        <a href="times.html"><i class="fa-solid fa-shield-halved"></i> Times</a>
+        <a href="jogadores.html"><i class="fa-solid fa-users"></i> Jogadores</a>
+        <a href="tecnicos.html"><i class="fa-solid fa-user-tie"></i> Técnicos</a>
+        <a href="arbitros.html"><i class="fa-solid fa-whistle"></i> Árbitros</a>
+        <a href="assistentes.html"><i class="fa-solid fa-user-group"></i> Assistentes</a>
+      </div>
+    </div>
 
-window.logout = function() {
-  signOut(auth).then(() => {
-    alert("Saiu do sistema");
-    window.location.href = "index.html";
-  }).catch((error) => {
-    alert("Erro ao sair.");
-    console.error(error);
-  });
-};
-</script>
+    <div class="admin-block">
+      <h3 class="section-title">Competições e Operação</h3>
+      <div class="menu">
+        <a href="jogos-admin.html"><i class="fa-solid fa-calendar-days"></i> Jogos</a>
+        <a href="sumula.html"><i class="fa-solid fa-file-signature"></i> Criar Súmula</a>
+        <a href="sumulas.html"><i class="fa-solid fa-file-lines"></i> Ver Súmulas</a>
+        <a href="tabelas-admin.html"><i class="fa-solid fa-table"></i> Tabelas</a>
+      </div>
+    </div>
+
+    <div class="admin-block">
+      <h3 class="section-title">Comunicação e Sistema</h3>
+      <div class="menu">
+        <a href="noticias.html"><i class="fa-solid fa-newspaper"></i> Notícias</a>
+        <a href="configuracoes.html"><i class="fa-solid fa-sliders"></i> Configurações</a>
+      </div>
+    </div>
+
+    <div class="footer-note">
+      Painel administrativo da Liga Goiana de Futebol de Base.
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
+    import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCyArj4yRlEl-yibkc0VEmL_4UJpRHHQSc",
+      authDomain: "liga-goiana-base.firebaseapp.com",
+      projectId: "liga-goiana-base",
+      storageBucket: "liga-goiana-base.firebasestorage.app",
+      messagingSenderId: "952863591183",
+      appId: "1:952863591183:web:4eea34f494ba2dd754cc7a"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    window.logout = function() {
+      signOut(auth).then(() => {
+        alert("Saiu do sistema");
+        window.location.href = "index.html";
+      }).catch((error) => {
+        alert("Erro ao sair.");
+        console.error(error);
+      });
+    };
+
+    window.voltarPagina = function() {
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        window.location.href = "index.html";
+      }
+    };
+  </script>
 
 </body>
 </html>
