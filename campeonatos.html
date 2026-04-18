@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Campeonatos</title>
+<title>Campeonatos - Admin</title>
 
 <style>
 body{
@@ -28,7 +28,7 @@ max-width:1100px;
 margin:auto;
 }
 
-input{
+input, select{
 width:100%;
 padding:12px;
 margin-bottom:12px;
@@ -46,7 +46,20 @@ border:none;
 border-radius:8px;
 font-weight:bold;
 cursor:pointer;
-margin-bottom:10px;
+margin-bottom:15px;
+}
+
+.btn{
+background:#f7c600;
+color:black;
+padding:10px 14px;
+border-radius:8px;
+text-decoration:none;
+display:inline-block;
+margin-bottom:12px;
+font-weight:bold;
+cursor:pointer;
+border:none;
 }
 
 .btn-voltar{
@@ -86,24 +99,22 @@ padding:15px;
 border-radius:10px;
 display:flex;
 justify-content:space-between;
-align-items:flex-start;
+align-items:center;
 gap:10px;
 }
 
 .item{
 display:flex;
-align-items:flex-start;
+align-items:center;
 gap:12px;
 min-width:0;
-flex:1;
 }
 
 .item-info{
 display:flex;
 flex-direction:column;
-gap:6px;
+gap:4px;
 min-width:0;
-flex:1;
 }
 
 .item-info small{
@@ -115,7 +126,6 @@ font-size:12px;
 display:flex;
 gap:6px;
 flex-wrap:wrap;
-align-items:center;
 }
 
 .actions button{
@@ -126,6 +136,10 @@ color:white;
 border:none;
 font-size:12px;
 margin:0;
+}
+
+.actions .delete{
+background:#b30000;
 }
 
 .modal{
@@ -143,7 +157,7 @@ z-index:999;
 background:#102a52;
 padding:20px;
 border-radius:12px;
-max-width:720px;
+max-width:560px;
 width:100%;
 text-align:center;
 max-height:85vh;
@@ -181,77 +195,56 @@ font-size:13px;
 margin-bottom:10px;
 }
 
-.times-box{
-margin-top:10px;
-text-align:left;
-background:#0b1f3a;
-border-radius:10px;
-padding:12px;
+.checkbox-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit, minmax(110px, 1fr));
+gap:8px;
+margin-bottom:12px;
 }
 
-.times-box h3{
-margin:0 0 10px;
-font-size:15px;
-color:#f7c600;
-}
-
-.times-lista{
+.check-item{
+background:#102a52;
+padding:8px;
+border-radius:8px;
 display:flex;
-flex-wrap:wrap;
+align-items:center;
 gap:8px;
 }
 
-.time-tag{
-background:#1a3f73;
-padding:6px 10px;
-border-radius:999px;
-font-size:12px;
+.check-item input{
+width:auto;
+margin:0;
 }
 
-.sem-item{
-opacity:.85;
-font-size:13px;
-}
-
-.stats-grid{
-display:grid;
-grid-template-columns:repeat(3, 1fr);
-gap:10px;
-margin-top:16px;
-text-align:left;
-}
-
-.stat-card{
-background:#0b1f3a;
+.bloco-regras{
+background:#102a52;
+padding:12px;
 border-radius:10px;
-padding:10px;
+margin-bottom:12px;
 border:1px solid rgba(255,255,255,.08);
 }
 
-.stat-card strong{
-display:block;
+.bloco-regras h3{
+margin:0 0 10px;
+font-size:16px;
 color:#f7c600;
-font-size:13px;
-margin-bottom:4px;
+text-align:left;
 }
 
-.stat-card span{
-font-size:15px;
-font-weight:bold;
+.grid-regras{
+display:grid;
+grid-template-columns:repeat(2, 1fr);
+gap:10px;
 }
 
 @media (max-width:700px){
+.grid-regras{
+grid-template-columns:1fr;
+}
+
 .card{
 flex-direction:column;
-}
-
-.actions{
-width:100%;
-justify-content:flex-start;
-}
-
-.stats-grid{
-grid-template-columns:1fr;
+align-items:flex-start;
 }
 }
 </style>
@@ -263,9 +256,53 @@ grid-template-columns:1fr;
 
 <div class="container">
 
-<a href="index.html" class="btn-voltar">← Voltar</a>
+<a href="admin.html" class="btn-voltar">← Voltar</a>
+
+<a class="btn" onclick="toggleFormulario()">+ Novo Campeonato</a>
 
 <input id="buscaCampeonato" placeholder="Pesquisar campeonato..." oninput="carregarCampeonatos()">
+
+<div id="formulario" style="display:none;">
+  <input id="nomeCampeonato" placeholder="Nome do campeonato">
+  <input id="logoCampeonato" type="file" accept="image/*">
+  <input id="temporadaCampeonato" placeholder="Temporada (ex: 2026)">
+
+  <select id="statusCampeonato">
+    <option value="">Selecione o status</option>
+    <option value="Ativo">Ativo</option>
+    <option value="Em breve">Em breve</option>
+    <option value="Encerrado">Encerrado</option>
+  </select>
+
+  <div class="subtitle">Categorias do campeonato</div>
+  <div class="checkbox-grid" id="categoriasGrid">
+    <label class="check-item"><input type="checkbox" value="Sub-11">Sub-11</label>
+    <label class="check-item"><input type="checkbox" value="Sub-12">Sub-12</label>
+    <label class="check-item"><input type="checkbox" value="Sub-13">Sub-13</label>
+    <label class="check-item"><input type="checkbox" value="Sub-14">Sub-14</label>
+    <label class="check-item"><input type="checkbox" value="Sub-15">Sub-15</label>
+    <label class="check-item"><input type="checkbox" value="Sub-16">Sub-16</label>
+    <label class="check-item"><input type="checkbox" value="Sub-17">Sub-17</label>
+    <label class="check-item"><input type="checkbox" value="Sub-18">Sub-18</label>
+    <label class="check-item"><input type="checkbox" value="Sub-19">Sub-19</label>
+    <label class="check-item"><input type="checkbox" value="Sub-20">Sub-20</label>
+    <label class="check-item"><input type="checkbox" value="Sub-21">Sub-21</label>
+  </div>
+
+  <div class="bloco-regras">
+    <h3>Regras de Cartões e Suspensão</h3>
+
+    <div class="grid-regras">
+      <input id="amarelosParaSuspensao" type="number" min="1" placeholder="Qtd. amarelos para suspender (ex: 3)">
+      <input id="jogosSuspensaoAmarelos" type="number" min="1" placeholder="Jogos fora por amarelos (ex: 1)">
+
+      <input id="jogosSuspensaoVermelhoDireto" type="number" min="1" placeholder="Jogos fora por vermelho direto (ex: 2)">
+      <input id="jogosSuspensaoSegundoAmarelo" type="number" min="1" placeholder="Jogos fora por 2º amarelo (ex: 1)">
+    </div>
+  </div>
+
+  <button id="botaoSalvar" onclick="salvarCampeonato()">Salvar Campeonato</button>
+</div>
 
 <div class="lista-grid" id="listaCampeonatos"></div>
 
@@ -277,7 +314,8 @@ grid-template-columns:1fr;
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
-import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-firestore.js";
+import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-firestore.js";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-storage.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCyArj4yRlEl-yibkc0VEmL_4UJpRHHQSc",
@@ -290,160 +328,163 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const storage = getStorage(app);
 
-let campeonatosCache = [];
-let timesCache = [];
-let jogosCache = [];
-let sumulasCache = [];
-let estatisticasCampeonatos = {};
+let editandoId = null;
+let logoAtual = "";
 
-function normalizarTexto(texto) {
-  return String(texto || "")
-    .trim()
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "");
+window.toggleFormulario = function(){
+  const f = document.getElementById("formulario");
+  f.style.display = f.style.display === "none" ? "block" : "none";
 }
 
-function statusPublico(status = "") {
-  const s = String(status).trim().toLowerCase();
-  return ["ativo", "em breve", "publicado", "publico", "público"].includes(s);
+function getCategoriasSelecionadas() {
+  return Array.from(document.querySelectorAll('#categoriasGrid input[type="checkbox"]:checked')).map(i => i.value);
 }
 
-function campeonatoEhPublico(campeonato) {
-  if (campeonato.publicado === true) return true;
-  if (campeonato.publico === true) return true;
-  if (campeonato.visivelPublico === true) return true;
-  if (statusPublico(campeonato.status)) return true;
-  return false;
-}
-
-function obterNomeTime(time) {
-  return time.nome || time.nomeTime || time.time || time.titulo || "Time sem nome";
-}
-
-function timePertenceAoCampeonato(time, campeonato) {
-  const campeonatoId = campeonato.id;
-  const campeonatoNome = normalizarTexto(campeonato.nome);
-
-  const campoCampeonatoId = String(time.campeonatoId || "").trim();
-  const campoCampeonato = normalizarTexto(time.campeonato || "");
-  const campoCampeonatoNome = normalizarTexto(time.campeonatoNome || "");
-
-  const listaCampeonatos = Array.isArray(time.campeonatos) ? time.campeonatos.map(v => normalizarTexto(v)) : [];
-  const listaCampeonatoIds = Array.isArray(time.campeonatoIds) ? time.campeonatoIds.map(v => String(v).trim()) : [];
-
-  if (campoCampeonatoId && campoCampeonatoId === campeonatoId) return true;
-  if (campoCampeonato && campoCampeonato === campeonatoNome) return true;
-  if (campoCampeonatoNome && campoCampeonatoNome === campeonatoNome) return true;
-  if (listaCampeonatos.includes(campeonatoNome)) return true;
-  if (listaCampeonatoIds.includes(campeonatoId)) return true;
-
-  return false;
-}
-
-function obterTimesDoCampeonato(campeonato) {
-  return timesCache.filter(time => timePertenceAoCampeonato(time, campeonato));
-}
-
-function calcularEstatisticasCampeonatos() {
-  estatisticasCampeonatos = {};
-
-  campeonatosCache.forEach(campeonato => {
-    estatisticasCampeonatos[campeonato.id] = {
-      jogos: 0,
-      gols: 0,
-      categorias: new Set(),
-      times: new Set()
-    };
-  });
-
-  sumulasCache.forEach(sumula => {
-    const campeonatoNome = normalizarTexto(sumula.campeonato || "");
-    const timeA = sumula.timeA || "";
-    const timeB = sumula.timeB || "";
-    const categoria = sumula.categoria || "";
-    const golsA = Number(sumula.golsA || 0);
-    const golsB = Number(sumula.golsB || 0);
-
-    campeonatosCache.forEach(campeonato => {
-      if (normalizarTexto(campeonato.nome) === campeonatoNome) {
-        if (!estatisticasCampeonatos[campeonato.id]) {
-          estatisticasCampeonatos[campeonato.id] = {
-            jogos: 0,
-            gols: 0,
-            categorias: new Set(),
-            times: new Set()
-          };
-        }
-
-        estatisticasCampeonatos[campeonato.id].jogos += 1;
-        estatisticasCampeonatos[campeonato.id].gols += golsA + golsB;
-        if (categoria) estatisticasCampeonatos[campeonato.id].categorias.add(categoria);
-        if (timeA) estatisticasCampeonatos[campeonato.id].times.add(timeA);
-        if (timeB) estatisticasCampeonatos[campeonato.id].times.add(timeB);
-      }
-    });
+function marcarCategorias(categorias) {
+  document.querySelectorAll('#categoriasGrid input[type="checkbox"]').forEach(i => {
+    i.checked = (categorias || []).includes(i.value);
   });
 }
 
-function obterStatsCampeonato(campeonato) {
-  const stats = estatisticasCampeonatos[campeonato.id];
+function limparFormulario() {
+  document.getElementById("nomeCampeonato").value = "";
+  document.getElementById("logoCampeonato").value = "";
+  document.getElementById("temporadaCampeonato").value = "";
+  document.getElementById("statusCampeonato").value = "";
+  document.getElementById("amarelosParaSuspensao").value = "";
+  document.getElementById("jogosSuspensaoAmarelos").value = "";
+  document.getElementById("jogosSuspensaoVermelhoDireto").value = "";
+  document.getElementById("jogosSuspensaoSegundoAmarelo").value = "";
+  document.getElementById("botaoSalvar").textContent = "Salvar Campeonato";
+  document.querySelectorAll('#categoriasGrid input[type="checkbox"]').forEach(i => i.checked = false);
+  editandoId = null;
+  logoAtual = "";
+}
 
-  if (!stats) {
-    return {
-      jogos: 0,
-      gols: 0,
-      categorias: [],
-      times: []
-    };
+window.salvarCampeonato = async function() {
+  const nome = document.getElementById("nomeCampeonato").value.trim();
+  const logo = document.getElementById("logoCampeonato").files[0];
+  const temporada = document.getElementById("temporadaCampeonato").value.trim();
+  const status = document.getElementById("statusCampeonato").value;
+  const categorias = getCategoriasSelecionadas();
+
+  const amarelosParaSuspensao = Number(document.getElementById("amarelosParaSuspensao").value || 0);
+  const jogosSuspensaoAmarelos = Number(document.getElementById("jogosSuspensaoAmarelos").value || 0);
+  const jogosSuspensaoVermelhoDireto = Number(document.getElementById("jogosSuspensaoVermelhoDireto").value || 0);
+  const jogosSuspensaoSegundoAmarelo = Number(document.getElementById("jogosSuspensaoSegundoAmarelo").value || 0);
+
+  if (!nome) {
+    alert("Digite o nome do campeonato");
+    return;
   }
 
-  return {
-    jogos: stats.jogos || 0,
-    gols: stats.gols || 0,
-    categorias: Array.from(stats.categorias || []),
-    times: Array.from(stats.times || [])
+  if (!temporada) {
+    alert("Digite a temporada");
+    return;
+  }
+
+  if (!status) {
+    alert("Selecione o status");
+    return;
+  }
+
+  if (!amarelosParaSuspensao || !jogosSuspensaoAmarelos || !jogosSuspensaoVermelhoDireto || !jogosSuspensaoSegundoAmarelo) {
+    alert("Preencha todas as regras de cartões.");
+    return;
+  }
+
+  let urlLogo = logoAtual;
+
+  if (logo) {
+    const nomeArquivo = Date.now() + "-" + logo.name;
+    const storageRef = ref(storage, "campeonatos/" + nomeArquivo);
+    await uploadBytes(storageRef, logo);
+    urlLogo = await getDownloadURL(storageRef);
+  }
+
+  const dados = {
+    nome: nome,
+    logo: urlLogo || "",
+    temporada: temporada,
+    status: status,
+    categorias: categorias,
+    regrasCartoes: {
+      amarelosParaSuspensao,
+      jogosSuspensaoAmarelos,
+      jogosSuspensaoVermelhoDireto,
+      jogosSuspensaoSegundoAmarelo
+    }
   };
+
+  if (editandoId) {
+    await updateDoc(doc(db, "campeonatos", editandoId), dados);
+    alert("Campeonato atualizado com sucesso!");
+  } else {
+    await addDoc(collection(db, "campeonatos"), dados);
+    alert("Campeonato salvo com sucesso!");
+  }
+
+  limparFormulario();
+  carregarCampeonatos();
 }
 
-window.verCampeonato = function(id) {
-  const campeonato = campeonatosCache.find(c => c.id === id);
+window.editarCampeonato = async function(id) {
+  const snap = await getDocs(collection(db, "campeonatos"));
+
+  snap.forEach((item) => {
+    if (item.id === id) {
+      const c = item.data();
+
+      document.getElementById("nomeCampeonato").value = c.nome || "";
+      document.getElementById("temporadaCampeonato").value = c.temporada || "";
+      document.getElementById("statusCampeonato").value = c.status || "";
+      document.getElementById("botaoSalvar").textContent = "Atualizar Campeonato";
+
+      document.getElementById("amarelosParaSuspensao").value = c.regrasCartoes?.amarelosParaSuspensao || "";
+      document.getElementById("jogosSuspensaoAmarelos").value = c.regrasCartoes?.jogosSuspensaoAmarelos || "";
+      document.getElementById("jogosSuspensaoVermelhoDireto").value = c.regrasCartoes?.jogosSuspensaoVermelhoDireto || "";
+      document.getElementById("jogosSuspensaoSegundoAmarelo").value = c.regrasCartoes?.jogosSuspensaoSegundoAmarelo || "";
+
+      marcarCategorias(c.categorias || []);
+      logoAtual = c.logo || "";
+      editandoId = id;
+
+      document.getElementById("formulario").style.display = "block";
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  });
+}
+
+window.verCampeonato = async function(id) {
+  const snap = await getDocs(collection(db, "campeonatos"));
+  let campeonato = null;
+
+  snap.forEach((item) => {
+    if (item.id === id) {
+      campeonato = item.data();
+    }
+  });
+
   if (!campeonato) return;
 
-  const categoriasCadastro = (campeonato.categorias || []).map(c => `<div class="tag">${c}</div>`).join("");
-  const timesDoCadastro = obterTimesDoCampeonato(campeonato);
-  const stats = obterStatsCampeonato(campeonato);
-
-  const htmlTimesCadastro = timesDoCadastro.length
-    ? timesDoCadastro.map(time => `<div class="time-tag">${obterNomeTime(time)}</div>`).join("")
-    : `<div class="sem-item">Nenhum time participante encontrado.</div>`;
-
-  const htmlCategoriasJogo = stats.categorias.length
-    ? stats.categorias.map(c => `<div class="tag">${c}</div>`).join("")
-    : `<div class="tag">Sem jogos</div>`;
+  const categorias = (campeonato.categorias || []).map(c => `<div class="tag">${c}</div>`).join("");
+  const regras = campeonato.regrasCartoes || {};
 
   document.getElementById("modalConteudo").innerHTML = `
-    <img src="${campeonato.logo || ''}" onerror="this.src=''">
-    <h2 style="margin:10px 0;">${campeonato.nome || "-"}</h2>
+    <img src="${campeonato.logo || ''}">
+    <h2 style="margin:10px 0;">${campeonato.nome}</h2>
     <div class="subtitle">Temporada: ${campeonato.temporada || "-"}</div>
     <div class="subtitle">Status: ${campeonato.status || "-"}</div>
-    <div class="tags">${categoriasCadastro || '<div class="tag">Sem categorias</div>'}</div>
+    <div class="tags">${categorias}</div>
 
-    <div class="stats-grid">
-      <div class="stat-card"><strong>Jogos</strong><span>${stats.jogos}</span></div>
-      <div class="stat-card"><strong>Gols</strong><span>${stats.gols}</span></div>
-      <div class="stat-card"><strong>Times</strong><span>${stats.times.length || timesDoCadastro.length}</span></div>
-    </div>
-
-    <div style="margin-top:16px;">
-      <div class="subtitle">Categorias com jogos</div>
-      <div class="tags">${htmlCategoriasJogo}</div>
-    </div>
-
-    <div class="times-box">
-      <h3>Times participantes</h3>
-      <div class="times-lista">${htmlTimesCadastro}</div>
+    <div style="text-align:left; margin-top:16px; background:#0b1f3a; padding:12px; border-radius:10px;">
+      <div class="subtitle"><strong style="color:#f7c600;">Regras de cartões</strong></div>
+      <div class="subtitle">Amarelos para suspensão: ${regras.amarelosParaSuspensao || "-"}</div>
+      <div class="subtitle">Jogos fora por amarelos: ${regras.jogosSuspensaoAmarelos || "-"}</div>
+      <div class="subtitle">Jogos fora por vermelho direto: ${regras.jogosSuspensaoVermelhoDireto || "-"}</div>
+      <div class="subtitle">Jogos fora por 2º amarelo: ${regras.jogosSuspensaoSegundoAmarelo || "-"}</div>
     </div>
 
     <button onclick="fecharModal()" style="margin-top:15px;">Fechar</button>
@@ -456,11 +497,25 @@ window.fecharModal = function() {
   document.getElementById("modalVer").style.display = "none";
 }
 
+window.excluirCampeonato = async function(id){
+  const confirmar = confirm("Tem certeza que deseja excluir este campeonato?");
+  if(!confirmar) return;
+
+  await deleteDoc(doc(db, "campeonatos", id));
+  alert("Campeonato excluído!");
+  carregarCampeonatos();
+}
+
 async function carregarCampeonatos() {
   const lista = document.getElementById("listaCampeonatos");
-  lista.innerHTML = "<div class='sem-item'>Carregando campeonatos...</div>";
+  lista.innerHTML = "";
 
-  let campeonatos = campeonatosCache.filter(campeonatoEhPublico);
+  const querySnapshot = await getDocs(collection(db, "campeonatos"));
+  let campeonatos = [];
+
+  querySnapshot.forEach((docSnap) => {
+    campeonatos.push({ id: docSnap.id, ...docSnap.data() });
+  });
 
   const busca = (document.getElementById("buscaCampeonato").value || "").toLowerCase().trim();
 
@@ -474,71 +529,33 @@ async function carregarCampeonatos() {
 
   campeonatos.sort((a, b) => (a.nome || "").localeCompare((b.nome || ""), 'pt-BR'));
 
-  if (!campeonatos.length) {
-    lista.innerHTML = "<div class='sem-item'>Nenhum campeonato publicado encontrado.</div>";
-    return;
-  }
-
-  lista.innerHTML = "";
-
   campeonatos.forEach((campeonato) => {
     const categorias = (campeonato.categorias || []).map(c => `<span class="tag">${c}</span>`).join("");
-    const timesDoCadastro = obterTimesDoCampeonato(campeonato);
-    const stats = obterStatsCampeonato(campeonato);
-
-    const nomesTimes = timesDoCadastro.slice(0, 6).map(t => `<span class="tag">${obterNomeTime(t)}</span>`).join("");
-    const resumoTimes = timesDoCadastro.length
-      ? nomesTimes + (timesDoCadastro.length > 6 ? `<span class="tag">+${timesDoCadastro.length - 6} times</span>` : "")
-      : `<span class="tag">Sem times informados</span>`;
+    const regras = campeonato.regrasCartoes || {};
 
     lista.innerHTML += `
       <div class="card">
         <div class="item">
-          <img src="${campeonato.logo || ''}" class="logo" alt="Logo do campeonato" onerror="this.src=''">
+          <img src="${campeonato.logo || ''}" class="logo" alt="Logo do campeonato">
           <div class="item-info">
-            <div class="nome-campeonato">${campeonato.nome || "-"}</div>
+            <div class="nome-campeonato">${campeonato.nome}</div>
             <small>Temporada: ${campeonato.temporada || "-"}</small>
             <small>Status: ${campeonato.status || "-"}</small>
-            <small>Jogos: ${stats.jogos} | Gols: ${stats.gols}</small>
-            <div class="tags">${categorias || '<span class="tag">Sem categorias</span>'}</div>
-            <div class="tags">${resumoTimes}</div>
+            <small>Amarelos: ${regras.amarelosParaSuspensao || "-"} | Vermelho direto: ${regras.jogosSuspensaoVermelhoDireto || "-"} jogo(s)</small>
+            <div class="tags">${categorias}</div>
           </div>
         </div>
         <div class="actions">
+          <button onclick="editarCampeonato('${campeonato.id}')">Editar</button>
           <button onclick="verCampeonato('${campeonato.id}')">Ver</button>
+          <button class="delete" onclick="excluirCampeonato('${campeonato.id}')">Excluir</button>
         </div>
       </div>
     `;
   });
 }
 
-async function iniciarPagina() {
-  try {
-    const snapCampeonatos = await getDocs(collection(db, "campeonatos"));
-    campeonatosCache = [];
-    snapCampeonatos.forEach(docSnap => campeonatosCache.push({ id: docSnap.id, ...docSnap.data() }));
-
-    const snapTimes = await getDocs(collection(db, "times"));
-    timesCache = [];
-    snapTimes.forEach(docSnap => timesCache.push({ id: docSnap.id, ...docSnap.data() }));
-
-    const snapJogos = await getDocs(collection(db, "jogos"));
-    jogosCache = [];
-    snapJogos.forEach(docSnap => jogosCache.push({ id: docSnap.id, ...docSnap.data() }));
-
-    const snapSumulas = await getDocs(collection(db, "sumulas"));
-    sumulasCache = [];
-    snapSumulas.forEach(docSnap => sumulasCache.push({ id: docSnap.id, ...docSnap.data() }));
-
-    calcularEstatisticasCampeonatos();
-    carregarCampeonatos();
-  } catch (erro) {
-    document.getElementById("listaCampeonatos").innerHTML = "<div class='sem-item'>Erro ao carregar os campeonatos.</div>";
-    console.error(erro);
-  }
-}
-
-iniciarPagina();
+carregarCampeonatos();
 </script>
 
 </body>
