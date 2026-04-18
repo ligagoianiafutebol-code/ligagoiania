@@ -15,11 +15,6 @@
       --white:#ffffff;
       --muted:#d8e1ef;
       --text-soft:#a8b6cf;
-      --bg:#010918;
-      --bg-2:#04132d;
-      --bg-3:#071c44;
-      --card:#03112d;
-      --card-2:#07183b;
       --shadow:0 12px 30px rgba(0,0,0,.35);
       --transition:.25s ease;
       --max:1280px;
@@ -397,7 +392,7 @@
     }
 
     .btn-primary{
-      background:linear-gradient(135deg, var(--yellow), var(--yellow-2));
+      background:linear-gradient(135deg, var(--yellow), #ffe600);
       color:#08172c;
       padding:14px 18px;
       box-shadow:0 10px 22px rgba(255,212,0,.22);
@@ -706,6 +701,21 @@
       line-height:1.6;
     }
 
+    .status-user{
+      margin-top:18px;
+      padding:14px 16px;
+      border-radius:16px;
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.08);
+      color:var(--muted);
+      line-height:1.6;
+      font-size:14px;
+    }
+
+    .status-user strong{
+      color:var(--yellow);
+    }
+
     footer{
       background:linear-gradient(180deg, rgba(2,10,24,.96), rgba(1,9,24,1));
       border-top:1px solid rgba(255,255,255,.08);
@@ -973,7 +983,6 @@
               <a href="artilharia.html">Artilharia</a>
               <a href="cartoes.html">Cartões</a>
               <a href="suspensos.html">Suspensos</a>
-              <a href="times.html">Times</a>
             </div>
           </li>
           <li><a href="times.html">Times</a></li>
@@ -1017,6 +1026,8 @@
                   <i class="fa-solid fa-users"></i> Conhecer Equipes
                 </a>
               </div>
+
+              <div class="status-user" id="statusUser"></div>
             </div>
 
             <div class="hero-art">
@@ -1188,6 +1199,82 @@
     const sidebarClose = document.getElementById("sidebarClose");
     const statsDropdown = document.getElementById("statsDropdown");
     const statsToggle = document.getElementById("statsToggle");
+    const statusUser = document.getElementById("statusUser");
+    const menuAdmin = document.getElementById("menuAdmin");
+
+    const SISTEMA_PERMISSOES = {
+      donoPrincipal: {
+        nome: "Ruy Gram",
+        email: "ruy.gram@gmail.com",
+        cpf: "02354109261",
+        cargo: "super_admin"
+      },
+      niveis: {
+        super_admin: {
+          painelAdm: true,
+          gerenciarAdmins: true,
+          criarJogos: true,
+          editarJogos: true,
+          gerenciarSumulas: true,
+          liberarArbitros: true,
+          gerenciarNoticias: true
+        },
+        admin: {
+          painelAdm: true,
+          gerenciarAdmins: false,
+          criarJogos: true,
+          editarJogos: true,
+          gerenciarSumulas: true,
+          liberarArbitros: false,
+          gerenciarNoticias: true
+        },
+        arbitro: {
+          painelAdm: false,
+          gerenciarAdmins: false,
+          criarJogos: false,
+          editarJogos: false,
+          gerenciarSumulas: true,
+          liberarArbitros: false,
+          gerenciarNoticias: false
+        }
+      }
+    };
+
+    const usuarioLogado = {
+      nome: "Ruy Gram",
+      email: "ruy.gram@gmail.com",
+      cpf: "02354109261",
+      cargo: "super_admin"
+    };
+
+    function isDonoPrincipal(usuario) {
+      return (
+        usuario.email === SISTEMA_PERMISSOES.donoPrincipal.email &&
+        usuario.cpf === SISTEMA_PERMISSOES.donoPrincipal.cpf
+      );
+    }
+
+    function getPermissoes(usuario) {
+      return SISTEMA_PERMISSOES.niveis[usuario.cargo] || SISTEMA_PERMISSOES.niveis.arbitro;
+    }
+
+    function aplicarPermissoes(usuario) {
+      const permissoes = getPermissoes(usuario);
+      const dono = isDonoPrincipal(usuario);
+
+      if (permissoes.painelAdm || dono) {
+        menuAdmin.style.display = "flex";
+      } else {
+        menuAdmin.style.display = "none";
+      }
+
+      statusUser.innerHTML = `
+        <strong>Usuário logado:</strong> ${usuario.nome}<br>
+        <strong>E-mail:</strong> ${usuario.email}<br>
+        <strong>CPF:</strong> ${usuario.cpf}<br>
+        <strong>Cargo:</strong> ${dono ? "Dono Principal / Super Admin" : usuario.cargo}
+      `;
+    }
 
     function openSidebar() {
       sidebar.classList.add("open");
@@ -1237,6 +1324,16 @@
       if (event.key === "Escape") {
         closeSidebar();
         closeStatsDropdown();
+      }
+    });
+
+    menuAdmin.addEventListener("click", function(event) {
+      const permissoes = getPermissoes(usuarioLogado);
+      const dono = isDonoPrincipal(usuarioLogado);
+
+      if (!(permissoes.painelAdm || dono)) {
+        event.preventDefault();
+        alert("Acesso restrito. Seu usuário não tem permissão para entrar no Painel ADM.");
       }
     });
 
@@ -1306,15 +1403,7 @@
       newsList.appendChild(article);
     });
 
-    /* 
-      Para liberar o botão Painel ADM para usuário autorizado,
-      troque false por true:
-    */
-    const usuarioLiberadoAdmin = false;
-
-    if (usuarioLiberadoAdmin) {
-      document.getElementById("menuAdmin").style.display = "flex";
-    }
+    aplicarPermissoes(usuarioLogado);
   </script>
 
 </body>
