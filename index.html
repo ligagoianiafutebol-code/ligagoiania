@@ -313,7 +313,7 @@
       background:rgba(255,255,255,.05);
       border-color:rgba(255,255,255,.06);
     }
-    .nav-dropdown{
+.nav-dropdown{
       position:relative;
     }
 
@@ -611,260 +611,7 @@
       font-size:15px;
       text-align:center;
     }
-    .mid-grid{
-      display:grid;
-      grid-template-columns:1.35fr .95fr;
-      gap:22px;
-      margin-bottom:26px;
-    }
-
-    .panel{
-      background:var(--card);
-      border:1px solid var(--line);
-      border-radius:22px;
-      box-shadow:var(--shadow);
-      padding:22px;
-      overflow:hidden;
-    }
-
-    .panel-head{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:16px;
-      margin-bottom:18px;
-      flex-wrap:wrap;
-    }
-
-    .panel-head-title{
-      display:flex;
-      align-items:center;
-      gap:12px;
-    }
-
-    .panel-head-icon{
-      width:48px;
-      height:48px;
-      border-radius:14px;
-      background:var(--yellow-soft);
-      border:1px solid var(--line);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      flex-shrink:0;
-      font-size:22px;
-    }
-
-    .panel h2{
-      color:var(--yellow);
-      font-size:28px;
-    }
-
-    .panel-head a{
-      color:#fff;
-      font-weight:700;
-      font-size:14px;
-    }
-
-    .panel-head a:hover{
-      color:var(--yellow);
-    }
-
-    .match-table{
-      width:100%;
-      border-collapse:collapse;
-      overflow:hidden;
-      border-radius:16px;
-    }
-
-    .match-table thead th{
-      text-align:left;
-      background:rgba(255,230,0,.12);
-      color:var(--yellow);
-      padding:14px 12px;
-      font-size:14px;
-      border-bottom:1px solid var(--line);
-    }
-
-    .match-table tbody td{
-      padding:16px 12px;
-      border-bottom:1px solid rgba(255,255,255,.08);
-      color:#fff;
-      vertical-align:middle;
-      font-size:14px;
-    }
-
-    .match-table tbody tr{
-      cursor:pointer;
-      transition:.2s ease;
-    }
-
-    .match-table tbody tr:hover{
-      background:rgba(255,255,255,.03);
-    }
-
-    .confronto{
-      display:flex;
-      align-items:center;
-      gap:12px;
-      flex-wrap:wrap;
-    }
-
-    .time-mini{
-      display:flex;
-      align-items:center;
-      gap:8px;
-      min-width:max-content;
-    }
-
-    .escudo{
-      width:34px;
-      height:34px;
-      border-radius:50%;
-      object-fit:cover;
-      border:1px solid rgba(255,255,255,.15);
-      background:#fff;
-    }
-
-    .vs{
-      color:var(--yellow);
-      font-weight:700;
-    }
-
-    .badge{
-      display:inline-block;
-      padding:7px 12px;
-      border-radius:999px;
-      font-size:12px;
-      font-weight:700;
-      color:#031022;
-      background:var(--yellow);
-    }
-
-    .news-slider-wrap{
-      width:100%;
-      border-radius:16px;
-    }
-
-    .news-slider-single{
-      position:relative;
-      width:100%;
-      max-width:420px;
-      margin:0 auto;
-    }
-
-    .news-slide{
-      display:none;
-      width:100%;
-      background:rgba(255,255,255,.04);
-      border:1px solid rgba(255,255,255,.08);
-      border-radius:18px;
-      padding:12px;
-      animation:fadeNews .5s ease;
-      cursor:pointer;
-    }
-
-    .news-slide.active{
-      display:block;
-    }
-
-    .news-slide img{
-      width:100%;
-      height:220px;
-      object-fit:cover;
-      border-radius:14px;
-      margin-bottom:12px;
-      background:#0b1f3a;
-    }
-
-    .news-slide strong{
-      display:block;
-      color:var(--yellow);
-      font-size:20px;
-      margin-bottom:8px;
-      line-height:1.25;
-    }
-
-    .news-slide p{
-      color:var(--muted);
-      font-size:14px;
-      line-height:1.55;
-      margin-bottom:10px;
-    }
-
-    .news-slide span{
-      color:#fff;
-      font-size:12px;
-      opacity:.8;
-    }
-
-    @keyframes fadeNews{
-      from{opacity:.25; transform:translateX(10px);}
-      to{opacity:1; transform:translateX(0);}
-    }
-
-    .news-vertical-wrap{
-      height:440px;
-      overflow:hidden;
-      position:relative;
-      mask-image:linear-gradient(to bottom, transparent 0%, #000 8%, #000 92%, transparent 100%);
-      -webkit-mask-image:linear-gradient(to bottom, transparent 0%, #000 8%, #000 92%, transparent 100%);
-    }
-
-    .news-vertical-track{
-      display:flex;
-      flex-direction:column;
-      gap:14px;
-      animation:scrollUpNews 22s linear infinite;
-    }
-
-    .news-item{
-      display:grid;
-      grid-template-columns:110px 1fr;
-      gap:14px;
-      align-items:start;
-      background:rgba(255,255,255,.04);
-      border:1px solid rgba(255,255,255,.08);
-      border-radius:16px;
-      padding:12px;
-      transition:.22s ease;
-      cursor:pointer;
-    }
-
-    .news-item:hover{
-      transform:translateY(-3px);
-      border-color:var(--line);
-    }
-
-    .news-item img{
-      width:110px;
-      height:85px;
-      object-fit:cover;
-      border-radius:12px;
-      background:#0b1f3a;
-    }
-
-    .news-item strong{
-      display:block;
-      color:var(--yellow);
-      font-size:17px;
-      margin-bottom:6px;
-      line-height:1.25;
-    }
-
-    .news-item p{
-      color:var(--muted);
-      font-size:14px;
-      line-height:1.55;
-      margin-bottom:8px;
-    }
-
-    .news-item span{
-      color:#fff;
-      font-size:12px;
-      opacity:.8;
-    }
-    <header class="topbar">
+<header class="topbar">
     <div class="wrap topbar-content">
       <div class="top-left">
         <button class="menu-toggle" id="menuToggle" type="button">☰</button>
@@ -1010,7 +757,153 @@
           </div>
         </div>
       </section>
-    <div class="cards-pilares">
+<header class="topbar">
+    <div class="wrap topbar-content">
+      <div class="top-left">
+        <button class="menu-toggle" id="menuToggle" type="button">☰</button>
+
+        <a href="index.html" class="logo-link">
+          <img src="logo-liga.jfif" alt="Logo Liga Goiana">
+          <div class="logo-text">
+            <strong>Liga Goiana de Futebol de Base</strong>
+            <span>Onde o talento encontra o futuro</span>
+          </div>
+        </a>
+      </div>
+
+      <nav class="top-nav">
+        <a href="index.html" class="nav-link active">Início</a>
+        <a href="campeonatos.html" class="nav-link">Campeonatos</a>
+        <a href="jogos.html" class="nav-link">Tabela / Jogos</a>
+        <a href="classificacao.html" class="nav-link">Classificação</a>
+
+        <div class="nav-dropdown" id="estatisticasDropdown">
+          <button class="nav-dropdown-btn" type="button">Estatísticas ▼</button>
+          <div class="nav-dropdown-menu">
+            <a href="artilharia.html">Artilharia</a>
+            <a href="cartoes.html">Cartões</a>
+            <a href="suspensos.html">Suspensos</a>
+          </div>
+        </div>
+
+        <a href="times.html" class="nav-link">Clubes / Times</a>
+      </nav>
+
+      <div class="top-actions">
+        <a href="login.html" class="btn-login">🔐 Login / Cadastro</a>
+        <a href="inscricoes.html" class="btn-highlight">📣 Inscrições Abertas</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="ticker" id="tickerFaixa" style="display:none;">
+    <div class="wrap ticker-content">
+      <span class="ticker-badge" id="tickerBadge">RESULTADOS</span>
+      <span id="tickerTexto">Últimos jogos atualizados.</span>
+    </div>
+  </div>
+
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-panel">
+        <div class="hero-copy">
+          <span class="hero-tag">Liga Oficial</span>
+          <h1>Bem-vindo à Liga Goiana de Base</h1>
+          <div class="hero-subtitle">Onde o talento encontra o futuro!</div>
+          <p class="hero-desc">
+            Competição, formação e desenvolvimento para revelar talentos
+            e fortalecer o futebol de base em Goiás.
+          </p>
+
+          <div class="hero-actions">
+            <a href="campeonatos.html" class="btn-primary">🏆 Ver Campeonatos</a>
+            <a href="times.html" class="btn-secondary">👥 Conhecer Equipes</a>
+            <a href="jogos.html" class="btn-secondary">📅 Ver Jogos</a>
+          </div>
+        </div>
+
+        <div class="hero-art">
+          <img src="hero-liga.jpeg" alt="Hero Liga Goiana" onerror="this.src='fundo.png'">
+          <div class="hero-glow"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="conteudo">
+    <main class="wrap">
+
+      <section class="panel" style="margin-bottom:22px;">
+        <div class="panel-head">
+          <div class="panel-head-title">
+            <div class="panel-head-icon">📰</div>
+            <h2>Últimas Notícias</h2>
+          </div>
+          <a href="noticias.html">Ver notícias →</a>
+        </div>
+
+        <div class="news-slider-wrap">
+          <div class="news-slider-single" id="newsSliderTrack"></div>
+        </div>
+      </section>
+
+      <div class="mid-grid">
+        <section class="panel">
+          <div class="panel-head">
+            <div class="panel-head-title">
+              <div class="panel-head-icon">📅</div>
+              <h2>Próximos Jogos</h2>
+            </div>
+            <a href="jogos.html">Ver todos →</a>
+          </div>
+
+          <table class="match-table">
+            <thead>
+              <tr>
+                <th>Data e Hora</th>
+                <th>Confronto</th>
+                <th>Categoria</th>
+                <th>Local</th>
+              </tr>
+            </thead>
+            <tbody id="gamesTableBody"></tbody>
+          </table>
+        </section>
+
+        <aside class="panel">
+          <div class="panel-head">
+            <div class="panel-head-title">
+              <div class="panel-head-icon">📢</div>
+              <h2>Últimas Notícias</h2>
+            </div>
+            <a href="noticias.html">Ver notícias →</a>
+          </div>
+
+          <div class="news-vertical-wrap">
+            <div class="news-vertical-track" id="newsVerticalTrack"></div>
+          </div>
+        </aside>
+      </div>
+
+      <section class="cta">
+        <div class="cta-box">
+          <div>
+            <h3>Faça parte dessa história!</h3>
+            <p>Inscreva sua equipe e viva o futebol de base no mais alto nível da Liga Goiana de Futebol de Base.</p>
+          </div>
+
+          <div>
+            <a
+              href="https://wa.me/5562981916316?text=Ol%C3%A1%2C%20quero%20participar%20da%20Liga%20Goiana%20de%20Futebol%20de%20Base."
+              class="btn-primary"
+              target="_blank"
+            >
+              🙋 Quero Participar!
+            </a>
+          </div>
+        </div>
+      </section>
+<div class="cards-pilares">
 
         <div class="pillar">
           <div class="pillar-icon">
@@ -1108,7 +1001,7 @@
       © 2026 Liga Goiana de Futebol de Base. Todos os direitos reservados.
     </div>
   </footer>
-    <script type="module">
+<script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
     import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-firestore.js";
 
