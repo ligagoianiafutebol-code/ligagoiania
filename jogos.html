@@ -163,6 +163,35 @@ border-radius:12px;
 text-align:center;
 }
 
+.acoes-jogo{
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+margin-top:12px;
+}
+
+.btn-acao{
+display:inline-flex;
+align-items:center;
+justify-content:center;
+padding:10px 14px;
+border-radius:8px;
+text-decoration:none;
+font-weight:bold;
+font-size:13px;
+border:none;
+cursor:pointer;
+}
+
+.btn-sumula{
+background:#f7c600;
+color:black;
+}
+
+.btn-sumula:hover{
+opacity:.92;
+}
+
 @media (max-width: 800px){
 .filtros{
 grid-template-columns:1fr;
@@ -193,6 +222,7 @@ LIGA GOIANA DE FUTEBOL DE BASE
 <a href="jogos.html" class="ativo">Jogos</a>
 <a href="artilharia.html">Artilharia</a>
 <a href="cartoes.html">Cartões</a>
+<a href="suspensos.html">Suspensos</a>
 <a href="login.html">Login</a>
 </div>
 
@@ -205,6 +235,17 @@ LIGA GOIANA DE FUTEBOL DE BASE
 
   <select id="filtroCategoria" onchange="carregarJogos()">
     <option value="">Selecione a categoria</option>
+    <option value="Sub-11">Sub-11</option>
+    <option value="Sub-12">Sub-12</option>
+    <option value="Sub-13">Sub-13</option>
+    <option value="Sub-14">Sub-14</option>
+    <option value="Sub-15">Sub-15</option>
+    <option value="Sub-16">Sub-16</option>
+    <option value="Sub-17">Sub-17</option>
+    <option value="Sub-18">Sub-18</option>
+    <option value="Sub-19">Sub-19</option>
+    <option value="Sub-20">Sub-20</option>
+    <option value="Sub-21">Sub-21</option>
   </select>
 </div>
 
@@ -258,20 +299,13 @@ function pegarEscudo(nomeTime){
 
 function preencherFiltros(){
   const selectCamp = document.getElementById("filtroCampeonato");
-  const selectCat = document.getElementById("filtroCategoria");
 
   const campeonatos = [...new Set(jogos.map(j => j.campeonato).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"pt-BR"));
-  const categorias = [...new Set(jogos.map(j => j.categoria).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"pt-BR"));
 
   selectCamp.innerHTML = '<option value="">Selecione o campeonato</option>';
-  selectCat.innerHTML = '<option value="">Selecione a categoria</option>';
 
   campeonatos.forEach(c => {
     selectCamp.innerHTML += `<option value="${c}">${c}</option>`;
-  });
-
-  categorias.forEach(c => {
-    selectCat.innerHTML += `<option value="${c}">${c}</option>`;
   });
 }
 
@@ -371,6 +405,14 @@ window.carregarJogos = function(){
           <div class="status ${finalizado ? "finalizado" : "agendado"}">
             ${finalizado ? "Finalizado" : "Agendado"}
           </div>
+
+          ${finalizado ? `
+            <div class="acoes-jogo">
+              <a class="btn-acao btn-sumula" href="sumula-publica.html?id=${j.id}">
+                Ver Súmula
+              </a>
+            </div>
+          ` : ""}
         </div>
       `;
     });
