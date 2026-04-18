@@ -281,6 +281,12 @@ body{
       </div>
 
       <div class="bloco">
+        <h3>Assistências</h3>
+        <div id="assistenciasListaA"></div>
+        <button class="botao-add" onclick="adicionarAssistencia('A')">+ Adicionar assistência</button>
+      </div>
+
+      <div class="bloco">
         <h3>Cartões Amarelos</h3>
         <div id="amarelosListaA"></div>
         <button class="botao-add" onclick="adicionarCartao('A', 'amarelo')">+ Adicionar amarelo</button>
@@ -318,6 +324,12 @@ body{
         <h3>Gols</h3>
         <div id="golsListaB"></div>
         <button class="botao-add" onclick="adicionarEventoGol('B')">+ Adicionar gol</button>
+      </div>
+
+      <div class="bloco">
+        <h3>Assistências</h3>
+        <div id="assistenciasListaB"></div>
+        <button class="botao-add" onclick="adicionarAssistencia('B')">+ Adicionar assistência</button>
       </div>
 
       <div class="bloco">
@@ -392,6 +404,8 @@ let jogadoresA = [];
 let jogadoresB = [];
 let golsA = [];
 let golsB = [];
+let assistenciasA = [];
+let assistenciasB = [];
 let amarelosA = [];
 let amarelosB = [];
 let vermelhosA = [];
@@ -483,6 +497,29 @@ function renderGols(lado){
   });
 
   atualizarResumoPlacar();
+}
+
+function renderAssistencias(lado){
+  const lista = document.getElementById(lado === "A" ? "assistenciasListaA" : "assistenciasListaB");
+  const assistencias = lado === "A" ? assistenciasA : assistenciasB;
+
+  lista.innerHTML = "";
+
+  assistencias.forEach((a, index) => {
+    const nomeDetectado = nomePorNumero(lado, a.numero);
+    if(!a.nome && nomeDetectado){
+      a.nome = nomeDetectado;
+    }
+
+    lista.innerHTML += `
+      <div class="acao-linha">
+        <input value="${a.numero || ""}" placeholder="Número" onchange="atualizarAssistencia('${lado}', ${index}, 'numero', this.value)">
+        <input value="${a.nome || ""}" placeholder="Jogador" onchange="atualizarAssistencia('${lado}', ${index}, 'nome', this.value)">
+        <input value="${a.obs || ""}" placeholder="Observação" onchange="atualizarAssistencia('${lado}', ${index}, 'obs', this.value)">
+        <button onclick="removerAssistencia('${lado}', ${index})">X</button>
+      </div>
+    `;
+  });
 }
 
 function renderCartoes(lado, tipo){
@@ -583,6 +620,41 @@ window.removerEventoGol = function(lado, index){
   }else{
     golsB.splice(index, 1);
     renderGols("B");
+  }
+};
+
+window.adicionarAssistencia = function(lado){
+  const novo = { numero:"", nome:"", obs:"" };
+  if(lado === "A"){
+    assistenciasA.push(novo);
+    renderAssistencias("A");
+  }else{
+    assistenciasB.push(novo);
+    renderAssistencias("B");
+  }
+};
+
+window.atualizarAssistencia = function(lado, index, campo, valor){
+  const lista = lado === "A" ? assistenciasA : assistenciasB;
+  lista[index][campo] = valueOrEmpty(valor);
+
+  if(campo === "numero"){
+    const nome = nomePorNumero(lado, valor);
+    if(nome){
+      lista[index].nome = nome;
+    }
+  }
+
+  renderAssistencias(lado);
+};
+
+window.removerAssistencia = function(lado, index){
+  if(lado === "A"){
+    assistenciasA.splice(index, 1);
+    renderAssistencias("A");
+  }else{
+    assistenciasB.splice(index, 1);
+    renderAssistencias("B");
   }
 };
 
@@ -739,6 +811,8 @@ async function carregarJogo(){
   renderJogadores("B");
   renderGols("A");
   renderGols("B");
+  renderAssistencias("A");
+  renderAssistencias("B");
   renderCartoes("A", "amarelo");
   renderCartoes("B", "amarelo");
   renderCartoes("A", "vermelho");
@@ -758,6 +832,20 @@ function textoArtilharia(){
     if(g.tipo === "gol"){
       linhas.push(`${g.nome || "Sem nome"} (${jogoAtual.timeB})`);
     }
+  });
+
+  return linhas.join(", ");
+}
+
+function textoAssistencias(){
+  const linhas = [];
+
+  assistenciasA.forEach(a => {
+    linhas.push(`${a.nome || "Sem nome"} (${jogoAtual.timeA})`);
+  });
+
+  assistenciasB.forEach(a => {
+    linhas.push(`${a.nome || "Sem nome"} (${jogoAtual.timeB})`);
   });
 
   return linhas.join(", ");
@@ -803,6 +891,8 @@ window.salvarSumula = async function(){
     jogadoresB: jogadoresB,
     golsDetalhadosA: golsA,
     golsDetalhadosB: golsB,
+    assistenciasDetalhadasA: assistenciasA,
+    assistenciasDetalhadasB: assistenciasB,
     amarelosDetalhadosA: amarelosA,
     amarelosDetalhadosB: amarelosB,
     vermelhosDetalhadosA: vermelhosA,
@@ -810,6 +900,7 @@ window.salvarSumula = async function(){
     amarelos: `${textoCartoes(amarelosA)}${amarelosA.length && amarelosB.length ? " | " : ""}${textoCartoes(amarelosB)}`.trim(),
     vermelhos: `${textoCartoes(vermelhosA)}${vermelhosA.length && vermelhosB.length ? " | " : ""}${textoCartoes(vermelhosB)}`.trim(),
     artilharia: textoArtilharia(),
+    assistencias: textoAssistencias(),
     status: "finalizada",
     enviadaEm: new Date().toISOString()
   };
