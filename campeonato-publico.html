@@ -387,6 +387,10 @@ function formatarData(valor){
   return `${dia}/${mes}/${ano}`;
 }
 
+function montarLinkComCampeonato(pagina, nomeCampeonato){
+  return `${pagina}?campeonato=${encodeURIComponent(nomeCampeonato || "")}`;
+}
+
 async function carregarBases(){
   const snapTimes = await getDocs(collection(db, "times"));
   times = [];
@@ -566,9 +570,9 @@ async function carregarCampeonato(){
             </div>
 
             <div class="hero-links">
-              <a class="btn-secundario" href="tabela.html">Tabela</a>
-              <a class="btn-secundario" href="jogos.html">Jogos</a>
-              <a class="btn-secundario" href="suspensos.html">Suspensos</a>
+              <a class="btn-secundario" href="${montarLinkComCampeonato('tabela.html', campeonato.nome)}">Tabela</a>
+              <a class="btn-secundario" href="${montarLinkComCampeonato('jogos.html', campeonato.nome)}">Jogos</a>
+              <a class="btn-secundario" href="${montarLinkComCampeonato('suspensos.html', campeonato.nome)}">Suspensos</a>
             </div>
           </div>
         </div>
