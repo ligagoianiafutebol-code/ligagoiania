@@ -71,6 +71,10 @@
       cursor:pointer;
     }
 
+    button:hover{
+      filter:brightness(1.04);
+    }
+
     .voltar{
       display:block;
       margin-top:14px;
@@ -93,6 +97,12 @@
       color:#ffb0b0;
       border:1px solid rgba(255,120,120,.25);
     }
+
+    .sucesso{
+      background:rgba(0,120,40,.22);
+      color:#b8ffd1;
+      border:1px solid rgba(120,255,170,.25);
+    }
   </style>
 </head>
 <body>
@@ -101,15 +111,16 @@
     <h1>Login</h1>
     <p>Entre para acessar o sistema</p>
 
-    <label>Email</label>
+    <label for="email">Email</label>
     <input type="email" id="email" placeholder="Digite seu email">
 
-    <label>Senha</label>
+    <label for="senha">Senha</label>
     <input type="password" id="senha" placeholder="Digite sua senha">
 
     <button onclick="login()">Entrar</button>
 
     <div id="msgErro" class="msg erro"></div>
+    <div id="msgSucesso" class="msg sucesso"></div>
 
     <a href="cadastro.html" class="voltar">Criar conta</a>
     <a href="index.html" class="voltar">← Voltar para o site</a>
@@ -121,18 +132,78 @@
     import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
     const msgErro = document.getElementById("msgErro");
+    const msgSucesso = document.getElementById("msgSucesso");
+
+    function limparMensagens(){
+      msgErro.style.display = "none";
+      msgErro.innerText = "";
+      msgSucesso.style.display = "none";
+      msgSucesso.innerText = "";
+    }
 
     function mostrarErro(texto){
+      msgSucesso.style.display = "none";
       msgErro.style.display = "block";
       msgErro.innerText = texto;
     }
 
+    function mostrarSucesso(texto){
+      msgErro.style.display = "none";
+      msgSucesso.style.display = "block";
+      msgSucesso.innerText = texto;
+    }
+
+    function normalizarTipo(tipo){
+      if(!tipo) return "";
+
+      const valor = String(tipo).trim().toLowerCase();
+
+      if(valor === "publico_geral") return "torcedor";
+      if(valor === "publico") return "torcedor";
+      if(valor === "público") return "torcedor";
+      if(valor === "torcedor") return "torcedor";
+      if(valor === "pai_atleta") return "pai_atleta";
+      if(valor === "jogador") return "jogador";
+      if(valor === "tecnico") return "tecnico";
+      if(valor === "técnico") return "tecnico";
+      if(valor === "arbitro") return "arbitro";
+      if(valor === "árbitro") return "arbitro";
+      if(valor === "assistente") return "assistente";
+      if(valor === "admin") return "admin";
+
+      return valor;
+    }
+
+    function precisaAprovacao(tipo){
+      return ["admin", "arbitro", "assistente"].includes(tipo);
+    }
+
+    function destinoPorTipo(tipo){
+      if(tipo === "admin") return "admin.html";
+      if(tipo === "arbitro") return "sumula.html";
+      if(tipo === "assistente") return "perfil.html";
+      if(tipo === "tecnico") return "perfil.html";
+      if(tipo === "jogador") return "perfil.html";
+      if(tipo === "pai_atleta") return "perfil.html";
+      if(tipo === "torcedor") return "perfil.html";
+      return "index.html";
+    }
+
     window.login = async function(){
-      const email = document.getElementById("email").value.trim();
+      limparMensagens();
+
+      const email = document.getElementById("email").value.trim().toLowerCase();
       const senha = document.getElementById("senha").value.trim();
 
-      if(!email) return mostrarErro("Digite o email.");
-      if(!senha) return mostrarErro("Digite a senha.");
+      if(!email){
+        mostrarErro("Digite o email.");
+        return;
+      }
+
+      if(!senha){
+        mostrarErro("Digite a senha.");
+        return;
+      }
 
       try{
         const cred = await signInWithEmailAndPassword(auth, email, senha);
@@ -142,41 +213,88 @@
         const userSnap = await getDoc(userRef);
 
         if(!userSnap.exists()){
-          // Se não existir no Firestore, mas existir no Auth
-          // deixa entrar e manda para a home
+          if(email === "ruy.gram@gmail.com"){
+            mostrarSucesso("Login realizado com sucesso.");
+            setTimeout(() => {
+              window.location.href = "admin.html";
+            }, 600);
+            return;
+          }
+
           window.location.href = "index.html";
           return;
         }
 
         const dados = userSnap.data();
-        const tipo = dados.tipoUsuario || "";
 
-        if(email === "ruy.gram@gmail.com"){
-          window.location.href = "painel-admin.html";
+        const tipoUsuario = normalizarTipo(dados.tipoUsuario || dados.tipo || "");
+        const aprovado = dados.aprovado === true;
+        const permissaoPainelAdm = dados.permissaoPainelAdm === true;
+        const emailUsuario = String(dados.email || email).trim().toLowerCase();
+        const cpfUsuario = String(dados.cpf || "").trim();
+
+        const ehDonoPrincipal =
+          emailUsuario === "ruy.gram@gmail.com" &&
+          cpfUsuario === "02354109261";
+
+        if(ehDonoPrincipal){
+          mostrarSucesso("Bem-vindo, administrador principal.");
+          setTimeout(() => {
+            window.location.href = "admin.html";
+          }, 600);
           return;
         }
 
-        if(tipo === "tecnico"){
-          window.location.href = "perfil.html";
+        if(tipoUsuario === "admin"){
+          if(!aprovado && !permissaoPainelAdm){
+            mostrarErro("Seu acesso de administrador ainda não foi aprovado.");
+            return;
+          }
+
+          mostrarSucesso("Login realizado com sucesso.");
+          setTimeout(() => {
+            window.location.href = "admin.html";
+          }, 600);
           return;
         }
 
-        if(tipo === "jogador"){
-          window.location.href = "perfil.html";
+        if(tipoUsuario === "arbitro"){
+          if(!aprovado){
+            mostrarErro("Seu cadastro de árbitro ainda não foi aprovado pelo administrador.");
+            return;
+          }
+
+          mostrarSucesso("Login realizado com sucesso.");
+          setTimeout(() => {
+            window.location.href = "sumula.html";
+          }, 600);
           return;
         }
 
-        if(tipo === "pai_atleta"){
-          window.location.href = "perfil.html";
+        if(tipoUsuario === "assistente"){
+          if(!aprovado){
+            mostrarErro("Seu cadastro de assistente ainda não foi aprovado pelo administrador.");
+            return;
+          }
+
+          mostrarSucesso("Login realizado com sucesso.");
+          setTimeout(() => {
+            window.location.href = "perfil.html";
+          }, 600);
           return;
         }
 
-        if(tipo === "publico_geral"){
-          window.location.href = "perfil.html";
+        if(precisaAprovacao(tipoUsuario) && !aprovado){
+          mostrarErro("Seu cadastro ainda não foi aprovado.");
           return;
         }
 
-        window.location.href = "index.html";
+        const destino = destinoPorTipo(tipoUsuario);
+
+        mostrarSucesso("Login realizado com sucesso.");
+        setTimeout(() => {
+          window.location.href = destino;
+        }, 600);
 
       }catch(e){
         if(e.code === "auth/invalid-credential"){
@@ -187,7 +305,7 @@
           mostrarErro("Erro ao entrar: " + e.message);
         }
       }
-    }
+    };
   </script>
 
 </body>
