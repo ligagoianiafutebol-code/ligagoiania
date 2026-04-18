@@ -497,6 +497,11 @@ let sumulas = [];
 let campeonatos = [];
 let abaAtual = "detalhes";
 
+function getParametro(nome){
+  const params = new URLSearchParams(window.location.search);
+  return params.get(nome);
+}
+
 async function carregarDados(){
   const snapJogos = await getDocs(collection(db, "jogos"));
   jogos = [];
@@ -551,6 +556,19 @@ function preencherFiltros(){
   campeonatosLista.forEach(c => {
     selectCamp.innerHTML += `<option value="${c}">${c}</option>`;
   });
+}
+
+function aplicarCampeonatoDaURL(){
+  const campeonatoURL = getParametro("campeonato");
+  if(!campeonatoURL) return;
+
+  const selectCamp = document.getElementById("filtroCampeonato");
+  const opcoes = Array.from(selectCamp.options);
+  const opcaoEncontrada = opcoes.find(op => normalizarTexto(op.value) === normalizarTexto(campeonatoURL));
+
+  if(opcaoEncontrada){
+    selectCamp.value = opcaoEncontrada.value;
+  }
 }
 
 function criarTime(nome){
@@ -1113,6 +1131,7 @@ window.atualizarTela = function(){
 
 await carregarDados();
 preencherFiltros();
+aplicarCampeonatoDaURL();
 atualizarTela();
 </script>
 
