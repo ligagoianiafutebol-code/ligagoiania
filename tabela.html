@@ -464,7 +464,7 @@ select{
     <button class="aba" onclick="trocarAba('cartoes', this)">Cartões</button>
     <button class="aba" onclick="trocarAba('times', this)">Times</button>
     <button class="aba" onclick="trocarAba('historico', this)">Histórico</button>
-    <a class="aba-link" href="suspensos.html">Suspensos</a>
+    <a class="aba-link" id="linkSuspensos" href="suspensos.html">Suspensos</a>
   </div>
 
   <div id="areaTabela"></div>
@@ -502,6 +502,26 @@ function getParametro(nome){
   return params.get(nome);
 }
 
+function normalizarTexto(texto) {
+  return String(texto || "")
+    .trim()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+}
+
+function montarLinkSuspensos(){
+  const campeonato = document.getElementById("filtroCampeonato").value || "";
+  const categoria = document.getElementById("filtroCategoria").value || "";
+  const params = new URLSearchParams();
+
+  if(campeonato) params.set("campeonato", campeonato);
+  if(categoria) params.set("categoria", categoria);
+
+  const query = params.toString();
+  document.getElementById("linkSuspensos").href = query ? `suspensos.html?${query}` : "suspensos.html";
+}
+
 async function carregarDados(){
   const snapJogos = await getDocs(collection(db, "jogos"));
   jogos = [];
@@ -522,14 +542,6 @@ async function carregarDados(){
   const snapCampeonatos = await getDocs(collection(db, "campeonatos"));
   campeonatos = [];
   snapCampeonatos.forEach(docSnap => campeonatos.push({ id: docSnap.id, ...docSnap.data() }));
-}
-
-function normalizarTexto(texto) {
-  return String(texto || "")
-    .trim()
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "");
 }
 
 function pegarEscudo(nomeTime){
@@ -558,16 +570,22 @@ function preencherFiltros(){
   });
 }
 
-function aplicarCampeonatoDaURL(){
+function aplicarFiltrosDaURL(){
   const campeonatoURL = getParametro("campeonato");
-  if(!campeonatoURL) return;
+  const categoriaURL = getParametro("categoria");
 
-  const selectCamp = document.getElementById("filtroCampeonato");
-  const opcoes = Array.from(selectCamp.options);
-  const opcaoEncontrada = opcoes.find(op => normalizarTexto(op.value) === normalizarTexto(campeonatoURL));
+  if(campeonatoURL){
+    const selectCamp = document.getElementById("filtroCampeonato");
+    const opcoesCamp = Array.from(selectCamp.options);
+    const opcaoCamp = opcoesCamp.find(op => normalizarTexto(op.value) === normalizarTexto(campeonatoURL));
+    if(opcaoCamp) selectCamp.value = opcaoCamp.value;
+  }
 
-  if(opcaoEncontrada){
-    selectCamp.value = opcaoEncontrada.value;
+  if(categoriaURL){
+    const selectCat = document.getElementById("filtroCategoria");
+    const opcoesCat = Array.from(selectCat.options);
+    const opcaoCat = opcoesCat.find(op => normalizarTexto(op.value) === normalizarTexto(categoriaURL));
+    if(opcaoCat) selectCat.value = opcaoCat.value;
   }
 }
 
@@ -1118,6 +1136,7 @@ window.trocarAba = function(nome, botao){
 };
 
 window.atualizarTela = function(){
+  montarLinkSuspensos();
   atualizarHero();
 
   if(abaAtual === "detalhes") renderDetalhes();
@@ -1131,7 +1150,7 @@ window.atualizarTela = function(){
 
 await carregarDados();
 preencherFiltros();
-aplicarCampeonatoDaURL();
+aplicarFiltrosDaURL();
 atualizarTela();
 </script>
 
