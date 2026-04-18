@@ -377,6 +377,10 @@ select{
   background:#f7c600;
   color:black;
 }
+.btn-secundario{
+  background:#1a3f73;
+  color:white;
+}
 @media (max-width: 900px){
   .filtros{
     grid-template-columns:1fr;
@@ -510,16 +514,24 @@ function normalizarTexto(texto) {
     .replace(/[\u0300-\u036f]/g, "");
 }
 
+function montarLinkPagina(pagina, campeonato, categoria){
+  const params = new URLSearchParams();
+  if(campeonato) params.set("campeonato", campeonato);
+  if(categoria) params.set("categoria", categoria);
+  const query = params.toString();
+  return query ? `${pagina}?${query}` : pagina;
+}
+
+function montarLinkCampeonatoPublico(campeonato){
+  const camp = campeonatos.find(c => normalizarTexto(c.nome) === normalizarTexto(campeonato));
+  if(!camp) return "campeonatos.html";
+  return `campeonato-publico.html?id=${camp.id}`;
+}
+
 function montarLinkSuspensos(){
   const campeonato = document.getElementById("filtroCampeonato").value || "";
   const categoria = document.getElementById("filtroCategoria").value || "";
-  const params = new URLSearchParams();
-
-  if(campeonato) params.set("campeonato", campeonato);
-  if(categoria) params.set("categoria", categoria);
-
-  const query = params.toString();
-  document.getElementById("linkSuspensos").href = query ? `suspensos.html?${query}` : "suspensos.html";
+  document.getElementById("linkSuspensos").href = montarLinkPagina("suspensos.html", campeonato, categoria);
 }
 
 async function carregarDados(){
@@ -874,6 +886,11 @@ function renderJogos(){
         ? `${Number(j.golsA || 0)} x ${Number(j.golsB || 0)}`
         : "x";
 
+      const linkCampeonato = montarLinkCampeonatoPublico(j.campeonato || "");
+      const linkTabela = montarLinkPagina("tabela.html", j.campeonato || "", j.categoria || "");
+      const linkJogos = montarLinkPagina("jogos.html", j.campeonato || "", j.categoria || "");
+      const linkSuspensos = montarLinkPagina("suspensos.html", j.campeonato || "", j.categoria || "");
+
       const card = document.createElement("div");
       card.className = "card";
       card.innerHTML = `
@@ -903,13 +920,13 @@ function renderJogos(){
           ${finalizado ? "Finalizado" : "Agendado"}
         </div>
 
-        ${finalizado ? `
-          <div class="acoes-jogo">
-            <a class="btn-acao btn-sumula" href="sumula-publica.html?id=${j.id}">
-              Ver Súmula
-            </a>
-          </div>
-        ` : ""}
+        <div class="acoes-jogo">
+          ${finalizado ? `<a class="btn-acao btn-sumula" href="sumula-publica.html?id=${j.id}">Ver Súmula</a>` : ""}
+          <a class="btn-acao btn-secundario" href="${linkCampeonato}">Campeonato</a>
+          <a class="btn-acao btn-secundario" href="${linkTabela}">Tabela</a>
+          <a class="btn-acao btn-secundario" href="${linkJogos}">Jogos</a>
+          <a class="btn-acao btn-secundario" href="${linkSuspensos}">Suspensos</a>
+        </div>
       `;
       lista.appendChild(card);
     });
@@ -1106,24 +1123,33 @@ function renderHistorico(){
 
   area.innerHTML = `
     <div class="lista-historico">
-      ${lista.map(item => `
-        <div class="historico-item">
-          <div class="historico-top">
-            <div>${item.timeA || "-"} ${Number(item.golsA || 0)} x ${Number(item.golsB || 0)} ${item.timeB || "-"}</div>
-            <div>${item.categoria || "-"}</div>
+      ${lista.map(item => {
+        const linkCampeonato = montarLinkCampeonatoPublico(item.campeonato || "");
+        const linkTabela = montarLinkPagina("tabela.html", item.campeonato || "", item.categoria || "");
+        const linkJogos = montarLinkPagina("jogos.html", item.campeonato || "", item.categoria || "");
+        const linkSuspensos = montarLinkPagina("suspensos.html", item.campeonato || "", item.categoria || "");
+
+        return `
+          <div class="historico-item">
+            <div class="historico-top">
+              <div>${item.timeA || "-"} ${Number(item.golsA || 0)} x ${Number(item.golsB || 0)} ${item.timeB || "-"}</div>
+              <div>${item.categoria || "-"}</div>
+            </div>
+            <div class="info">
+              ${item.campeonato || "-"}<br>
+              ${item.data || "-"} | ${item.local || "-"}<br>
+              Árbitro: ${item.arbitro || "-"}
+            </div>
+            <div class="acoes-jogo">
+              <a class="btn-acao btn-sumula" href="sumula-publica.html?id=${item.jogoId || item.id}">Ver Súmula</a>
+              <a class="btn-acao btn-secundario" href="${linkCampeonato}">Campeonato</a>
+              <a class="btn-acao btn-secundario" href="${linkTabela}">Tabela</a>
+              <a class="btn-acao btn-secundario" href="${linkJogos}">Jogos</a>
+              <a class="btn-acao btn-secundario" href="${linkSuspensos}">Suspensos</a>
+            </div>
           </div>
-          <div class="info">
-            ${item.campeonato || "-"}<br>
-            ${item.data || "-"} | ${item.local || "-"}<br>
-            Árbitro: ${item.arbitro || "-"}
-          </div>
-          <div class="acoes-jogo">
-            <a class="btn-acao btn-sumula" href="sumula-publica.html?id=${item.jogoId || item.id}">
-              Ver Súmula
-            </a>
-          </div>
-        </div>
-      `).join("")}
+        `;
+      }).join("")}
     </div>
   `;
 }
