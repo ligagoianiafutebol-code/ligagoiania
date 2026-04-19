@@ -35,6 +35,7 @@
         linear-gradient(rgba(11,31,58,.88), rgba(11,31,58,.94)),
         url("fundo.png") center/cover fixed no-repeat;
       color:var(--white);
+      min-height:100vh;
     }
 
     a{
@@ -48,6 +49,10 @@
       cursor:pointer;
       transition:var(--transition);
       border:none;
+    }
+
+    input, select{
+      font-family:inherit;
     }
 
     .wrap{
@@ -121,8 +126,7 @@
     }
 
     .menu a{
-      color:white;
-      text-decoration:none;
+      color:#fff;
       font-weight:700;
       font-size:14px;
       background:#0d2346;
@@ -139,7 +143,7 @@
 
     .menu a.ativo{
       background:var(--gold);
-      color:black;
+      color:#111;
     }
 
     .container{
@@ -243,7 +247,7 @@
     .nome-campeonato{
       font-weight:700;
       font-size:18px;
-      color:#ffffff;
+      color:#fff;
     }
 
     .item-info small{
@@ -281,7 +285,6 @@
       gap:8px;
       padding:11px 14px;
       border-radius:10px;
-      text-decoration:none;
       font-weight:700;
       font-size:13px;
       border:none;
@@ -290,7 +293,7 @@
 
     .btn-ver{
       background:var(--gold);
-      color:black;
+      color:#111;
     }
 
     .btn-ver:hover{
@@ -352,6 +355,10 @@
         width:100%;
         text-align:center;
       }
+
+      .hero h2{
+        font-size:24px;
+      }
     }
   </style>
 </head>
@@ -376,7 +383,7 @@
 
     <div class="nav-bar">
       <div class="wrap">
-        <div class="menu">
+        <nav class="menu">
           <a href="index.html">Início</a>
           <a href="campeonatos.html" class="ativo">Campeonatos</a>
           <a href="tabela.html">Tabela</a>
@@ -387,32 +394,32 @@
           <a href="times.html">Times</a>
           <a href="jogadores.html">Jogadores</a>
           <a href="login.html">Login</a>
-        </div>
+        </nav>
       </div>
     </div>
   </header>
 
-  <div class="wrap container">
+  <main class="wrap container">
 
-    <div class="hero">
+    <section class="hero">
       <h2>Campeonatos</h2>
       <p>Veja os campeonatos publicados, filtre por temporada e abra a página pública de cada competição.</p>
-    </div>
+    </section>
 
-    <div class="filtros">
+    <section class="filtros">
       <input id="buscaCampeonato" placeholder="Pesquisar campeonato..." oninput="carregarCampeonatos()">
 
       <select id="filtroTemporada" onchange="carregarCampeonatos()">
         <option value="">Selecione a temporada</option>
       </select>
-    </div>
+    </section>
 
-    <div class="lista-grid" id="listaCampeonatos"></div>
+    <section class="lista-grid" id="listaCampeonatos"></section>
 
-  </div>
+  </main>
 
   <script type="module">
-    import { auth, db } from "./firebase.js";
+    import { db } from "./firebase.js";
     import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
     let campeonatosCache = [];
@@ -440,6 +447,7 @@
 
     function preencherFiltroTemporada(){
       const select = document.getElementById("filtroTemporada");
+
       const temporadas = [...new Set(
         campeonatosCache
           .filter(campeonatoEhPublico)
@@ -464,8 +472,8 @@
       if (busca) {
         campeonatos = campeonatos.filter(c =>
           (c.nome || "").toLowerCase().includes(busca) ||
-          (c.temporada || "").toLowerCase().includes(busca) ||
-          (c.status || "").toLowerCase().includes(busca)
+          (String(c.temporada || "")).toLowerCase().includes(busca) ||
+          (String(c.status || "")).toLowerCase().includes(busca)
         );
       }
 
@@ -483,12 +491,20 @@
       lista.innerHTML = "";
 
       campeonatos.forEach(campeonato => {
-        const categorias = (campeonato.categorias || []).map(c => `<span class="tag">${c}</span>`).join("");
+        const categorias = (campeonato.categorias || [])
+          .map(c => `<span class="tag">${c}</span>`)
+          .join("");
 
         lista.innerHTML += `
-          <div class="card">
+          <article class="card">
             <div class="item">
-              <img src="${campeonato.logo || 'logo-liga.jfif'}" class="logo" alt="${campeonato.nome || 'Campeonato'}" onerror="this.src='logo-liga.jfif'">
+              <img
+                src="${campeonato.logo || 'logo-liga.jfif'}"
+                class="logo"
+                alt="${campeonato.nome || 'Campeonato'}"
+                onerror="this.src='logo-liga.jfif'"
+              >
+
               <div class="item-info">
                 <div class="nome-campeonato">${campeonato.nome || "-"}</div>
                 <small>Temporada: ${campeonato.temporada || "-"}</small>
@@ -502,7 +518,7 @@
                 <i class="fa-solid fa-eye"></i> Ver Campeonato
               </a>
             </div>
-          </div>
+          </article>
         `;
       });
     };
@@ -514,6 +530,7 @@
       try{
         const snap = await getDocs(collection(db, "campeonatos"));
         campeonatosCache = [];
+
         snap.forEach(docSnap => {
           campeonatosCache.push({ id: docSnap.id, ...docSnap.data() });
         });
