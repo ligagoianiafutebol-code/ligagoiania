@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Campeonato - LIGA GOIANA DE FUTEBOL DE BASE</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    :root{
+      --bg:#0b1f3a;
+      --bg-dark:#08172c;
+      --card:#102a52;
+      --gold:#f7c600;
+      --gold-soft:rgba(247,198,0,.12);
+      --gold-line:rgba(247,198,0,.24);
+      --white:#ffffff;
+      --muted:#d8e1ef;
+      --shadow:0 8px 22px rgba(0,0,0,.28);
+      --transition:.25s ease;
+      --max:1240px;
+    }
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    body{
+      font-family:Arial, sans-serif;
+      background:
+        linear-gradient(rgba(11,31,58,.88), rgba(11,31,58,.94)),
+        url("fundo.png") center/cover fixed no-repeat;
+      color:var(--white);
+      min-height:100vh;
+    }
+
+    a{
+      text-decoration:none;
+      color:inherit;
+      transition:var(--transition);
+    }
+
+    .wrap{
+      width:min(100% - 28px, var(--max));
+      margin:0 auto;
+    }
+
+    header{
+      background:rgba(8,23,44,.96);
+      border-bottom:3px solid var(--gold);
+      box-shadow:var(--shadow);
+    }
+
+    .header-top{
+      min-height:82px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      flex-wrap:wrap;
+      padding:14px 0;
+    }
+
+    .header-left,
+    .header-right{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .header-title{
+      flex:1;
+      text-align:center;
+      font-size:24px;
+      font-weight:700;
+      color:var(--white);
+    }
+
+    .top-btn{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:10px 16px;
+      border-radius:10px;
+      font-weight:700;
+      background:#fff4cf;
+      color:#111;
+    }
+
+    .top-btn:hover{
+      background:var(--gold);
+      transform:translateY(-2px);
+    }
+
+    .container{
+      padding:24px 0 34px;
+    }
+
+    .hero{
+      background:linear-gradient(135deg,#102a52,#0d2346);
+      border:1px solid var(--gold-line);
+      border-radius:18px;
+      padding:24px;
+      margin-bottom:20px;
+      box-shadow:var(--shadow);
+    }
+
+    .hero-top{
+      display:flex;
+      align-items:center;
+      gap:18px;
+      flex-wrap:wrap;
+    }
+
+    .logo{
+      width:90px;
+      height:90px;
+      border-radius:50%;
+      object-fit:cover;
+      border:2px solid rgba(255,255,255,.15);
+      background:#1a3f73;
+    }
+
+    .hero-info{
+      flex:1;
+      min-width:240px;
+    }
+
+    .hero-info h1{
+      color:var(--gold);
+      font-size:30px;
+      margin-bottom:8px;
+    }
+
+    .hero-info p{
+      color:var(--muted);
+      line-height:1.6;
+      font-size:15px;
+    }
+
+    .tags{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-top:14px;
+    }
+
+    .tag{
+      background:#1a3f73;
+      padding:6px 10px;
+      border-radius:999px;
+      font-size:12px;
+      border:1px solid rgba(255,255,255,.08);
+    }
+
+    .bloco{
+      background:linear-gradient(180deg, rgba(16,42,82,.96), rgba(12,33,64,.96));
+      border:1px solid rgba(255,255,255,.06);
+      border-radius:16px;
+      padding:20px;
+      margin-bottom:16px;
+      box-shadow:var(--shadow);
+    }
+
+    .bloco h2{
+      color:var(--gold);
+      font-size:22px;
+      margin-bottom:12px;
+    }
+
+    .linha{
+      color:var(--muted);
+      line-height:1.8;
+      font-size:15px;
+    }
+
+    .vazio{
+      background:linear-gradient(180deg, rgba(16,42,82,.96), rgba(12,33,64,.96));
+      border:1px solid rgba(255,255,255,.06);
+      border-radius:16px;
+      padding:30px;
+      text-align:center;
+      color:var(--muted);
+      box-shadow:var(--shadow);
+    }
+
+    @media (max-width:700px){
+      .header-title{
+        order:3;
+        width:100%;
+        text-align:center;
+      }
+
+      .header-left,
+      .header-right{
+        width:100%;
+        justify-content:center;
+      }
+
+      .top-btn{
+        width:100%;
+        justify-content:center;
+      }
+
+      .header-left{
+        flex-direction:column;
+        align-items:stretch;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="wrap header-top">
+      <div class="header-left">
+        <a href="campeonatos.html" class="top-btn">
+          <i class="fa-solid fa-arrow-left"></i> Voltar
+        </a>
+
+        <a href="index.html" class="top-btn">
+          <i class="fa-solid fa-house"></i> Página Inicial
+        </a>
+      </div>
+
+      <div class="header-title">LIGA GOIANA DE FUTEBOL DE BASE</div>
+
+      <div class="header-right"></div>
+    </div>
+  </header>
+
+  <main class="wrap container">
+    <section id="conteudo"></section>
+  </main>
+
+  <script type="module">
+    import { db } from "./firebase.js";
+    import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("id");
+    const conteudo = document.getElementById("conteudo");
+
+    function statusPublico(status = "") {
+      const s = String(status).trim().toLowerCase();
+      return ["ativo", "em breve", "publicado", "publico", "público"].includes(s);
+    }
+
+    function campeonatoEhPublico(campeonato) {
+      if (campeonato.publicado === true) return true;
+      if (campeonato.publico === true) return true;
+      if (campeonato.visivelPublico === true) return true;
+      if (statusPublico(campeonato.status)) return true;
+      return false;
+    }
+
+    if(!id){
+      conteudo.innerHTML = `<div class="vazio">Campeonato não encontrado.</div>`;
+    }else{
+      try{
+        const ref = doc(db, "campeonatos", id);
+        const snap = await getDoc(ref);
+
+        if(!snap.exists()){
+          conteudo.innerHTML = `<div class="vazio">Campeonato não encontrado.</div>`;
+        }else{
+          const c = snap.data();
+
+          if(!campeonatoEhPublico(c)){
+            conteudo.innerHTML = `<div class="vazio">Este campeonato não está publicado.</div>`;
+          }else{
+            const categorias = (c.categorias || []).map(cat => `<span class="tag">${cat}</span>`).join("");
+
+            conteudo.innerHTML = `
+              <section class="hero">
+                <div class="hero-top">
+                  <img
+                    src="${c.logo || 'logo-liga.jfif'}"
+                    class="logo"
+                    alt="${c.nome || 'Campeonato'}"
+                    onerror="this.src='logo-liga.jfif'"
+                  >
+
+                  <div class="hero-info">
+                    <h1>${c.nome || "-"}</h1>
+                    <p>${c.descricao || "Sem descrição disponível."}</p>
+
+                    <div class="tags">
+                      <span class="tag">Temporada: ${c.temporada || "-"}</span>
+                      <span class="tag">Status: ${c.status || "-"}</span>
+                      <span class="tag">Formato: ${c.formato || "-"}</span>
+                      <span class="tag">Turno: ${c.turno || "-"}</span>
+                      ${categorias || '<span class="tag">Sem categorias</span>'}
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <section class="bloco">
+                <h2>Informações do Campeonato</h2>
+                <div class="linha"><strong>Nome:</strong> ${c.nome || "-"}</div>
+                <div class="linha"><strong>Temporada:</strong> ${c.temporada || "-"}</div>
+                <div class="linha"><strong>Status:</strong> ${c.status || "-"}</div>
+                <div class="linha"><strong>Formato:</strong> ${c.formato || "-"}</div>
+                <div class="linha"><strong>Turno:</strong> ${c.turno || "-"}</div>
+              </section>
+
+              <section class="bloco">
+                <h2>Descrição</h2>
+                <div class="linha">${c.descricao || "Sem descrição cadastrada."}</div>
+              </section>
+            `;
+          }
+        }
+      }catch(erro){
+        console.error(erro);
+        conteudo.innerHTML = `<div class="vazio">Erro ao carregar o campeonato.</div>`;
+      }
+    }
+  </script>
+
+</body>
+</html>
