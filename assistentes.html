@@ -1,429 +1,973 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Assistentes - Admin</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Assistentes - Admin</title>
 
-<style>
-body{
-margin:0;
-font-family:Arial;
-background:#0b1f3a;
-color:white;
-}
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-header{
-background:#08172c;
-padding:15px;
-text-align:center;
-font-size:22px;
-font-weight:bold;
-border-bottom:3px solid #f7c600;
-}
+  <style>
+    :root{
+      --bg:#0b1f3a;
+      --bg-dark:#08172c;
+      --card:#102a52;
+      --card-hover:#153766;
+      --gold:#f7c600;
+      --gold-soft:rgba(247,198,0,.12);
+      --gold-line:rgba(247,198,0,.24);
+      --white:#ffffff;
+      --muted:#d8e1ef;
+      --danger:#b30000;
+      --shadow:0 8px 22px rgba(0,0,0,.28);
+      --transition:.25s ease;
+      --max:1140px;
+    }
 
-.container{
-padding:15px;
-max-width:1100px;
-margin:auto;
-}
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
 
-input{
-width:100%;
-padding:12px;
-margin-bottom:12px;
-border:none;
-border-radius:8px;
-font-size:14px;
-box-sizing:border-box;
-}
+    body{
+      font-family:Arial, sans-serif;
+      background:
+        linear-gradient(rgba(11,31,58,.88), rgba(11,31,58,.94)),
+        url("fundo.png") center/cover fixed no-repeat;
+      color:var(--white);
+    }
 
-button{
-background:#f7c600;
-color:black;
-padding:10px 14px;
-border:none;
-border-radius:8px;
-font-weight:bold;
-cursor:pointer;
-margin-bottom:15px;
-}
+    a{
+      text-decoration:none;
+      color:inherit;
+      transition:var(--transition);
+    }
 
-.btn{
-background:#f7c600;
-color:black;
-padding:10px 14px;
-border-radius:8px;
-font-weight:bold;
-cursor:pointer;
-margin-bottom:10px;
-display:inline-block;
-text-decoration:none;
-}
+    button{
+      font-family:inherit;
+      cursor:pointer;
+      transition:var(--transition);
+      border:none;
+    }
 
-.btn-voltar{
-display:inline-block;
-margin-bottom:15px;
-background:#f7c600;
-color:black;
-padding:10px 14px;
-border-radius:8px;
-text-decoration:none;
-font-weight:bold;
-}
+    input{
+      font-family:inherit;
+    }
 
-.lista-grid{
-display:grid;
-grid-template-columns:repeat(auto-fit, minmax(320px, 1fr));
-gap:12px;
-}
+    .wrap{
+      width:min(100% - 28px, var(--max));
+      margin:0 auto;
+    }
 
-.card{
-background:#102a52;
-padding:15px;
-border-radius:10px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-gap:10px;
-}
+    header{
+      background:rgba(8,23,44,.96);
+      border-bottom:3px solid var(--gold);
+      box-shadow:var(--shadow);
+    }
 
-.user{
-display:flex;
-gap:10px;
-align-items:center;
-min-width:0;
-}
+    .header-top{
+      min-height:82px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      flex-wrap:wrap;
+      padding:14px 0;
+    }
 
-.user-info{
-display:flex;
-flex-direction:column;
-gap:4px;
-min-width:0;
-}
+    .header-left,
+    .header-right{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+    }
 
-.user-info small{
-opacity:.85;
-font-size:12px;
-}
+    .header-title{
+      flex:1;
+      text-align:center;
+      font-size:24px;
+      font-weight:700;
+      color:var(--white);
+    }
 
-.photo{
-width:60px;
-height:60px;
-border-radius:50%;
-object-fit:cover;
-background:#1a3f73;
-border:2px solid #ffffff22;
-}
+    .top-btn{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:10px 16px;
+      border-radius:10px;
+      font-weight:700;
+    }
 
-.actions{
-display:flex;
-gap:6px;
-flex-wrap:wrap;
-}
+    .btn-light{
+      background:#fff4cf;
+      color:#111;
+    }
 
-.actions button{
-background:#1a3f73;
-padding:6px 10px;
-border-radius:6px;
-color:white;
-border:none;
-font-size:12px;
-margin:0;
-}
+    .btn-light:hover{
+      background:var(--gold);
+      transform:translateY(-2px);
+    }
 
-.delete{
-background:#b30000 !important;
-}
+    .container{
+      padding:24px 0 34px;
+    }
 
-.checkbox-grid{
-display:grid;
-grid-template-columns:repeat(auto-fit, minmax(110px, 1fr));
-gap:8px;
-margin-bottom:12px;
-}
+    .hero{
+      background:linear-gradient(135deg,#102a52,#0d2346);
+      border:1px solid var(--gold-line);
+      border-radius:18px;
+      padding:22px;
+      margin-bottom:20px;
+      box-shadow:var(--shadow);
+    }
 
-.check-item{
-background:#102a52;
-padding:8px;
-border-radius:8px;
-display:flex;
-align-items:center;
-gap:8px;
-}
+    .hero h2{
+      margin:0 0 8px;
+      color:var(--gold);
+      font-size:28px;
+    }
 
-.check-item input{
-width:auto;
-margin:0;
-}
+    .hero p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.6;
+      font-size:15px;
+    }
 
-.tag{
-background:#1a3f73;
-padding:4px 8px;
-border-radius:999px;
-font-size:12px;
-margin-right:5px;
-display:inline-block;
-}
+    .toolbar{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-bottom:18px;
+    }
 
-.modal{
-display:none;
-position:fixed;
-inset:0;
-background:rgba(0,0,0,0.7);
-justify-content:center;
-align-items:center;
-padding:15px;
-z-index:999;
-}
+    .toolbar .btn{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      background:var(--gold);
+      color:black;
+      padding:11px 16px;
+      border-radius:10px;
+      font-weight:700;
+      text-decoration:none;
+    }
 
-.modal-content{
-background:#102a52;
-padding:20px;
-border-radius:12px;
-text-align:center;
-max-width:500px;
-width:100%;
-max-height:85vh;
-overflow:auto;
-}
-</style>
+    .toolbar .btn:hover{
+      filter:brightness(1.04);
+      transform:translateY(-1px);
+    }
+
+    .search-box{
+      margin-bottom:16px;
+    }
+
+    input{
+      width:100%;
+      padding:13px;
+      border:none;
+      border-radius:10px;
+      font-size:14px;
+      box-sizing:border-box;
+      background:#f5f7fb;
+      color:#111;
+    }
+
+    input:focus{
+      outline:2px solid rgba(247,198,0,.5);
+    }
+
+    .form-panel{
+      display:none;
+      background:linear-gradient(180deg, rgba(16,42,82,.96), rgba(12,33,64,.96));
+      border:1px solid rgba(255,255,255,.06);
+      border-radius:18px;
+      padding:18px;
+      box-shadow:var(--shadow);
+      margin-bottom:18px;
+    }
+
+    .form-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+
+    .full{
+      grid-column:1 / -1;
+    }
+
+    .info-categorias{
+      margin-top:10px;
+      background:#102a52;
+      border:1px solid rgba(255,255,255,.06);
+      border-radius:12px;
+      padding:14px;
+      color:var(--muted);
+      line-height:1.6;
+      font-size:14px;
+    }
+
+    .info-categorias strong{
+      color:var(--gold);
+    }
+
+    .categorias-preview{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-top:10px;
+    }
+
+    .tag{
+      background:#1a3f73;
+      padding:5px 9px;
+      border-radius:999px;
+      font-size:12px;
+      display:inline-block;
+    }
+
+    .form-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:14px;
+    }
+
+    .form-actions button{
+      background:var(--gold);
+      color:black;
+      padding:10px 14px;
+      border-radius:10px;
+      font-weight:700;
+    }
+
+    .form-actions button:hover{
+      filter:brightness(1.04);
+      transform:translateY(-1px);
+    }
+
+    .lista-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(320px, 1fr));
+      gap:12px;
+    }
+
+    .card{
+      background:linear-gradient(180deg, rgba(16,42,82,.96), rgba(12,33,64,.96));
+      padding:16px;
+      border-radius:16px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      border:1px solid rgba(255,230,0,.10);
+      box-shadow:var(--shadow);
+      transition:var(--transition);
+    }
+
+    .card:hover{
+      transform:translateY(-2px);
+      border-color:var(--gold-line);
+    }
+
+    .user{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      min-width:0;
+      flex:1;
+    }
+
+    .photo{
+      width:64px;
+      height:64px;
+      border-radius:50%;
+      object-fit:cover;
+      background:#1a3f73;
+      border:2px solid rgba(255,255,255,.12);
+      flex-shrink:0;
+    }
+
+    .user-info{
+      display:flex;
+      flex-direction:column;
+      gap:5px;
+      min-width:0;
+    }
+
+    .user-info .nome{
+      font-weight:700;
+      font-size:18px;
+      color:#fff;
+    }
+
+    .user-info small{
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.5;
+    }
+
+    .categorias-tags{
+      display:flex;
+      gap:6px;
+      flex-wrap:wrap;
+      margin-top:6px;
+    }
+
+    .actions{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+
+    .actions button{
+      background:#1a3f73;
+      padding:9px 12px;
+      border-radius:8px;
+      color:white;
+      font-size:12px;
+      margin:0;
+      font-weight:700;
+    }
+
+    .actions button:hover{
+      background:var(--gold);
+      color:#111;
+    }
+
+    .actions .delete{
+      background:var(--danger) !important;
+      color:#fff !important;
+    }
+
+    .actions .delete:hover{
+      filter:brightness(1.08);
+    }
+
+    .vazio{
+      background:linear-gradient(180deg, rgba(16,42,82,.96), rgba(12,33,64,.96));
+      padding:30px;
+      border-radius:14px;
+      text-align:center;
+      color:var(--muted);
+      border:1px solid rgba(255,255,255,.06);
+      box-shadow:var(--shadow);
+    }
+
+    .modal{
+      display:none;
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,0.7);
+      justify-content:center;
+      align-items:center;
+      padding:15px;
+      z-index:999;
+    }
+
+    .modal-content{
+      background:linear-gradient(180deg, rgba(16,42,82,.98), rgba(12,33,64,.98));
+      padding:22px;
+      border-radius:16px;
+      text-align:center;
+      max-width:780px;
+      width:100%;
+      max-height:88vh;
+      overflow:auto;
+      border:1px solid var(--gold-line);
+      box-shadow:var(--shadow);
+    }
+
+    .modal-content h2{
+      color:var(--gold);
+      margin:14px 0 10px;
+    }
+
+    .modal-content p{
+      color:var(--muted);
+      line-height:1.6;
+      margin-bottom:8px;
+    }
+
+    .modal-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+      margin-top:16px;
+      text-align:left;
+    }
+
+    .info-box,
+    .stats-box{
+      background:#102a52;
+      border:1px solid rgba(255,255,255,.06);
+      border-radius:14px;
+      padding:14px;
+    }
+
+    .info-box h3,
+    .stats-box h3{
+      color:var(--gold);
+      margin-bottom:10px;
+      font-size:18px;
+    }
+
+    .info-line{
+      color:var(--muted);
+      line-height:1.7;
+      font-size:14px;
+    }
+
+    .stats-grid{
+      display:grid;
+      grid-template-columns:repeat(2, 1fr);
+      gap:10px;
+    }
+
+    .stat-card{
+      background:#0d2346;
+      border-radius:12px;
+      padding:12px;
+      border:1px solid rgba(255,255,255,.06);
+    }
+
+    .stat-card strong{
+      display:block;
+      color:var(--gold);
+      font-size:22px;
+      margin-bottom:4px;
+    }
+
+    .stat-card span{
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.5;
+    }
+
+    .categorias-stats{
+      margin-top:14px;
+      background:#0d2346;
+      border-radius:12px;
+      padding:12px;
+      border:1px solid rgba(255,255,255,.06);
+      text-align:left;
+    }
+
+    .categorias-stats h4{
+      color:var(--gold);
+      margin-bottom:10px;
+      font-size:16px;
+    }
+
+    .categoria-item{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      padding:8px 0;
+      border-bottom:1px solid rgba(255,255,255,.06);
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    .categoria-item:last-child{
+      border-bottom:none;
+    }
+
+    .modal-actions{
+      margin-top:18px;
+    }
+
+    .modal-actions button{
+      background:var(--gold);
+      color:black;
+      padding:11px 14px;
+      border-radius:10px;
+      font-weight:700;
+    }
+
+    @media (max-width:900px){
+      .header-title{
+        order:3;
+        width:100%;
+        text-align:center;
+      }
+
+      .header-left,
+      .header-right{
+        width:100%;
+        justify-content:center;
+      }
+
+      .form-grid,
+      .modal-grid,
+      .stats-grid{
+        grid-template-columns:1fr;
+      }
+
+      .card{
+        flex-direction:column;
+        align-items:flex-start;
+      }
+
+      .actions{
+        width:100%;
+        justify-content:flex-start;
+      }
+    }
+
+    @media (max-width:600px){
+      .top-btn,
+      .toolbar .btn{
+        width:100%;
+        justify-content:center;
+      }
+
+      .header-left,
+      .header-right{
+        flex-direction:column;
+        align-items:stretch;
+      }
+
+      .form-actions button{
+        width:100%;
+      }
+    }
+  </style>
 </head>
-
 <body>
 
-<header>Assistentes</header>
+  <header>
+    <div class="wrap header-top">
+      <div class="header-left">
+        <button class="top-btn btn-light" type="button" onclick="voltarPagina()">
+          <i class="fa-solid fa-arrow-left"></i> Voltar
+        </button>
 
-<div class="container">
+        <a href="index.html" class="top-btn btn-light">
+          <i class="fa-solid fa-house"></i> Página Inicial
+        </a>
 
-<a href="admin.html" class="btn-voltar">← Voltar</a>
+        <a href="admin.html" class="top-btn btn-light">
+          <i class="fa-solid fa-gears"></i> Painel ADM
+        </a>
+      </div>
 
-<a class="btn" onclick="toggleFormulario()">+ Novo Assistente</a>
+      <div class="header-title">Assistentes</div>
 
-<input id="busca" placeholder="Pesquisar..." oninput="carregarAssistentes()">
+      <div class="header-right"></div>
+    </div>
+  </header>
 
-<div id="formulario" style="display:none;">
-  <input id="nome" placeholder="Nome">
-  <input id="foto" type="file" accept="image/*">
-  <input id="cpf" placeholder="CPF">
-  <input id="telefone" placeholder="Telefone">
-  <input id="email" placeholder="Email">
+  <div class="wrap container">
 
-  <div class="checkbox-grid" id="categoriasGrid"></div>
+    <div class="hero">
+      <h2>Cadastro de Assistentes</h2>
+      <p>Cadastre, edite, visualize e acompanhe estatísticas dos assistentes da competição.</p>
+    </div>
 
-  <button onclick="salvar()">Salvar</button>
-</div>
+    <div class="toolbar">
+      <a class="btn" onclick="toggleFormulario()">
+        <i class="fa-solid fa-plus"></i> Novo Assistente
+      </a>
+    </div>
 
-<div class="lista-grid" id="lista"></div>
+    <div class="search-box">
+      <input id="busca" placeholder="Pesquisar assistente..." oninput="carregarAssistentes()">
+    </div>
 
-</div>
+    <div class="form-panel" id="formulario">
+      <div class="form-grid">
+        <div>
+          <input id="nome" placeholder="Nome">
+        </div>
 
-<div class="modal" id="modal">
-  <div class="modal-content" id="modalContent"></div>
-</div>
+        <div>
+          <input id="foto" type="file" accept="image/*">
+        </div>
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-firestore.js";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-storage.js";
+        <div>
+          <input id="cpf" placeholder="CPF">
+        </div>
 
-const firebaseConfig = {
-  apiKey: "AIzaSyCyArj4yRlEl-yibkc0VEmL_4UJpRHHQSc",
-  authDomain: "liga-goiana-base.firebaseapp.com",
-  projectId: "liga-goiana-base",
-  storageBucket: "liga-goiana-base.appspot.com",
-  messagingSenderId: "952863591183",
-  appId: "1:952863591183:web:4eea34f494ba2dd754cc7a"
-};
+        <div>
+          <input id="telefone" placeholder="Telefone">
+        </div>
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const storage = getStorage(app);
+        <div>
+          <input id="email" placeholder="Email">
+        </div>
 
-let editandoId = null;
-let fotoAtual = "";
+        <div>
+          <input id="dataNascimento" type="date" placeholder="Data de nascimento">
+        </div>
 
-window.toggleFormulario = function(){
-  const f = document.getElementById("formulario");
-  f.style.display = f.style.display === "none" ? "block" : "none";
-}
+        <div class="full">
+          <input id="cidadeNascimento" placeholder="Cidade onde nasceu">
+        </div>
 
-async function carregarCategorias(){
-  const grid = document.getElementById("categoriasGrid");
-  grid.innerHTML = "";
-
-  const snap = await getDocs(collection(db,"categorias"));
-  let lista = [];
-
-  snap.forEach(d => {
-    const data = d.data();
-    if(data.nome) lista.push(data.nome);
-  });
-
-  lista.sort((a,b)=>a.localeCompare(b,'pt-BR'));
-
-  lista.forEach(nome=>{
-    grid.innerHTML += `
-      <label class="check-item">
-        <input type="checkbox" value="${nome}">${nome}
-      </label>
-    `;
-  });
-}
-
-function getCategorias(){
-  return Array.from(document.querySelectorAll('#categoriasGrid input:checked')).map(i=>i.value);
-}
-
-function marcarCategorias(categorias){
-  document.querySelectorAll('#categoriasGrid input').forEach(i => {
-    i.checked = (categorias || []).includes(i.value);
-  });
-}
-
-function limparFormulario(){
-  document.getElementById("nome").value = "";
-  document.getElementById("foto").value = "";
-  document.getElementById("cpf").value = "";
-  document.getElementById("telefone").value = "";
-  document.getElementById("email").value = "";
-  document.querySelectorAll('#categoriasGrid input').forEach(i => i.checked = false);
-  editandoId = null;
-  fotoAtual = "";
-}
-
-window.salvar = async function(){
-  const nome = document.getElementById("nome").value.trim();
-  const cpf = document.getElementById("cpf").value.trim();
-  const telefone = document.getElementById("telefone").value.trim();
-  const email = document.getElementById("email").value.trim();
-  const foto = document.getElementById("foto").files[0];
-  const categorias = getCategorias();
-
-  if(!nome || !cpf){
-    alert("Preencha os campos obrigatórios");
-    return;
-  }
-
-  let url = fotoAtual;
-
-  if(foto){
-    const refStorage = ref(storage,"assistentes/" + Date.now() + "-" + foto.name);
-    await uploadBytes(refStorage,foto);
-    url = await getDownloadURL(refStorage);
-  }
-
-  const dados = { nome, cpf, telefone, email, foto:url, categorias };
-
-  if(editandoId){
-    await updateDoc(doc(db,"assistentes",editandoId),dados);
-    alert("Assistente atualizado com sucesso!");
-  }else{
-    await addDoc(collection(db,"assistentes"),dados);
-    alert("Assistente salvo com sucesso!");
-  }
-
-  limparFormulario();
-  carregarAssistentes();
-}
-
-window.editar = async function(id){
-  const snap = await getDocs(collection(db,"assistentes"));
-
-  snap.forEach(d=>{
-    if(d.id===id){
-      const a = d.data();
-      document.getElementById("nome").value = a.nome || "";
-      document.getElementById("cpf").value = a.cpf || "";
-      document.getElementById("telefone").value = a.telefone || "";
-      document.getElementById("email").value = a.email || "";
-      fotoAtual = a.foto || "";
-      editandoId = id;
-      marcarCategorias(a.categorias || []);
-    }
-  });
-
-  document.getElementById("formulario").style.display = "block";
-  window.scrollTo({ top: 0, behavior: "smooth" });
-}
-
-window.excluir = async function(id){
-  if(confirm("Excluir assistente?")){
-    await deleteDoc(doc(db,"assistentes",id));
-    carregarAssistentes();
-  }
-}
-
-window.ver = async function(id){
-  const snap = await getDocs(collection(db,"assistentes"));
-
-  snap.forEach(d=>{
-    if(d.id===id){
-      const a = d.data();
-      const cats = (a.categorias||[]).map(c=>`<span class="tag">${c}</span>`).join("");
-
-      document.getElementById("modalContent").innerHTML = `
-        <img src="${a.foto || ''}" class="photo">
-        <h2>${a.nome || ""}</h2>
-        <p>${a.email || "-"}</p>
-        <p>${a.telefone || "-"}</p>
-        <div style="margin-top:10px;">${cats}</div>
-        <button onclick="fechar()" style="margin-top:15px;">Fechar</button>
-      `;
-
-      document.getElementById("modal").style.display = "flex";
-    }
-  });
-}
-
-window.fechar = function(){
-  document.getElementById("modal").style.display = "none";
-}
-
-async function carregarAssistentes(){
-  const lista = document.getElementById("lista");
-  lista.innerHTML = "";
-
-  const snap = await getDocs(collection(db,"assistentes"));
-  let dados = [];
-
-  snap.forEach(d=>dados.push({id:d.id,...d.data()}));
-
-  const busca = (document.getElementById("busca").value || "").toLowerCase().trim();
-
-  if(busca){
-    dados = dados.filter(a =>
-      (a.nome||"").toLowerCase().includes(busca) ||
-      (a.email||"").toLowerCase().includes(busca) ||
-      (a.cpf||"").toLowerCase().includes(busca)
-    );
-  }
-
-  dados.sort((a,b)=>(a.nome || "").localeCompare(b.nome || "",'pt-BR'));
-
-  dados.forEach(a=>{
-    lista.innerHTML += `
-      <div class="card">
-        <div class="user">
-          <img src="${a.foto||''}" class="photo">
-          <div class="user-info">
-            <div>${a.nome || ""}</div>
-            <small>${a.email || "-"}</small>
+        <div class="full">
+          <div class="info-categorias">
+            <strong>Autorização automática:</strong> todo assistente cadastrado neste painel já fica autorizado para trabalhar em <strong>todas as categorias</strong>.
+            <div class="categorias-preview" id="categoriasPreview"></div>
           </div>
         </div>
-        <div class="actions">
-          <button onclick="editar('${a.id}')">Editar</button>
-          <button onclick="ver('${a.id}')">Ver</button>
-          <button class="delete" onclick="excluir('${a.id}')">Excluir</button>
-        </div>
       </div>
-    `;
-  });
-}
 
-await carregarCategorias();
-carregarAssistentes();
-</script>
+      <div class="form-actions">
+        <button onclick="salvar()">
+          <i class="fa-solid fa-floppy-disk"></i> Salvar
+        </button>
+        <button onclick="cancelarEdicao()">
+          <i class="fa-solid fa-xmark"></i> Cancelar
+        </button>
+      </div>
+    </div>
+
+    <div class="lista-grid" id="lista"></div>
+
+  </div>
+
+  <div class="modal" id="modal">
+    <div class="modal-content" id="modalContent"></div>
+  </div>
+
+  <script type="module">
+    import { db } from "./firebase.js";
+    import { collection, addDoc, getDocs, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+
+    const storage = getStorage();
+
+    let editandoId = null;
+    let fotoAtual = "";
+    let categoriasDisponiveis = [];
+
+    window.voltarPagina = function(){
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        window.location.href = "admin.html";
+      }
+    };
+
+    function normalizarTexto(texto){
+      return String(texto || "")
+        .trim()
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
+    }
+
+    function calcularIdade(dataNascimento){
+      if(!dataNascimento) return "-";
+
+      const nascimento = new Date(dataNascimento + "T00:00:00");
+      if(isNaN(nascimento.getTime())) return "-";
+
+      const hoje = new Date();
+      let idade = hoje.getFullYear() - nascimento.getFullYear();
+      const mes = hoje.getMonth() - nascimento.getMonth();
+
+      if(mes < 0 || (mes === 0 && hoje.getDate() < nascimento.getDate())){
+        idade--;
+      }
+
+      return idade >= 0 ? idade : "-";
+    }
+
+    function preencherPreviewCategorias(){
+      const box = document.getElementById("categoriasPreview");
+      if(!categoriasDisponiveis.length){
+        box.innerHTML = `<span class="tag">Sem categorias cadastradas</span>`;
+        return;
+      }
+
+      box.innerHTML = categoriasDisponiveis.map(c => `<span class="tag">${c}</span>`).join("");
+    }
+
+    async function carregarCategorias(){
+      categoriasDisponiveis = [];
+      const snap = await getDocs(collection(db,"categorias"));
+
+      snap.forEach(d => {
+        const data = d.data();
+        if(data.nome) categoriasDisponiveis.push(data.nome);
+      });
+
+      categoriasDisponiveis.sort((a,b)=>a.localeCompare(b, "pt-BR"));
+      preencherPreviewCategorias();
+    }
+
+    window.toggleFormulario = function(){
+      const f = document.getElementById("formulario");
+      f.style.display = f.style.display === "none" || f.style.display === "" ? "block" : "none";
+    };
+
+    window.cancelarEdicao = function(){
+      limparFormulario();
+      document.getElementById("formulario").style.display = "none";
+    };
+
+    function limparFormulario(){
+      document.getElementById("nome").value = "";
+      document.getElementById("foto").value = "";
+      document.getElementById("cpf").value = "";
+      document.getElementById("telefone").value = "";
+      document.getElementById("email").value = "";
+      document.getElementById("dataNascimento").value = "";
+      document.getElementById("cidadeNascimento").value = "";
+      editandoId = null;
+      fotoAtual = "";
+    }
+
+    function getCategoriasAutomaticas(){
+      return [...categoriasDisponiveis];
+    }
+
+    async function calcularEstatisticasAssistente(nomeAssistente){
+      const snapJogos = await getDocs(collection(db, "jogos"));
+
+      let jogosTrabalhados = 0;
+      const jogosPorCategoria = {};
+
+      snapJogos.forEach(docSnap => {
+        const jogo = docSnap.data();
+
+        const ehAssistente =
+          normalizarTexto(jogo.assistente) === normalizarTexto(nomeAssistente) ||
+          normalizarTexto(jogo.assistente1) === normalizarTexto(nomeAssistente) ||
+          normalizarTexto(jogo.assistente2) === normalizarTexto(nomeAssistente) ||
+          normalizarTexto(jogo.arbitroAuxiliar) === normalizarTexto(nomeAssistente);
+
+        if(ehAssistente){
+          jogosTrabalhados += 1;
+          const categoria = jogo.categoria || "Sem categoria";
+          jogosPorCategoria[categoria] = (jogosPorCategoria[categoria] || 0) + 1;
+        }
+      });
+
+      return {
+        jogosTrabalhados,
+        jogosPorCategoria
+      };
+    }
+
+    window.salvar = async function(){
+      const nome = document.getElementById("nome").value.trim();
+      const cpf = document.getElementById("cpf").value.trim();
+      const telefone = document.getElementById("telefone").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const dataNascimento = document.getElementById("dataNascimento").value;
+      const cidadeNascimento = document.getElementById("cidadeNascimento").value.trim();
+      const foto = document.getElementById("foto").files[0];
+      const categorias = getCategoriasAutomaticas();
+
+      if(!nome || !cpf){
+        alert("Preencha os campos obrigatórios.");
+        return;
+      }
+
+      let url = fotoAtual;
+
+      if(foto){
+        const refStorage = ref(storage,"assistentes/" + Date.now() + "-" + foto.name);
+        await uploadBytes(refStorage,foto);
+        url = await getDownloadURL(refStorage);
+      }
+
+      const dados = {
+        nome,
+        cpf,
+        telefone,
+        email,
+        dataNascimento,
+        cidadeNascimento,
+        foto:url,
+        categorias,
+        autorizadoTodasCategorias: true
+      };
+
+      if(editandoId){
+        await updateDoc(doc(db,"assistentes",editandoId),dados);
+        alert("Assistente atualizado com sucesso!");
+      }else{
+        await addDoc(collection(db,"assistentes"),dados);
+        alert("Assistente salvo com sucesso!");
+      }
+
+      limparFormulario();
+      carregarAssistentes();
+    };
+
+    window.editar = async function(id){
+      const snap = await getDocs(collection(db,"assistentes"));
+
+      snap.forEach(d=>{
+        if(d.id===id){
+          const a = d.data();
+          document.getElementById("nome").value = a.nome || "";
+          document.getElementById("cpf").value = a.cpf || "";
+          document.getElementById("telefone").value = a.telefone || "";
+          document.getElementById("email").value = a.email || "";
+          document.getElementById("dataNascimento").value = a.dataNascimento || "";
+          document.getElementById("cidadeNascimento").value = a.cidadeNascimento || "";
+          fotoAtual = a.foto || "";
+          editandoId = id;
+        }
+      });
+
+      document.getElementById("formulario").style.display = "block";
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    };
+
+    window.excluir = async function(id){
+      if(confirm("Excluir assistente?")){
+        await deleteDoc(doc(db,"assistentes",id));
+        carregarAssistentes();
+      }
+    };
+
+    window.ver = async function(id){
+      const snap = await getDocs(collection(db,"assistentes"));
+
+      for (const d of snap.docs){
+        if(d.id === id){
+          const a = d.data();
+          const cats = (a.categorias || []).map(c=>`<span class="tag">${c}</span>`).join("");
+          const idade = calcularIdade(a.dataNascimento);
+          const stats = await calcularEstatisticasAssistente(a.nome || "");
+
+          const categoriasStatsHtml = Object.keys(stats.jogosPorCategoria).length
+            ? Object.entries(stats.jogosPorCategoria)
+                .sort((x, y) => x[0].localeCompare(y[0], "pt-BR"))
+                .map(([categoria, quantidade]) => `
+                  <div class="categoria-item">
+                    <span>${categoria}</span>
+                    <strong>${quantidade} jogo(s)</strong>
+                  </div>
+                `).join("")
+            : `<div class="categoria-item"><span>Sem jogos registrados</span><strong>0</strong></div>`;
+
+          document.getElementById("modalContent").innerHTML = `
+            <img src="${a.foto || 'logo-liga.jfif'}" class="photo" alt="${a.nome || 'Assistente'}">
+            <h2>${a.nome || ""}</h2>
+
+            <div class="modal-grid">
+              <div class="info-box">
+                <h3>Dados do Assistente</h3>
+                <div class="info-line"><strong>Email:</strong> ${a.email || "-"}</div>
+                <div class="info-line"><strong>Telefone:</strong> ${a.telefone || "-"}</div>
+                <div class="info-line"><strong>CPF:</strong> ${a.cpf || "-"}</div>
+                <div class="info-line"><strong>Idade:</strong> ${idade}</div>
+                <div class="info-line"><strong>Onde nasceu:</strong> ${a.cidadeNascimento || "-"}</div>
+                <div class="info-line"><strong>Autorização:</strong> Todas as categorias</div>
+                <div class="categorias-tags" style="margin-top:10px;">${cats || '<span class="tag">Sem categorias</span>'}</div>
+              </div>
+
+              <div class="stats-box">
+                <h3>Estatísticas</h3>
+                <div class="stats-grid">
+                  <div class="stat-card">
+                    <strong>${stats.jogosTrabalhados}</strong>
+                    <span>Jogos trabalhados</span>
+                  </div>
+
+                  <div class="stat-card">
+                    <strong>${Object.keys(stats.jogosPorCategoria).length}</strong>
+                    <span>Categorias trabalhadas</span>
+                  </div>
+                </div>
+
+                <div class="categorias-stats">
+                  <h4>Jogos por categoria</h4>
+                  ${categoriasStatsHtml}
+                </div>
+              </div>
+            </div>
+
+            <div class="modal-actions">
+              <button onclick="fechar()">
+                <i class="fa-solid fa-xmark"></i> Fechar
+              </button>
+            </div>
+          `;
+
+          document.getElementById("modal").style.display = "flex";
+          break;
+        }
+      }
+    };
+
+    window.fechar = function(){
+      document.getElementById("modal").style.display = "none";
+    };
+
+    async function carregarAssistentes(){
+      const lista = document.getElementById("lista");
+      lista.innerHTML = "<div class='vazio'>Carregando assistentes...</div>";
+
+      const snap = await getDocs(collection(db,"assistentes"));
+      let dados = [];
+
+      snap.forEach(d=>dados.push({id:d.id,...d.data()}));
+
+      const busca = (document.getElementById("busca").value || "").toLowerCase().trim();
+
+      if(busca){
+        dados = dados.filter(a =>
+          (a.nome||"").toLowerCase().includes(busca) ||
+          (a.email||"").toLowerCase().includes(busca) ||
+          (a.cpf||"").toLowerCase().includes(busca)
+        );
+      }
+
+      dados.sort((a,b)=>(a.nome || "").localeCompare(b.nome || "",'pt-BR'));
+
+      if(!dados.length){
+        lista.innerHTML = "<div class='vazio'>Nenhum assistente encontrado.</div>";
+        return;
+      }
+
+      lista.innerHTML = "";
+
+      dados.forEach(a=>{
+        lista.innerHTML += `
+          <div class="card">
+            <div class="user">
+              <img src="${a.foto||'logo-liga.jfif'}" class="photo" alt="${a.nome || 'Assistente'}">
+              <div class="user-info">
+                <div class="nome">${a.nome || ""}</div>
+                <small>${a.email || "-"}</small>
+                <small>${a.telefone || "-"}</small>
+                <div class="categorias-tags">
+                  <span class="tag">Todas as categorias</span>
+                </div>
+              </div>
+            </div>
+            <div class="actions">
+              <button onclick="editar('${a.id}')">
+                <i class="fa-solid fa-pen"></i> Editar
+              </button>
+              <button onclick="ver('${a.id}')">
+                <i class="fa-solid fa-eye"></i> Ver
+              </button>
+              <button class="delete" onclick="excluir('${a.id}')">
+                <i class="fa-solid fa-trash"></i> Excluir
+              </button>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    await carregarCategorias();
+    carregarAssistentes();
+  </script>
 
 </body>
 </html>
