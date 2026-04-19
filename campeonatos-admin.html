@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Campeonatos - Admin</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    :root{
+      --bg:#0b1f3a;
+      --bg-dark:#08172c;
+      --card:#102a52;
+      --card-hover:#153766;
+      --gold:#f7c600;
+      --gold-soft:rgba(247,198,0,.12);
+      --gold-line:rgba(247,198,0,.24);
+      --white:#ffffff;
+      --muted:#d8e1ef;
+      --danger:#b30000;
+      --success:#0f8b4c;
+      --shadow:0 8px 22px rgba(0,0,0,.28);
+      --transition:.25s ease;
+      --max:1240px;
+    }
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    body{
+      font-family:Arial, sans-serif;
+      background:
+        linear-gradient(rgba(11,31,58,.88), rgba(11,31,58,.94)),
+        url("fundo.png") center/cover fixed no-repeat;
+      color:var(--white);
+    }
+
+    a{
+      text-decoration:none;
+      color:inherit;
+      transition:var(--transition);
+    }
+
+    button{
+      font-family:inherit;
+      cursor:pointer;
+      transition:var(--transition);
+      border:none;
+    }
+
+    input, select, textarea{
+      font-family:inherit;
+    }
+
+    .wrap{
+      width:min(100% - 28px, var(--max));
+      margin:0 auto;
+    }
+
+    header{
+      background:rgba(8,23,44,.96);
+      border-bottom:3px solid var(--gold);
+      box-shadow:var(--shadow);
+    }
+
+    .header-top{
+      min-height:82px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      flex-wrap:wrap;
+      padding:14px 0;
+    }
+
+    .header-left,
+    .header-right{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .header-title{
+      flex:1;
+      text-align:center;
+      font-size:24px;
+      font-weight:700;
+      color:var(--white);
+    }
+
+    .top-btn{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:10px 16px;
+      border-radius:10px;
+      font-weight:700;
+    }
+
+    .btn-light{
+      background:#fff4cf;
+      color:#111;
+    }
+
+    .btn-light:hover{
+      background:var(--gold);
+      transform:translateY(-2px);
+    }
+
+    .container{
+      padding:24px 0 34px;
+    }
+
+    .hero{
+      background:linear-gradient(135deg,#102a52,#0d2346);
+      border:1px solid var(--gold-line);
+      border-radius:18px;
+      padding:22px;
+      margin-bottom:20px;
+      box-shadow:var(--shadow);
+    }
+
+    .hero h2{
+      margin:0 0 8px;
+      color:var(--gold);
+      font-size:28px;
+    }
+
+    .hero p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.6;
+      font-size:15px;
+    }
+
+    .toolbar{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-bottom:18px;
+    }
+
+    .toolbar .btn{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      background:var(--gold);
+      color:black;
+      padding:11px 16px;
+      border-radius:10px;
+      font-weight:700;
+      text-decoration:none;
+    }
+
+    .toolbar .btn:hover{
+      filter:brightness(1.04);
+      transform:translateY(-1px);
+    }
+
+    .search-box{
+      margin-bottom:16px;
+    }
+
+    .search-box input{
+      width:100%;
+      padding:13px;
+      border:none;
+      border-radius:10px;
+      font-size:14px;
+      background:#f5f7fb;
+      color:#111;
+    }
+
+    .search-box input:focus,
+    .form-grid input:focus,
+    .form-grid select:focus,
+    .form-grid textarea:focus{
+      outline:2px solid rgba(247,198,0,.45);
+    }
+
+    .form-panel{
+      display:none;
+      background:linear-gradient(180deg, rgba(16,42,82,.96), rgba(12,33,64,.96));
+      border:1px solid rgba(255,255,255,.06);
+      border-radius:18px;
+      padding:18px;
+      box-shadow:var(--shadow);
+      margin-bottom:18px;
+    }
+
+    .form-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+
+    .full{
+      grid-column:1 / -1;
+    }
+
+    .form-grid input,
+    .form-grid select,
+    .form-grid textarea{
+      width:100%;
+      padding:13px;
+      border:none;
+      border-radius:10px;
+      font-size:14px;
+      background:#f5f7fb;
+      color:#111;
+      box-sizing:border-box;
+    }
+
+    .form-grid textarea{
+      min-height:110px;
+      resize:vertical;
+    }
+
+    .checkbox-box{
+      background:#0d2346;
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:14px;
+      padding:14px;
+    }
+
+    .checkbox-box-title{
+      color:var(--gold);
+      font-weight:700;
+      margin-bottom:10px;
+      font-size:15px;
+    }
+
+    .checkbox-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(120px, 1fr));
+      gap:8px;
+    }
+
+    .check-item{
+      background:#102a52;
+      padding:8px 10px;
+      border-radius:8px;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      font-size:14px;
+      color:var(--muted);
+    }
+
+    .check-item input{
+      width:auto;
+      margin:0;
+    }
+
+    .form-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:14px;
+    }
+
+    .form-actions button{
+      padding:10px 14px;
+      border-radius:10px;
+      font-weight:700;
+    }
+
+    .btn-save{
+      background:var(--gold);
+      color:black;
+    }
+
+    .btn-cancel{
+      background:#1a3f73;
+      color:white;
+    }
+
+    .msg{
+      margin-top:14px;
+      padding:12px 14px;
+      border-radius:10px;
+      font-weight:700;
+      display:none;
+    }
+
+    .msg.success{
+      background:rgba(15,139,76,.18);
+      border:1px solid rgba(15,139,76,.35);
+      color:#9ff0bf;
+    }
+
+    .msg.error{
+      background:rgba(179,0,0,.18);
+      border:1px solid rgba(179,0,0,.35);
+      color:#ffb7b7;
+    }
+
+    .lista-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(340px, 1fr));
+      gap:14px;
+    }
+
+    .card{
+      background:linear-gradient(180deg, rgba(16,42,82,.96), rgba(12,33,64,.96));
+      padding:16px;
+      border-radius:16px;
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:14px;
+      border:1px solid rgba(255,230,0,.10);
+      box-shadow:var(--shadow);
+      transition:var(--transition);
+    }
+
+    .card:hover{
+      transform:translateY(-2px);
+      border-color:var(--gold-line);
+    }
+
+    .item{
+      display:flex;
+      align-items:flex-start;
+      gap:12px;
+      min-width:0;
+      flex:1;
+    }
+
+    .logo{
+      width:70px;
+      height:70px;
+      border-radius:50%;
+      object-fit:cover;
+      border:2px solid rgba(255,255,255,.15);
+      background:#1a3f73;
+      flex-shrink:0;
+    }
+
+    .item-info{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      min-width:0;
+    }
+
+    .nome-campeonato{
+      font-weight:700;
+      font-size:18px;
+      color:#ffffff;
+    }
+
+    .item-info small{
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.5;
+    }
+
+    .tags{
+      display:flex;
+      gap:6px;
+      flex-wrap:wrap;
+      margin-top:4px;
+    }
+
+    .tag{
+      background:#1a3f73;
+      padding:5px 9px;
+      border-radius:999px;
+      font-size:12px;
+      border:1px solid rgba(255,255,255,.08);
+    }
+
+    .status{
+      display:inline-flex;
+      width:max-content;
+      align-items:center;
+      gap:6px;
+      padding:6px 10px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:700;
+      margin-top:2px;
+    }
+
+    .status.publicado{
+      background:rgba(15,139,76,.20);
+      color:#9ff0bf;
+      border:1px solid rgba(15,139,76,.30);
+    }
+
+    .status.rascunho{
+      background:rgba(247,198,0,.14);
+      color:#ffe27a;
+      border:1px solid rgba(247,198,0,.25);
+    }
+
+    .actions{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+
+    .actions button,
+    .actions a{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      padding:10px 12px;
+      border-radius:10px;
+      font-weight:700;
+      font-size:13px;
+    }
+
+    .btn-view{
+      background:#1a3f73;
+      color:white;
+    }
+
+    .btn-edit{
+      background:var(--gold);
+      color:black;
+    }
+
+    .btn-delete{
+      background:var(--danger);
+      color:white;
+    }
+
+    .vazio{
+      background:linear-gradient(180deg, rgba(16,42,82,.96), rgba(12,33,64,.96));
+      padding:30px;
+      border-radius:14px;
+      text-align:center;
+      color:var(--muted);
+      border:1px solid rgba(255,255,255,.06);
+      box-shadow:var(--shadow);
+    }
+
+    @media (max-width:900px){
+      .header-title{
+        order:3;
+        width:100%;
+        text-align:center;
+      }
+
+      .header-left,
+      .header-right{
+        width:100%;
+        justify-content:center;
+      }
+
+      .form-grid{
+        grid-template-columns:1fr;
+      }
+
+      .card{
+        flex-direction:column;
+        align-items:flex-start;
+      }
+
+      .actions{
+        width:100%;
+        justify-content:flex-start;
+      }
+    }
+
+    @media (max-width:600px){
+      .top-btn,
+      .toolbar .btn{
+        width:100%;
+        justify-content:center;
+      }
+
+      .header-left,
+      .header-right{
+        flex-direction:column;
+        align-items:stretch;
+      }
+
+      .form-actions button{
+        width:100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="wrap header-top">
+      <div class="header-left">
+        <button class="top-btn btn-light" type="button" onclick="voltarPagina()">
+          <i class="fa-solid fa-arrow-left"></i> Voltar
+        </button>
+
+        <a href="index.html" class="top-btn btn-light">
+          <i class="fa-solid fa-house"></i> Página Inicial
+        </a>
+
+        <a href="admin.html" class="top-btn btn-light">
+          <i class="fa-solid fa-gears"></i> Painel ADM
+        </a>
+      </div>
+
+      <div class="header-title">Campeonatos - Admin</div>
+
+      <div class="header-right"></div>
+    </div>
+  </header>
+
+  <div class="wrap container">
+
+    <div class="hero">
+      <h2>Gestão de Campeonatos</h2>
+      <p>Cadastre, edite, publique e organize os campeonatos da Liga Goiana de Futebol de Base.</p>
+    </div>
+
+    <div class="toolbar">
+      <a class="btn" onclick="toggleFormulario()">
+        <i class="fa-solid fa-plus"></i> Novo Campeonato
+      </a>
+    </div>
+
+    <div class="search-box">
+      <input id="buscaCampeonato" placeholder="Pesquisar campeonato..." oninput="carregarCampeonatos()">
+    </div>
+
+    <div class="form-panel" id="formulario">
+      <div class="form-grid">
+        <div>
+          <input type="text" id="nome" placeholder="Nome do campeonato">
+        </div>
+
+        <div>
+          <input type="text" id="temporada" placeholder="Temporada (ex: 2026)">
+        </div>
+
+        <div>
+          <input type="text" id="logo" placeholder="Logo do campeonato (URL da imagem)">
+        </div>
+
+        <div>
+          <select id="status">
+            <option value="rascunho">Rascunho</option>
+            <option value="publicado">Publicado</option>
+          </select>
+        </div>
+
+        <div>
+          <select id="formato">
+            <option value="">Formato da competição</option>
+            <option value="Pontos corridos">Pontos corridos</option>
+            <option value="Fase de grupos">Fase de grupos</option>
+            <option value="Mata-mata">Mata-mata</option>
+            <option value="Pontos corridos + fase final">Pontos corridos + fase final</option>
+          </select>
+        </div>
+
+        <div>
+          <select id="turno">
+            <option value="">Turno</option>
+            <option value="Ida">Ida</option>
+            <option value="Ida e volta">Ida e volta</option>
+          </select>
+        </div>
+
+        <div class="full">
+          <textarea id="descricao" placeholder="Descrição / observações do campeonato"></textarea>
+        </div>
+
+        <div class="full">
+          <div class="checkbox-box">
+            <div class="checkbox-box-title">Categorias do campeonato</div>
+            <div class="checkbox-grid" id="categoriasGrid"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button class="btn-save" onclick="salvarCampeonato()">
+          <i class="fa-solid fa-floppy-disk"></i> Salvar Campeonato
+        </button>
+
+        <button class="btn-cancel" onclick="cancelarEdicao()">
+          <i class="fa-solid fa-xmark"></i> Cancelar
+        </button>
+      </div>
+
+      <div id="msgSucesso" class="msg success"></div>
+      <div id="msgErro" class="msg error"></div>
+    </div>
+
+    <div class="lista-grid" id="listaCampeonatos"></div>
+  </div>
+
+  <script type="module">
+    import { db } from "./firebase.js";
+    import {
+      collection,
+      addDoc,
+      getDocs,
+      doc,
+      updateDoc,
+      deleteDoc
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    let editandoId = null;
+    let categoriasDisponiveis = [];
+    let campeonatosCache = [];
+
+    const lista = document.getElementById("listaCampeonatos");
+    const msgSucesso = document.getElementById("msgSucesso");
+    const msgErro = document.getElementById("msgErro");
+
+    window.voltarPagina = function(){
+      if(window.history.length > 1){
+        window.history.back();
+      }else{
+        window.location.href = "admin.html";
+      }
+    };
+
+    window.toggleFormulario = function(){
+      const form = document.getElementById("formulario");
+      form.style.display = form.style.display === "none" || form.style.display === "" ? "block" : "none";
+    };
+
+    window.cancelarEdicao = function(){
+      limparFormulario();
+      document.getElementById("formulario").style.display = "none";
+    };
+
+    function mostrarSucesso(texto){
+      msgErro.style.display = "none";
+      msgSucesso.style.display = "block";
+      msgSucesso.textContent = texto;
+    }
+
+    function mostrarErro(texto){
+      msgSucesso.style.display = "none";
+      msgErro.style.display = "block";
+      msgErro.textContent = texto;
+    }
+
+    function limparMensagens(){
+      msgSucesso.style.display = "none";
+      msgErro.style.display = "none";
+      msgSucesso.textContent = "";
+      msgErro.textContent = "";
+    }
+
+    function limparFormulario(){
+      document.getElementById("nome").value = "";
+      document.getElementById("temporada").value = "";
+      document.getElementById("logo").value = "";
+      document.getElementById("status").value = "rascunho";
+      document.getElementById("formato").value = "";
+      document.getElementById("turno").value = "";
+      document.getElementById("descricao").value = "";
+      document.querySelectorAll('#categoriasGrid input[type="checkbox"]').forEach(item => item.checked = false);
+      editandoId = null;
+      limparMensagens();
+    }
+
+    function getCategoriasSelecionadas(){
+      return Array.from(document.querySelectorAll('#categoriasGrid input[type="checkbox"]:checked')).map(item => item.value);
+    }
+
+    function marcarCategorias(categorias){
+      document.querySelectorAll('#categoriasGrid input[type="checkbox"]').forEach(item => {
+        item.checked = (categorias || []).includes(item.value);
+      });
+    }
+
+    async function carregarCategorias(){
+      const grid = document.getElementById("categoriasGrid");
+      grid.innerHTML = "";
+      categoriasDisponiveis = [];
+
+      const snap = await getDocs(collection(db, "categorias"));
+      snap.forEach(docSnap => {
+        const dados = docSnap.data();
+        if(dados.nome){
+          categoriasDisponiveis.push(dados.nome);
+        }
+      });
+
+      categoriasDisponiveis.sort((a,b) => a.localeCompare(b, "pt-BR"));
+
+      categoriasDisponiveis.forEach(nome => {
+        grid.innerHTML += `
+          <label class="check-item">
+            <input type="checkbox" value="${nome}">
+            <span>${nome}</span>
+          </label>
+        `;
+      });
+    }
+function montarStatus(status){
+      const s = String(status || "rascunho").toLowerCase();
+      if(s === "publicado"){
+        return `<div class="status publicado"><i class="fa-solid fa-circle-check"></i> Publicado</div>`;
+      }
+      return `<div class="status rascunho"><i class="fa-solid fa-pen"></i> Rascunho</div>`;
+    }
+
+    function montarCategoriasTags(categorias){
+      if(!categorias || !categorias.length){
+        return '<span class="tag">Sem categorias</span>';
+      }
+      return categorias.map(cat => `<span class="tag">${cat}</span>`).join("");
+    }
+
+    window.salvarCampeonato = async function(){
+      limparMensagens();
+
+      const nome = document.getElementById("nome").value.trim();
+      const temporada = document.getElementById("temporada").value.trim();
+      const logo = document.getElementById("logo").value.trim();
+      const status = document.getElementById("status").value;
+      const formato = document.getElementById("formato").value;
+      const turno = document.getElementById("turno").value;
+      const descricao = document.getElementById("descricao").value.trim();
+      const categorias = getCategoriasSelecionadas();
+
+      if(!nome){
+        mostrarErro("Digite o nome do campeonato.");
+        return;
+      }
+
+      const dados = {
+        nome,
+        temporada,
+        logo,
+        status,
+        formato,
+        turno,
+        descricao,
+        categorias,
+        publicado: status === "publicado",
+        publico: status === "publicado",
+        visivelPublico: status === "publicado",
+        atualizadoEm: new Date().toISOString()
+      };
+
+      try{
+        if(editandoId){
+          await updateDoc(doc(db, "campeonatos", editandoId), dados);
+          mostrarSucesso("Campeonato atualizado com sucesso!");
+        }else{
+          await addDoc(collection(db, "campeonatos"), {
+            ...dados,
+            criadoEm: new Date().toISOString()
+          });
+          mostrarSucesso("Campeonato cadastrado com sucesso!");
+        }
+
+        limparFormulario();
+        document.getElementById("formulario").style.display = "none";
+        await carregarCampeonatos();
+      }catch(erro){
+        console.error(erro);
+        mostrarErro("Erro ao salvar o campeonato.");
+      }
+    };
+
+    window.editarCampeonato = function(id){
+      const campeonato = campeonatosCache.find(item => item.id === id);
+      if(!campeonato) return;
+
+      document.getElementById("nome").value = campeonato.nome || "";
+      document.getElementById("temporada").value = campeonato.temporada || "";
+      document.getElementById("logo").value = campeonato.logo || "";
+      document.getElementById("status").value = campeonato.status || "rascunho";
+      document.getElementById("formato").value = campeonato.formato || "";
+      document.getElementById("turno").value = campeonato.turno || "";
+      document.getElementById("descricao").value = campeonato.descricao || "";
+      marcarCategorias(campeonato.categorias || []);
+
+      editandoId = id;
+      limparMensagens();
+      document.getElementById("formulario").style.display = "block";
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    };
+
+    window.excluirCampeonato = async function(id){
+      const campeonato = campeonatosCache.find(item => item.id === id);
+      if(!campeonato) return;
+
+      const confirmar = confirm(`Deseja excluir o campeonato "${campeonato.nome}"?`);
+      if(!confirmar) return;
+
+      try{
+        await deleteDoc(doc(db, "campeonatos", id));
+        await carregarCampeonatos();
+      }catch(erro){
+        console.error(erro);
+        alert("Erro ao excluir o campeonato.");
+      }
+    };
+
+    async function carregarCampeonatos(){
+      lista.innerHTML = `<div class="vazio">Carregando campeonatos...</div>`;
+
+      try{
+        const snap = await getDocs(collection(db, "campeonatos"));
+        campeonatosCache = [];
+
+        snap.forEach(docSnap => {
+          campeonatosCache.push({ id: docSnap.id, ...docSnap.data() });
+        });
+
+        const busca = (document.getElementById("buscaCampeonato").value || "").toLowerCase().trim();
+
+        let campeonatosFiltrados = [...campeonatosCache];
+
+        if(busca){
+          campeonatosFiltrados = campeonatosFiltrados.filter(item =>
+            (item.nome || "").toLowerCase().includes(busca) ||
+            (item.temporada || "").toLowerCase().includes(busca) ||
+            (item.status || "").toLowerCase().includes(busca)
+          );
+        }
+
+        campeonatosFiltrados.sort((a,b) => (a.nome || "").localeCompare((b.nome || ""), "pt-BR"));
+
+        if(!campeonatosFiltrados.length){
+          lista.innerHTML = `<div class="vazio">Nenhum campeonato encontrado.</div>`;
+          return;
+        }
+
+        lista.innerHTML = "";
+
+        campeonatosFiltrados.forEach(campeonato => {
+          lista.innerHTML += `
+            <div class="card">
+              <div class="item">
+                <img
+                  src="${campeonato.logo || 'logo-liga.jfif'}"
+                  class="logo"
+                  alt="${campeonato.nome || 'Campeonato'}"
+                  onerror="this.src='logo-liga.jfif'"
+                >
+
+                <div class="item-info">
+                  <div class="nome-campeonato">${campeonato.nome || "-"}</div>
+                  ${montarStatus(campeonato.status)}
+                  <small>Temporada: ${campeonato.temporada || "-"}</small>
+                  <small>Formato: ${campeonato.formato || "-"}</small>
+                  <small>Turno: ${campeonato.turno || "-"}</small>
+                  <div class="tags">${montarCategoriasTags(campeonato.categorias || [])}</div>
+                </div>
+              </div>
+
+              <div class="actions">
+                <a class="btn-view" href="campeonato-publico.html?id=${campeonato.id}">
+                  <i class="fa-solid fa-eye"></i> Ver
+                </a>
+
+                <button class="btn-edit" onclick="editarCampeonato('${campeonato.id}')">
+                  <i class="fa-solid fa-pen"></i> Editar
+                </button>
+
+                <button class="btn-delete" onclick="excluirCampeonato('${campeonato.id}')">
+                  <i class="fa-solid fa-trash"></i> Excluir
+                </button>
+              </div>
+            </div>
+          `;
+        });
+
+      }catch(erro){
+        console.error(erro);
+        lista.innerHTML = `<div class="vazio">Erro ao carregar os campeonatos.</div>`;
+      }
+    }
+
+    await carregarCategorias();
+    await carregarCampeonatos();
+  </script>
+
+</body>
+</html>
