@@ -22,6 +22,8 @@
       --shadow:0 8px 22px rgba(0,0,0,.28);
       --transition:.25s ease;
       --max:1240px;
+      --yellow-card:#ffd54f;
+      --red-card:#e53935;
     }
 
     *{
@@ -39,6 +41,10 @@
       min-height:100vh;
     }
 
+    a, button, .btn, .toolbar .btn, .top-btn, .btn-light, .btn-save, .btn-cancel, .btn-view, .btn-edit, .btn-delete, .dropdown-toggle, .check-item{
+      cursor:pointer;
+    }
+
     a{
       text-decoration:none;
       color:inherit;
@@ -47,7 +53,6 @@
 
     button{
       font-family:inherit;
-      cursor:pointer;
       transition:var(--transition);
       border:none;
     }
@@ -221,48 +226,7 @@
       resize:vertical;
     }
 
-    .bloco-form{
-      background:#0d2346;
-      border:1px solid rgba(255,255,255,.08);
-      border-radius:14px;
-      padding:14px;
-    }
-
-    .bloco-form-title{
-      color:var(--gold);
-      font-weight:700;
-      margin-bottom:10px;
-      font-size:15px;
-    }
-
-    .checkbox-grid{
-      display:grid;
-      grid-template-columns:repeat(auto-fit, minmax(120px, 1fr));
-      gap:8px;
-    }
-
-    .check-item{
-      background:#102a52;
-      padding:8px 10px;
-      border-radius:8px;
-      display:flex;
-      align-items:center;
-      gap:8px;
-      font-size:14px;
-      color:var(--muted);
-    }
-
-    .check-item input{
-      width:auto;
-      margin:0;
-    }
-
-    .subgrid{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:12px;
-    }
-.preview-logo{
+    .preview-logo{
       margin-top:12px;
       display:flex;
       align-items:center;
@@ -284,7 +248,126 @@
       font-size:13px;
     }
 
-    .form-actions{
+    .dropdown-box{
+      background:#0d2346;
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:14px;
+      overflow:hidden;
+    }
+
+    .dropdown-toggle{
+      width:100%;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      background:transparent;
+      color:var(--white);
+      padding:14px 16px;
+      font-weight:700;
+      font-size:15px;
+    }
+
+    .dropdown-toggle:hover{
+      background:rgba(255,255,255,.04);
+    }
+
+    .dropdown-toggle-left{
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+
+    .dropdown-toggle-left i{
+      color:var(--gold);
+    }
+
+    .dropdown-toggle .fa-chevron-down{
+      transition:transform .2s ease;
+    }
+
+    .dropdown-box.open .dropdown-toggle .fa-chevron-down{
+      transform:rotate(180deg);
+    }
+
+    .dropdown-content{
+      display:none;
+      padding:14px;
+      border-top:1px solid rgba(255,255,255,.08);
+      background:rgba(0,0,0,.10);
+    }
+
+    .dropdown-box.open .dropdown-content{
+      display:block;
+    }
+
+    .checkbox-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(120px, 1fr));
+      gap:8px;
+    }
+
+    .check-item{
+      background:#102a52;
+      padding:8px 10px;
+      border-radius:8px;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      font-size:14px;
+      color:var(--muted);
+      transition:var(--transition);
+      border:1px solid rgba(255,255,255,.06);
+    }
+
+    .check-item:hover{
+      border-color:var(--gold-line);
+      background:#153766;
+    }
+
+    .check-item input{
+      width:auto;
+      margin:0;
+    }
+
+    .subgrid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+
+    .campo-label{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      color:var(--muted);
+      font-size:13px;
+      font-weight:700;
+      margin-bottom:6px;
+    }
+
+    .campo-label .cartao-amarelo{
+      width:16px;
+      height:22px;
+      border-radius:2px;
+      background:var(--yellow-card);
+      border:1px solid rgba(0,0,0,.25);
+      display:inline-block;
+      transform:rotate(-6deg);
+      flex-shrink:0;
+    }
+
+    .campo-label .cartao-vermelho{
+      width:16px;
+      height:22px;
+      border-radius:2px;
+      background:var(--red-card);
+      border:1px solid rgba(0,0,0,.25);
+      display:inline-block;
+      transform:rotate(-6deg);
+      flex-shrink:0;
+    }
+.form-actions{
       display:flex;
       gap:10px;
       flex-wrap:wrap;
@@ -610,39 +693,72 @@
         <div class="full">
           <textarea id="descricao" placeholder="Descrição / observações do campeonato"></textarea>
         </div>
-<div class="full">
+
+        <div class="full">
           <div class="preview-logo" id="previewLogoBox" style="display:none;">
             <img id="previewLogoImg" src="logo-liga.jfif" alt="Preview da logo">
             <span id="previewLogoTexto">Pré-visualização da logo</span>
           </div>
         </div>
+<div class="full">
+          <div class="dropdown-box" id="dropdownCategorias">
+            <button type="button" class="dropdown-toggle" onclick="toggleDropdown('dropdownCategorias')">
+              <span class="dropdown-toggle-left">
+                <i class="fa-solid fa-layer-group"></i>
+                Categorias do campeonato
+              </span>
+              <i class="fa-solid fa-chevron-down"></i>
+            </button>
 
-        <div class="full">
-          <div class="bloco-form">
-            <div class="bloco-form-title">Categorias do campeonato</div>
-            <div class="checkbox-grid" id="categoriasGrid"></div>
+            <div class="dropdown-content">
+              <div class="checkbox-grid" id="categoriasGrid"></div>
+            </div>
           </div>
         </div>
 
         <div class="full">
-          <div class="bloco-form">
-            <div class="bloco-form-title">Configurações disciplinares</div>
+          <div class="dropdown-box" id="dropdownCartoes">
+            <button type="button" class="dropdown-toggle" onclick="toggleDropdown('dropdownCartoes')">
+              <span class="dropdown-toggle-left">
+                <i class="fa-solid fa-id-card"></i>
+                Configurações disciplinares
+              </span>
+              <i class="fa-solid fa-chevron-down"></i>
+            </button>
 
-            <div class="subgrid">
-              <div>
-                <input type="number" id="amarelosParaSuspensao" min="1" value="3" placeholder="Quantos amarelos suspendem">
-              </div>
+            <div class="dropdown-content">
+              <div class="subgrid">
+                <div>
+                  <div class="campo-label">
+                    <span class="cartao-amarelo"></span>
+                    Amarelos para suspensão
+                  </div>
+                  <input type="number" id="amarelosParaSuspensao" min="1" value="3" placeholder="Ex: 3">
+                </div>
 
-              <div>
-                <input type="number" id="jogosSuspensaoAmarelos" min="1" value="1" placeholder="Quantos jogos suspende por amarelos">
-              </div>
+                <div>
+                  <div class="campo-label">
+                    <span class="cartao-amarelo"></span>
+                    Jogos de suspensão por amarelos
+                  </div>
+                  <input type="number" id="jogosSuspensaoAmarelos" min="1" value="1" placeholder="Ex: 1">
+                </div>
 
-              <div>
-                <input type="number" id="jogosSuspensaoVermelhoDireto" min="1" value="2" placeholder="Quantos jogos suspende no vermelho direto">
-              </div>
+                <div>
+                  <div class="campo-label">
+                    <span class="cartao-vermelho"></span>
+                    Jogos de suspensão por vermelho direto
+                  </div>
+                  <input type="number" id="jogosSuspensaoVermelhoDireto" min="1" value="2" placeholder="Ex: 2">
+                </div>
 
-              <div>
-                <input type="number" id="jogosSuspensaoSegundoAmarelo" min="1" value="1" placeholder="Quantos jogos suspende no 2º amarelo">
+                <div>
+                  <div class="campo-label">
+                    <span class="cartao-amarelo"></span>
+                    Jogos de suspensão por 2º amarelo
+                  </div>
+                  <input type="number" id="jogosSuspensaoSegundoAmarelo" min="1" value="1" placeholder="Ex: 1">
+                </div>
               </div>
             </div>
           </div>
@@ -707,6 +823,10 @@
       form.style.display = form.style.display === "none" || form.style.display === "" ? "block" : "none";
     };
 
+    window.toggleDropdown = function(id){
+      document.getElementById(id).classList.toggle("open");
+    };
+
     window.cancelarEdicao = function(){
       limparFormulario();
       document.getElementById("formulario").style.display = "none";
@@ -749,6 +869,8 @@
       document.getElementById("previewLogoBox").style.display = "none";
       document.getElementById("previewLogoImg").src = "logo-liga.jfif";
       document.getElementById("previewLogoTexto").textContent = "Pré-visualização da logo";
+      document.getElementById("dropdownCategorias").classList.remove("open");
+      document.getElementById("dropdownCartoes").classList.remove("open");
       editandoId = null;
       logoAtual = "";
       limparMensagens();
@@ -804,11 +926,9 @@
 
     function montarStatus(status){
       const s = String(status || "rascunho").toLowerCase();
-
       if(s === "publicado"){
         return `<div class="status publicado"><i class="fa-solid fa-circle-check"></i> Publicado</div>`;
       }
-
       return `<div class="status rascunho"><i class="fa-solid fa-pen"></i> Rascunho</div>`;
     }
 
@@ -816,7 +936,6 @@
       if(!categorias || !categorias.length){
         return '<span class="tag">Sem categorias</span>';
       }
-
       return categorias.map(cat => `<span class="tag">${cat}</span>`).join("");
     }
 
@@ -882,17 +1001,14 @@ window.salvarCampeonato = async function(){
           faseFinalInicio,
           descricao,
           categorias,
-
           configuracoesFlexiveis: true,
           podeAlterarFormatoDuranteCompeticao: true,
-
           regrasCartoes: {
             amarelosParaSuspensao,
             jogosSuspensaoAmarelos,
             jogosSuspensaoVermelhoDireto,
             jogosSuspensaoSegundoAmarelo
           },
-
           publicado: status === "publicado",
           publico: status === "publicado",
           visivelPublico: status === "publicado",
@@ -958,6 +1074,8 @@ window.salvarCampeonato = async function(){
         document.getElementById("previewLogoBox").style.display = "none";
       }
 
+      document.getElementById("dropdownCategorias").classList.add("open");
+      document.getElementById("dropdownCartoes").classList.add("open");
       limparMensagens();
       document.getElementById("formulario").style.display = "block";
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -991,7 +1109,6 @@ window.salvarCampeonato = async function(){
         });
 
         const busca = (document.getElementById("buscaCampeonato").value || "").toLowerCase().trim();
-
         let campeonatosFiltrados = [...campeonatosCache];
 
         if(busca){
@@ -1033,7 +1150,7 @@ window.salvarCampeonato = async function(){
                   <small>Turno: ${campeonato.turno || "-"}</small>
                   <small>Fase final começa com: ${campeonato.faseFinalInicio || "-"}</small>
                   <small>Amarelos para suspender: ${regras.amarelosParaSuspensao ?? "-"}</small>
-                  <small>Suspensão por vermelho: ${regras.jogosSuspensaoVermelhoDireto ?? "-"} jogo(s)</small>
+                  <small>Suspensão por vermelho direto: ${regras.jogosSuspensaoVermelhoDireto ?? "-"} jogo(s)</small>
                   <div class="tags">${montarCategoriasTags(campeonato.categorias || [])}</div>
                 </div>
               </div>
