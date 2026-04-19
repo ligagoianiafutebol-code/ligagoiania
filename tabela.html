@@ -13,7 +13,6 @@ body{
   color:white;
 }
 
-/* HEADER */
 header{
   background:#08172c;
   padding:18px;
@@ -23,7 +22,27 @@ header{
   border-bottom:3px solid #f7c600;
 }
 
-/* MENU SUPERIOR PADRÃO (ORDEM QUE VOCÊ PEDIU) */
+/* BOTÕES TOPO */
+.topo-acoes{
+  display:flex;
+  gap:10px;
+  padding:10px;
+  justify-content:center;
+  background:#0b1f3a;
+}
+
+.btn-topo{
+  background:#f7c600;
+  color:black;
+  padding:10px 16px;
+  border-radius:10px;
+  font-weight:bold;
+  text-decoration:none;
+  border:none;
+  cursor:pointer;
+}
+
+/* MENU PADRÃO */
 .menu{
   display:flex;
   justify-content:center;
@@ -32,6 +51,7 @@ header{
   padding:12px;
   flex-wrap:wrap;
 }
+
 .menu a{
   color:white;
   text-decoration:none;
@@ -40,76 +60,94 @@ header{
   background:#0d2346;
   padding:10px 14px;
   border-radius:8px;
-  cursor:pointer;
 }
+
 .menu a:hover{
   background:#f7c600;
   color:black;
 }
+
 .menu a.ativo{
   background:#f7c600;
   color:black;
 }
 
-/* CONTAINER */
 .container{
   max-width:1200px;
   margin:auto;
   padding:20px;
 }
-
-/* HERO */
 .hero-campeonato{
-  background:linear-gradient(135deg,#102a52,#0d2346);
+  background:linear-gradient(135deg, #102a52, #0d2346);
+  border:1px solid rgba(255,230,0,.12);
   border-radius:16px;
   padding:18px;
   margin-bottom:20px;
 }
+
 .hero-top{
   display:flex;
+  align-items:center;
   gap:16px;
   flex-wrap:wrap;
-  align-items:center;
 }
+
 .hero-logo{
-  width:70px;
-  height:70px;
+  width:72px;
+  height:72px;
   border-radius:50%;
   object-fit:cover;
   background:#1a3f73;
+  border:2px solid rgba(255,255,255,.15);
 }
+
+.hero-info{
+  flex:1;
+}
+
 .hero-titulo{
-  font-size:22px;
-  color:#f7c600;
+  font-size:24px;
   font-weight:bold;
+  color:#f7c600;
+  margin-bottom:6px;
 }
+
+.hero-sub{
+  opacity:.9;
+  font-size:14px;
+  line-height:1.5;
+}
+
 .hero-tags{
   display:flex;
   gap:8px;
   flex-wrap:wrap;
-  margin-top:10px;
-}
-.hero-tag{
-  background:#0b1f3a;
-  padding:6px 10px;
-  border-radius:999px;
-  font-size:12px;
+  margin-top:12px;
 }
 
-/* FILTROS */
+.hero-tag{
+  background:#0b1f3a;
+  padding:8px 12px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:bold;
+}
+
 .filtros{
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:12px;
   margin-bottom:20px;
 }
+
 select{
+  width:100%;
   padding:12px;
   border:none;
   border-radius:8px;
+  box-sizing:border-box;
 }
 
-/* TITULO */
 .titulo{
   font-size:22px;
   color:#f7c600;
@@ -117,81 +155,326 @@ select{
   margin-bottom:14px;
 }
 
-/* MENU INTERNO (SÓ NA TABELA) */
 .abas{
   display:flex;
   gap:10px;
   flex-wrap:wrap;
   margin-bottom:18px;
 }
+
 .aba{
   background:#102a52;
+  color:white;
   border:none;
   border-radius:10px;
   padding:10px 14px;
   font-weight:bold;
   cursor:pointer;
+  margin:0;
 }
+
 .aba.ativa{
   background:#f7c600;
   color:black;
 }
 
-/* TABELA */
-.box-tabela{overflow-x:auto;}
-.table{border-radius:12px;overflow:hidden;}
-.row{
-  display:flex;
-  padding:10px;
-  border-bottom:1px solid rgba(255,255,255,.1);
-}
-.row.header{
-  background:#081a33;
-  color:#f7c600;
-}
-.col{width:55px;text-align:center;}
-.col-time{flex:1;}
-.col-pos{width:40px;text-align:center;}
-.team{
-  display:flex;
-  gap:8px;
-  align-items:center;
-}
-.escudo{
-  width:24px;
-  height:24px;
-  border-radius:50%;
-}
-
-/* CARDS */
 .card{
   background:#102a52;
   border-radius:12px;
   padding:14px;
+  border:1px solid rgba(255,230,0,.12);
 }
+
 .card-lista{
   display:flex;
   flex-direction:column;
   gap:10px;
 }
+
+.box-tabela{
+  overflow-x:auto;
+}
+
+.table{
+  background:#102a52;
+  border-radius:12px;
+  overflow:hidden;
+  border:1px solid rgba(255,230,0,.12);
+}
+
+.row{
+  display:flex;
+  align-items:center;
+  padding:12px 8px;
+  border-bottom:1px solid rgba(255,255,255,.08);
+  min-width:980px;
+}
+
+.row.header{
+  background:#081a33;
+  color:#f7c600;
+  font-weight:bold;
+}
+
+.col-pos{width:45px;text-align:center;}
+.col-time{flex:1;padding:0 8px;}
+.col{width:55px;text-align:center;}
+
+.team{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.escudo{
+  width:26px;
+  height:26px;
+  object-fit:contain;
+  border-radius:50%;
+  background:#1a3f73;
+}
+
 .vazio{
+  background:#102a52;
+  border-radius:12px;
   padding:30px;
   text-align:center;
 }
 
-/* RESPONSIVO */
-@media(max-width:700px){
-  .filtros{grid-template-columns:1fr;}
+.topo-jogo{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.times-jogo{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  font-size:16px;
+  font-weight:bold;
+  width:100%;
+}
+
+.time-jogo{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.placar{
+  font-weight:bold;
+  font-size:18px;
+  color:#f7c600;
+  min-width:80px;
+  text-align:center;
+}
+
+.info{
+  font-size:13px;
+  opacity:.9;
+  margin-top:8px;
+  line-height:1.5;
+}
+
+.status{
+  display:inline-block;
+  margin-top:8px;
+  padding:6px 10px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:bold;
+  background:#0d2346;
+}
+
+.finalizado{
+  background:#1b5e20;
+}
+
+.agendado{
+  background:#7a5a00;
+}
+
+.linha-ranking{
+  background:#102a52;
+  border-radius:10px;
+  padding:12px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+}
+
+.player{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.photo{
+  width:38px;
+  height:38px;
+  border-radius:50%;
+  object-fit:cover;
+  background:#1a3f73;
+}
+
+.pos{
+  width:24px;
+  font-weight:bold;
+}
+
+.numero-destaque{
+  font-weight:bold;
+  font-size:18px;
+  color:#f7c600;
+}
+
+.subinfo{
+  opacity:.85;
+  font-size:12px;
+}
+
+.stats-grid{
+  display:grid;
+  grid-template-columns:repeat(4, 1fr);
+  gap:10px;
+}
+
+.stat-card{
+  background:#0b1f3a;
+  border-radius:10px;
+  padding:12px;
+  border:1px solid rgba(255,255,255,.08);
+}
+
+.stat-card strong{
+  display:block;
+  color:#f7c600;
+  font-size:13px;
+  margin-bottom:4px;
+}
+
+.stat-card span{
+  font-size:16px;
+  font-weight:bold;
+}
+
+.times-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));
+  gap:12px;
+}
+
+.time-card{
+  background:#102a52;
+  border-radius:12px;
+  padding:14px;
+  border:1px solid rgba(255,230,0,.12);
+}
+
+.time-card-top{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:10px;
+}
+
+.time-card-top img{
+  width:50px;
+  height:50px;
+  object-fit:cover;
+  border-radius:50%;
+  background:#1a3f73;
+}
+
+.tags{
+  display:flex;
+  gap:6px;
+  flex-wrap:wrap;
+  margin-top:10px;
+}
+
+.tag{
+  background:#1a3f73;
+  padding:4px 8px;
+  border-radius:999px;
+  font-size:12px;
+}
+
+.acoes-jogo{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:12px;
+}
+
+.btn-acao{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:10px 14px;
+  border-radius:8px;
+  text-decoration:none;
+  font-weight:bold;
+  font-size:13px;
+  border:none;
+  cursor:pointer;
+}
+
+.btn-sumula{
+  background:#f7c600;
+  color:black;
+}
+
+.btn-secundario{
+  background:#1a3f73;
+  color:white;
+}
+
+@media (max-width: 900px){
+  .filtros{
+    grid-template-columns:1fr;
+  }
+
+  .stats-grid{
+    grid-template-columns:1fr 1fr;
+  }
+}
+
+@media (max-width: 800px){
+  .times-jogo{
+    flex-direction:column;
+    align-items:flex-start;
+  }
+
+  .placar{
+    text-align:left;
+    min-width:auto;
+  }
+}
+
+@media (max-width: 600px){
+  .stats-grid{
+    grid-template-columns:1fr;
+  }
 }
 </style>
 </head>
-
 <body>
 
 <header>LIGA GOIANA DE FUTEBOL DE BASE</header>
 
-<!-- MENU PRINCIPAL (PADRÃO GLOBAL) -->
+<div class="topo-acoes">
+  <button onclick="history.back()" class="btn-topo">← Voltar</button>
+  <a href="index.html" class="btn-topo">🏠 Página Inicial</a>
+</div>
+
 <div class="menu">
+  <a href="index.html">Início</a>
   <a href="campeonatos.html">Campeonatos</a>
   <a href="tabela.html" class="ativo">Tabela</a>
   <a href="jogos.html">Jogos</a>
@@ -203,56 +486,58 @@ select{
 </div>
 
 <div class="container">
-
-<!-- HERO -->
-<div class="hero-campeonato">
-  <div class="hero-top">
-    <img id="heroLogo" class="hero-logo" src="logo-liga.jfif">
-    <div>
-      <div class="hero-titulo" id="heroTitulo">Tabela da Competição</div>
-      <div class="hero-tags">
-        <div class="hero-tag" id="heroTagCategoria">Categoria: -</div>
-        <div class="hero-tag" id="heroTagJogos">Jogos: 0</div>
-        <div class="hero-tag" id="heroTagTimes">Times: 0</div>
-        <div class="hero-tag" id="heroTagGols">Gols: 0</div>
+  <div class="hero-campeonato">
+    <div class="hero-top">
+      <img id="heroLogo" class="hero-logo" src="logo-liga.jfif" alt="Logo campeonato">
+      <div class="hero-info">
+        <div class="hero-titulo" id="heroTitulo">Tabela da Competição</div>
+        <div class="hero-sub" id="heroSub">Selecione o campeonato e a categoria para visualizar os dados.</div>
+        <div class="hero-tags">
+          <div class="hero-tag" id="heroTagCategoria">Categoria: -</div>
+          <div class="hero-tag" id="heroTagJogos">Jogos: 0</div>
+          <div class="hero-tag" id="heroTagTimes">Times: 0</div>
+          <div class="hero-tag" id="heroTagGols">Gols: 0</div>
+        </div>
       </div>
     </div>
   </div>
+
+  <div class="filtros">
+    <select id="filtroCampeonato" onchange="atualizarTela()">
+      <option value="">Selecione o campeonato</option>
+    </select>
+
+    <select id="filtroCategoria" onchange="atualizarTela()">
+      <option value="">Selecione a categoria</option>
+      <option value="Sub-11">Sub-11</option>
+      <option value="Sub-12">Sub-12</option>
+      <option value="Sub-13">Sub-13</option>
+      <option value="Sub-14">Sub-14</option>
+      <option value="Sub-15">Sub-15</option>
+      <option value="Sub-16">Sub-16</option>
+      <option value="Sub-17">Sub-17</option>
+      <option value="Sub-18">Sub-18</option>
+      <option value="Sub-19">Sub-19</option>
+      <option value="Sub-20">Sub-20</option>
+      <option value="Sub-21">Sub-21</option>
+    </select>
+  </div>
+
+  <div class="titulo" id="tituloTabela">Tabela</div>
+
+  <div class="abas">
+    <button class="aba ativa" onclick="trocarAba('detalhes', this)">Detalhes</button>
+    <button class="aba" onclick="trocarAba('classificacao', this)">Classificação</button>
+    <button class="aba" onclick="trocarAba('jogos', this)">Jogos</button>
+    <button class="aba" onclick="trocarAba('times', this)">Times</button>
+    <button class="aba" onclick="trocarAba('artilharia', this)">Artilharia</button>
+    <button class="aba" onclick="trocarAba('cartoes', this)">Cartões</button>
+    <button class="aba" onclick="trocarAba('suspensos', this)">Suspensos</button>
+  </div>
+
+  <div id="areaTabela"></div>
 </div>
-
-<!-- FILTROS -->
-<div class="filtros">
-  <select id="filtroCampeonato" onchange="atualizarTela()"></select>
-
-  <select id="filtroCategoria" onchange="atualizarTela()">
-    <option value="">Categoria</option>
-    <option>Sub-11</option>
-    <option>Sub-12</option>
-    <option>Sub-13</option>
-    <option>Sub-14</option>
-    <option>Sub-15</option>
-    <option>Sub-16</option>
-    <option>Sub-17</option>
-    <option>Sub-18</option>
-  </select>
-</div>
-
-<div class="titulo" id="tituloTabela">Tabela</div>
-
-<!-- MENU INTERNO DA TABELA -->
-<div class="abas">
-  <button class="aba ativa" onclick="trocarAba('detalhes',this)">Detalhes</button>
-  <button class="aba" onclick="trocarAba('classificacao',this)">Classificação</button>
-  <button class="aba" onclick="trocarAba('jogos',this)">Jogos</button>
-  <button class="aba" onclick="trocarAba('times',this)">Times</button>
-  <button class="aba" onclick="trocarAba('artilharia',this)">Artilharia</button>
-  <button class="aba" onclick="trocarAba('cartoes',this)">Cartões</button>
-  <button class="aba" onclick="trocarAba('suspensos',this)">Suspensos</button>
-</div>
-
-<div id="areaTabela"></div>
 <script type="module">
-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
 import {
   getFirestore,
@@ -260,20 +545,18 @@ import {
   getDocs
 } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-firestore.js";
 
-/* CONFIG FIREBASE */
 const firebaseConfig = {
-  apiKey: "SUA_API_KEY",
-  authDomain: "SEU_AUTH_DOMAIN",
-  projectId: "SEU_PROJECT_ID",
-  storageBucket: "SEU_BUCKET",
-  messagingSenderId: "SEU_SENDER",
-  appId: "SEU_APP_ID"
+  apiKey: "AIzaSyCyArj4yRlEl-yibkc0VEmL_4UJpRHHQSc",
+  authDomain: "liga-goiana-base.firebaseapp.com",
+  projectId: "liga-goiana-base",
+  storageBucket: "liga-goiana-base.appspot.com",
+  messagingSenderId: "952863591183",
+  appId: "1:952863591183:web:4eea34f494ba2dd754cc7a"
 };
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-/* VARIÁVEIS */
 let jogos = [];
 let times = [];
 let jogadores = [];
@@ -281,193 +564,90 @@ let sumulas = [];
 let campeonatos = [];
 let abaAtual = "detalhes";
 
-/* NORMALIZAR TEXTO */
-function normalizarTexto(texto){
-  return String(texto || "")
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g,"");
-}
-
-/* PEGAR PARAMETROS URL */
 function getParametro(nome){
   const params = new URLSearchParams(window.location.search);
   return params.get(nome);
 }
 
-/* CARREGAR DADOS DO FIREBASE */
+function normalizarTexto(texto){
+  return String(texto || "")
+    .trim()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+}
+
 async function carregarDados(){
-
-  const snapJogos = await getDocs(collection(db,"jogos"));
+  const snapJogos = await getDocs(collection(db, "jogos"));
   jogos = [];
-  snapJogos.forEach(d => jogos.push({id:d.id,...d.data()}));
+  snapJogos.forEach(docSnap => jogos.push({ id: docSnap.id, ...docSnap.data() }));
 
-  const snapTimes = await getDocs(collection(db,"times"));
+  const snapTimes = await getDocs(collection(db, "times"));
   times = [];
-  snapTimes.forEach(d => times.push({id:d.id,...d.data()}));
+  snapTimes.forEach(docSnap => times.push({ id: docSnap.id, ...docSnap.data() }));
 
-  const snapJogadores = await getDocs(collection(db,"jogadores"));
+  const snapJogadores = await getDocs(collection(db, "jogadores"));
   jogadores = [];
-  snapJogadores.forEach(d => jogadores.push({id:d.id,...d.data()}));
+  snapJogadores.forEach(docSnap => jogadores.push({ id: docSnap.id, ...docSnap.data() }));
 
-  const snapSumulas = await getDocs(collection(db,"sumulas"));
+  const snapSumulas = await getDocs(collection(db, "sumulas"));
   sumulas = [];
-  snapSumulas.forEach(d => sumulas.push({id:d.id,...d.data()}));
+  snapSumulas.forEach(docSnap => sumulas.push({ id: docSnap.id, ...docSnap.data() }));
 
-  const snapCamp = await getDocs(collection(db,"campeonatos"));
+  const snapCampeonatos = await getDocs(collection(db, "campeonatos"));
   campeonatos = [];
-  snapCamp.forEach(d => campeonatos.push({id:d.id,...d.data()}));
+  snapCampeonatos.forEach(docSnap => campeonatos.push({ id: docSnap.id, ...docSnap.data() }));
 }
 
-/* PEGAR ESCUDO */
-function pegarEscudo(nome){
-  const t = times.find(x => normalizarTexto(x.nome) === normalizarTexto(nome));
-  return t?.escudo || "logo-liga.jfif";
+function pegarEscudo(nomeTime){
+  const time = times.find(t => normalizarTexto(t.nome) === normalizarTexto(nomeTime));
+  return time?.escudo || "logo-liga.jfif";
 }
 
-/* PEGAR FOTO */
-function pegarFoto(nome,time){
-  const j = jogadores.find(x =>
-    normalizarTexto(x.nome) === normalizarTexto(nome) &&
-    normalizarTexto(x.time) === normalizarTexto(time)
+function pegarFotoJogador(nomeJogador, nomeTime = ""){
+  const jogador = jogadores.find(j =>
+    normalizarTexto(j.nome) === normalizarTexto(nomeJogador) &&
+    (!nomeTime || normalizarTexto(j.time) === normalizarTexto(nomeTime))
   );
-  return j?.foto || "";
+  return jogador?.foto || "";
 }
 
-/* PEGAR CAMPEONATO */
-function pegarCampeonato(nome){
-  return campeonatos.find(c =>
-    normalizarTexto(c.nome) === normalizarTexto(nome)
-  );
+function pegarCampeonato(nomeCampeonato){
+  return campeonatos.find(c => normalizarTexto(c.nome) === normalizarTexto(nomeCampeonato));
 }
 
-/* PREENCHER FILTRO */
 function preencherFiltros(){
-  const select = document.getElementById("filtroCampeonato");
+  const selectCamp = document.getElementById("filtroCampeonato");
+  const campeonatosLista = [...new Set(jogos.map(j => j.campeonato).filter(Boolean))]
+    .sort((a,b) => a.localeCompare(b, "pt-BR"));
 
-  const lista = [...new Set(jogos.map(j=>j.campeonato).filter(Boolean))];
+  selectCamp.innerHTML = '<option value="">Selecione o campeonato</option>';
 
-  select.innerHTML = '<option value="">Campeonato</option>';
-
-  lista.forEach(c=>{
-    select.innerHTML += `<option>${c}</option>`;
+  campeonatosLista.forEach(c => {
+    selectCamp.innerHTML += `<option value="${c}">${c}</option>`;
   });
 }
 
-/* APLICAR URL */
-function aplicarFiltrosURL(){
-  const camp = getParametro("campeonato");
-  const cat = getParametro("categoria");
+function aplicarFiltrosDaURL(){
+  const campeonatoURL = getParametro("campeonato");
+  const categoriaURL = getParametro("categoria");
 
-  if(camp) document.getElementById("filtroCampeonato").value = camp;
-  if(cat) document.getElementById("filtroCategoria").value = cat;
+  if(campeonatoURL){
+    const selectCamp = document.getElementById("filtroCampeonato");
+    const opcoesCamp = Array.from(selectCamp.options);
+    const opcaoCamp = opcoesCamp.find(op => normalizarTexto(op.value) === normalizarTexto(campeonatoURL));
+    if(opcaoCamp) selectCamp.value = opcaoCamp.value;
+  }
+
+  if(categoriaURL){
+    const selectCat = document.getElementById("filtroCategoria");
+    const opcoesCat = Array.from(selectCat.options);
+    const opcaoCat = opcoesCat.find(op => normalizarTexto(op.value) === normalizarTexto(categoriaURL));
+    if(opcaoCat) selectCat.value = opcaoCat.value;
+  }
 }
 
-/* FILTROS */
-function getFiltros(){
-  return {
-    campeonato: document.getElementById("filtroCampeonato").value,
-    categoria: document.getElementById("filtroCategoria").value
-  };
-}
-
-/* FILTRAR */
-function filtrarJogos(){
-  const {campeonato,categoria} = getFiltros();
-
-  return jogos.filter(j =>
-    (!campeonato || j.campeonato === campeonato) &&
-    (!categoria || j.categoria === categoria)
-  );
-}
-
-function filtrarSumulas(){
-  const {campeonato,categoria} = getFiltros();
-
-  return sumulas.filter(s =>
-    (!campeonato || s.campeonato === campeonato) &&
-    (!categoria || s.categoria === categoria)
-  );
-}
-function atualizarHero(){
-  const { campeonato, categoria } = getFiltros();
-  const jogosFiltrados = filtrarJogos();
-  const sumulasFiltradas = filtrarSumulas();
-  const camp = pegarCampeonato(campeonato);
-
-  const timesSet = new Set();
-  jogosFiltrados.forEach(j => {
-    if(j.timeA) timesSet.add(j.timeA);
-    if(j.timeB) timesSet.add(j.timeB);
-  });
-
-  let gols = 0;
-  sumulasFiltradas.forEach(s => {
-    gols += Number(s.golsA || 0) + Number(s.golsB || 0);
-  });
-
-  document.getElementById("heroTitulo").textContent =
-    campeonato || "Tabela da Competição";
-
-  document.getElementById("heroTagCategoria").textContent =
-    `Categoria: ${categoria || "-"}`;
-
-  document.getElementById("heroTagJogos").textContent =
-    `Jogos: ${sumulasFiltradas.length}`;
-
-  document.getElementById("heroTagTimes").textContent =
-    `Times: ${timesSet.size}`;
-
-  document.getElementById("heroTagGols").textContent =
-    `Gols: ${gols}`;
-
-  document.getElementById("heroLogo").src =
-    camp?.logo || "logo-liga.jfif";
-}
-
-function atualizarTitulo(){
-  const { campeonato, categoria } = getFiltros();
-  document.getElementById("tituloTabela").textContent =
-    `Tabela${categoria ? " - " + categoria : ""}${campeonato ? " | " + campeonato : ""}`;
-}
-
-function renderDetalhes(){
-  const area = document.getElementById("areaTabela");
-  const { campeonato, categoria } = getFiltros();
-  const jogosFiltrados = filtrarJogos();
-  const sumulasFiltradas = filtrarSumulas();
-  const camp = pegarCampeonato(campeonato);
-
-  const timesSet = new Set();
-  jogosFiltrados.forEach(j => {
-    if(j.timeA) timesSet.add(j.timeA);
-    if(j.timeB) timesSet.add(j.timeB);
-  });
-
-  let gols = 0;
-  sumulasFiltradas.forEach(s => {
-    gols += Number(s.golsA || 0) + Number(s.golsB || 0);
-  });
-
-  atualizarTitulo();
-
-  area.innerHTML = `
-    <div class="card">
-      <div class="stats-grid">
-        <div class="stat-card"><strong>Campeonato</strong><span>${campeonato || "-"}</span></div>
-        <div class="stat-card"><strong>Categoria</strong><span>${categoria || "-"}</span></div>
-        <div class="stat-card"><strong>Jogos finalizados</strong><span>${sumulasFiltradas.length}</span></div>
-        <div class="stat-card"><strong>Jogos cadastrados</strong><span>${jogosFiltrados.length}</span></div>
-        <div class="stat-card"><strong>Times</strong><span>${timesSet.size}</span></div>
-        <div class="stat-card"><strong>Gols</strong><span>${gols}</span></div>
-        <div class="stat-card"><strong>Temporada</strong><span>${camp?.temporada || "-"}</span></div>
-        <div class="stat-card"><strong>Status</strong><span>${camp?.status || "-"}</span></div>
-      </div>
-    </div>
-  `;
-}
-
-function criarLinhaClassificacao(nome){
+function criarTime(nome){
   return {
     nome,
     pontos: 0,
@@ -481,28 +661,155 @@ function criarLinhaClassificacao(nome){
   };
 }
 
+function formatarDataHora(dataString){
+  if(!dataString) return "-";
+  const data = new Date(dataString);
+  if(isNaN(data.getTime())) return dataString;
+
+  const dia = String(data.getDate()).padStart(2, "0");
+  const mes = String(data.getMonth() + 1).padStart(2, "0");
+  const ano = data.getFullYear();
+  const hora = String(data.getHours()).padStart(2, "0");
+  const minuto = String(data.getMinutes()).padStart(2, "0");
+
+  return `${dia}/${mes}/${ano} - ${hora}:${minuto}`;
+}
+
+function numeroRodada(valor){
+  if(valor === undefined || valor === null || valor === "") return 999999;
+  const texto = String(valor);
+  const numero = parseInt(texto.replace(/\D/g, ""), 10);
+  return isNaN(numero) ? 999999 : numero;
+}
+
+function getFiltros(){
+  return {
+    campeonato: document.getElementById("filtroCampeonato").value,
+    categoria: document.getElementById("filtroCategoria").value
+  };
+}
+
+function atualizarTitulo(campeonato, categoria){
+  document.getElementById("tituloTabela").textContent =
+    `Tabela${categoria ? " - " + categoria : ""}${campeonato ? " | " + campeonato : ""}`;
+}
+
+function filtrarJogosBase(){
+  const { campeonato, categoria } = getFiltros();
+  return jogos.filter(j =>
+    (!campeonato || j.campeonato === campeonato) &&
+    (!categoria || j.categoria === categoria)
+  );
+}
+
+function filtrarSumulasBase(){
+  const { campeonato, categoria } = getFiltros();
+  return sumulas.filter(s =>
+    (!campeonato || s.campeonato === campeonato) &&
+    (!categoria || s.categoria === categoria)
+  );
+}
+
+function getResumoGeral(){
+  const { campeonato, categoria } = getFiltros();
+  const jogosFiltrados = filtrarJogosBase();
+  const sumulasFiltradas = filtrarSumulasBase();
+
+  const timesSet = new Set();
+  jogosFiltrados.forEach(j => {
+    if(j.timeA) timesSet.add(j.timeA);
+    if(j.timeB) timesSet.add(j.timeB);
+  });
+
+  let gols = 0;
+  sumulasFiltradas.forEach(s => {
+    gols += Number(s.golsA || 0) + Number(s.golsB || 0);
+  });
+
+  return {
+    campeonato,
+    categoria,
+    jogos: sumulasFiltradas.length,
+    times: timesSet.size,
+    gols
+  };
+}
+
+function atualizarHero(){
+  const resumo = getResumoGeral();
+  const camp = pegarCampeonato(resumo.campeonato);
+
+  document.getElementById("heroTitulo").textContent = resumo.campeonato || "Tabela da Competição";
+  document.getElementById("heroSub").textContent = resumo.categoria
+    ? `Visualização pública da categoria ${resumo.categoria}.`
+    : "Selecione o campeonato e a categoria para visualizar os dados.";
+  document.getElementById("heroTagCategoria").textContent = `Categoria: ${resumo.categoria || "-"}`;
+  document.getElementById("heroTagJogos").textContent = `Jogos: ${resumo.jogos}`;
+  document.getElementById("heroTagTimes").textContent = `Times: ${resumo.times}`;
+  document.getElementById("heroTagGols").textContent = `Gols: ${resumo.gols}`;
+  document.getElementById("heroLogo").src = camp?.logo || "logo-liga.jfif";
+}
+
+function renderDetalhes(){
+  const area = document.getElementById("areaTabela");
+  const { campeonato, categoria } = getFiltros();
+  const jogosFiltrados = filtrarJogosBase();
+  const sumulasFiltradas = filtrarSumulasBase();
+  const camp = pegarCampeonato(campeonato);
+  const timesSet = new Set();
+
+  jogosFiltrados.forEach(j => {
+    if(j.timeA) timesSet.add(j.timeA);
+    if(j.timeB) timesSet.add(j.timeB);
+  });
+
+  let gols = 0;
+  sumulasFiltradas.forEach(s => {
+    gols += Number(s.golsA || 0) + Number(s.golsB || 0);
+  });
+
+  atualizarTitulo(campeonato, categoria);
+
+  area.innerHTML = `
+    <div class="card">
+      <div class="stats-grid">
+        <div class="stat-card"><strong>Campeonato</strong><span>${campeonato || "-"}</span></div>
+        <div class="stat-card"><strong>Categoria</strong><span>${categoria || "-"}</span></div>
+        <div class="stat-card"><strong>Jogos finalizados</strong><span>${sumulasFiltradas.length}</span></div>
+        <div class="stat-card"><strong>Jogos cadastrados</strong><span>${jogosFiltrados.length}</span></div>
+        <div class="stat-card"><strong>Times</strong><span>${timesSet.size}</span></div>
+        <div class="stat-card"><strong>Gols</strong><span>${gols}</span></div>
+        <div class="stat-card"><strong>Temporada</strong><span>${camp?.temporada || "-"}</span></div>
+        <div class="stat-card"><strong>Status</strong><span>${camp?.status || "-"}</span></div>
+      </div>
+      <div class="tags">
+        ${((camp?.categorias || []).length ? camp.categorias : (categoria ? [categoria] : [])).map(c => `<div class="tag">${c}</div>`).join("")}
+      </div>
+    </div>
+  `;
+}
 function renderClassificacao(){
   const area = document.getElementById("areaTabela");
   const { campeonato, categoria } = getFiltros();
 
-  const jogosFinalizados = jogos.filter(j =>
+  const jogosFiltrados = jogos.filter(j =>
     j.status === "sumula_enviada" &&
     (!campeonato || j.campeonato === campeonato) &&
     (!categoria || j.categoria === categoria)
   );
 
-  atualizarTitulo();
+  atualizarTitulo(campeonato, categoria);
 
-  if(!jogosFinalizados.length){
+  if(jogosFiltrados.length === 0){
     area.innerHTML = `<div class="vazio">Nenhum jogo finalizado para montar a classificação.</div>`;
     return;
   }
 
   const tabela = {};
 
-  jogosFinalizados.forEach(j => {
-    if(!tabela[j.timeA]) tabela[j.timeA] = criarLinhaClassificacao(j.timeA);
-    if(!tabela[j.timeB]) tabela[j.timeB] = criarLinhaClassificacao(j.timeB);
+  jogosFiltrados.forEach(j => {
+    if(!tabela[j.timeA]) tabela[j.timeA] = criarTime(j.timeA);
+    if(!tabela[j.timeB]) tabela[j.timeB] = criarTime(j.timeB);
 
     const a = tabela[j.timeA];
     const b = tabela[j.timeB];
@@ -537,7 +844,9 @@ function renderClassificacao(){
     }
   });
 
-  const lista = Object.values(tabela).sort((a,b) => {
+  let lista = Object.values(tabela);
+
+  lista.sort((a,b) => {
     if(b.pontos !== a.pontos) return b.pontos - a.pontos;
     if(b.vitorias !== a.vitorias) return b.vitorias - a.vitorias;
     if(b.sg !== a.sg) return b.sg - a.sg;
@@ -567,7 +876,7 @@ function renderClassificacao(){
             <div class="col-time">
               <div class="team">
                 <img src="${pegarEscudo(t.nome)}" class="escudo" alt="${t.nome}">
-                <span>${t.nome}</span>
+                ${t.nome}
               </div>
             </div>
             <div class="col">${t.pontos}</div>
@@ -584,47 +893,28 @@ function renderClassificacao(){
     </div>
   `;
 }
-function formatarDataHora(dataString){
-  if(!dataString) return "-";
-  const data = new Date(dataString);
-  if(isNaN(data.getTime())) return dataString;
-
-  const dia = String(data.getDate()).padStart(2, "0");
-  const mes = String(data.getMonth() + 1).padStart(2, "0");
-  const ano = data.getFullYear();
-  const hora = String(data.getHours()).padStart(2, "0");
-  const minuto = String(data.getMinutes()).padStart(2, "0");
-
-  return `${dia}/${mes}/${ano} - ${hora}:${minuto}`;
-}
-
-function numeroRodada(valor){
-  if(valor === undefined || valor === null || valor === "") return 999999;
-  const texto = String(valor);
-  const numero = parseInt(texto.replace(/\D/g, ""), 10);
-  return isNaN(numero) ? 999999 : numero;
-}
 
 function renderJogos(){
   const area = document.getElementById("areaTabela");
-  const jogosFiltrados = filtrarJogos();
+  const { campeonato, categoria } = getFiltros();
+  let filtrados = filtrarJogosBase();
 
-  atualizarTitulo();
+  atualizarTitulo(campeonato, categoria);
 
-  if(!jogosFiltrados.length){
+  if(filtrados.length === 0){
     area.innerHTML = `<div class="vazio">Nenhum jogo encontrado.</div>`;
     return;
   }
 
-  const listaOrdenada = [...jogosFiltrados].sort((a, b) => {
+  filtrados.sort((a, b) => {
     const rodadaA = numeroRodada(a.rodada);
     const rodadaB = numeroRodada(b.rodada);
     if(rodadaA !== rodadaB) return rodadaA - rodadaB;
-    return String(a.data || "").localeCompare(String(b.data || ""));
+    return (a.data || "").localeCompare(b.data || "");
   });
 
   const grupos = {};
-  listaOrdenada.forEach(j => {
+  filtrados.forEach(j => {
     const chave = j.rodada ? `Rodada ${j.rodada}` : "Sem rodada";
     if(!grupos[chave]) grupos[chave] = [];
     grupos[chave].push(j);
@@ -634,9 +924,9 @@ function renderJogos(){
   const lista = area.querySelector(".card-lista");
 
   Object.keys(grupos).forEach(rodada => {
-    const blocoTitulo = document.createElement("div");
-    blocoTitulo.innerHTML = `<div class="titulo" style="font-size:18px;margin-bottom:10px;">${rodada}</div>`;
-    lista.appendChild(blocoTitulo);
+    const bloco = document.createElement("div");
+    bloco.innerHTML = `<div class="titulo" style="font-size:18px;margin-bottom:10px;">${rodada}</div>`;
+    lista.appendChild(bloco);
 
     grupos[rodada].forEach(j => {
       const finalizado = j.status === "sumula_enviada";
@@ -645,9 +935,7 @@ function renderJogos(){
         : "x";
 
       const camp = pegarCampeonato(j.campeonato || "");
-      const linkCampeonato = camp?.id
-        ? `campeonato-publico.html?id=${camp.id}`
-        : "campeonatos.html";
+      const linkCampeonato = camp?.id ? `campeonato-publico.html?id=${camp.id}` : "campeonatos.html";
 
       const card = document.createElement("div");
       card.className = "card";
@@ -655,14 +943,14 @@ function renderJogos(){
         <div class="topo-jogo">
           <div class="times-jogo">
             <div class="time-jogo">
-              <img src="${pegarEscudo(j.timeA)}" class="escudo" alt="${j.timeA || '-'}">
+              <img src="${pegarEscudo(j.timeA)}" class="escudo" alt="${j.timeA}">
               <span>${j.timeA || "-"}</span>
             </div>
 
             <div class="placar">${placar}</div>
 
             <div class="time-jogo">
-              <img src="${pegarEscudo(j.timeB)}" class="escudo" alt="${j.timeB || '-'}">
+              <img src="${pegarEscudo(j.timeB)}" class="escudo" alt="${j.timeB}">
               <span>${j.timeB || "-"}</span>
             </div>
           </div>
@@ -688,56 +976,14 @@ function renderJogos(){
   });
 }
 
-function renderTimes(){
-  const area = document.getElementById("areaTabela");
-  const { categoria } = getFiltros();
-  const jogosFiltrados = filtrarJogos();
-  const nomes = new Set();
-
-  jogosFiltrados.forEach(j => {
-    if(j.timeA) nomes.add(j.timeA);
-    if(j.timeB) nomes.add(j.timeB);
-  });
-
-  const lista = Array.from(nomes).sort((a,b) => a.localeCompare(b, "pt-BR"));
-
-  atualizarTitulo();
-
-  if(!lista.length){
-    area.innerHTML = `<div class="vazio">Nenhum time encontrado nessa categoria.</div>`;
-    return;
-  }
-
-  area.innerHTML = `
-    <div class="times-grid">
-      ${lista.map(nome => {
-        const time = times.find(t => normalizarTexto(t.nome) === normalizarTexto(nome));
-        return `
-          <div class="time-card">
-            <div class="time-card-top">
-              <img src="${time?.escudo || 'logo-liga.jfif'}" alt="${nome}">
-              <div>
-                <div style="font-weight:bold;">${nome}</div>
-                <div class="subinfo">${categoria || "-"}</div>
-              </div>
-            </div>
-            <div class="tags">
-              ${((time?.categorias || []).length ? time.categorias : (categoria ? [categoria] : [])).map(c => `<div class="tag">${c}</div>`).join("")}
-            </div>
-          </div>
-        `;
-      }).join("")}
-    </div>
-  `;
-}
-
 function renderArtilharia(){
   const area = document.getElementById("areaTabela");
-  const sumulasFiltradas = filtrarSumulas();
+  const { campeonato, categoria } = getFiltros();
+  const sumulasFiltradas = filtrarSumulasBase();
 
-  atualizarTitulo();
+  atualizarTitulo(campeonato, categoria);
 
-  if(!sumulasFiltradas.length){
+  if(sumulasFiltradas.length === 0){
     area.innerHTML = `<div class="vazio">Nenhuma súmula encontrada para montar a artilharia.</div>`;
     return;
   }
@@ -764,9 +1010,8 @@ function renderArtilharia(){
     (s.golsDetalhadosB || []).forEach(g => adicionarGol(g, s.timeB));
   });
 
-  const lista = Object.values(ranking)
-    .filter(r => r.gols > 0)
-    .sort((a,b) => b.gols - a.gols || a.nome.localeCompare(b.nome, "pt-BR"));
+  let lista = Object.values(ranking).filter(r => r.gols > 0);
+  lista.sort((a,b) => b.gols - a.gols || a.nome.localeCompare(b.nome, "pt-BR"));
 
   if(!lista.length){
     area.innerHTML = `<div class="vazio">Nenhum gol registrado nessa categoria.</div>`;
@@ -793,11 +1038,12 @@ function renderArtilharia(){
 }
 function renderCartoes(){
   const area = document.getElementById("areaTabela");
-  const sumulasFiltradas = filtrarSumulas();
+  const { campeonato, categoria } = getFiltros();
+  const sumulasFiltradas = filtrarSumulasBase();
 
-  atualizarTitulo();
+  atualizarTitulo(campeonato, categoria);
 
-  if(!sumulasFiltradas.length){
+  if(sumulasFiltradas.length === 0){
     area.innerHTML = `<div class="vazio">Nenhuma súmula encontrada para montar os cartões.</div>`;
     return;
   }
@@ -828,13 +1074,12 @@ function renderCartoes(){
     (s.vermelhosDetalhadosB || []).forEach(c => adicionarCartao(c, s.timeB, "vermelho"));
   });
 
-  const lista = Object.values(ranking)
-    .filter(r => r.amarelos > 0 || r.vermelhos > 0)
-    .sort((a,b) => {
-      if(b.amarelos !== a.amarelos) return b.amarelos - a.amarelos;
-      if(b.vermelhos !== a.vermelhos) return b.vermelhos - a.vermelhos;
-      return a.nome.localeCompare(b.nome, "pt-BR");
-    });
+  let lista = Object.values(ranking).filter(r => r.amarelos > 0 || r.vermelhos > 0);
+  lista.sort((a,b) => {
+    if(b.amarelos !== a.amarelos) return b.amarelos - a.amarelos;
+    if(b.vermelhos !== a.vermelhos) return b.vermelhos - a.vermelhos;
+    return a.nome.localeCompare(b.nome, "pt-BR");
+  });
 
   if(!lista.length){
     area.innerHTML = `<div class="vazio">Nenhum cartão registrado nessa categoria.</div>`;
@@ -865,10 +1110,53 @@ function renderCartoes(){
   `;
 }
 
+function renderTimes(){
+  const area = document.getElementById("areaTabela");
+  const { campeonato, categoria } = getFiltros();
+  const jogosFiltrados = filtrarJogosBase();
+  const nomes = new Set();
+
+  jogosFiltrados.forEach(j => {
+    if(j.timeA) nomes.add(j.timeA);
+    if(j.timeB) nomes.add(j.timeB);
+  });
+
+  const lista = Array.from(nomes).sort((a,b)=>a.localeCompare(b,"pt-BR"));
+
+  atualizarTitulo(campeonato, categoria);
+
+  if(!lista.length){
+    area.innerHTML = `<div class="vazio">Nenhum time encontrado nessa categoria.</div>`;
+    return;
+  }
+
+  area.innerHTML = `
+    <div class="times-grid">
+      ${lista.map(nome => {
+        const time = times.find(t => normalizarTexto(t.nome) === normalizarTexto(nome));
+        return `
+          <div class="time-card">
+            <div class="time-card-top">
+              <img src="${time?.escudo || 'logo-liga.jfif'}" alt="${nome}">
+              <div>
+                <div style="font-weight:bold;">${nome}</div>
+                <div class="subinfo">${categoria || "-"}</div>
+              </div>
+            </div>
+            <div class="tags">
+              ${((time?.categorias || []).length ? time.categorias : (categoria ? [categoria] : [])).map(c => `<div class="tag">${c}</div>`).join("")}
+            </div>
+          </div>
+        `;
+      }).join("")}
+    </div>
+  `;
+}
+
 function renderSuspensos(){
   const area = document.getElementById("areaTabela");
   const { campeonato, categoria } = getFiltros();
-  const sumulasFiltradas = filtrarSumulas();
+  const sumulasFiltradas = filtrarSumulasBase();
   const camp = pegarCampeonato(campeonato);
   const regras = camp?.regrasCartoes || {};
 
@@ -877,9 +1165,9 @@ function renderSuspensos(){
   const jogosSuspensaoVermelhoSegundoAmarelo = Number(regras.jogosSuspensaoVermelhoSegundoAmarelo || 1);
   const jogosSuspensaoVermelhoDireto = Number(regras.jogosSuspensaoVermelhoDireto || 2);
 
-  atualizarTitulo();
+  atualizarTitulo(campeonato, categoria);
 
-  if(!sumulasFiltradas.length){
+  if(sumulasFiltradas.length === 0){
     area.innerHTML = `<div class="vazio">Nenhuma súmula encontrada para calcular suspensos.</div>`;
     return;
   }
@@ -906,18 +1194,21 @@ function renderSuspensos(){
   sumulasFiltradas.forEach(s => {
     (s.amarelosDetalhadosA || []).forEach(item => {
       if(!item?.nome) return;
-      garantirJogador(item.nome, s.timeA).amarelos += 1;
+      const jogador = garantirJogador(item.nome, s.timeA);
+      jogador.amarelos += 1;
     });
 
     (s.amarelosDetalhadosB || []).forEach(item => {
       if(!item?.nome) return;
-      garantirJogador(item.nome, s.timeB).amarelos += 1;
+      const jogador = garantirJogador(item.nome, s.timeB);
+      jogador.amarelos += 1;
     });
 
     (s.vermelhosDetalhadosA || []).forEach(item => {
       if(!item?.nome) return;
       const jogador = garantirJogador(item.nome, s.timeA);
       const tipo = normalizarTexto(item.tipo || item.motivo || "");
+
       if(tipo.includes("segundo") || tipo.includes("2 amarelo") || tipo.includes("2º amarelo")){
         jogador.segundosAmarelos += 1;
       }else{
@@ -929,6 +1220,7 @@ function renderSuspensos(){
       if(!item?.nome) return;
       const jogador = garantirJogador(item.nome, s.timeB);
       const tipo = normalizarTexto(item.tipo || item.motivo || "");
+
       if(tipo.includes("segundo") || tipo.includes("2 amarelo") || tipo.includes("2º amarelo")){
         jogador.segundosAmarelos += 1;
       }else{
@@ -937,20 +1229,19 @@ function renderSuspensos(){
     });
   });
 
-  const lista = Object.values(controle)
-    .map(j => {
-      j.suspensaoAmarelos = Math.floor(j.amarelos / amarelosParaSuspensao) * jogosSuspensaoAmarelos;
-      j.suspensaoVermelhoDireto = j.vermelhosDiretos * jogosSuspensaoVermelhoDireto;
-      j.suspensaoSegundoAmarelo = j.segundosAmarelos * jogosSuspensaoVermelhoSegundoAmarelo;
-      j.totalSuspensoes = j.suspensaoAmarelos + j.suspensaoVermelhoDireto + j.suspensaoSegundoAmarelo;
-      return j;
-    })
-    .filter(j => j.totalSuspensoes > 0)
-    .sort((a,b) => {
-      if(b.totalSuspensoes !== a.totalSuspensoes) return b.totalSuspensoes - a.totalSuspensoes;
-      if(b.amarelos !== a.amarelos) return b.amarelos - a.amarelos;
-      return a.nome.localeCompare(b.nome, "pt-BR");
-    });
+  const lista = Object.values(controle).map(j => {
+    j.suspensaoAmarelos = Math.floor(j.amarelos / amarelosParaSuspensao) * jogosSuspensaoAmarelos;
+    j.suspensaoVermelhoDireto = j.vermelhosDiretos * jogosSuspensaoVermelhoDireto;
+    j.suspensaoSegundoAmarelo = j.segundosAmarelos * jogosSuspensaoVermelhoSegundoAmarelo;
+    j.totalSuspensoes = j.suspensaoAmarelos + j.suspensaoVermelhoDireto + j.suspensaoSegundoAmarelo;
+    return j;
+  }).filter(j => j.totalSuspensoes > 0);
+
+  lista.sort((a,b) => {
+    if(b.totalSuspensoes !== a.totalSuspensoes) return b.totalSuspensoes - a.totalSuspensoes;
+    if(b.amarelos !== a.amarelos) return b.amarelos - a.amarelos;
+    return a.nome.localeCompare(b.nome, "pt-BR");
+  });
 
   if(!lista.length){
     area.innerHTML = `<div class="vazio">Nenhum suspenso encontrado nessa categoria.</div>`;
@@ -974,7 +1265,6 @@ function renderSuspensos(){
               </div>
             </div>
           </div>
-
           <div style="text-align:right;">
             <div class="numero-destaque">${jogador.totalSuspensoes}</div>
             <div class="subinfo">Jogo(s) de suspensão</div>
@@ -1006,9 +1296,8 @@ window.atualizarTela = function(){
 
 await carregarDados();
 preencherFiltros();
-aplicarFiltrosURL();
+aplicarFiltrosDaURL();
 atualizarTela();
-
 </script>
 
 </body>
