@@ -207,8 +207,7 @@
     .full{
       grid-column:1 / -1;
     }
-
-    .form-grid input,
+.form-grid input,
     .form-grid select,
     .form-grid textarea{
       width:100%;
@@ -336,6 +335,13 @@
       gap:12px;
     }
 
+    .campo-box{
+      background:#102a52;
+      border:1px solid rgba(255,255,255,.06);
+      border-radius:12px;
+      padding:12px;
+    }
+
     .campo-label{
       display:flex;
       align-items:center;
@@ -343,10 +349,12 @@
       color:var(--muted);
       font-size:13px;
       font-weight:700;
-      margin-bottom:6px;
+      margin-bottom:8px;
+      min-height:32px;
+      line-height:1.35;
     }
 
-    .campo-label .cartao-amarelo{
+    .cartao-amarelo{
       width:16px;
       height:22px;
       border-radius:2px;
@@ -357,7 +365,7 @@
       flex-shrink:0;
     }
 
-    .campo-label .cartao-vermelho{
+    .cartao-vermelho{
       width:16px;
       height:22px;
       border-radius:2px;
@@ -367,7 +375,15 @@
       transform:rotate(-6deg);
       flex-shrink:0;
     }
-.form-actions{
+
+    .info-ajuda{
+      margin-top:10px;
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.5;
+    }
+
+    .form-actions{
       display:flex;
       gap:10px;
       flex-wrap:wrap;
@@ -389,8 +405,7 @@
       background:#1a3f73;
       color:#fff;
     }
-
-    .msg{
+.msg{
       margin-top:14px;
       padding:12px 14px;
       border-radius:10px;
@@ -627,7 +642,6 @@
   </header>
 
   <div class="wrap container">
-
     <div class="hero">
       <h2>Gestão de Campeonatos</h2>
       <p>Cadastre, edite, publique e altere o formato da competição mesmo durante o campeonato, se necessário.</p>
@@ -689,6 +703,15 @@
         <div>
           <input type="number" id="faseFinalInicio" min="1" placeholder="A fase final começa com quantos times? Ex: 8">
         </div>
+<div>
+          <select id="zerarCartoesEm">
+            <option value="nunca">Zerar cartões: Nunca</option>
+            <option value="fim-primeira-fase">Zerar cartões: Fim da fase de pontos</option>
+            <option value="quartas">Zerar cartões: Quartas de final</option>
+            <option value="semi">Zerar cartões: Semifinal</option>
+            <option value="final">Zerar cartões: Final</option>
+          </select>
+        </div>
 
         <div class="full">
           <textarea id="descricao" placeholder="Descrição / observações do campeonato"></textarea>
@@ -700,7 +723,8 @@
             <span id="previewLogoTexto">Pré-visualização da logo</span>
           </div>
         </div>
-<div class="full">
+
+        <div class="full">
           <div class="dropdown-box" id="dropdownCategorias">
             <button type="button" class="dropdown-toggle" onclick="toggleDropdown('dropdownCategorias')">
               <span class="dropdown-toggle-left">
@@ -728,7 +752,7 @@
 
             <div class="dropdown-content">
               <div class="subgrid">
-                <div>
+                <div class="campo-box">
                   <div class="campo-label">
                     <span class="cartao-amarelo"></span>
                     Amarelos para suspensão
@@ -736,29 +760,34 @@
                   <input type="number" id="amarelosParaSuspensao" min="1" value="3" placeholder="Ex: 3">
                 </div>
 
-                <div>
+                <div class="campo-box">
                   <div class="campo-label">
                     <span class="cartao-amarelo"></span>
-                    Jogos de suspensão por amarelos
+                    Jogos suspenso por amarelo
                   </div>
                   <input type="number" id="jogosSuspensaoAmarelos" min="1" value="1" placeholder="Ex: 1">
                 </div>
 
-                <div>
+                <div class="campo-box">
+                  <div class="campo-label">
+                    <span class="cartao-amarelo"></span>
+                    <span class="cartao-vermelho"></span>
+                    Jogos de suspensão por vermelho / 2º amarelo
+                  </div>
+                  <input type="number" id="jogosSuspensaoVermelhoSegundoAmarelo" min="1" value="1" placeholder="Ex: 1">
+                </div>
+
+                <div class="campo-box">
                   <div class="campo-label">
                     <span class="cartao-vermelho"></span>
                     Jogos de suspensão por vermelho direto
                   </div>
                   <input type="number" id="jogosSuspensaoVermelhoDireto" min="1" value="2" placeholder="Ex: 2">
                 </div>
+              </div>
 
-                <div>
-                  <div class="campo-label">
-                    <span class="cartao-amarelo"></span>
-                    Jogos de suspensão por 2º amarelo
-                  </div>
-                  <input type="number" id="jogosSuspensaoSegundoAmarelo" min="1" value="1" placeholder="Ex: 1">
-                </div>
+              <div class="info-ajuda">
+                Os cartões amarelos contam do início ao fim do campeonato, até a fase escolhida para zerar.
               </div>
             </div>
           </div>
@@ -802,7 +831,6 @@
     const storage = getStorage();
 
     let editandoId = null;
-    let categoriasDisponiveis = [];
     let campeonatosCache = [];
     let logoAtual = "";
 
@@ -831,8 +859,7 @@
       limparFormulario();
       document.getElementById("formulario").style.display = "none";
     };
-
-    function mostrarSucesso(texto){
+function mostrarSucesso(texto){
       msgErro.style.display = "none";
       msgSucesso.style.display = "block";
       msgSucesso.textContent = texto;
@@ -860,11 +887,12 @@
       document.getElementById("formato").value = "";
       document.getElementById("turno").value = "";
       document.getElementById("faseFinalInicio").value = "";
+      document.getElementById("zerarCartoesEm").value = "nunca";
       document.getElementById("descricao").value = "";
       document.getElementById("amarelosParaSuspensao").value = "3";
       document.getElementById("jogosSuspensaoAmarelos").value = "1";
+      document.getElementById("jogosSuspensaoVermelhoSegundoAmarelo").value = "1";
       document.getElementById("jogosSuspensaoVermelhoDireto").value = "2";
-      document.getElementById("jogosSuspensaoSegundoAmarelo").value = "1";
       document.querySelectorAll('#categoriasGrid input[type="checkbox"]').forEach(item => item.checked = false);
       document.getElementById("previewLogoBox").style.display = "none";
       document.getElementById("previewLogoImg").src = "logo-liga.jfif";
@@ -902,7 +930,7 @@
     async function carregarCategorias(){
       const grid = document.getElementById("categoriasGrid");
       grid.innerHTML = "";
-      categoriasDisponiveis = [];
+      let categoriasDisponiveis = [];
 
       const snap = await getDocs(collection(db, "categorias"));
       snap.forEach(docSnap => {
@@ -965,13 +993,15 @@ window.salvarCampeonato = async function(){
       const formato = document.getElementById("formato").value;
       const turno = document.getElementById("turno").value;
       const faseFinalInicio = Number(document.getElementById("faseFinalInicio").value || 0);
+      const zerarCartoesEm = document.getElementById("zerarCartoesEm").value;
       const descricao = document.getElementById("descricao").value.trim();
-      const categorias = getCategoriasSelecionadas();
 
       const amarelosParaSuspensao = Number(document.getElementById("amarelosParaSuspensao").value || 3);
       const jogosSuspensaoAmarelos = Number(document.getElementById("jogosSuspensaoAmarelos").value || 1);
+      const jogosSuspensaoVermelhoSegundoAmarelo = Number(document.getElementById("jogosSuspensaoVermelhoSegundoAmarelo").value || 1);
       const jogosSuspensaoVermelhoDireto = Number(document.getElementById("jogosSuspensaoVermelhoDireto").value || 2);
-      const jogosSuspensaoSegundoAmarelo = Number(document.getElementById("jogosSuspensaoSegundoAmarelo").value || 1);
+
+      const categorias = getCategoriasSelecionadas();
 
       if(!nome){
         mostrarErro("Digite o nome do campeonato.");
@@ -983,8 +1013,18 @@ window.salvarCampeonato = async function(){
         return;
       }
 
-      if(amarelosParaSuspensao < 1 || jogosSuspensaoAmarelos < 1 || jogosSuspensaoVermelhoDireto < 1 || jogosSuspensaoSegundoAmarelo < 1){
-        mostrarErro("As configurações de cartões precisam ser maiores que zero.");
+      if(!categorias.length){
+        mostrarErro("Selecione pelo menos uma categoria.");
+        return;
+      }
+
+      if(
+        amarelosParaSuspensao < 1 ||
+        jogosSuspensaoAmarelos < 1 ||
+        jogosSuspensaoVermelhoSegundoAmarelo < 1 ||
+        jogosSuspensaoVermelhoDireto < 1
+      ){
+        mostrarErro("As configurações disciplinares precisam ser maiores que zero.");
         return;
       }
 
@@ -999,16 +1039,25 @@ window.salvarCampeonato = async function(){
           formato,
           turno,
           faseFinalInicio,
+          zerarCartoesEm,
           descricao,
           categorias,
+
           configuracoesFlexiveis: true,
           podeAlterarFormatoDuranteCompeticao: true,
+
           regrasCartoes: {
             amarelosParaSuspensao,
             jogosSuspensaoAmarelos,
-            jogosSuspensaoVermelhoDireto,
-            jogosSuspensaoSegundoAmarelo
+            jogosSuspensaoVermelhoSegundoAmarelo,
+            jogosSuspensaoVermelhoDireto
           },
+
+          controleCartoes: {
+            acumuladoDoInicioAoFim: true,
+            zerarEm: zerarCartoesEm
+          },
+
           publicado: status === "publicado",
           publico: status === "publicado",
           visivelPublico: status === "publicado",
@@ -1035,8 +1084,7 @@ window.salvarCampeonato = async function(){
         mostrarErro("Erro ao salvar o campeonato.");
       }
     };
-
-    window.editarCampeonato = function(id){
+window.editarCampeonato = function(id){
       const campeonato = campeonatosCache.find(item => item.id === id);
       if(!campeonato) return;
 
@@ -1048,6 +1096,10 @@ window.salvarCampeonato = async function(){
       document.getElementById("formato").value = campeonato.formato || "";
       document.getElementById("turno").value = campeonato.turno || "";
       document.getElementById("faseFinalInicio").value = campeonato.faseFinalInicio || "";
+      document.getElementById("zerarCartoesEm").value =
+        campeonato.zerarCartoesEm ||
+        campeonato.controleCartoes?.zerarEm ||
+        "nunca";
       document.getElementById("descricao").value = campeonato.descricao || "";
 
       document.getElementById("amarelosParaSuspensao").value =
@@ -1056,11 +1108,11 @@ window.salvarCampeonato = async function(){
       document.getElementById("jogosSuspensaoAmarelos").value =
         campeonato.regrasCartoes?.jogosSuspensaoAmarelos ?? 1;
 
+      document.getElementById("jogosSuspensaoVermelhoSegundoAmarelo").value =
+        campeonato.regrasCartoes?.jogosSuspensaoVermelhoSegundoAmarelo ?? 1;
+
       document.getElementById("jogosSuspensaoVermelhoDireto").value =
         campeonato.regrasCartoes?.jogosSuspensaoVermelhoDireto ?? 2;
-
-      document.getElementById("jogosSuspensaoSegundoAmarelo").value =
-        campeonato.regrasCartoes?.jogosSuspensaoSegundoAmarelo ?? 1;
 
       marcarCategorias(campeonato.categorias || []);
       logoAtual = campeonato.logo || "";
@@ -1070,12 +1122,10 @@ window.salvarCampeonato = async function(){
         document.getElementById("previewLogoBox").style.display = "flex";
         document.getElementById("previewLogoImg").src = campeonato.logo;
         document.getElementById("previewLogoTexto").textContent = "Logo atual do campeonato";
-      } else {
+      }else{
         document.getElementById("previewLogoBox").style.display = "none";
       }
 
-      document.getElementById("dropdownCategorias").classList.add("open");
-      document.getElementById("dropdownCartoes").classList.add("open");
       limparMensagens();
       document.getElementById("formulario").style.display = "block";
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -1096,8 +1146,7 @@ window.salvarCampeonato = async function(){
         alert("Erro ao excluir o campeonato.");
       }
     };
-
-    async function carregarCampeonatos(){
+async function carregarCampeonatos(){
       lista.innerHTML = `<div class="vazio">Carregando campeonatos...</div>`;
 
       try{
@@ -1149,13 +1198,15 @@ window.salvarCampeonato = async function(){
                   <small>Formato: ${campeonato.formato || "-"}</small>
                   <small>Turno: ${campeonato.turno || "-"}</small>
                   <small>Fase final começa com: ${campeonato.faseFinalInicio || "-"}</small>
-                  <small>Amarelos para suspender: ${regras.amarelosParaSuspensao ?? "-"}</small>
-                  <small>Suspensão por vermelho direto: ${regras.jogosSuspensaoVermelhoDireto ?? "-"} jogo(s)</small>
+                  <small>Zerar cartões em: ${campeonato.zerarCartoesEm || "nunca"}</small>
+                  <small>Amarelos para suspensão: ${regras.amarelosParaSuspensao ?? "-"}</small>
+                  <small>Jogos por amarelo: ${regras.jogosSuspensaoAmarelos ?? "-"}</small>
+                  <small>Vermelho / 2º amarelo: ${regras.jogosSuspensaoVermelhoSegundoAmarelo ?? "-"}</small>
+                  <small>Vermelho direto: ${regras.jogosSuspensaoVermelhoDireto ?? "-"}</small>
                   <div class="tags">${montarCategoriasTags(campeonato.categorias || [])}</div>
                 </div>
               </div>
-
-              <div class="actions">
+<div class="actions">
                 <a class="btn-view" href="campeonato-publico.html?id=${campeonato.id}">
                   <i class="fa-solid fa-eye"></i> Ver
                 </a>
@@ -1182,6 +1233,5 @@ window.salvarCampeonato = async function(){
     limparFormulario();
     await carregarCampeonatos();
   </script>
-
 </body>
 </html>
