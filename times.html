@@ -1,352 +1,514 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Times - LIGA GOIANA DE FUTEBOL DE BASE</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Times - LIGA GOIANA DE FUTEBOL DE BASE</title>
 
-<style>
-body{
-margin:0;
-font-family:Arial;
-background:#0b1f3a;
-color:white;
-}
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-header{
-background:#08172c;
-padding:15px;
-text-align:center;
-font-size:22px;
-font-weight:bold;
-border-bottom:3px solid #f7c600;
-}
+  <style>
+    :root{
+      --bg:#0b1f3a;
+      --bg-dark:#08172c;
+      --card:#102a52;
+      --card-hover:#153766;
+      --gold:#f7c600;
+      --gold-soft:rgba(247,198,0,.12);
+      --gold-line:rgba(247,198,0,.24);
+      --white:#ffffff;
+      --muted:#d8e1ef;
+      --shadow:0 8px 22px rgba(0,0,0,.28);
+      --transition:.25s ease;
+      --max:1240px;
+    }
 
-.menu{
-display:flex;
-justify-content:center;
-gap:10px;
-background:#102a52;
-padding:12px;
-flex-wrap:wrap;
-border-bottom:1px solid rgba(255,255,255,0.08);
-}
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
 
-.menu a{
-color:white;
-text-decoration:none;
-font-weight:bold;
-font-size:14px;
-background:#0d2346;
-padding:10px 14px;
-border-radius:8px;
-}
+    body{
+      font-family:Arial, sans-serif;
+      background:
+        linear-gradient(rgba(11,31,58,.88), rgba(11,31,58,.94)),
+        url("fundo.png") center/cover fixed no-repeat;
+      color:var(--white);
+    }
 
-.menu a.ativo{
-background:#f7c600;
-color:black;
-}
+    a{
+      text-decoration:none;
+      color:inherit;
+      transition:var(--transition);
+    }
 
-.container{
-padding:20px;
-max-width:1200px;
-margin:auto;
-}
+    button{
+      font-family:inherit;
+      cursor:pointer;
+      transition:var(--transition);
+      border:none;
+    }
 
-.hero{
-background:linear-gradient(135deg,#102a52,#0d2346);
-border:1px solid rgba(255,230,0,.12);
-border-radius:16px;
-padding:20px;
-margin-bottom:20px;
-}
+    .wrap{
+      width:min(100% - 28px, var(--max));
+      margin:0 auto;
+    }
 
-.hero h2{
-margin:0 0 8px;
-color:#f7c600;
-font-size:26px;
-}
+    header{
+      background:rgba(8,23,44,.96);
+      border-bottom:3px solid var(--gold);
+      box-shadow:var(--shadow);
+    }
 
-.hero p{
-margin:0;
-opacity:.92;
-line-height:1.6;
-font-size:14px;
-}
+    .header-top{
+      min-height:82px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      flex-wrap:wrap;
+      padding:14px 0;
+    }
 
-.filtros{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:12px;
-margin-bottom:20px;
-}
+    .header-left,
+    .header-right{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+    }
 
-input, select{
-width:100%;
-padding:12px;
-border:none;
-border-radius:8px;
-font-size:14px;
-box-sizing:border-box;
-}
+    .header-title{
+      flex:1;
+      text-align:center;
+      font-size:24px;
+      font-weight:700;
+      color:var(--white);
+    }
 
-.lista-grid{
-display:grid;
-grid-template-columns:repeat(auto-fit, minmax(300px, 1fr));
-gap:14px;
-}
+    .top-btn{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:10px 16px;
+      border-radius:10px;
+      font-weight:700;
+    }
 
-.card{
-background:#102a52;
-padding:16px;
-border-radius:14px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-gap:12px;
-border:1px solid rgba(255,230,0,.12);
-}
+    .btn-light{
+      background:#fff4cf;
+      color:#111;
+    }
 
-.team{
-display:flex;
-align-items:center;
-gap:12px;
-min-width:0;
-flex:1;
-}
+    .btn-light:hover{
+      background:var(--gold);
+      transform:translateY(-2px);
+    }
 
-.preview{
-width:64px;
-height:64px;
-border-radius:50%;
-object-fit:cover;
-border:2px solid rgba(255,255,255,.15);
-background:#1a3f73;
-flex-shrink:0;
-}
+    .nav-bar{
+      background:rgba(16,42,82,.95);
+      border-top:1px solid rgba(255,255,255,.06);
+      border-bottom:1px solid rgba(255,255,255,.08);
+    }
 
-.team-info{
-display:flex;
-flex-direction:column;
-gap:6px;
-min-width:0;
-}
+    .menu{
+      display:flex;
+      justify-content:center;
+      gap:10px;
+      padding:12px 0;
+      flex-wrap:wrap;
+    }
 
-.nome-time{
-font-weight:bold;
-font-size:17px;
-color:#ffffff;
-}
+    .menu a{
+      color:white;
+      font-weight:700;
+      font-size:14px;
+      background:#0d2346;
+      padding:10px 14px;
+      border-radius:10px;
+      border:1px solid transparent;
+    }
 
-.time-colors{
-display:flex;
-gap:6px;
-flex-wrap:wrap;
-}
+    .menu a:hover{
+      color:var(--gold);
+      background:var(--gold-soft);
+      border-color:var(--gold-line);
+    }
 
-.time-color{
-width:16px;
-height:16px;
-border-radius:50%;
-border:1px solid #ffffff55;
-}
+    .menu a.ativo{
+      background:var(--gold);
+      color:black;
+    }
 
-.tags{
-display:flex;
-gap:6px;
-flex-wrap:wrap;
-}
+    .container{
+      padding:24px 0 34px;
+    }
 
-.tag{
-background:#1a3f73;
-padding:4px 8px;
-border-radius:999px;
-font-size:12px;
-}
+    .hero{
+      background:linear-gradient(135deg,#102a52,#0d2346);
+      border:1px solid var(--gold-line);
+      border-radius:18px;
+      padding:22px;
+      margin-bottom:20px;
+      box-shadow:var(--shadow);
+    }
 
-.actions{
-display:flex;
-gap:8px;
-flex-wrap:wrap;
-justify-content:flex-end;
-}
+    .hero h2{
+      margin:0 0 8px;
+      color:var(--gold);
+      font-size:28px;
+    }
 
-.btn-acao{
-display:inline-flex;
-align-items:center;
-justify-content:center;
-padding:10px 14px;
-border-radius:8px;
-text-decoration:none;
-font-weight:bold;
-font-size:13px;
-border:none;
-cursor:pointer;
-}
+    .hero p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.6;
+      font-size:15px;
+      max-width:850px;
+    }
 
-.btn-ver{
-background:#f7c600;
-color:black;
-}
+    .filtros{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+      margin-bottom:20px;
+    }
 
-.vazio{
-background:#102a52;
-padding:30px;
-border-radius:12px;
-text-align:center;
-}
+    input, select{
+      width:100%;
+      padding:13px;
+      border:none;
+      border-radius:10px;
+      font-size:14px;
+      box-sizing:border-box;
+      background:#f5f7fb;
+      color:#111;
+    }
 
-@media (max-width:800px){
-.filtros{
-grid-template-columns:1fr;
-}
+    input:focus, select:focus{
+      outline:2px solid rgba(247,198,0,.5);
+    }
 
-.card{
-flex-direction:column;
-align-items:flex-start;
-}
+    .lista-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(300px, 1fr));
+      gap:14px;
+    }
 
-.actions{
-width:100%;
-justify-content:flex-start;
-}
-}
-</style>
+    .card{
+      background:linear-gradient(180deg, rgba(16,42,82,.96), rgba(12,33,64,.96));
+      padding:16px;
+      border-radius:16px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:14px;
+      border:1px solid rgba(255,230,0,.10);
+      box-shadow:var(--shadow);
+      transition:var(--transition);
+    }
+
+    .card:hover{
+      transform:translateY(-2px);
+      border-color:var(--gold-line);
+    }
+
+    .team{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-width:0;
+      flex:1;
+    }
+
+    .preview{
+      width:68px;
+      height:68px;
+      border-radius:50%;
+      object-fit:cover;
+      border:2px solid rgba(255,255,255,.15);
+      background:#1a3f73;
+      flex-shrink:0;
+    }
+
+    .team-info{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      min-width:0;
+    }
+
+    .nome-time{
+      font-weight:700;
+      font-size:18px;
+      color:#ffffff;
+    }
+
+    .time-colors{
+      display:flex;
+      gap:6px;
+      flex-wrap:wrap;
+    }
+
+    .time-color{
+      width:16px;
+      height:16px;
+      border-radius:50%;
+      border:1px solid #ffffff55;
+    }
+
+    .tags{
+      display:flex;
+      gap:6px;
+      flex-wrap:wrap;
+    }
+
+    .tag{
+      background:#1a3f73;
+      padding:5px 9px;
+      border-radius:999px;
+      font-size:12px;
+      border:1px solid rgba(255,255,255,.08);
+    }
+
+    .actions{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+
+    .btn-acao{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      padding:11px 14px;
+      border-radius:10px;
+      font-weight:700;
+      font-size:13px;
+      cursor:pointer;
+    }
+
+    .btn-ver{
+      background:var(--gold);
+      color:black;
+    }
+
+    .btn-ver:hover{
+      filter:brightness(1.04);
+      transform:translateY(-1px);
+    }
+
+    .vazio{
+      background:linear-gradient(180deg, rgba(16,42,82,.96), rgba(12,33,64,.96));
+      padding:30px;
+      border-radius:14px;
+      text-align:center;
+      color:var(--muted);
+      border:1px solid rgba(255,255,255,.06);
+      box-shadow:var(--shadow);
+    }
+
+    @media (max-width:900px){
+      .header-title{
+        order:3;
+        width:100%;
+        text-align:center;
+      }
+
+      .header-left,
+      .header-right{
+        width:100%;
+        justify-content:center;
+      }
+
+      .filtros{
+        grid-template-columns:1fr;
+      }
+
+      .card{
+        flex-direction:column;
+        align-items:flex-start;
+      }
+
+      .actions{
+        width:100%;
+        justify-content:flex-start;
+      }
+    }
+
+    @media (max-width:600px){
+      .top-btn{
+        width:100%;
+        justify-content:center;
+      }
+
+      .header-left,
+      .header-right{
+        flex-direction:column;
+        align-items:stretch;
+      }
+
+      .menu a{
+        width:100%;
+        text-align:center;
+      }
+    }
+  </style>
 </head>
 <body>
 
-<header>LIGA GOIANA DE FUTEBOL DE BASE</header>
+  <header>
+    <div class="wrap header-top">
+      <div class="header-left">
+        <button class="top-btn btn-light" type="button" onclick="voltarPagina()">
+          <i class="fa-solid fa-arrow-left"></i> Voltar
+        </button>
 
-<div class="menu">
-<a href="index.html">Campeonatos</a>
-<a href="tabela.html">Tabela</a>
-<a href="jogos.html">Jogos</a>
-<a href="artilharia.html">Artilharia</a>
-<a href="cartoes.html">Cartões</a>
-<a href="suspensos.html">Suspensos</a>
-<a href="times.html" class="ativo">Times</a>
-<a href="login.html">Login</a>
-</div>
+        <a href="index.html" class="top-btn btn-light">
+          <i class="fa-solid fa-house"></i> Página Inicial
+        </a>
+      </div>
 
-<div class="container">
+      <div class="header-title">LIGA GOIANA DE FUTEBOL DE BASE</div>
 
-<div class="hero">
-  <h2>Times Participantes</h2>
-  <p>Veja as equipes cadastradas, suas categorias e acesse a página pública de cada time.</p>
-</div>
+      <div class="header-right"></div>
+    </div>
 
-<div class="filtros">
-  <input id="buscaTime" placeholder="Pesquisar time..." oninput="carregarTimes()">
-
-  <select id="filtroCategoria" onchange="carregarTimes()">
-    <option value="">Selecione a categoria</option>
-    <option value="Sub-11">Sub-11</option>
-    <option value="Sub-12">Sub-12</option>
-    <option value="Sub-13">Sub-13</option>
-    <option value="Sub-14">Sub-14</option>
-    <option value="Sub-15">Sub-15</option>
-    <option value="Sub-16">Sub-16</option>
-    <option value="Sub-17">Sub-17</option>
-    <option value="Sub-18">Sub-18</option>
-    <option value="Sub-19">Sub-19</option>
-    <option value="Sub-20">Sub-20</option>
-    <option value="Sub-21">Sub-21</option>
-  </select>
-</div>
-
-<div class="lista-grid" id="listaTimes"></div>
-
-</div>
-
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
-import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-firestore.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyCyArj4yRlEl-yibkc0VEmL_4UJpRHHQSc",
-  authDomain: "liga-goiana-base.firebaseapp.com",
-  projectId: "liga-goiana-base",
-  storageBucket: "liga-goiana-base.appspot.com",
-  messagingSenderId: "952863591183",
-  appId: "1:952863591183:web:4eea34f494ba2dd754cc7a"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-let timesCache = [];
-
-window.carregarTimes = function(){
-  const lista = document.getElementById("listaTimes");
-  const busca = (document.getElementById("buscaTime").value || "").toLowerCase().trim();
-  const categoria = document.getElementById("filtroCategoria").value;
-
-  let times = [...timesCache];
-
-  if (busca) {
-    times = times.filter(t =>
-      (t.nome || "").toLowerCase().includes(busca)
-    );
-  }
-
-  if (categoria) {
-    times = times.filter(t => Array.isArray(t.categorias) && t.categorias.includes(categoria));
-  }
-
-  times.sort((a, b) => (a.nome || "").localeCompare((b.nome || ""), "pt-BR"));
-
-  if (!times.length) {
-    lista.innerHTML = `<div class="vazio">Nenhum time encontrado.</div>`;
-    return;
-  }
-
-  lista.innerHTML = "";
-
-  times.forEach(t => {
-    const cores = (t.cores || []).map(c => `<div class="time-color" style="background:${c}"></div>`).join("");
-    const categorias = (t.categorias || []).map(c => `<span class="tag">${c}</span>`).join("");
-
-    lista.innerHTML += `
-      <div class="card">
-        <div class="team">
-          <img src="${t.escudo || 'logo-liga.jfif'}" class="preview" alt="${t.nome || 'Time'}" onerror="this.src='logo-liga.jfif'">
-          <div class="team-info">
-            <div class="nome-time">${t.nome || "-"}</div>
-            <div class="time-colors">${cores}</div>
-            <div class="tags">${categorias || '<span class="tag">Sem categoria</span>'}</div>
-          </div>
-        </div>
-
-        <div class="actions">
-          <a class="btn-acao btn-ver" href="time-publico.html?id=${t.id}">
-            Ver Time
-          </a>
+    <div class="nav-bar">
+      <div class="wrap">
+        <div class="menu">
+          <a href="index.html">Início</a>
+          <a href="campeonatos.html">Campeonatos</a>
+          <a href="tabela.html">Tabela</a>
+          <a href="jogos.html">Jogos</a>
+          <a href="artilharia.html">Artilharia</a>
+          <a href="cartoes.html">Cartões</a>
+          <a href="suspensos.html">Suspensos</a>
+          <a href="times.html" class="ativo">Times</a>
+          <a href="login.html">Login</a>
         </div>
       </div>
-    `;
-  });
-};
+    </div>
+  </header>
 
-async function iniciarPagina(){
-  const lista = document.getElementById("listaTimes");
-  lista.innerHTML = `<div class="vazio">Carregando times...</div>`;
+  <div class="wrap container">
 
-  try{
-    const snap = await getDocs(collection(db, "times"));
-    timesCache = [];
-    snap.forEach(docSnap => {
-      timesCache.push({ id: docSnap.id, ...docSnap.data() });
-    });
+    <div class="hero">
+      <h2>Times Participantes</h2>
+      <p>Veja as equipes cadastradas, suas categorias e acesse a página pública de cada time.</p>
+    </div>
 
-    carregarTimes();
-  }catch(erro){
-    console.error(erro);
-    lista.innerHTML = `<div class="vazio">Erro ao carregar os times.</div>`;
-  }
-}
+    <div class="filtros">
+      <input id="buscaTime" placeholder="Pesquisar time..." oninput="carregarTimes()">
 
-iniciarPagina();
-</script>
+      <select id="filtroCategoria" onchange="carregarTimes()">
+        <option value="">Selecione a categoria</option>
+        <option value="Sub-11">Sub-11</option>
+        <option value="Sub-12">Sub-12</option>
+        <option value="Sub-13">Sub-13</option>
+        <option value="Sub-14">Sub-14</option>
+        <option value="Sub-15">Sub-15</option>
+        <option value="Sub-16">Sub-16</option>
+        <option value="Sub-17">Sub-17</option>
+        <option value="Sub-18">Sub-18</option>
+        <option value="Sub-19">Sub-19</option>
+        <option value="Sub-20">Sub-20</option>
+        <option value="Sub-21">Sub-21</option>
+      </select>
+    </div>
+
+    <div class="lista-grid" id="listaTimes"></div>
+
+  </div>
+
+  <script type="module">
+    import { auth, db } from "./firebase.js";
+    import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    let timesCache = [];
+
+    window.voltarPagina = function(){
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        window.location.href = "index.html";
+      }
+    };
+
+    window.carregarTimes = function(){
+      const lista = document.getElementById("listaTimes");
+      const busca = (document.getElementById("buscaTime").value || "").toLowerCase().trim();
+      const categoria = document.getElementById("filtroCategoria").value;
+
+      let times = [...timesCache];
+
+      if (busca) {
+        times = times.filter(t =>
+          (t.nome || "").toLowerCase().includes(busca)
+        );
+      }
+
+      if (categoria) {
+        times = times.filter(t => Array.isArray(t.categorias) && t.categorias.includes(categoria));
+      }
+
+      times.sort((a, b) => (a.nome || "").localeCompare((b.nome || ""), "pt-BR"));
+
+      if (!times.length) {
+        lista.innerHTML = `<div class="vazio">Nenhum time encontrado.</div>`;
+        return;
+      }
+
+      lista.innerHTML = "";
+
+      times.forEach(t => {
+        const cores = (t.cores || []).map(c => `<div class="time-color" style="background:${c}"></div>`).join("");
+        const categorias = (t.categorias || []).map(c => `<span class="tag">${c}</span>`).join("");
+
+        lista.innerHTML += `
+          <div class="card">
+            <div class="team">
+              <img src="${t.escudo || 'logo-liga.jfif'}" class="preview" alt="${t.nome || 'Time'}" onerror="this.src='logo-liga.jfif'">
+              <div class="team-info">
+                <div class="nome-time">${t.nome || "-"}</div>
+                <div class="time-colors">${cores || '<div class="tag">Sem cores</div>'}</div>
+                <div class="tags">${categorias || '<span class="tag">Sem categoria</span>'}</div>
+              </div>
+            </div>
+
+            <div class="actions">
+              <a class="btn-acao btn-ver" href="time-publico.html?id=${t.id}">
+                <i class="fa-solid fa-eye"></i> Ver Time
+              </a>
+            </div>
+          </div>
+        `;
+      });
+    };
+
+    async function iniciarPagina(){
+      const lista = document.getElementById("listaTimes");
+      lista.innerHTML = `<div class="vazio">Carregando times...</div>`;
+
+      try{
+        const snap = await getDocs(collection(db, "times"));
+        timesCache = [];
+        snap.forEach(docSnap => {
+          timesCache.push({ id: docSnap.id, ...docSnap.data() });
+        });
+
+        carregarTimes();
+      }catch(erro){
+        console.error(erro);
+        lista.innerHTML = `<div class="vazio">Erro ao carregar os times.</div>`;
+      }
+    }
+
+    iniciarPagina();
+  </script>
 
 </body>
 </html>
