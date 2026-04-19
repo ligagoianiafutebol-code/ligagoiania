@@ -1,1304 +1,1444 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tabela - LIGA GOIANA DE FUTEBOL DE BASE</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tabela - LIGA GOIANA DE FUTEBOL DE BASE</title>
 
-<style>
-body{
-  font-family:Arial;
-  margin:0;
-  background:#0b1f3a;
-  color:white;
-}
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-header{
-  background:#08172c;
-  padding:18px;
-  text-align:center;
-  font-size:24px;
-  font-weight:bold;
-  border-bottom:3px solid #f7c600;
-}
+  <style>
+    :root{
+      --bg:#0b1f3a;
+      --bg-dark:#08172c;
+      --card:#102a52;
+      --card-hover:#153766;
+      --gold:#f7c600;
+      --gold-soft:rgba(247,198,0,.12);
+      --gold-line:rgba(247,198,0,.24);
+      --white:#ffffff;
+      --muted:#d8e1ef;
+      --shadow:0 8px 22px rgba(0,0,0,.28);
+      --transition:.25s ease;
+      --max:1240px;
+    }
 
-/* BOTÕES TOPO */
-.topo-acoes{
-  display:flex;
-  gap:10px;
-  padding:10px;
-  justify-content:center;
-  background:#0b1f3a;
-}
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
 
-.btn-topo{
-  background:#f7c600;
-  color:black;
-  padding:10px 16px;
-  border-radius:10px;
-  font-weight:bold;
-  text-decoration:none;
-  border:none;
-  cursor:pointer;
-}
+    body{
+      font-family:Arial, sans-serif;
+      background:
+        linear-gradient(rgba(11,31,58,.88), rgba(11,31,58,.94)),
+        url("fundo.png") center/cover fixed no-repeat;
+      color:var(--white);
+      min-height:100vh;
+    }
 
-/* MENU PADRÃO */
-.menu{
-  display:flex;
-  justify-content:center;
-  gap:10px;
-  background:#102a52;
-  padding:12px;
-  flex-wrap:wrap;
-}
+    a{
+      text-decoration:none;
+      color:inherit;
+      transition:var(--transition);
+    }
 
-.menu a{
-  color:white;
-  text-decoration:none;
-  font-weight:bold;
-  font-size:14px;
-  background:#0d2346;
-  padding:10px 14px;
-  border-radius:8px;
-}
+    button{
+      font-family:inherit;
+      cursor:pointer;
+      transition:var(--transition);
+      border:none;
+    }
 
-.menu a:hover{
-  background:#f7c600;
-  color:black;
-}
+    select{
+      font-family:inherit;
+    }
 
-.menu a.ativo{
-  background:#f7c600;
-  color:black;
-}
+    .wrap{
+      width:min(100% - 28px, var(--max));
+      margin:0 auto;
+    }
 
-.container{
-  max-width:1200px;
-  margin:auto;
-  padding:20px;
-}
-.hero-campeonato{
-  background:linear-gradient(135deg, #102a52, #0d2346);
-  border:1px solid rgba(255,230,0,.12);
-  border-radius:16px;
-  padding:18px;
-  margin-bottom:20px;
-}
+    header{
+      background:rgba(8,23,44,.96);
+      border-bottom:3px solid var(--gold);
+      box-shadow:var(--shadow);
+    }
 
-.hero-top{
-  display:flex;
-  align-items:center;
-  gap:16px;
-  flex-wrap:wrap;
-}
+    .header-top{
+      min-height:82px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      flex-wrap:wrap;
+      padding:14px 0;
+    }
 
-.hero-logo{
-  width:72px;
-  height:72px;
-  border-radius:50%;
-  object-fit:cover;
-  background:#1a3f73;
-  border:2px solid rgba(255,255,255,.15);
-}
+    .header-left,
+    .header-right{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+    }
 
-.hero-info{
-  flex:1;
-}
+    .header-title{
+      flex:1;
+      text-align:center;
+      font-size:24px;
+      font-weight:700;
+      color:var(--white);
+    }
 
-.hero-titulo{
-  font-size:24px;
-  font-weight:bold;
-  color:#f7c600;
-  margin-bottom:6px;
-}
+    .top-btn{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:10px 16px;
+      border-radius:10px;
+      font-weight:700;
+    }
 
-.hero-sub{
-  opacity:.9;
-  font-size:14px;
-  line-height:1.5;
-}
+    .btn-light{
+      background:#fff4cf;
+      color:#111;
+    }
 
-.hero-tags{
-  display:flex;
-  gap:8px;
-  flex-wrap:wrap;
-  margin-top:12px;
-}
+    .btn-light:hover{
+      background:var(--gold);
+      transform:translateY(-2px);
+    }
 
-.hero-tag{
-  background:#0b1f3a;
-  padding:8px 12px;
-  border-radius:999px;
-  font-size:12px;
-  font-weight:bold;
-}
+    .nav-bar{
+      background:rgba(16,42,82,.95);
+      border-top:1px solid rgba(255,255,255,.06);
+      border-bottom:1px solid rgba(255,255,255,.08);
+    }
 
-.filtros{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:12px;
-  margin-bottom:20px;
-}
+    .menu{
+      display:flex;
+      justify-content:center;
+      gap:10px;
+      padding:12px 0;
+      flex-wrap:wrap;
+    }
 
-select{
-  width:100%;
-  padding:12px;
-  border:none;
-  border-radius:8px;
-  box-sizing:border-box;
-}
+    .menu a{
+      color:#fff;
+      font-weight:700;
+      font-size:14px;
+      background:#0d2346;
+      padding:10px 14px;
+      border-radius:10px;
+      border:1px solid transparent;
+      cursor:pointer;
+    }
 
-.titulo{
-  font-size:22px;
-  color:#f7c600;
-  font-weight:bold;
-  margin-bottom:14px;
-}
+    .menu a:hover{
+      color:var(--gold);
+      background:var(--gold-soft);
+      border-color:var(--gold-line);
+    }
 
-.abas{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  margin-bottom:18px;
-}
+    .menu a.ativo{
+      background:var(--gold);
+      color:#111;
+    }
 
-.aba{
-  background:#102a52;
-  color:white;
-  border:none;
-  border-radius:10px;
-  padding:10px 14px;
-  font-weight:bold;
-  cursor:pointer;
-  margin:0;
-}
+    .container{
+      padding:24px 0 34px;
+    }
 
-.aba.ativa{
-  background:#f7c600;
-  color:black;
-}
+    .hero{
+      background:linear-gradient(135deg, #102a52, #0d2346);
+      border:1px solid var(--gold-line);
+      border-radius:18px;
+      padding:22px;
+      margin-bottom:20px;
+      box-shadow:var(--shadow);
+    }
 
-.card{
-  background:#102a52;
-  border-radius:12px;
-  padding:14px;
-  border:1px solid rgba(255,230,0,.12);
-}
+    .hero-top{
+      display:flex;
+      align-items:center;
+      gap:16px;
+      flex-wrap:wrap;
+    }
 
+    .hero-logo{
+      width:72px;
+      height:72px;
+      border-radius:50%;
+      object-fit:cover;
+      border:2px solid rgba(255,255,255,.15);
+      background:#1a3f73;
+      flex-shrink:0;
+    }
+
+    .hero-info{
+      flex:1;
+      min-width:260px;
+    }
+
+    .hero h2{
+      margin:0 0 8px;
+      color:var(--gold);
+      font-size:28px;
+    }
+
+    .hero p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.6;
+      font-size:15px;
+      max-width:850px;
+    }
+
+    .hero-tags{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-top:14px;
+    }
+
+    .hero-tag{
+      background:#0b1f3a;
+      padding:8px 12px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:700;
+      color:var(--white);
+      border:1px solid rgba(255,255,255,.08);
+    }
+
+    .filtros{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+      margin-bottom:20px;
+    }
+
+    select{
+      width:100%;
+      padding:13px;
+      border:none;
+      border-radius:10px;
+      font-size:14px;
+      box-sizing:border-box;
+      background:#f5f7fb;
+      color:#111;
+    }
+
+    select:focus{
+      outline:2px solid rgba(247,198,0,.5);
+    }
+
+    .bloco-tabela{
+      margin-top:4px;
+    }
+
+    .titulo-secao{
+      font-size:22px;
+      color:var(--gold);
+      font-weight:700;
+      margin:0 0 14px;
+    }
+
+    .abas{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-bottom:18px;
+    }
+
+    .aba{
+      color:#fff;
+      font-weight:700;
+      font-size:14px;
+      background:#0d2346;
+      padding:10px 14px;
+      border-radius:10px;
+      border:1px solid transparent;
+      cursor:pointer;
+    }
+
+    .aba:hover{
+      color:var(--gold);
+      background:var(--gold-soft);
+      border-color:var(--gold-line);
+    }
+
+    .aba.ativa{
+      background:var(--gold);
+      color:#111;
+    }
+
+    .card{
+      background:linear-gradient(180deg, rgba(16,42,82,.96), rgba(12,33,64,.96));
+      padding:16px;
+      border-radius:16px;
+      border:1px solid rgba(255,230,0,.10);
+      box-shadow:var(--shadow);
+    }
+
+    .stats-grid{
+      display:grid;
+      grid-template-columns:repeat(4, 1fr);
+      gap:12px;
+    }
+
+    .stat-card{
+      background:#0b1f3a;
+      border-radius:12px;
+      padding:14px;
+      border:1px solid rgba(255,255,255,.08);
+    }
+
+    .stat-card strong{
+      display:block;
+      color:var(--gold);
+      font-size:13px;
+      margin-bottom:6px;
+    }
+
+    .stat-card span{
+      font-size:18px;
+      font-weight:700;
+      color:#fff;
+    }
+
+    .tags{
+      display:flex;
+      gap:6px;
+      flex-wrap:wrap;
+      margin-top:12px;
+    }
+
+    .tag{
+      background:#1a3f73;
+      padding:5px 9px;
+      border-radius:999px;
+      font-size:12px;
+      border:1px solid rgba(255,255,255,.08);
+    }
+
+    .vazio{
+      background:linear-gradient(180deg, rgba(16,42,82,.96), rgba(12,33,64,.96));
+      padding:30px;
+      border-radius:14px;
+      text-align:center;
+      color:var(--muted);
+      border:1px solid rgba(255,255,255,.06);
+      box-shadow:var(--shadow);
+    }
+
+    .box-tabela{
+      overflow-x:auto;
+    }
+
+    .table{
+      background:linear-gradient(180deg, rgba(16,42,82,.96), rgba(12,33,64,.96));
+      border-radius:16px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.06);
+      box-shadow:var(--shadow);
+    }
+
+    .row{
+      display:flex;
+      align-items:center;
+      padding:12px 8px;
+      border-bottom:1px solid rgba(255,255,255,.08);
+      min-width:980px;
+    }
+
+    .row.header{
+      background:#081a33;
+      color:var(--gold);
+      font-weight:700;
+    }
+
+    .col-pos{width:45px;text-align:center;}
+    .col-time{flex:1;padding:0 8px;}
+    .col{width:55px;text-align:center;}
+
+    .team{
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+
+    .escudo{
+      width:26px;
+      height:26px;
+      object-fit:contain;
+      border-radius:50%;
+      background:#1a3f73;
+      flex-shrink:0;
+    }
 .card-lista{
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-}
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
 
-.box-tabela{
-  overflow-x:auto;
-}
+    .topo-jogo{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+    }
 
-.table{
-  background:#102a52;
-  border-radius:12px;
-  overflow:hidden;
-  border:1px solid rgba(255,230,0,.12);
-}
+    .times-jogo{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      font-size:16px;
+      font-weight:700;
+      width:100%;
+    }
 
-.row{
-  display:flex;
-  align-items:center;
-  padding:12px 8px;
-  border-bottom:1px solid rgba(255,255,255,.08);
-  min-width:980px;
-}
+    .time-jogo{
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
 
-.row.header{
-  background:#081a33;
-  color:#f7c600;
-  font-weight:bold;
-}
+    .placar{
+      font-weight:700;
+      font-size:18px;
+      color:var(--gold);
+      min-width:80px;
+      text-align:center;
+    }
 
-.col-pos{width:45px;text-align:center;}
-.col-time{flex:1;padding:0 8px;}
-.col{width:55px;text-align:center;}
+    .info{
+      font-size:13px;
+      color:var(--muted);
+      margin-top:8px;
+      line-height:1.5;
+    }
 
-.team{
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
+    .status{
+      display:inline-block;
+      margin-top:8px;
+      padding:6px 10px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:700;
+      background:#0d2346;
+    }
 
-.escudo{
-  width:26px;
-  height:26px;
-  object-fit:contain;
-  border-radius:50%;
-  background:#1a3f73;
-}
+    .finalizado{
+      background:#1b5e20;
+      color:#fff;
+    }
 
-.vazio{
-  background:#102a52;
-  border-radius:12px;
-  padding:30px;
-  text-align:center;
-}
+    .agendado{
+      background:#7a5a00;
+      color:#fff;
+    }
 
-.topo-jogo{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:10px;
-  flex-wrap:wrap;
-}
+    .acoes-jogo{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:12px;
+    }
 
-.times-jogo{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:10px;
-  font-size:16px;
-  font-weight:bold;
-  width:100%;
-}
+    .btn-acao{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:10px 14px;
+      border-radius:8px;
+      text-decoration:none;
+      font-weight:700;
+      font-size:13px;
+      border:none;
+      cursor:pointer;
+    }
 
-.time-jogo{
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
+    .btn-sumula{
+      background:var(--gold);
+      color:#111;
+    }
 
-.placar{
-  font-weight:bold;
-  font-size:18px;
-  color:#f7c600;
-  min-width:80px;
-  text-align:center;
-}
+    .btn-secundario{
+      background:#1a3f73;
+      color:#fff;
+    }
 
-.info{
-  font-size:13px;
-  opacity:.9;
-  margin-top:8px;
-  line-height:1.5;
-}
+    .linha-ranking{
+      background:linear-gradient(180deg, rgba(16,42,82,.96), rgba(12,33,64,.96));
+      border-radius:12px;
+      padding:12px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      border:1px solid rgba(255,255,255,.06);
+      box-shadow:var(--shadow);
+    }
 
-.status{
-  display:inline-block;
-  margin-top:8px;
-  padding:6px 10px;
-  border-radius:999px;
-  font-size:12px;
-  font-weight:bold;
-  background:#0d2346;
-}
+    .player{
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
 
-.finalizado{
-  background:#1b5e20;
-}
+    .photo{
+      width:38px;
+      height:38px;
+      border-radius:50%;
+      object-fit:cover;
+      background:#1a3f73;
+    }
 
-.agendado{
-  background:#7a5a00;
-}
+    .pos{
+      width:24px;
+      font-weight:700;
+      color:#fff;
+      text-align:center;
+    }
 
-.linha-ranking{
-  background:#102a52;
-  border-radius:10px;
-  padding:12px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:10px;
-}
+    .numero-destaque{
+      font-weight:700;
+      font-size:18px;
+      color:var(--gold);
+    }
 
-.player{
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
+    .subinfo{
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.45;
+    }
 
-.photo{
-  width:38px;
-  height:38px;
-  border-radius:50%;
-  object-fit:cover;
-  background:#1a3f73;
-}
+    .times-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));
+      gap:12px;
+    }
 
-.pos{
-  width:24px;
-  font-weight:bold;
-}
+    .time-card{
+      background:linear-gradient(180deg, rgba(16,42,82,.96), rgba(12,33,64,.96));
+      border-radius:12px;
+      padding:14px;
+      border:1px solid rgba(255,230,0,.12);
+      box-shadow:var(--shadow);
+    }
 
-.numero-destaque{
-  font-weight:bold;
-  font-size:18px;
-  color:#f7c600;
-}
+    .time-card-top{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin-bottom:10px;
+    }
 
-.subinfo{
-  opacity:.85;
-  font-size:12px;
-}
+    .time-card-top img{
+      width:50px;
+      height:50px;
+      object-fit:cover;
+      border-radius:50%;
+      background:#1a3f73;
+    }
 
-.stats-grid{
-  display:grid;
-  grid-template-columns:repeat(4, 1fr);
-  gap:10px;
-}
+    @media (max-width:900px){
+      .header-title{
+        order:3;
+        width:100%;
+        text-align:center;
+      }
 
-.stat-card{
-  background:#0b1f3a;
-  border-radius:10px;
-  padding:12px;
-  border:1px solid rgba(255,255,255,.08);
-}
+      .header-left,
+      .header-right{
+        width:100%;
+        justify-content:center;
+      }
 
-.stat-card strong{
-  display:block;
-  color:#f7c600;
-  font-size:13px;
-  margin-bottom:4px;
-}
+      .filtros{
+        grid-template-columns:1fr;
+      }
 
-.stat-card span{
-  font-size:16px;
-  font-weight:bold;
-}
+      .stats-grid{
+        grid-template-columns:1fr 1fr;
+      }
+    }
 
-.times-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));
-  gap:12px;
-}
+    @media (max-width:800px){
+      .times-jogo{
+        flex-direction:column;
+        align-items:flex-start;
+      }
 
-.time-card{
-  background:#102a52;
-  border-radius:12px;
-  padding:14px;
-  border:1px solid rgba(255,230,0,.12);
-}
+      .placar{
+        text-align:left;
+        min-width:auto;
+      }
+    }
 
-.time-card-top{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  margin-bottom:10px;
-}
+    @media (max-width:600px){
+      .top-btn{
+        width:100%;
+        justify-content:center;
+      }
 
-.time-card-top img{
-  width:50px;
-  height:50px;
-  object-fit:cover;
-  border-radius:50%;
-  background:#1a3f73;
-}
+      .header-left,
+      .header-right{
+        flex-direction:column;
+        align-items:stretch;
+      }
 
-.tags{
-  display:flex;
-  gap:6px;
-  flex-wrap:wrap;
-  margin-top:10px;
-}
+      .menu a,
+      .aba{
+        width:100%;
+        text-align:center;
+      }
 
-.tag{
-  background:#1a3f73;
-  padding:4px 8px;
-  border-radius:999px;
-  font-size:12px;
-}
+      .stats-grid{
+        grid-template-columns:1fr;
+      }
 
-.acoes-jogo{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  margin-top:12px;
-}
-
-.btn-acao{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  padding:10px 14px;
-  border-radius:8px;
-  text-decoration:none;
-  font-weight:bold;
-  font-size:13px;
-  border:none;
-  cursor:pointer;
-}
-
-.btn-sumula{
-  background:#f7c600;
-  color:black;
-}
-
-.btn-secundario{
-  background:#1a3f73;
-  color:white;
-}
-
-@media (max-width: 900px){
-  .filtros{
-    grid-template-columns:1fr;
-  }
-
-  .stats-grid{
-    grid-template-columns:1fr 1fr;
-  }
-}
-
-@media (max-width: 800px){
-  .times-jogo{
-    flex-direction:column;
-    align-items:flex-start;
-  }
-
-  .placar{
-    text-align:left;
-    min-width:auto;
-  }
-}
-
-@media (max-width: 600px){
-  .stats-grid{
-    grid-template-columns:1fr;
-  }
-}
-</style>
+      .hero h2{
+        font-size:24px;
+      }
+    }
+  </style>
 </head>
 <body>
 
-<header>LIGA GOIANA DE FUTEBOL DE BASE</header>
+  <header>
+    <div class="wrap header-top">
+      <div class="header-left">
+        <button class="top-btn btn-light" type="button" onclick="voltarPagina()">
+          <i class="fa-solid fa-arrow-left"></i> Voltar
+        </button>
 
-<div class="topo-acoes">
-  <button onclick="history.back()" class="btn-topo">← Voltar</button>
-  <a href="index.html" class="btn-topo">🏠 Página Inicial</a>
-</div>
+        <a href="index.html" class="top-btn btn-light">
+          <i class="fa-solid fa-house"></i> Página Inicial
+        </a>
+      </div>
 
-<div class="menu">
-  <a href="index.html">Início</a>
-  <a href="campeonatos.html">Campeonatos</a>
-  <a href="tabela.html" class="ativo">Tabela</a>
-  <a href="jogos.html">Jogos</a>
-  <a href="times.html">Times</a>
-  <a href="artilharia.html">Artilharia</a>
-  <a href="cartoes.html">Cartões</a>
-  <a href="suspensos.html">Suspensos</a>
-  <a href="login.html">Login</a>
-</div>
+      <div class="header-title">LIGA GOIANA DE FUTEBOL DE BASE</div>
 
-<div class="container">
-  <div class="hero-campeonato">
-    <div class="hero-top">
-      <img id="heroLogo" class="hero-logo" src="logo-liga.jfif" alt="Logo campeonato">
-      <div class="hero-info">
-        <div class="hero-titulo" id="heroTitulo">Tabela da Competição</div>
-        <div class="hero-sub" id="heroSub">Selecione o campeonato e a categoria para visualizar os dados.</div>
-        <div class="hero-tags">
-          <div class="hero-tag" id="heroTagCategoria">Categoria: -</div>
-          <div class="hero-tag" id="heroTagJogos">Jogos: 0</div>
-          <div class="hero-tag" id="heroTagTimes">Times: 0</div>
-          <div class="hero-tag" id="heroTagGols">Gols: 0</div>
-        </div>
+      <div class="header-right"></div>
+    </div>
+
+    <div class="nav-bar">
+      <div class="wrap">
+        <nav class="menu">
+          <a href="campeonatos.html">Campeonatos</a>
+          <a href="tabela.html" class="ativo">Tabela</a>
+          <a href="jogos.html">Jogos</a>
+          <a href="times.html">Times</a>
+          <a href="artilharia.html">Artilharia</a>
+          <a href="cartoes.html">Cartões</a>
+          <a href="suspensos.html">Suspensos</a>
+          <a href="login.html">Login</a>
+        </nav>
       </div>
     </div>
-  </div>
+  </header>
 
-  <div class="filtros">
-    <select id="filtroCampeonato" onchange="atualizarTela()">
-      <option value="">Selecione o campeonato</option>
-    </select>
+  <main class="wrap container">
 
-    <select id="filtroCategoria" onchange="atualizarTela()">
-      <option value="">Selecione a categoria</option>
-      <option value="Sub-11">Sub-11</option>
-      <option value="Sub-12">Sub-12</option>
-      <option value="Sub-13">Sub-13</option>
-      <option value="Sub-14">Sub-14</option>
-      <option value="Sub-15">Sub-15</option>
-      <option value="Sub-16">Sub-16</option>
-      <option value="Sub-17">Sub-17</option>
-      <option value="Sub-18">Sub-18</option>
-      <option value="Sub-19">Sub-19</option>
-      <option value="Sub-20">Sub-20</option>
-      <option value="Sub-21">Sub-21</option>
-    </select>
-  </div>
+    <section class="hero">
+      <div class="hero-top">
+        <img id="heroLogo" class="hero-logo" src="logo-liga.jfif" alt="Logo campeonato">
 
-  <div class="titulo" id="tituloTabela">Tabela</div>
+        <div class="hero-info">
+          <h2 id="heroTitulo">Tabela da Competição</h2>
+          <p id="heroSub">Selecione o campeonato e a categoria para visualizar os dados.</p>
 
-  <div class="abas">
-    <button class="aba ativa" onclick="trocarAba('detalhes', this)">Detalhes</button>
-    <button class="aba" onclick="trocarAba('classificacao', this)">Classificação</button>
-    <button class="aba" onclick="trocarAba('jogos', this)">Jogos</button>
-    <button class="aba" onclick="trocarAba('times', this)">Times</button>
-    <button class="aba" onclick="trocarAba('artilharia', this)">Artilharia</button>
-    <button class="aba" onclick="trocarAba('cartoes', this)">Cartões</button>
-    <button class="aba" onclick="trocarAba('suspensos', this)">Suspensos</button>
-  </div>
+          <div class="hero-tags">
+            <div class="hero-tag" id="heroTagCategoria">Categoria: -</div>
+            <div class="hero-tag" id="heroTagJogos">Jogos: 0</div>
+            <div class="hero-tag" id="heroTagTimes">Times: 0</div>
+            <div class="hero-tag" id="heroTagGols">Gols: 0</div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-  <div id="areaTabela"></div>
-</div>
+    <section class="filtros">
+      <select id="filtroCampeonato" onchange="atualizarTela()">
+        <option value="">Selecione o campeonato</option>
+      </select>
+
+      <select id="filtroCategoria" onchange="atualizarTela()">
+        <option value="">Selecione a categoria</option>
+        <option value="Sub-11">Sub-11</option>
+        <option value="Sub-12">Sub-12</option>
+        <option value="Sub-13">Sub-13</option>
+        <option value="Sub-14">Sub-14</option>
+        <option value="Sub-15">Sub-15</option>
+        <option value="Sub-16">Sub-16</option>
+        <option value="Sub-17">Sub-17</option>
+        <option value="Sub-18">Sub-18</option>
+        <option value="Sub-19">Sub-19</option>
+        <option value="Sub-20">Sub-20</option>
+        <option value="Sub-21">Sub-21</option>
+      </select>
+    </section>
+
+    <section class="bloco-tabela">
+      <h2 class="titulo-secao" id="tituloTabela">Tabela</h2>
+
+      <div class="abas">
+        <button class="aba ativa" onclick="trocarAba('detalhes', this)">Detalhes</button>
+        <button class="aba" onclick="trocarAba('classificacao', this)">Classificação</button>
+        <button class="aba" onclick="trocarAba('jogos', this)">Jogos</button>
+        <button class="aba" onclick="trocarAba('times', this)">Times</button>
+        <button class="aba" onclick="trocarAba('artilharia', this)">Artilharia</button>
+        <button class="aba" onclick="trocarAba('cartoes', this)">Cartões</button>
+        <button class="aba" onclick="trocarAba('suspensos', this)">Suspensos</button>
+      </div>
+
+      <div id="areaTabela"></div>
+    </section>
+
+  </main>
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
-import {
-  getFirestore,
-  collection,
-  getDocs
-} from "https://www.gstatic.com/firebasejs/12.12.0/firebase-firestore.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
+    import {
+      getFirestore,
+      collection,
+      getDocs
+    } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-firestore.js";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyCyArj4yRlEl-yibkc0VEmL_4UJpRHHQSc",
-  authDomain: "liga-goiana-base.firebaseapp.com",
-  projectId: "liga-goiana-base",
-  storageBucket: "liga-goiana-base.appspot.com",
-  messagingSenderId: "952863591183",
-  appId: "1:952863591183:web:4eea34f494ba2dd754cc7a"
-};
+    const firebaseConfig = {
+      apiKey: "AIzaSyCyArj4yRlEl-yibkc0VEmL_4UJpRHHQSc",
+      authDomain: "liga-goiana-base.firebaseapp.com",
+      projectId: "liga-goiana-base",
+      storageBucket: "liga-goiana-base.appspot.com",
+      messagingSenderId: "952863591183",
+      appId: "1:952863591183:web:4eea34f494ba2dd754cc7a"
+    };
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
 
-let jogos = [];
-let times = [];
-let jogadores = [];
-let sumulas = [];
-let campeonatos = [];
-let abaAtual = "detalhes";
+    let jogos = [];
+    let times = [];
+    let jogadores = [];
+    let sumulas = [];
+    let campeonatos = [];
+    let abaAtual = "detalhes";
 
-function getParametro(nome){
-  const params = new URLSearchParams(window.location.search);
-  return params.get(nome);
-}
+    window.voltarPagina = function(){
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        window.location.href = "index.html";
+      }
+    };
 
-function normalizarTexto(texto){
-  return String(texto || "")
-    .trim()
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "");
-}
-
-async function carregarDados(){
-  const snapJogos = await getDocs(collection(db, "jogos"));
-  jogos = [];
-  snapJogos.forEach(docSnap => jogos.push({ id: docSnap.id, ...docSnap.data() }));
-
-  const snapTimes = await getDocs(collection(db, "times"));
-  times = [];
-  snapTimes.forEach(docSnap => times.push({ id: docSnap.id, ...docSnap.data() }));
-
-  const snapJogadores = await getDocs(collection(db, "jogadores"));
-  jogadores = [];
-  snapJogadores.forEach(docSnap => jogadores.push({ id: docSnap.id, ...docSnap.data() }));
-
-  const snapSumulas = await getDocs(collection(db, "sumulas"));
-  sumulas = [];
-  snapSumulas.forEach(docSnap => sumulas.push({ id: docSnap.id, ...docSnap.data() }));
-
-  const snapCampeonatos = await getDocs(collection(db, "campeonatos"));
-  campeonatos = [];
-  snapCampeonatos.forEach(docSnap => campeonatos.push({ id: docSnap.id, ...docSnap.data() }));
-}
-
-function pegarEscudo(nomeTime){
-  const time = times.find(t => normalizarTexto(t.nome) === normalizarTexto(nomeTime));
-  return time?.escudo || "logo-liga.jfif";
-}
-
-function pegarFotoJogador(nomeJogador, nomeTime = ""){
-  const jogador = jogadores.find(j =>
-    normalizarTexto(j.nome) === normalizarTexto(nomeJogador) &&
-    (!nomeTime || normalizarTexto(j.time) === normalizarTexto(nomeTime))
-  );
-  return jogador?.foto || "";
-}
-
-function pegarCampeonato(nomeCampeonato){
-  return campeonatos.find(c => normalizarTexto(c.nome) === normalizarTexto(nomeCampeonato));
-}
-
-function preencherFiltros(){
-  const selectCamp = document.getElementById("filtroCampeonato");
-  const campeonatosLista = [...new Set(jogos.map(j => j.campeonato).filter(Boolean))]
-    .sort((a,b) => a.localeCompare(b, "pt-BR"));
-
-  selectCamp.innerHTML = '<option value="">Selecione o campeonato</option>';
-
-  campeonatosLista.forEach(c => {
-    selectCamp.innerHTML += `<option value="${c}">${c}</option>`;
-  });
-}
-
-function aplicarFiltrosDaURL(){
-  const campeonatoURL = getParametro("campeonato");
-  const categoriaURL = getParametro("categoria");
-
-  if(campeonatoURL){
-    const selectCamp = document.getElementById("filtroCampeonato");
-    const opcoesCamp = Array.from(selectCamp.options);
-    const opcaoCamp = opcoesCamp.find(op => normalizarTexto(op.value) === normalizarTexto(campeonatoURL));
-    if(opcaoCamp) selectCamp.value = opcaoCamp.value;
-  }
-
-  if(categoriaURL){
-    const selectCat = document.getElementById("filtroCategoria");
-    const opcoesCat = Array.from(selectCat.options);
-    const opcaoCat = opcoesCat.find(op => normalizarTexto(op.value) === normalizarTexto(categoriaURL));
-    if(opcaoCat) selectCat.value = opcaoCat.value;
-  }
-}
-
-function criarTime(nome){
-  return {
-    nome,
-    pontos: 0,
-    jogos: 0,
-    vitorias: 0,
-    empates: 0,
-    derrotas: 0,
-    gp: 0,
-    gc: 0,
-    sg: 0
-  };
-}
-
-function formatarDataHora(dataString){
-  if(!dataString) return "-";
-  const data = new Date(dataString);
-  if(isNaN(data.getTime())) return dataString;
-
-  const dia = String(data.getDate()).padStart(2, "0");
-  const mes = String(data.getMonth() + 1).padStart(2, "0");
-  const ano = data.getFullYear();
-  const hora = String(data.getHours()).padStart(2, "0");
-  const minuto = String(data.getMinutes()).padStart(2, "0");
-
-  return `${dia}/${mes}/${ano} - ${hora}:${minuto}`;
-}
-
-function numeroRodada(valor){
-  if(valor === undefined || valor === null || valor === "") return 999999;
-  const texto = String(valor);
-  const numero = parseInt(texto.replace(/\D/g, ""), 10);
-  return isNaN(numero) ? 999999 : numero;
-}
-
-function getFiltros(){
-  return {
-    campeonato: document.getElementById("filtroCampeonato").value,
-    categoria: document.getElementById("filtroCategoria").value
-  };
-}
-
-function atualizarTitulo(campeonato, categoria){
-  document.getElementById("tituloTabela").textContent =
-    `Tabela${categoria ? " - " + categoria : ""}${campeonato ? " | " + campeonato : ""}`;
-}
-
-function filtrarJogosBase(){
-  const { campeonato, categoria } = getFiltros();
-  return jogos.filter(j =>
-    (!campeonato || j.campeonato === campeonato) &&
-    (!categoria || j.categoria === categoria)
-  );
-}
-
-function filtrarSumulasBase(){
-  const { campeonato, categoria } = getFiltros();
-  return sumulas.filter(s =>
-    (!campeonato || s.campeonato === campeonato) &&
-    (!categoria || s.categoria === categoria)
-  );
-}
-
-function getResumoGeral(){
-  const { campeonato, categoria } = getFiltros();
-  const jogosFiltrados = filtrarJogosBase();
-  const sumulasFiltradas = filtrarSumulasBase();
-
-  const timesSet = new Set();
-  jogosFiltrados.forEach(j => {
-    if(j.timeA) timesSet.add(j.timeA);
-    if(j.timeB) timesSet.add(j.timeB);
-  });
-
-  let gols = 0;
-  sumulasFiltradas.forEach(s => {
-    gols += Number(s.golsA || 0) + Number(s.golsB || 0);
-  });
-
-  return {
-    campeonato,
-    categoria,
-    jogos: sumulasFiltradas.length,
-    times: timesSet.size,
-    gols
-  };
-}
-
-function atualizarHero(){
-  const resumo = getResumoGeral();
-  const camp = pegarCampeonato(resumo.campeonato);
-
-  document.getElementById("heroTitulo").textContent = resumo.campeonato || "Tabela da Competição";
-  document.getElementById("heroSub").textContent = resumo.categoria
-    ? `Visualização pública da categoria ${resumo.categoria}.`
-    : "Selecione o campeonato e a categoria para visualizar os dados.";
-  document.getElementById("heroTagCategoria").textContent = `Categoria: ${resumo.categoria || "-"}`;
-  document.getElementById("heroTagJogos").textContent = `Jogos: ${resumo.jogos}`;
-  document.getElementById("heroTagTimes").textContent = `Times: ${resumo.times}`;
-  document.getElementById("heroTagGols").textContent = `Gols: ${resumo.gols}`;
-  document.getElementById("heroLogo").src = camp?.logo || "logo-liga.jfif";
-}
-
-function renderDetalhes(){
-  const area = document.getElementById("areaTabela");
-  const { campeonato, categoria } = getFiltros();
-  const jogosFiltrados = filtrarJogosBase();
-  const sumulasFiltradas = filtrarSumulasBase();
-  const camp = pegarCampeonato(campeonato);
-  const timesSet = new Set();
-
-  jogosFiltrados.forEach(j => {
-    if(j.timeA) timesSet.add(j.timeA);
-    if(j.timeB) timesSet.add(j.timeB);
-  });
-
-  let gols = 0;
-  sumulasFiltradas.forEach(s => {
-    gols += Number(s.golsA || 0) + Number(s.golsB || 0);
-  });
-
-  atualizarTitulo(campeonato, categoria);
-
-  area.innerHTML = `
-    <div class="card">
-      <div class="stats-grid">
-        <div class="stat-card"><strong>Campeonato</strong><span>${campeonato || "-"}</span></div>
-        <div class="stat-card"><strong>Categoria</strong><span>${categoria || "-"}</span></div>
-        <div class="stat-card"><strong>Jogos finalizados</strong><span>${sumulasFiltradas.length}</span></div>
-        <div class="stat-card"><strong>Jogos cadastrados</strong><span>${jogosFiltrados.length}</span></div>
-        <div class="stat-card"><strong>Times</strong><span>${timesSet.size}</span></div>
-        <div class="stat-card"><strong>Gols</strong><span>${gols}</span></div>
-        <div class="stat-card"><strong>Temporada</strong><span>${camp?.temporada || "-"}</span></div>
-        <div class="stat-card"><strong>Status</strong><span>${camp?.status || "-"}</span></div>
-      </div>
-      <div class="tags">
-        ${((camp?.categorias || []).length ? camp.categorias : (categoria ? [categoria] : [])).map(c => `<div class="tag">${c}</div>`).join("")}
-      </div>
-    </div>
-  `;
-}
-function renderClassificacao(){
-  const area = document.getElementById("areaTabela");
-  const { campeonato, categoria } = getFiltros();
-
-  const jogosFiltrados = jogos.filter(j =>
-    j.status === "sumula_enviada" &&
-    (!campeonato || j.campeonato === campeonato) &&
-    (!categoria || j.categoria === categoria)
-  );
-
-  atualizarTitulo(campeonato, categoria);
-
-  if(jogosFiltrados.length === 0){
-    area.innerHTML = `<div class="vazio">Nenhum jogo finalizado para montar a classificação.</div>`;
-    return;
-  }
-
-  const tabela = {};
-
-  jogosFiltrados.forEach(j => {
-    if(!tabela[j.timeA]) tabela[j.timeA] = criarTime(j.timeA);
-    if(!tabela[j.timeB]) tabela[j.timeB] = criarTime(j.timeB);
-
-    const a = tabela[j.timeA];
-    const b = tabela[j.timeB];
-
-    const golsA = Number(j.golsA || 0);
-    const golsB = Number(j.golsB || 0);
-
-    a.jogos++;
-    b.jogos++;
-
-    a.gp += golsA;
-    a.gc += golsB;
-    a.sg = a.gp - a.gc;
-
-    b.gp += golsB;
-    b.gc += golsA;
-    b.sg = b.gp - b.gc;
-
-    if(golsA > golsB){
-      a.vitorias++;
-      a.pontos += 3;
-      b.derrotas++;
-    }else if(golsB > golsA){
-      b.vitorias++;
-      b.pontos += 3;
-      a.derrotas++;
-    }else{
-      a.empates++;
-      b.empates++;
-      a.pontos += 1;
-      b.pontos += 1;
+    function normalizarTexto(texto) {
+      return String(texto || "")
+        .trim()
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
     }
-  });
 
-  let lista = Object.values(tabela);
+    async function carregarDados(){
+      const snapJogos = await getDocs(collection(db, "jogos"));
+      jogos = [];
+      snapJogos.forEach(doc => jogos.push({ id: doc.id, ...doc.data() }));
 
-  lista.sort((a,b) => {
-    if(b.pontos !== a.pontos) return b.pontos - a.pontos;
-    if(b.vitorias !== a.vitorias) return b.vitorias - a.vitorias;
-    if(b.sg !== a.sg) return b.sg - a.sg;
-    if(b.gp !== a.gp) return b.gp - a.gp;
-    return a.nome.localeCompare(b.nome, "pt-BR");
-  });
+      const snapTimes = await getDocs(collection(db, "times"));
+      times = [];
+      snapTimes.forEach(doc => times.push({ id: doc.id, ...doc.data() }));
 
-  area.innerHTML = `
-    <div class="box-tabela">
-      <div class="table">
-        <div class="row header">
-          <div class="col-pos">#</div>
-          <div class="col-time">Time</div>
-          <div class="col">P</div>
-          <div class="col">J</div>
-          <div class="col">V</div>
-          <div class="col">E</div>
-          <div class="col">D</div>
-          <div class="col">GP</div>
-          <div class="col">GC</div>
-          <div class="col">SG</div>
-        </div>
+      const snapJogadores = await getDocs(collection(db, "jogadores"));
+      jogadores = [];
+      snapJogadores.forEach(doc => jogadores.push({ id: doc.id, ...doc.data() }));
 
-        ${lista.map((t, index) => `
-          <div class="row">
-            <div class="col-pos">${index + 1}</div>
-            <div class="col-time">
-              <div class="team">
-                <img src="${pegarEscudo(t.nome)}" class="escudo" alt="${t.nome}">
-                ${t.nome}
-              </div>
-            </div>
-            <div class="col">${t.pontos}</div>
-            <div class="col">${t.jogos}</div>
-            <div class="col">${t.vitorias}</div>
-            <div class="col">${t.empates}</div>
-            <div class="col">${t.derrotas}</div>
-            <div class="col">${t.gp}</div>
-            <div class="col">${t.gc}</div>
-            <div class="col">${t.sg}</div>
+      const snapSumulas = await getDocs(collection(db, "sumulas"));
+      sumulas = [];
+      snapSumulas.forEach(doc => sumulas.push({ id: doc.id, ...doc.data() }));
+
+      const snapCampeonatos = await getDocs(collection(db, "campeonatos"));
+      campeonatos = [];
+      snapCampeonatos.forEach(doc => campeonatos.push({ id: doc.id, ...doc.data() }));
+    }
+
+    function pegarEscudo(nome){
+      const time = times.find(t => normalizarTexto(t.nome) === normalizarTexto(nome));
+      return time?.escudo || "logo-liga.jfif";
+    }
+
+    function pegarFotoJogador(nome, timeNome=""){
+      const jogador = jogadores.find(j =>
+        normalizarTexto(j.nome) === normalizarTexto(nome) &&
+        (!timeNome || normalizarTexto(j.time) === normalizarTexto(timeNome))
+      );
+      return jogador?.foto || "";
+    }
+
+    function pegarCampeonato(nome){
+      return campeonatos.find(c => normalizarTexto(c.nome) === normalizarTexto(nome));
+    }
+
+    function preencherFiltros(){
+      const select = document.getElementById("filtroCampeonato");
+
+      const lista = [...new Set(jogos.map(j => j.campeonato).filter(Boolean))]
+        .sort((a,b)=>a.localeCompare(b,"pt-BR"));
+
+      select.innerHTML = `<option value="">Selecione o campeonato</option>`;
+
+      lista.forEach(c => {
+        select.innerHTML += `<option value="${c}">${c}</option>`;
+      });
+    }
+
+    function getFiltros(){
+      return {
+        campeonato: document.getElementById("filtroCampeonato").value,
+        categoria: document.getElementById("filtroCategoria").value
+      };
+    }
+
+    function atualizarTitulo(campeonato, categoria){
+      document.getElementById("tituloTabela").textContent =
+        `Tabela${categoria ? " - " + categoria : ""}${campeonato ? " | " + campeonato : ""}`;
+    }
+
+    function filtrarJogos(){
+      const { campeonato, categoria } = getFiltros();
+
+      return jogos.filter(j =>
+        (!campeonato || j.campeonato === campeonato) &&
+        (!categoria || j.categoria === categoria)
+      );
+    }
+
+    function filtrarSumulas(){
+      const { campeonato, categoria } = getFiltros();
+
+      return sumulas.filter(s =>
+        (!campeonato || s.campeonato === campeonato) &&
+        (!categoria || s.categoria === categoria)
+      );
+    }
+
+    function atualizarHero(){
+      const { campeonato, categoria } = getFiltros();
+      const jogosFiltrados = filtrarJogos();
+      const sumulasFiltradas = filtrarSumulas();
+      const camp = pegarCampeonato(campeonato);
+
+      const timesSet = new Set();
+      jogosFiltrados.forEach(j=>{
+        if(j.timeA) timesSet.add(j.timeA);
+        if(j.timeB) timesSet.add(j.timeB);
+      });
+
+      let gols = 0;
+      sumulasFiltradas.forEach(s=>{
+        gols += Number(s.golsA||0) + Number(s.golsB||0);
+      });
+
+      document.getElementById("heroTitulo").textContent = campeonato || "Tabela da Competição";
+      document.getElementById("heroSub").textContent = categoria
+        ? `Categoria ${categoria}`
+        : "Selecione a categoria";
+
+      document.getElementById("heroTagCategoria").textContent = `Categoria: ${categoria || "-"}`;
+      document.getElementById("heroTagJogos").textContent = `Jogos: ${sumulasFiltradas.length}`;
+      document.getElementById("heroTagTimes").textContent = `Times: ${timesSet.size}`;
+      document.getElementById("heroTagGols").textContent = `Gols: ${gols}`;
+
+      document.getElementById("heroLogo").src = camp?.logo || "logo-liga.jfif";
+    }
+function renderDetalhes(){
+      const area = document.getElementById("areaTabela");
+      const { campeonato, categoria } = getFiltros();
+      const jogosFiltrados = filtrarJogos();
+      const sumulasFiltradas = filtrarSumulas();
+      const camp = pegarCampeonato(campeonato);
+
+      const timesSet = new Set();
+      jogosFiltrados.forEach(j => {
+        if(j.timeA) timesSet.add(j.timeA);
+        if(j.timeB) timesSet.add(j.timeB);
+      });
+
+      let gols = 0;
+      sumulasFiltradas.forEach(s => {
+        gols += Number(s.golsA || 0) + Number(s.golsB || 0);
+      });
+
+      atualizarTitulo(campeonato, categoria);
+
+      area.innerHTML = `
+        <div class="card">
+          <div class="stats-grid">
+            <div class="stat-card"><strong>Campeonato</strong><span>${campeonato || "-"}</span></div>
+            <div class="stat-card"><strong>Categoria</strong><span>${categoria || "-"}</span></div>
+            <div class="stat-card"><strong>Jogos finalizados</strong><span>${sumulasFiltradas.length}</span></div>
+            <div class="stat-card"><strong>Jogos cadastrados</strong><span>${jogosFiltrados.length}</span></div>
+            <div class="stat-card"><strong>Times</strong><span>${timesSet.size}</span></div>
+            <div class="stat-card"><strong>Gols</strong><span>${gols}</span></div>
+            <div class="stat-card"><strong>Temporada</strong><span>${camp?.temporada || "-"}</span></div>
+            <div class="stat-card"><strong>Status</strong><span>${camp?.status || "-"}</span></div>
           </div>
-        `).join("")}
-      </div>
-    </div>
-  `;
-}
-
-function renderJogos(){
-  const area = document.getElementById("areaTabela");
-  const { campeonato, categoria } = getFiltros();
-  let filtrados = filtrarJogosBase();
-
-  atualizarTitulo(campeonato, categoria);
-
-  if(filtrados.length === 0){
-    area.innerHTML = `<div class="vazio">Nenhum jogo encontrado.</div>`;
-    return;
-  }
-
-  filtrados.sort((a, b) => {
-    const rodadaA = numeroRodada(a.rodada);
-    const rodadaB = numeroRodada(b.rodada);
-    if(rodadaA !== rodadaB) return rodadaA - rodadaB;
-    return (a.data || "").localeCompare(b.data || "");
-  });
-
-  const grupos = {};
-  filtrados.forEach(j => {
-    const chave = j.rodada ? `Rodada ${j.rodada}` : "Sem rodada";
-    if(!grupos[chave]) grupos[chave] = [];
-    grupos[chave].push(j);
-  });
-
-  area.innerHTML = `<div class="card-lista"></div>`;
-  const lista = area.querySelector(".card-lista");
-
-  Object.keys(grupos).forEach(rodada => {
-    const bloco = document.createElement("div");
-    bloco.innerHTML = `<div class="titulo" style="font-size:18px;margin-bottom:10px;">${rodada}</div>`;
-    lista.appendChild(bloco);
-
-    grupos[rodada].forEach(j => {
-      const finalizado = j.status === "sumula_enviada";
-      const placar = finalizado
-        ? `${Number(j.golsA || 0)} x ${Number(j.golsB || 0)}`
-        : "x";
-
-      const camp = pegarCampeonato(j.campeonato || "");
-      const linkCampeonato = camp?.id ? `campeonato-publico.html?id=${camp.id}` : "campeonatos.html";
-
-      const card = document.createElement("div");
-      card.className = "card";
-      card.innerHTML = `
-        <div class="topo-jogo">
-          <div class="times-jogo">
-            <div class="time-jogo">
-              <img src="${pegarEscudo(j.timeA)}" class="escudo" alt="${j.timeA}">
-              <span>${j.timeA || "-"}</span>
-            </div>
-
-            <div class="placar">${placar}</div>
-
-            <div class="time-jogo">
-              <img src="${pegarEscudo(j.timeB)}" class="escudo" alt="${j.timeB}">
-              <span>${j.timeB || "-"}</span>
-            </div>
+          <div class="tags">
+            ${((camp?.categorias || []).length ? camp.categorias : (categoria ? [categoria] : [])).map(c => `<div class="tag">${c}</div>`).join("")}
           </div>
-        </div>
-
-        <div class="info">
-          ${formatarDataHora(j.data)}<br>
-          ${j.local || "-"}<br>
-          Campeonato: ${j.campeonato || "-"} | Categoria: ${j.categoria || "-"}
-        </div>
-
-        <div class="status ${finalizado ? "finalizado" : "agendado"}">
-          ${finalizado ? "Finalizado" : "Agendado"}
-        </div>
-
-        <div class="acoes-jogo">
-          ${finalizado ? `<a class="btn-acao btn-sumula" href="sumula-publica.html?id=${j.id}">Ver Súmula</a>` : ""}
-          <a class="btn-acao btn-secundario" href="${linkCampeonato}">Campeonato</a>
         </div>
       `;
-      lista.appendChild(card);
-    });
-  });
-}
+    }
 
+    function criarLinhaClassificacao(nome){
+      return {
+        nome,
+        pontos: 0,
+        jogos: 0,
+        vitorias: 0,
+        empates: 0,
+        derrotas: 0,
+        gp: 0,
+        gc: 0,
+        sg: 0
+      };
+    }
+
+    function renderClassificacao(){
+      const area = document.getElementById("areaTabela");
+      const { campeonato, categoria } = getFiltros();
+
+      const jogosFiltrados = jogos.filter(j =>
+        j.status === "sumula_enviada" &&
+        (!campeonato || j.campeonato === campeonato) &&
+        (!categoria || j.categoria === categoria)
+      );
+
+      atualizarTitulo(campeonato, categoria);
+
+      if(!jogosFiltrados.length){
+        area.innerHTML = `<div class="vazio">Nenhum jogo finalizado para montar a classificação.</div>`;
+        return;
+      }
+
+      const tabela = {};
+
+      jogosFiltrados.forEach(j => {
+        if(!tabela[j.timeA]) tabela[j.timeA] = criarLinhaClassificacao(j.timeA);
+        if(!tabela[j.timeB]) tabela[j.timeB] = criarLinhaClassificacao(j.timeB);
+
+        const a = tabela[j.timeA];
+        const b = tabela[j.timeB];
+
+        const golsA = Number(j.golsA || 0);
+        const golsB = Number(j.golsB || 0);
+
+        a.jogos++;
+        b.jogos++;
+
+        a.gp += golsA;
+        a.gc += golsB;
+        a.sg = a.gp - a.gc;
+
+        b.gp += golsB;
+        b.gc += golsA;
+        b.sg = b.gp - b.gc;
+
+        if(golsA > golsB){
+          a.vitorias++;
+          a.pontos += 3;
+          b.derrotas++;
+        }else if(golsB > golsA){
+          b.vitorias++;
+          b.pontos += 3;
+          a.derrotas++;
+        }else{
+          a.empates++;
+          b.empates++;
+          a.pontos += 1;
+          b.pontos += 1;
+        }
+      });
+
+      const lista = Object.values(tabela).sort((a,b) => {
+        if(b.pontos !== a.pontos) return b.pontos - a.pontos;
+        if(b.vitorias !== a.vitorias) return b.vitorias - a.vitorias;
+        if(b.sg !== a.sg) return b.sg - a.sg;
+        if(b.gp !== a.gp) return b.gp - a.gp;
+        return a.nome.localeCompare(b.nome, "pt-BR");
+      });
+
+      area.innerHTML = `
+        <div class="box-tabela">
+          <div class="table">
+            <div class="row header">
+              <div class="col-pos">#</div>
+              <div class="col-time">Time</div>
+              <div class="col">P</div>
+              <div class="col">J</div>
+              <div class="col">V</div>
+              <div class="col">E</div>
+              <div class="col">D</div>
+              <div class="col">GP</div>
+              <div class="col">GC</div>
+              <div class="col">SG</div>
+            </div>
+
+            ${lista.map((t, index) => `
+              <div class="row">
+                <div class="col-pos">${index + 1}</div>
+                <div class="col-time">
+                  <div class="team">
+                    <img src="${pegarEscudo(t.nome)}" class="escudo" alt="${t.nome}">
+                    ${t.nome}
+                  </div>
+                </div>
+                <div class="col">${t.pontos}</div>
+                <div class="col">${t.jogos}</div>
+                <div class="col">${t.vitorias}</div>
+                <div class="col">${t.empates}</div>
+                <div class="col">${t.derrotas}</div>
+                <div class="col">${t.gp}</div>
+                <div class="col">${t.gc}</div>
+                <div class="col">${t.sg}</div>
+              </div>
+            `).join("")}
+          </div>
+        </div>
+      `;
+    }
+
+    function formatarDataHora(dataString){
+      if(!dataString) return "-";
+      const data = new Date(dataString);
+      if(isNaN(data.getTime())) return dataString;
+
+      const dia = String(data.getDate()).padStart(2, "0");
+      const mes = String(data.getMonth() + 1).padStart(2, "0");
+      const ano = data.getFullYear();
+      const hora = String(data.getHours()).padStart(2, "0");
+      const minuto = String(data.getMinutes()).padStart(2, "0");
+
+      return `${dia}/${mes}/${ano} - ${hora}:${minuto}`;
+    }
+
+    function numeroRodada(valor){
+      if(valor === undefined || valor === null || valor === "") return 999999;
+      const texto = String(valor);
+      const numero = parseInt(texto.replace(/\D/g, ""), 10);
+      return isNaN(numero) ? 999999 : numero;
+    }
+
+    function renderJogos(){
+      const area = document.getElementById("areaTabela");
+      const { campeonato, categoria } = getFiltros();
+      let filtrados = filtrarJogos();
+
+      atualizarTitulo(campeonato, categoria);
+
+      if(!filtrados.length){
+        area.innerHTML = `<div class="vazio">Nenhum jogo encontrado.</div>`;
+        return;
+      }
+
+      filtrados.sort((a, b) => {
+        const rodadaA = numeroRodada(a.rodada);
+        const rodadaB = numeroRodada(b.rodada);
+        if(rodadaA !== rodadaB) return rodadaA - rodadaB;
+        return (a.data || "").localeCompare(b.data || "");
+      });
+
+      const grupos = {};
+      filtrados.forEach(j => {
+        const chave = j.rodada ? `Rodada ${j.rodada}` : "Sem rodada";
+        if(!grupos[chave]) grupos[chave] = [];
+        grupos[chave].push(j);
+      });
+
+      area.innerHTML = `<div class="card-lista"></div>`;
+      const lista = area.querySelector(".card-lista");
+
+      Object.keys(grupos).forEach(rodada => {
+        const bloco = document.createElement("div");
+        bloco.innerHTML = `<div class="titulo-secao" style="font-size:18px;margin-bottom:10px;">${rodada}</div>`;
+        lista.appendChild(bloco);
+
+        grupos[rodada].forEach(j => {
+          const finalizado = j.status === "sumula_enviada";
+          const placar = finalizado
+            ? `${Number(j.golsA || 0)} x ${Number(j.golsB || 0)}`
+            : "x";
+
+          const camp = pegarCampeonato(j.campeonato || "");
+          const linkCampeonato = camp?.id ? `campeonato-publico.html?id=${camp.id}` : "campeonatos.html";
+
+          const card = document.createElement("div");
+          card.className = "card";
+          card.innerHTML = `
+            <div class="topo-jogo">
+              <div class="times-jogo">
+                <div class="time-jogo">
+                  <img src="${pegarEscudo(j.timeA)}" class="escudo" alt="${j.timeA}">
+                  <span>${j.timeA || "-"}</span>
+                </div>
+
+                <div class="placar">${placar}</div>
+
+                <div class="time-jogo">
+                  <img src="${pegarEscudo(j.timeB)}" class="escudo" alt="${j.timeB}">
+                  <span>${j.timeB || "-"}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="info">
+              ${formatarDataHora(j.data)}<br>
+              ${j.local || "-"}<br>
+              Campeonato: ${j.campeonato || "-"} | Categoria: ${j.categoria || "-"}
+            </div>
+
+            <div class="status ${finalizado ? "finalizado" : "agendado"}">
+              ${finalizado ? "Finalizado" : "Agendado"}
+            </div>
+
+            <div class="acoes-jogo">
+              ${finalizado ? `<a class="btn-acao btn-sumula" href="sumula-publica.html?id=${j.id}">Ver Súmula</a>` : ""}
+              <a class="btn-acao btn-secundario" href="${linkCampeonato}">Campeonato</a>
+            </div>
+          `;
+          lista.appendChild(card);
+        });
+      });
+    }
 function renderArtilharia(){
-  const area = document.getElementById("areaTabela");
-  const { campeonato, categoria } = getFiltros();
-  const sumulasFiltradas = filtrarSumulasBase();
+      const area = document.getElementById("areaTabela");
+      const { campeonato, categoria } = getFiltros();
+      const sumulasFiltradas = filtrarSumulas();
 
-  atualizarTitulo(campeonato, categoria);
+      atualizarTitulo(campeonato, categoria);
 
-  if(sumulasFiltradas.length === 0){
-    area.innerHTML = `<div class="vazio">Nenhuma súmula encontrada para montar a artilharia.</div>`;
-    return;
-  }
+      if(!sumulasFiltradas.length){
+        area.innerHTML = `<div class="vazio">Nenhuma súmula encontrada para montar a artilharia.</div>`;
+        return;
+      }
 
-  const ranking = {};
+      const ranking = {};
 
-  function adicionarGol(item, timeNome){
-    if(!item || item.tipo !== "gol") return;
+      function adicionarGol(item, timeNome){
+        if(!item || item.tipo !== "gol") return;
 
-    const chave = `${normalizarTexto(item.nome)}|${normalizarTexto(timeNome)}`;
-    if(!ranking[chave]){
-      ranking[chave] = {
-        nome: item.nome || "Sem nome",
-        time: timeNome || "-",
-        gols: 0
-      };
+        const chave = `${normalizarTexto(item.nome)}|${normalizarTexto(timeNome)}`;
+        if(!ranking[chave]){
+          ranking[chave] = {
+            nome: item.nome || "Sem nome",
+            time: timeNome || "-",
+            gols: 0
+          };
+        }
+
+        ranking[chave].gols += 1;
+      }
+
+      sumulasFiltradas.forEach(s => {
+        (s.golsDetalhadosA || []).forEach(g => adicionarGol(g, s.timeA));
+        (s.golsDetalhadosB || []).forEach(g => adicionarGol(g, s.timeB));
+      });
+
+      let lista = Object.values(ranking).filter(r => r.gols > 0);
+      lista.sort((a,b) => b.gols - a.gols || a.nome.localeCompare(b.nome, "pt-BR"));
+
+      if(!lista.length){
+        area.innerHTML = `<div class="vazio">Nenhum gol registrado nessa categoria.</div>`;
+        return;
+      }
+
+      area.innerHTML = `
+        <div class="card-lista">
+          ${lista.map((jogador, index) => `
+            <div class="linha-ranking">
+              <div class="player">
+                <div class="pos">${index + 1}</div>
+                <img src="${pegarFotoJogador(jogador.nome, jogador.time)}" class="photo" onerror="this.src=''">
+                <div>
+                  <div>${jogador.nome}</div>
+                  <div class="subinfo">${jogador.time}</div>
+                </div>
+              </div>
+              <div class="numero-destaque">${jogador.gols}</div>
+            </div>
+          `).join("")}
+        </div>
+      `;
     }
 
-    ranking[chave].gols += 1;
-  }
+    function renderCartoes(){
+      const area = document.getElementById("areaTabela");
+      const { campeonato, categoria } = getFiltros();
+      const sumulasFiltradas = filtrarSumulas();
 
-  sumulasFiltradas.forEach(s => {
-    (s.golsDetalhadosA || []).forEach(g => adicionarGol(g, s.timeA));
-    (s.golsDetalhadosB || []).forEach(g => adicionarGol(g, s.timeB));
-  });
+      atualizarTitulo(campeonato, categoria);
 
-  let lista = Object.values(ranking).filter(r => r.gols > 0);
-  lista.sort((a,b) => b.gols - a.gols || a.nome.localeCompare(b.nome, "pt-BR"));
+      if(!sumulasFiltradas.length){
+        area.innerHTML = `<div class="vazio">Nenhuma súmula encontrada para montar os cartões.</div>`;
+        return;
+      }
 
-  if(!lista.length){
-    area.innerHTML = `<div class="vazio">Nenhum gol registrado nessa categoria.</div>`;
-    return;
-  }
+      const ranking = {};
 
-  area.innerHTML = `
-    <div class="card-lista">
-      ${lista.map((jogador, index) => `
-        <div class="linha-ranking">
-          <div class="player">
-            <div class="pos">${index + 1}</div>
-            <img src="${pegarFotoJogador(jogador.nome, jogador.time)}" class="photo" onerror="this.src=''">
-            <div>
-              <div>${jogador.nome}</div>
-              <div class="subinfo">${jogador.time}</div>
-            </div>
-          </div>
-          <div class="numero-destaque">${jogador.gols}</div>
-        </div>
-      `).join("")}
-    </div>
-  `;
-}
-function renderCartoes(){
-  const area = document.getElementById("areaTabela");
-  const { campeonato, categoria } = getFiltros();
-  const sumulasFiltradas = filtrarSumulasBase();
+      function adicionarCartao(item, timeNome, tipo){
+        if(!item) return;
 
-  atualizarTitulo(campeonato, categoria);
+        const chave = `${normalizarTexto(item.nome)}|${normalizarTexto(timeNome)}`;
+        if(!ranking[chave]){
+          ranking[chave] = {
+            nome: item.nome || "Sem nome",
+            time: timeNome || "-",
+            amarelos: 0,
+            vermelhos: 0
+          };
+        }
 
-  if(sumulasFiltradas.length === 0){
-    area.innerHTML = `<div class="vazio">Nenhuma súmula encontrada para montar os cartões.</div>`;
-    return;
-  }
+        if(tipo === "amarelo") ranking[chave].amarelos += 1;
+        if(tipo === "vermelho") ranking[chave].vermelhos += 1;
+      }
 
-  const ranking = {};
+      sumulasFiltradas.forEach(s => {
+        (s.amarelosDetalhadosA || []).forEach(c => adicionarCartao(c, s.timeA, "amarelo"));
+        (s.amarelosDetalhadosB || []).forEach(c => adicionarCartao(c, s.timeB, "amarelo"));
+        (s.vermelhosDetalhadosA || []).forEach(c => adicionarCartao(c, s.timeA, "vermelho"));
+        (s.vermelhosDetalhadosB || []).forEach(c => adicionarCartao(c, s.timeB, "vermelho"));
+      });
 
-  function adicionarCartao(item, timeNome, tipo){
-    if(!item) return;
+      let lista = Object.values(ranking).filter(r => r.amarelos > 0 || r.vermelhos > 0);
+      lista.sort((a,b) => {
+        if(b.amarelos !== a.amarelos) return b.amarelos - a.amarelos;
+        if(b.vermelhos !== a.vermelhos) return b.vermelhos - a.vermelhos;
+        return a.nome.localeCompare(b.nome, "pt-BR");
+      });
 
-    const chave = `${normalizarTexto(item.nome)}|${normalizarTexto(timeNome)}`;
-    if(!ranking[chave]){
-      ranking[chave] = {
-        nome: item.nome || "Sem nome",
-        time: timeNome || "-",
-        amarelos: 0,
-        vermelhos: 0
-      };
-    }
+      if(!lista.length){
+        area.innerHTML = `<div class="vazio">Nenhum cartão registrado nessa categoria.</div>`;
+        return;
+      }
 
-    if(tipo === "amarelo") ranking[chave].amarelos += 1;
-    if(tipo === "vermelho") ranking[chave].vermelhos += 1;
-  }
-
-  sumulasFiltradas.forEach(s => {
-    (s.amarelosDetalhadosA || []).forEach(c => adicionarCartao(c, s.timeA, "amarelo"));
-    (s.amarelosDetalhadosB || []).forEach(c => adicionarCartao(c, s.timeB, "amarelo"));
-    (s.vermelhosDetalhadosA || []).forEach(c => adicionarCartao(c, s.timeA, "vermelho"));
-    (s.vermelhosDetalhadosB || []).forEach(c => adicionarCartao(c, s.timeB, "vermelho"));
-  });
-
-  let lista = Object.values(ranking).filter(r => r.amarelos > 0 || r.vermelhos > 0);
-  lista.sort((a,b) => {
-    if(b.amarelos !== a.amarelos) return b.amarelos - a.amarelos;
-    if(b.vermelhos !== a.vermelhos) return b.vermelhos - a.vermelhos;
-    return a.nome.localeCompare(b.nome, "pt-BR");
-  });
-
-  if(!lista.length){
-    area.innerHTML = `<div class="vazio">Nenhum cartão registrado nessa categoria.</div>`;
-    return;
-  }
-
-  area.innerHTML = `
-    <div class="card-lista">
-      ${lista.map((jogador, index) => `
-        <div class="linha-ranking">
-          <div class="player">
-            <div class="pos">${index + 1}</div>
-            <img src="${pegarFotoJogador(jogador.nome, jogador.time)}" class="photo" onerror="this.src=''">
-            <div>
-              <div>${jogador.nome}</div>
-              <div class="subinfo">${jogador.time}</div>
-            </div>
-          </div>
-          <div style="text-align:right;">
-            <div class="numero-destaque">${jogador.amarelos}</div>
-            <div class="subinfo">Amarelos</div>
-            <div class="numero-destaque" style="margin-top:6px;">${jogador.vermelhos}</div>
-            <div class="subinfo">Vermelhos</div>
-          </div>
-        </div>
-      `).join("")}
-    </div>
-  `;
-}
-
-function renderTimes(){
-  const area = document.getElementById("areaTabela");
-  const { campeonato, categoria } = getFiltros();
-  const jogosFiltrados = filtrarJogosBase();
-  const nomes = new Set();
-
-  jogosFiltrados.forEach(j => {
-    if(j.timeA) nomes.add(j.timeA);
-    if(j.timeB) nomes.add(j.timeB);
-  });
-
-  const lista = Array.from(nomes).sort((a,b)=>a.localeCompare(b,"pt-BR"));
-
-  atualizarTitulo(campeonato, categoria);
-
-  if(!lista.length){
-    area.innerHTML = `<div class="vazio">Nenhum time encontrado nessa categoria.</div>`;
-    return;
-  }
-
-  area.innerHTML = `
-    <div class="times-grid">
-      ${lista.map(nome => {
-        const time = times.find(t => normalizarTexto(t.nome) === normalizarTexto(nome));
-        return `
-          <div class="time-card">
-            <div class="time-card-top">
-              <img src="${time?.escudo || 'logo-liga.jfif'}" alt="${nome}">
-              <div>
-                <div style="font-weight:bold;">${nome}</div>
-                <div class="subinfo">${categoria || "-"}</div>
+      area.innerHTML = `
+        <div class="card-lista">
+          ${lista.map((jogador, index) => `
+            <div class="linha-ranking">
+              <div class="player">
+                <div class="pos">${index + 1}</div>
+                <img src="${pegarFotoJogador(jogador.nome, jogador.time)}" class="photo" onerror="this.src=''">
+                <div>
+                  <div>${jogador.nome}</div>
+                  <div class="subinfo">${jogador.time}</div>
+                </div>
+              </div>
+              <div style="text-align:right;">
+                <div class="numero-destaque">${jogador.amarelos}</div>
+                <div class="subinfo">Amarelos</div>
+                <div class="numero-destaque" style="margin-top:6px;">${jogador.vermelhos}</div>
+                <div class="subinfo">Vermelhos</div>
               </div>
             </div>
-            <div class="tags">
-              ${((time?.categorias || []).length ? time.categorias : (categoria ? [categoria] : [])).map(c => `<div class="tag">${c}</div>`).join("")}
-            </div>
-          </div>
-        `;
-      }).join("")}
-    </div>
-  `;
-}
-
-function renderSuspensos(){
-  const area = document.getElementById("areaTabela");
-  const { campeonato, categoria } = getFiltros();
-  const sumulasFiltradas = filtrarSumulasBase();
-  const camp = pegarCampeonato(campeonato);
-  const regras = camp?.regrasCartoes || {};
-
-  const amarelosParaSuspensao = Number(regras.amarelosParaSuspensao || 3);
-  const jogosSuspensaoAmarelos = Number(regras.jogosSuspensaoAmarelos || 1);
-  const jogosSuspensaoVermelhoSegundoAmarelo = Number(regras.jogosSuspensaoVermelhoSegundoAmarelo || 1);
-  const jogosSuspensaoVermelhoDireto = Number(regras.jogosSuspensaoVermelhoDireto || 2);
-
-  atualizarTitulo(campeonato, categoria);
-
-  if(sumulasFiltradas.length === 0){
-    area.innerHTML = `<div class="vazio">Nenhuma súmula encontrada para calcular suspensos.</div>`;
-    return;
-  }
-
-  const controle = {};
-
-  function garantirJogador(nome, time){
-    const chave = `${normalizarTexto(nome)}|${normalizarTexto(time)}`;
-    if(!controle[chave]){
-      controle[chave] = {
-        nome: nome || "Sem nome",
-        time: time || "-",
-        amarelos: 0,
-        vermelhosDiretos: 0,
-        segundosAmarelos: 0,
-        suspensaoAmarelos: 0,
-        suspensaoVermelhoDireto: 0,
-        suspensaoSegundoAmarelo: 0
-      };
+          `).join("")}
+        </div>
+      `;
     }
-    return controle[chave];
-  }
 
-  sumulasFiltradas.forEach(s => {
-    (s.amarelosDetalhadosA || []).forEach(item => {
-      if(!item?.nome) return;
-      const jogador = garantirJogador(item.nome, s.timeA);
-      jogador.amarelos += 1;
-    });
+    function renderTimes(){
+      const area = document.getElementById("areaTabela");
+      const { campeonato, categoria } = getFiltros();
+      const jogosFiltrados = filtrarJogos();
+      const nomes = new Set();
 
-    (s.amarelosDetalhadosB || []).forEach(item => {
-      if(!item?.nome) return;
-      const jogador = garantirJogador(item.nome, s.timeB);
-      jogador.amarelos += 1;
-    });
+      jogosFiltrados.forEach(j => {
+        if(j.timeA) nomes.add(j.timeA);
+        if(j.timeB) nomes.add(j.timeB);
+      });
 
-    (s.vermelhosDetalhadosA || []).forEach(item => {
-      if(!item?.nome) return;
-      const jogador = garantirJogador(item.nome, s.timeA);
-      const tipo = normalizarTexto(item.tipo || item.motivo || "");
+      const lista = Array.from(nomes).sort((a,b)=>a.localeCompare(b,"pt-BR"));
 
-      if(tipo.includes("segundo") || tipo.includes("2 amarelo") || tipo.includes("2º amarelo")){
-        jogador.segundosAmarelos += 1;
-      }else{
-        jogador.vermelhosDiretos += 1;
+      atualizarTitulo(campeonato, categoria);
+
+      if(!lista.length){
+        area.innerHTML = `<div class="vazio">Nenhum time encontrado nessa categoria.</div>`;
+        return;
       }
-    });
 
-    (s.vermelhosDetalhadosB || []).forEach(item => {
-      if(!item?.nome) return;
-      const jogador = garantirJogador(item.nome, s.timeB);
-      const tipo = normalizarTexto(item.tipo || item.motivo || "");
+      area.innerHTML = `
+        <div class="times-grid">
+          ${lista.map(nome => {
+            const time = times.find(t => normalizarTexto(t.nome) === normalizarTexto(nome));
+            return `
+              <div class="time-card">
+                <div class="time-card-top">
+                  <img src="${time?.escudo || 'logo-liga.jfif'}" alt="${nome}">
+                  <div>
+                    <div style="font-weight:bold;">${nome}</div>
+                    <div class="subinfo">${categoria || "-"}</div>
+                  </div>
+                </div>
+                <div class="tags">
+                  ${((time?.categorias || []).length ? time.categorias : (categoria ? [categoria] : [])).map(c => `<div class="tag">${c}</div>`).join("")}
+                </div>
+              </div>
+            `;
+          }).join("")}
+        </div>
+      `;
+    }
 
-      if(tipo.includes("segundo") || tipo.includes("2 amarelo") || tipo.includes("2º amarelo")){
-        jogador.segundosAmarelos += 1;
-      }else{
-        jogador.vermelhosDiretos += 1;
+    function renderSuspensos(){
+      const area = document.getElementById("areaTabela");
+      const { campeonato, categoria } = getFiltros();
+      const sumulasFiltradas = filtrarSumulas();
+      const camp = pegarCampeonato(campeonato);
+      const regras = camp?.regrasCartoes || {};
+
+      const amarelosParaSuspensao = Number(regras.amarelosParaSuspensao || 3);
+      const jogosSuspensaoAmarelos = Number(regras.jogosSuspensaoAmarelos || 1);
+      const jogosSuspensaoVermelhoSegundoAmarelo = Number(regras.jogosSuspensaoVermelhoSegundoAmarelo || 1);
+      const jogosSuspensaoVermelhoDireto = Number(regras.jogosSuspensaoVermelhoDireto || 2);
+
+      atualizarTitulo(campeonato, categoria);
+
+      if(!sumulasFiltradas.length){
+        area.innerHTML = `<div class="vazio">Nenhuma súmula encontrada para calcular suspensos.</div>`;
+        return;
       }
-    });
-  });
 
-  const lista = Object.values(controle).map(j => {
-    j.suspensaoAmarelos = Math.floor(j.amarelos / amarelosParaSuspensao) * jogosSuspensaoAmarelos;
-    j.suspensaoVermelhoDireto = j.vermelhosDiretos * jogosSuspensaoVermelhoDireto;
-    j.suspensaoSegundoAmarelo = j.segundosAmarelos * jogosSuspensaoVermelhoSegundoAmarelo;
-    j.totalSuspensoes = j.suspensaoAmarelos + j.suspensaoVermelhoDireto + j.suspensaoSegundoAmarelo;
-    return j;
-  }).filter(j => j.totalSuspensoes > 0);
+      const controle = {};
 
-  lista.sort((a,b) => {
-    if(b.totalSuspensoes !== a.totalSuspensoes) return b.totalSuspensoes - a.totalSuspensoes;
-    if(b.amarelos !== a.amarelos) return b.amarelos - a.amarelos;
-    return a.nome.localeCompare(b.nome, "pt-BR");
-  });
+      function garantirJogador(nome, time){
+        const chave = `${normalizarTexto(nome)}|${normalizarTexto(time)}`;
+        if(!controle[chave]){
+          controle[chave] = {
+            nome: nome || "Sem nome",
+            time: time || "-",
+            amarelos: 0,
+            vermelhosDiretos: 0,
+            segundosAmarelos: 0,
+            suspensaoAmarelos: 0,
+            suspensaoVermelhoDireto: 0,
+            suspensaoSegundoAmarelo: 0
+          };
+        }
+        return controle[chave];
+      }
 
-  if(!lista.length){
-    area.innerHTML = `<div class="vazio">Nenhum suspenso encontrado nessa categoria.</div>`;
-    return;
-  }
+      sumulasFiltradas.forEach(s => {
+        (s.amarelosDetalhadosA || []).forEach(item => {
+          if(!item?.nome) return;
+          const jogador = garantirJogador(item.nome, s.timeA);
+          jogador.amarelos += 1;
+        });
 
-  area.innerHTML = `
-    <div class="card-lista">
-      ${lista.map((jogador, index) => `
-        <div class="linha-ranking">
-          <div class="player">
-            <div class="pos">${index + 1}</div>
-            <img src="${pegarFotoJogador(jogador.nome, jogador.time)}" class="photo" onerror="this.src=''">
-            <div>
-              <div>${jogador.nome}</div>
-              <div class="subinfo">${jogador.time}</div>
-              <div class="subinfo">
-                ${jogador.amarelos} amarelo(s) •
-                ${jogador.vermelhosDiretos} vermelho(s) direto(s) •
-                ${jogador.segundosAmarelos} por 2º amarelo
+        (s.amarelosDetalhadosB || []).forEach(item => {
+          if(!item?.nome) return;
+          const jogador = garantirJogador(item.nome, s.timeB);
+          jogador.amarelos += 1;
+        });
+
+        (s.vermelhosDetalhadosA || []).forEach(item => {
+          if(!item?.nome) return;
+          const jogador = garantirJogador(item.nome, s.timeA);
+          const tipo = normalizarTexto(item.tipo || item.motivo || "");
+
+          if(tipo.includes("segundo") || tipo.includes("2 amarelo") || tipo.includes("2º amarelo")){
+            jogador.segundosAmarelos += 1;
+          }else{
+            jogador.vermelhosDiretos += 1;
+          }
+        });
+
+        (s.vermelhosDetalhadosB || []).forEach(item => {
+          if(!item?.nome) return;
+          const jogador = garantirJogador(item.nome, s.timeB);
+          const tipo = normalizarTexto(item.tipo || item.motivo || "");
+
+          if(tipo.includes("segundo") || tipo.includes("2 amarelo") || tipo.includes("2º amarelo")){
+            jogador.segundosAmarelos += 1;
+          }else{
+            jogador.vermelhosDiretos += 1;
+          }
+        });
+      });
+
+      const lista = Object.values(controle).map(j => {
+        j.suspensaoAmarelos = Math.floor(j.amarelos / amarelosParaSuspensao) * jogosSuspensaoAmarelos;
+        j.suspensaoVermelhoDireto = j.vermelhosDiretos * jogosSuspensaoVermelhoDireto;
+        j.suspensaoSegundoAmarelo = j.segundosAmarelos * jogosSuspensaoVermelhoSegundoAmarelo;
+        j.totalSuspensoes = j.suspensaoAmarelos + j.suspensaoVermelhoDireto + j.suspensaoSegundoAmarelo;
+        return j;
+      }).filter(j => j.totalSuspensoes > 0);
+
+      lista.sort((a,b) => {
+        if(b.totalSuspensoes !== a.totalSuspensoes) return b.totalSuspensoes - a.totalSuspensoes;
+        if(b.amarelos !== a.amarelos) return b.amarelos - a.amarelos;
+        return a.nome.localeCompare(b.nome, "pt-BR");
+      });
+
+      if(!lista.length){
+        area.innerHTML = `<div class="vazio">Nenhum suspenso encontrado nessa categoria.</div>`;
+        return;
+      }
+
+      area.innerHTML = `
+        <div class="card-lista">
+          ${lista.map((jogador, index) => `
+            <div class="linha-ranking">
+              <div class="player">
+                <div class="pos">${index + 1}</div>
+                <img src="${pegarFotoJogador(jogador.nome, jogador.time)}" class="photo" onerror="this.src=''">
+                <div>
+                  <div>${jogador.nome}</div>
+                  <div class="subinfo">${jogador.time}</div>
+                  <div class="subinfo">
+                    ${jogador.amarelos} amarelo(s) •
+                    ${jogador.vermelhosDiretos} vermelho(s) direto(s) •
+                    ${jogador.segundosAmarelos} por 2º amarelo
+                  </div>
+                </div>
+              </div>
+              <div style="text-align:right;">
+                <div class="numero-destaque">${jogador.totalSuspensoes}</div>
+                <div class="subinfo">Jogo(s) de suspensão</div>
               </div>
             </div>
-          </div>
-          <div style="text-align:right;">
-            <div class="numero-destaque">${jogador.totalSuspensoes}</div>
-            <div class="subinfo">Jogo(s) de suspensão</div>
-          </div>
+          `).join("")}
         </div>
-      `).join("")}
-    </div>
-  `;
-}
+      `;
+    }
 
-window.trocarAba = function(nome, botao){
-  abaAtual = nome;
-  document.querySelectorAll(".aba").forEach(b => b.classList.remove("ativa"));
-  botao.classList.add("ativa");
-  atualizarTela();
-};
+    window.trocarAba = function(nome, botao){
+      abaAtual = nome;
+      document.querySelectorAll(".aba").forEach(b => b.classList.remove("ativa"));
+      botao.classList.add("ativa");
+      atualizarTela();
+    };
 
-window.atualizarTela = function(){
-  atualizarHero();
+    window.atualizarTela = function(){
+      const { campeonato, categoria } = getFiltros();
+      atualizarHero();
 
-  if(abaAtual === "detalhes") renderDetalhes();
-  if(abaAtual === "classificacao") renderClassificacao();
-  if(abaAtual === "jogos") renderJogos();
-  if(abaAtual === "times") renderTimes();
-  if(abaAtual === "artilharia") renderArtilharia();
-  if(abaAtual === "cartoes") renderCartoes();
-  if(abaAtual === "suspensos") renderSuspensos();
-};
+      if(abaAtual === "detalhes") renderDetalhes();
+      if(abaAtual === "classificacao") renderClassificacao();
+      if(abaAtual === "jogos") renderJogos();
+      if(abaAtual === "times") renderTimes();
+      if(abaAtual === "artilharia") renderArtilharia();
+      if(abaAtual === "cartoes") renderCartoes();
+      if(abaAtual === "suspensos") renderSuspensos();
+    };
 
-await carregarDados();
-preencherFiltros();
-aplicarFiltrosDaURL();
-atualizarTela();
-</script>
+    await carregarDados();
+    preencherFiltros();
+    atualizarTela();
+  </script>
 
 </body>
 </html>
