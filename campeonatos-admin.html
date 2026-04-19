@@ -36,6 +36,7 @@
         linear-gradient(rgba(11,31,58,.88), rgba(11,31,58,.94)),
         url("fundo.png") center/cover fixed no-repeat;
       color:var(--white);
+      min-height:100vh;
     }
 
     a{
@@ -149,7 +150,7 @@
       align-items:center;
       gap:8px;
       background:var(--gold);
-      color:black;
+      color:#111;
       padding:11px 16px;
       border-radius:10px;
       font-weight:700;
@@ -271,12 +272,12 @@
 
     .btn-save{
       background:var(--gold);
-      color:black;
+      color:#111;
     }
 
     .btn-cancel{
       background:#1a3f73;
-      color:white;
+      color:#fff;
     }
 
     .msg{
@@ -351,7 +352,7 @@
     .nome-campeonato{
       font-weight:700;
       font-size:18px;
-      color:#ffffff;
+      color:#fff;
     }
 
     .item-info small{
@@ -420,17 +421,17 @@
 
     .btn-view{
       background:#1a3f73;
-      color:white;
+      color:#fff;
     }
 
     .btn-edit{
       background:var(--gold);
-      color:black;
+      color:#111;
     }
 
     .btn-delete{
       background:var(--danger);
-      color:white;
+      color:#fff;
     }
 
     .vazio{
@@ -823,8 +824,8 @@ function montarStatus(status){
         if(busca){
           campeonatosFiltrados = campeonatosFiltrados.filter(item =>
             (item.nome || "").toLowerCase().includes(busca) ||
-            (item.temporada || "").toLowerCase().includes(busca) ||
-            (item.status || "").toLowerCase().includes(busca)
+            (String(item.temporada || "")).toLowerCase().includes(busca) ||
+            (String(item.status || "")).toLowerCase().includes(busca)
           );
         }
 
