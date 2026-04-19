@@ -111,16 +111,6 @@
       transform:translateY(-2px);
     }
 
-    .btn-gold{
-      background:var(--gold);
-      color:#111;
-    }
-
-    .btn-gold:hover{
-      filter:brightness(1.04);
-      transform:translateY(-2px);
-    }
-
     .container{
       padding:24px 0 34px;
     }
@@ -210,26 +200,34 @@
       grid-column:1 / -1;
     }
 
-    .checkbox-grid{
-      display:grid;
-      grid-template-columns:repeat(auto-fit, minmax(130px, 1fr));
-      gap:8px;
+    .info-categorias{
       margin-top:10px;
-    }
-
-    .check-item{
       background:#102a52;
-      padding:10px;
-      border-radius:10px;
-      display:flex;
-      align-items:center;
-      gap:8px;
+      border:1px solid rgba(255,255,255,.06);
+      border-radius:12px;
+      padding:14px;
+      color:var(--muted);
+      line-height:1.6;
       font-size:14px;
     }
 
-    .check-item input{
-      width:auto;
-      margin:0;
+    .info-categorias strong{
+      color:var(--gold);
+    }
+
+    .categorias-preview{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-top:10px;
+    }
+
+    .tag{
+      background:#1a3f73;
+      padding:5px 9px;
+      border-radius:999px;
+      font-size:12px;
+      display:inline-block;
     }
 
     .form-actions{
@@ -320,14 +318,6 @@
       margin-top:6px;
     }
 
-    .tag{
-      background:#1a3f73;
-      padding:5px 9px;
-      border-radius:999px;
-      font-size:12px;
-      display:inline-block;
-    }
-
     .actions{
       display:flex;
       gap:8px;
@@ -385,9 +375,9 @@
       padding:22px;
       border-radius:16px;
       text-align:center;
-      max-width:520px;
+      max-width:780px;
       width:100%;
-      max-height:85vh;
+      max-height:88vh;
       overflow:auto;
       border:1px solid var(--gold-line);
       box-shadow:var(--shadow);
@@ -404,8 +394,92 @@
       margin-bottom:8px;
     }
 
-    .modal-actions{
+    .modal-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
       margin-top:16px;
+      text-align:left;
+    }
+
+    .info-box,
+    .stats-box{
+      background:#102a52;
+      border:1px solid rgba(255,255,255,.06);
+      border-radius:14px;
+      padding:14px;
+    }
+
+    .info-box h3,
+    .stats-box h3{
+      color:var(--gold);
+      margin-bottom:10px;
+      font-size:18px;
+    }
+
+    .info-line{
+      color:var(--muted);
+      line-height:1.7;
+      font-size:14px;
+    }
+
+    .stats-grid{
+      display:grid;
+      grid-template-columns:repeat(2, 1fr);
+      gap:10px;
+    }
+
+    .stat-card{
+      background:#0d2346;
+      border-radius:12px;
+      padding:12px;
+      border:1px solid rgba(255,255,255,.06);
+    }
+
+    .stat-card strong{
+      display:block;
+      color:var(--gold);
+      font-size:22px;
+      margin-bottom:4px;
+    }
+
+    .stat-card span{
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.5;
+    }
+
+    .categorias-stats{
+      margin-top:14px;
+      background:#0d2346;
+      border-radius:12px;
+      padding:12px;
+      border:1px solid rgba(255,255,255,.06);
+      text-align:left;
+    }
+
+    .categorias-stats h4{
+      color:var(--gold);
+      margin-bottom:10px;
+      font-size:16px;
+    }
+
+    .categoria-item{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      padding:8px 0;
+      border-bottom:1px solid rgba(255,255,255,.06);
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    .categoria-item:last-child{
+      border-bottom:none;
+    }
+
+    .modal-actions{
+      margin-top:18px;
     }
 
     .modal-actions button{
@@ -429,7 +503,9 @@
         justify-content:center;
       }
 
-      .form-grid{
+      .form-grid,
+      .modal-grid,
+      .stats-grid{
         grid-template-columns:1fr;
       }
 
@@ -491,7 +567,7 @@
 
     <div class="hero">
       <h2>Cadastro de Árbitros</h2>
-      <p>Cadastre, edite, visualize e organize os árbitros da competição com categorias vinculadas.</p>
+      <p>Cadastre, edite, visualize e acompanhe estatísticas dos árbitros da competição.</p>
     </div>
 
     <div class="toolbar">
@@ -522,12 +598,23 @@
           <input id="telefone" placeholder="Telefone">
         </div>
 
-        <div class="full">
+        <div>
           <input id="email" placeholder="Email">
         </div>
 
+        <div>
+          <input id="dataNascimento" type="date" placeholder="Data de nascimento">
+        </div>
+
         <div class="full">
-          <div class="checkbox-grid" id="categoriasGrid"></div>
+          <input id="cidadeNascimento" placeholder="Cidade onde nasceu">
+        </div>
+
+        <div class="full">
+          <div class="info-categorias">
+            <strong>Autorização automática:</strong> todo árbitro cadastrado neste painel já fica autorizado para apitar <strong>todas as categorias</strong>.
+            <div class="categorias-preview" id="categoriasPreview"></div>
+          </div>
         </div>
       </div>
 
@@ -550,7 +637,7 @@
   </div>
 
   <script type="module">
-    import { auth, db } from "./firebase.js";
+    import { db } from "./firebase.js";
     import { collection, addDoc, getDocs, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
     import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 
@@ -558,6 +645,7 @@
 
     let editandoId = null;
     let fotoAtual = "";
+    let categoriasDisponiveis = [];
 
     window.voltarPagina = function(){
       if (window.history.length > 1) {
@@ -566,6 +654,54 @@
         window.location.href = "admin.html";
       }
     };
+
+    function normalizarTexto(texto){
+      return String(texto || "")
+        .trim()
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
+    }
+
+    function calcularIdade(dataNascimento){
+      if(!dataNascimento) return "-";
+
+      const nascimento = new Date(dataNascimento + "T00:00:00");
+      if(isNaN(nascimento.getTime())) return "-";
+
+      const hoje = new Date();
+      let idade = hoje.getFullYear() - nascimento.getFullYear();
+      const mes = hoje.getMonth() - nascimento.getMonth();
+
+      if(mes < 0 || (mes === 0 && hoje.getDate() < nascimento.getDate())){
+        idade--;
+      }
+
+      return idade >= 0 ? idade : "-";
+    }
+
+    function preencherPreviewCategorias(){
+      const box = document.getElementById("categoriasPreview");
+      if(!categoriasDisponiveis.length){
+        box.innerHTML = `<span class="tag">Sem categorias cadastradas</span>`;
+        return;
+      }
+
+      box.innerHTML = categoriasDisponiveis.map(c => `<span class="tag">${c}</span>`).join("");
+    }
+
+    async function carregarCategorias(){
+      categoriasDisponiveis = [];
+      const snap = await getDocs(collection(db,"categorias"));
+
+      snap.forEach(d => {
+        const data = d.data();
+        if(data.nome) categoriasDisponiveis.push(data.nome);
+      });
+
+      categoriasDisponiveis.sort((a,b)=>a.localeCompare(b, "pt-BR"));
+      preencherPreviewCategorias();
+    }
 
     window.toggleFormulario = function(){
       const f = document.getElementById("formulario");
@@ -577,48 +713,60 @@
       document.getElementById("formulario").style.display = "none";
     };
 
-    async function carregarCategorias(){
-      const grid = document.getElementById("categoriasGrid");
-      grid.innerHTML = "";
-
-      const snap = await getDocs(collection(db,"categorias"));
-      let lista = [];
-
-      snap.forEach(d => {
-        const data = d.data();
-        if(data.nome) lista.push(data.nome);
-      });
-
-      lista.sort((a,b)=>a.localeCompare(b, "pt-BR"));
-
-      lista.forEach(nome=>{
-        grid.innerHTML += `
-          <label class="check-item">
-            <input type="checkbox" value="${nome}">${nome}
-          </label>
-        `;
-      });
-    }
-
-    function getCategorias(){
-      return Array.from(document.querySelectorAll('#categoriasGrid input:checked')).map(i=>i.value);
-    }
-
-    function marcarCategorias(categorias){
-      document.querySelectorAll('#categoriasGrid input').forEach(i => {
-        i.checked = (categorias || []).includes(i.value);
-      });
-    }
-
     function limparFormulario(){
       document.getElementById("nome").value = "";
       document.getElementById("foto").value = "";
       document.getElementById("cpf").value = "";
       document.getElementById("telefone").value = "";
       document.getElementById("email").value = "";
-      document.querySelectorAll('#categoriasGrid input').forEach(i => i.checked = false);
+      document.getElementById("dataNascimento").value = "";
+      document.getElementById("cidadeNascimento").value = "";
       editandoId = null;
       fotoAtual = "";
+    }
+
+    function getCategoriasAutomaticas(){
+      return [...categoriasDisponiveis];
+    }
+
+    async function calcularEstatisticasArbitro(nomeArbitro){
+      const snapJogos = await getDocs(collection(db, "jogos"));
+      const snapSumulas = await getDocs(collection(db, "sumulas"));
+
+      let jogosApitados = 0;
+      let amarelos = 0;
+      let vermelhos = 0;
+      const jogosPorCategoria = {};
+
+      snapJogos.forEach(docSnap => {
+        const jogo = docSnap.data();
+        if(normalizarTexto(jogo.arbitro) === normalizarTexto(nomeArbitro)){
+          jogosApitados += 1;
+          const categoria = jogo.categoria || "Sem categoria";
+          jogosPorCategoria[categoria] = (jogosPorCategoria[categoria] || 0) + 1;
+        }
+      });
+
+      snapSumulas.forEach(docSnap => {
+        const sumula = docSnap.data();
+        if(normalizarTexto(sumula.arbitro) === normalizarTexto(nomeArbitro)){
+          amarelos += (sumula.amarelosDetalhadosA || []).length;
+          amarelos += (sumula.amarelosDetalhadosB || []).length;
+          vermelhos += (sumula.vermelhosDetalhadosA || []).length;
+          vermelhos += (sumula.vermelhosDetalhadosB || []).length;
+        }
+      });
+
+      const totalCartoes = amarelos + vermelhos;
+      const mediaCartoes = jogosApitados > 0 ? (totalCartoes / jogosApitados).toFixed(2) : "0.00";
+
+      return {
+        jogosApitados,
+        amarelos,
+        vermelhos,
+        mediaCartoes,
+        jogosPorCategoria
+      };
     }
 
     window.salvar = async function(){
@@ -626,8 +774,10 @@
       const cpf = document.getElementById("cpf").value.trim();
       const telefone = document.getElementById("telefone").value.trim();
       const email = document.getElementById("email").value.trim();
+      const dataNascimento = document.getElementById("dataNascimento").value;
+      const cidadeNascimento = document.getElementById("cidadeNascimento").value.trim();
       const foto = document.getElementById("foto").files[0];
-      const categorias = getCategorias();
+      const categorias = getCategoriasAutomaticas();
 
       if(!nome || !cpf){
         alert("Preencha os campos obrigatórios.");
@@ -642,7 +792,17 @@
         url = await getDownloadURL(refStorage);
       }
 
-      const dados = { nome, cpf, telefone, email, foto:url, categorias };
+      const dados = {
+        nome,
+        cpf,
+        telefone,
+        email,
+        dataNascimento,
+        cidadeNascimento,
+        foto:url,
+        categorias,
+        autorizadoTodasCategorias: true
+      };
 
       if(editandoId){
         await updateDoc(doc(db,"arbitros",editandoId), dados);
@@ -666,9 +826,10 @@
           document.getElementById("cpf").value = a.cpf || "";
           document.getElementById("telefone").value = a.telefone || "";
           document.getElementById("email").value = a.email || "";
+          document.getElementById("dataNascimento").value = a.dataNascimento || "";
+          document.getElementById("cidadeNascimento").value = a.cidadeNascimento || "";
           fotoAtual = a.foto || "";
           editandoId = id;
-          marcarCategorias(a.categorias || []);
         }
       });
 
@@ -686,94 +847,9 @@
     window.ver = async function(id){
       const snap = await getDocs(collection(db,"arbitros"));
 
-      snap.forEach(d=>{
-        if(d.id===id){
+      for (const d of snap.docs){
+        if(d.id === id){
           const a = d.data();
-          const cats = (a.categorias||[]).map(c=>`<span class="tag">${c}</span>`).join("");
-
-          document.getElementById("modalContent").innerHTML = `
-            <img src="${a.foto || 'logo-liga.jfif'}" class="photo" alt="${a.nome || 'Árbitro'}">
-            <h2>${a.nome || ""}</h2>
-            <p>${a.email || "-"}</p>
-            <p>${a.telefone || "-"}</p>
-            <div style="margin-top:10px;">${cats || '<span class="tag">Sem categorias</span>'}</div>
-            <div class="modal-actions">
-              <button onclick="fechar()">
-                <i class="fa-solid fa-xmark"></i> Fechar
-              </button>
-            </div>
-          `;
-
-          document.getElementById("modal").style.display = "flex";
-        }
-      });
-    };
-
-    window.fechar = function(){
-      document.getElementById("modal").style.display = "none";
-    };
-
-    async function carregarArbitros(){
-      const lista = document.getElementById("lista");
-      lista.innerHTML = "<div class='vazio'>Carregando árbitros...</div>";
-
-      const snap = await getDocs(collection(db,"arbitros"));
-      let dados = [];
-
-      snap.forEach(d => dados.push({id:d.id, ...d.data()}));
-
-      const busca = (document.getElementById("busca").value || "").toLowerCase().trim();
-
-      if(busca){
-        dados = dados.filter(a =>
-          (a.nome || "").toLowerCase().includes(busca) ||
-          (a.email || "").toLowerCase().includes(busca) ||
-          (a.cpf || "").toLowerCase().includes(busca)
-        );
-      }
-
-      dados.sort((a,b)=>(a.nome || "").localeCompare(b.nome || "", "pt-BR"));
-
-      if(!dados.length){
-        lista.innerHTML = "<div class='vazio'>Nenhum árbitro encontrado.</div>";
-        return;
-      }
-
-      lista.innerHTML = "";
-
-      dados.forEach(a=>{
-        const categorias = (a.categorias || []).map(c => `<span class="tag">${c}</span>`).join("");
-
-        lista.innerHTML += `
-          <div class="card">
-            <div class="user">
-              <img src="${a.foto || 'logo-liga.jfif'}" class="photo" alt="${a.nome || 'Árbitro'}">
-              <div class="user-info">
-                <div class="nome">${a.nome || ""}</div>
-                <small>${a.email || "-"}</small>
-                <small>${a.telefone || "-"}</small>
-                <div class="categorias-tags">${categorias || '<span class="tag">Sem categorias</span>'}</div>
-              </div>
-            </div>
-            <div class="actions">
-              <button onclick="editar('${a.id}')">
-                <i class="fa-solid fa-pen"></i> Editar
-              </button>
-              <button onclick="ver('${a.id}')">
-                <i class="fa-solid fa-eye"></i> Ver
-              </button>
-              <button class="delete" onclick="excluir('${a.id}')">
-                <i class="fa-solid fa-trash"></i> Excluir
-              </button>
-            </div>
-          </div>
-        `;
-      });
-    }
-
-    await carregarCategorias();
-    carregarArbitros();
-  </script>
-
-</body>
-</html>
+          const cats = (a.categorias || []).map(c=>`<span class="tag">${c}</span>`).join("");
+          const idade = calcularIdade(a.dataNascimento);
+          const stats = await calcularEsta
