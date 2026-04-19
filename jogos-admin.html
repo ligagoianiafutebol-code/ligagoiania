@@ -1,408 +1,693 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<title>Jogos - Admin</title>
-<style>
-body{
-  margin:0;
-  font-family:Arial;
-  background:#0b1f3a;
-  color:white;
-}
-header{
-  background:#08172c;
-  padding:15px;
-  text-align:center;
-  font-size:22px;
-  font-weight:bold;
-  border-bottom:3px solid #f7c600;
-}
-.container{
-  padding:20px;
-  max-width:1100px;
-  margin:auto;
-}
-input, select{
-  width:100%;
-  padding:12px;
-  margin-bottom:10px;
-  border:none;
-  border-radius:8px;
-  box-sizing:border-box;
-}
-button{
-  background:#f7c600;
-  color:black;
-  padding:10px 14px;
-  border:none;
-  border-radius:8px;
-  font-weight:bold;
-  cursor:pointer;
-}
-.grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:12px;
-}
-.card{
-  background:#102a52;
-  padding:15px;
-  margin-top:12px;
-  border-radius:10px;
-}
-.top-actions{
-  display:flex;
-  gap:8px;
-  flex-wrap:wrap;
-  margin-top:10px;
-}
-.link-btn{
-  display:inline-block;
-  background:#f7c600;
-  color:black;
-  padding:10px 14px;
-  border-radius:8px;
-  text-decoration:none;
-  font-weight:bold;
-}
-.bloco-titulo{
-  margin:18px 0 8px;
-  color:#f7c600;
-  font-size:18px;
-  font-weight:bold;
-}
-.btn-voltar{
-  display:inline-block;
-  margin-bottom:15px;
-  background:#f7c600;
-  color:black;
-  padding:10px 14px;
-  border-radius:8px;
-  text-decoration:none;
-  font-weight:bold;
-}
-@media (max-width: 800px){
-  .grid{ grid-template-columns:1fr; }
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jogos - Admin</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    :root{
+      --bg:#0b1f3a;
+      --bg-dark:#08172c;
+      --card:#102a52;
+      --card-hover:#153766;
+      --gold:#f7c600;
+      --gold-soft:rgba(247,198,0,.12);
+      --gold-line:rgba(247,198,0,.28);
+      --white:#ffffff;
+      --muted:#d9e3f2;
+      --shadow:0 8px 22px rgba(0,0,0,.28);
+      --radius:14px;
+      --transition:.25s ease;
+      --max:1180px;
+    }
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    body{
+      font-family:Arial, sans-serif;
+      background:
+        linear-gradient(rgba(11,31,58,.88), rgba(11,31,58,.94)),
+        url("fundo.png") center/cover fixed no-repeat;
+      color:var(--white);
+    }
+
+    a{
+      text-decoration:none;
+      color:inherit;
+    }
+
+    button{
+      font-family:inherit;
+      cursor:pointer;
+      transition:var(--transition);
+      border:none;
+    }
+
+    .wrap{
+      width:min(100% - 28px, var(--max));
+      margin:0 auto;
+    }
+
+    header{
+      background:rgba(8,23,44,.96);
+      border-bottom:3px solid var(--gold);
+      box-shadow:var(--shadow);
+    }
+
+    .header-inner{
+      min-height:84px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      flex-wrap:wrap;
+      padding:14px 0;
+    }
+
+    .header-left,
+    .header-right{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .header-title{
+      flex:1;
+      text-align:center;
+      font-size:24px;
+      font-weight:700;
+      color:var(--white);
+    }
+
+    .top-btn{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:10px 16px;
+      border-radius:10px;
+      font-weight:700;
+    }
+
+    .btn-light{
+      background:#fff4cf;
+      color:#111;
+    }
+
+    .btn-light:hover{
+      background:var(--gold);
+      transform:translateY(-2px);
+    }
+
+    .btn-gold{
+      background:var(--gold);
+      color:#111;
+    }
+
+    .btn-gold:hover{
+      filter:brightness(1.04);
+      transform:translateY(-2px);
+    }
+
+    .container{
+      padding:24px 0 34px;
+    }
+
+    .hero-panel{
+      background:linear-gradient(180deg, rgba(16,42,82,.95), rgba(10,28,56,.96));
+      border:1px solid var(--gold-line);
+      border-radius:20px;
+      padding:22px;
+      box-shadow:var(--shadow);
+      margin-bottom:22px;
+    }
+
+    .hero-panel h2{
+      font-size:28px;
+      color:#fff;
+      margin-bottom:8px;
+    }
+
+    .hero-panel p{
+      color:var(--muted);
+      line-height:1.6;
+    }
+
+    .form-panel,
+    .list-panel{
+      background:linear-gradient(180deg, rgba(16,42,82,.96), rgba(12,33,64,.96));
+      border:1px solid rgba(255,255,255,.06);
+      border-radius:18px;
+      padding:20px;
+      box-shadow:var(--shadow);
+      margin-bottom:20px;
+    }
+
+    .bloco-titulo{
+      margin:0 0 12px;
+      color:var(--gold);
+      font-size:18px;
+      font-weight:700;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:14px;
+    }
+
+    .full{
+      grid-column:1 / -1;
+    }
+
+    label{
+      display:block;
+      margin:0 0 6px;
+      font-weight:700;
+      color:#eef4ff;
+      font-size:14px;
+    }
+
+    input, select{
+      width:100%;
+      padding:12px;
+      border:none;
+      border-radius:10px;
+      box-sizing:border-box;
+      font-size:14px;
+      background:#f5f7fb;
+      color:#111;
+    }
+
+    input:focus, select:focus{
+      outline:2px solid rgba(247,198,0,.55);
+    }
+
+    .top-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:16px;
+    }
+
+    .link-btn,
+    .action-btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      background:var(--gold);
+      color:#111;
+      padding:10px 14px;
+      border-radius:10px;
+      font-weight:700;
+    }
+
+    .link-btn:hover,
+    .action-btn:hover{
+      filter:brightness(1.04);
+      transform:translateY(-2px);
+    }
+
+    .btn-danger{
+      background:#d94141;
+      color:#fff;
+    }
+
+    .btn-danger:hover{
+      background:#b82f2f;
+    }
+
+    .lista-jogos{
+      display:grid;
+      gap:14px;
+    }
+
+    .card{
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.06);
+      padding:16px;
+      border-radius:14px;
+      transition:var(--transition);
+    }
+
+    .card:hover{
+      border-color:var(--gold-line);
+      transform:translateY(-2px);
+    }
+
+    .card strong{
+      color:var(--gold);
+      font-size:18px;
+    }
+
+    .card-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px 16px;
+      margin-top:12px;
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.5;
+    }
+
+    .card-grid div{
+      background:rgba(255,255,255,.03);
+      padding:10px;
+      border-radius:10px;
+    }
+
+    .card-grid span{
+      display:block;
+      color:#fff;
+      font-weight:700;
+      margin-bottom:4px;
+    }
+
+    .card-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:14px;
+    }
+
+    .mensagem-vazia{
+      color:var(--muted);
+      text-align:center;
+      padding:16px 0;
+    }
+
+    @media (max-width: 900px){
+      .header-title{
+        order:3;
+        width:100%;
+        text-align:center;
+      }
+
+      .header-left,
+      .header-right{
+        width:100%;
+        justify-content:center;
+      }
+
+      .grid,
+      .card-grid{
+        grid-template-columns:1fr;
+      }
+    }
+
+    @media (max-width: 600px){
+      .top-btn,
+      .action-btn,
+      .link-btn{
+        width:100%;
+      }
+
+      .header-left,
+      .header-right{
+        flex-direction:column;
+        align-items:stretch;
+      }
+    }
+  </style>
 </head>
 <body>
 
-<header>Cadastro de Jogos</header>
+  <header>
+    <div class="wrap header-inner">
+      <div class="header-left">
+        <button class="top-btn btn-light" type="button" onclick="voltarPagina()">
+          <i class="fa-solid fa-arrow-left"></i> Voltar
+        </button>
 
-<div class="container">
-  <a href="admin.html" class="btn-voltar">← Voltar</a>
+        <a href="index.html" class="top-btn btn-light">
+          <i class="fa-solid fa-house"></i> Página Inicial
+        </a>
 
-  <div class="bloco-titulo">Informações do Jogo</div>
-  <div class="grid">
-    <div>
-      <label>Data e hora</label>
-      <input id="dataJogo" type="datetime-local">
+        <a href="admin.html" class="top-btn btn-light">
+          <i class="fa-solid fa-gears"></i> Painel ADM
+        </a>
+      </div>
+
+      <div class="header-title">Cadastro de Jogos</div>
+
+      <div class="header-right">
+        <button class="top-btn btn-gold" type="button" onclick="salvarJogo()">
+          <i class="fa-solid fa-floppy-disk"></i> Salvar Jogo
+        </button>
+      </div>
     </div>
+  </header>
 
-    <div>
-      <label>Local</label>
-      <input id="localJogo" placeholder="Ex: Campo 1">
-    </div>
+  <div class="wrap container">
 
-    <div>
-      <label>Campeonato</label>
-      <input id="campeonato" placeholder="Ex: Copa União de Base">
-    </div>
+    <section class="hero-panel">
+      <h2>Gestão de Jogos</h2>
+      <p>
+        Cadastre partidas, vincule arbitragem, categoria, times e comissão técnica.
+        Depois você poderá abrir a súmula de cada jogo.
+      </p>
+    </section>
 
-    <div>
-      <label>Logo do campeonato (URL)</label>
-      <input id="logoCampeonato" placeholder="Ex: logo-campeonato.png">
-    </div>
+    <section class="form-panel">
+      <h3 class="bloco-titulo">Informações do Jogo</h3>
+      <div class="grid">
+        <div>
+          <label for="dataJogo">Data e hora</label>
+          <input id="dataJogo" type="datetime-local">
+        </div>
 
-    <div>
-      <label>Rodada</label>
-      <input id="rodada" placeholder="Ex: 1">
-    </div>
+        <div>
+          <label for="localJogo">Local</label>
+          <input id="localJogo" placeholder="Ex: Campo 1">
+        </div>
 
-    <div>
-      <label>Categoria</label>
-      <select id="categoria">
-        <option value="">Selecione</option>
-      </select>
-    </div>
+        <div>
+          <label for="campeonato">Campeonato</label>
+          <input id="campeonato" placeholder="Ex: Copa União de Base">
+        </div>
 
-    <div>
-      <label>Time mandante</label>
-      <select id="timeA">
-        <option value="">Selecione</option>
-      </select>
-    </div>
+        <div>
+          <label for="logoCampeonato">Logo do campeonato (URL)</label>
+          <input id="logoCampeonato" placeholder="Ex: logo-campeonato.png">
+        </div>
 
-    <div>
-      <label>Time visitante</label>
-      <select id="timeB">
-        <option value="">Selecione</option>
-      </select>
-    </div>
-  </div>
+        <div>
+          <label for="rodada">Rodada</label>
+          <input id="rodada" placeholder="Ex: 1">
+        </div>
 
-  <div class="bloco-titulo">Comissão Técnica - Mandante</div>
-  <div class="grid">
-    <div>
-      <label>Técnico</label>
-      <input id="tecnicoA" placeholder="Nome do técnico mandante">
-    </div>
+        <div>
+          <label for="categoria">Categoria</label>
+          <select id="categoria">
+            <option value="">Selecione</option>
+          </select>
+        </div>
 
-    <div>
-      <label>Assistente 1</label>
-      <input id="assistenteA1" placeholder="Nome do assistente 1 mandante">
-    </div>
+        <div>
+          <label for="timeA">Time mandante</label>
+          <select id="timeA">
+            <option value="">Selecione</option>
+          </select>
+        </div>
 
-    <div>
-      <label>Assistente 2</label>
-      <input id="assistenteA2" placeholder="Nome do assistente 2 mandante">
-    </div>
-  </div>
-
-  <div class="bloco-titulo">Comissão Técnica - Visitante</div>
-  <div class="grid">
-    <div>
-      <label>Técnico</label>
-      <input id="tecnicoB" placeholder="Nome do técnico visitante">
-    </div>
-
-    <div>
-      <label>Assistente 1</label>
-      <input id="assistenteB1" placeholder="Nome do assistente 1 visitante">
-    </div>
-
-    <div>
-      <label>Assistente 2</label>
-      <input id="assistenteB2" placeholder="Nome do assistente 2 visitante">
-    </div>
-  </div>
-
-  <div class="bloco-titulo">Arbitragem</div>
-  <div class="grid">
-    <div>
-      <label>Árbitro</label>
-      <select id="arbitro">
-        <option value="">Selecione</option>
-      </select>
-    </div>
-
-    <div>
-      <label>Árbitro Assistente 1</label>
-      <select id="assistente1">
-        <option value="">Selecione</option>
-      </select>
-    </div>
-
-    <div>
-      <label>Árbitro Assistente 2</label>
-      <select id="assistente2">
-        <option value="">Selecione</option>
-      </select>
-    </div>
-
-    <div>
-      <label>Árbitro Auxiliar</label>
-      <select id="arbitroAuxiliar">
-        <option value="">Selecione</option>
-      </select>
-    </div>
-  </div>
-
-  <div class="top-actions">
-    <button onclick="salvarJogo()">Salvar Jogo</button>
-  </div>
-
-  <div id="listaJogos"></div>
-</div>
-
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
-import {
-  getFirestore,
-  collection,
-  addDoc,
-  getDocs,
-  doc,
-  deleteDoc
-} from "https://www.gstatic.com/firebasejs/12.12.0/firebase-firestore.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyCyArj4yRlEl-yibkc0VEmL_4UJpRHHQSc",
-  authDomain: "liga-goiana-base.firebaseapp.com",
-  projectId: "liga-goiana-base",
-  storageBucket: "liga-goiana-base.appspot.com",
-  messagingSenderId: "952863591183",
-  appId: "1:952863591183:web:4eea34f494ba2dd754cc7a"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-async function carregarTimes(){
-  const selectA = document.getElementById("timeA");
-  const selectB = document.getElementById("timeB");
-  selectA.innerHTML = '<option value="">Selecione</option>';
-  selectB.innerHTML = '<option value="">Selecione</option>';
-
-  const snap = await getDocs(collection(db, "times"));
-  let times = [];
-  snap.forEach(d => times.push(d.data()));
-  times.sort((a,b)=>(a.nome||"").localeCompare(b.nome||"", "pt-BR"));
-
-  times.forEach(t => {
-    selectA.innerHTML += `<option value="${t.nome}">${t.nome}</option>`;
-    selectB.innerHTML += `<option value="${t.nome}">${t.nome}</option>`;
-  });
-}
-
-async function carregarCategorias(){
-  const select = document.getElementById("categoria");
-  select.innerHTML = '<option value="">Selecione</option>';
-
-  const snap = await getDocs(collection(db, "categorias"));
-  let categorias = [];
-  snap.forEach(d => categorias.push(d.data()));
-  categorias.sort((a,b)=>(a.nome||"").localeCompare(b.nome||"", "pt-BR"));
-
-  categorias.forEach(c => {
-    select.innerHTML += `<option value="${c.nome}">${c.nome}</option>`;
-  });
-}
-
-async function carregarUsuarios(){
-  const arbitro = document.getElementById("arbitro");
-  const assistente1 = document.getElementById("assistente1");
-  const assistente2 = document.getElementById("assistente2");
-  const arbitroAuxiliar = document.getElementById("arbitroAuxiliar");
-
-  arbitro.innerHTML = '<option value="">Selecione</option>';
-  assistente1.innerHTML = '<option value="">Selecione</option>';
-  assistente2.innerHTML = '<option value="">Selecione</option>';
-  arbitroAuxiliar.innerHTML = '<option value="">Selecione</option>';
-
-  const snap = await getDocs(collection(db, "usuarios"));
-  let arbitros = [];
-  let assistentes = [];
-
-  snap.forEach(d => {
-    const u = d.data();
-
-    if(u.tipoUsuario === "arbitro"){
-      arbitros.push(u.nome);
-    }
-
-    if(u.tipoUsuario === "assistente"){
-      assistentes.push(u.nome);
-    }
-  });
-
-  arbitros.sort((a,b)=>a.localeCompare(b,"pt-BR"));
-  assistentes.sort((a,b)=>a.localeCompare(b,"pt-BR"));
-
-  arbitros.forEach(nome => {
-    arbitro.innerHTML += `<option value="${nome}">${nome}</option>`;
-    arbitroAuxiliar.innerHTML += `<option value="${nome}">${nome}</option>`;
-  });
-
-  assistentes.forEach(nome => {
-    assistente1.innerHTML += `<option value="${nome}">${nome}</option>`;
-    assistente2.innerHTML += `<option value="${nome}">${nome}</option>`;
-  });
-}
-
-window.salvarJogo = async function(){
-  const jogo = {
-    data: document.getElementById("dataJogo").value,
-    local: document.getElementById("localJogo").value.trim(),
-    campeonato: document.getElementById("campeonato").value.trim(),
-    logoCampeonato: document.getElementById("logoCampeonato").value.trim(),
-    rodada: document.getElementById("rodada").value.trim(),
-    categoria: document.getElementById("categoria").value,
-    timeA: document.getElementById("timeA").value,
-    timeB: document.getElementById("timeB").value,
-
-    tecnicoA: document.getElementById("tecnicoA").value.trim(),
-    assistenteA1: document.getElementById("assistenteA1").value.trim(),
-    assistenteA2: document.getElementById("assistenteA2").value.trim(),
-
-    tecnicoB: document.getElementById("tecnicoB").value.trim(),
-    assistenteB1: document.getElementById("assistenteB1").value.trim(),
-    assistenteB2: document.getElementById("assistenteB2").value.trim(),
-
-    arbitro: document.getElementById("arbitro").value,
-    assistente: document.getElementById("assistente1").value,
-    assistente2: document.getElementById("assistente2").value,
-    arbitroAuxiliar: document.getElementById("arbitroAuxiliar").value,
-
-    status: "pendente",
-    criadoEm: new Date().toISOString()
-  };
-
-  if(!jogo.data) return alert("Escolha a data e hora.");
-  if(!jogo.local) return alert("Digite o local.");
-  if(!jogo.rodada) return alert("Digite a rodada.");
-  if(!jogo.timeA || !jogo.timeB) return alert("Selecione os times.");
-  if(jogo.timeA === jogo.timeB) return alert("Os times não podem ser iguais.");
-  if(!jogo.categoria) return alert("Selecione a categoria.");
-
-  await addDoc(collection(db, "jogos"), jogo);
-  alert("Jogo criado com sucesso!");
-  location.reload();
-};
-
-window.excluirJogo = async function(id){
-  if(!confirm("Deseja excluir este jogo?")) return;
-  await deleteDoc(doc(db, "jogos", id));
-  carregarJogos();
-};
-
-async function carregarJogos(){
-  const lista = document.getElementById("listaJogos");
-  lista.innerHTML = "";
-
-  const snap = await getDocs(collection(db, "jogos"));
-  let jogos = [];
-  snap.forEach(d => jogos.push({id:d.id, ...d.data()}));
-
-  jogos.sort((a,b)=>(a.data||"").localeCompare(b.data||""));
-
-  jogos.forEach(j => {
-    lista.innerHTML += `
-      <div class="card">
-        <strong>${j.timeA} x ${j.timeB}</strong><br>
-        Rodada: ${j.rodada || "-"}<br>
-        Categoria: ${j.categoria || "-"}<br>
-        Campeonato: ${j.campeonato || "-"}<br>
-        Data: ${j.data || "-"}<br>
-        Local: ${j.local || "-"}<br>
-        Técnico Mandante: ${j.tecnicoA || "-"}<br>
-        Assistente 1 Mandante: ${j.assistenteA1 || "-"}<br>
-        Assistente 2 Mandante: ${j.assistenteA2 || "-"}<br>
-        Técnico Visitante: ${j.tecnicoB || "-"}<br>
-        Assistente 1 Visitante: ${j.assistenteB1 || "-"}<br>
-        Assistente 2 Visitante: ${j.assistenteB2 || "-"}<br>
-        Árbitro: ${j.arbitro || "-"}<br>
-        Árbitro Assistente 1: ${j.assistente || "-"}<br>
-        Árbitro Assistente 2: ${j.assistente2 || "-"}<br>
-        Árbitro Auxiliar: ${j.arbitroAuxiliar || "-"}<br>
-        Status: ${j.status || "pendente"}<br><br>
-
-        <div class="top-actions">
-          <a class="link-btn" href="sumula.html?id=${j.id}">Abrir Súmula</a>
-          <button onclick="excluirJogo('${j.id}')">Excluir</button>
+        <div>
+          <label for="timeB">Time visitante</label>
+          <select id="timeB">
+            <option value="">Selecione</option>
+          </select>
         </div>
       </div>
-    `;
-  });
-}
+    </section>
 
-await carregarTimes();
-await carregarCategorias();
-await carregarUsuarios();
-await carregarJogos();
-</script>
+    <section class="form-panel">
+      <h3 class="bloco-titulo">Comissão Técnica - Mandante</h3>
+      <div class="grid">
+        <div>
+          <label for="tecnicoA">Técnico</label>
+          <input id="tecnicoA" placeholder="Nome do técnico mandante">
+        </div>
+
+        <div>
+          <label for="assistenteA1">Assistente 1</label>
+          <input id="assistenteA1" placeholder="Nome do assistente 1 mandante">
+        </div>
+
+        <div class="full">
+          <label for="assistenteA2">Assistente 2</label>
+          <input id="assistenteA2" placeholder="Nome do assistente 2 mandante">
+        </div>
+      </div>
+    </section>
+
+    <section class="form-panel">
+      <h3 class="bloco-titulo">Comissão Técnica - Visitante</h3>
+      <div class="grid">
+        <div>
+          <label for="tecnicoB">Técnico</label>
+          <input id="tecnicoB" placeholder="Nome do técnico visitante">
+        </div>
+
+        <div>
+          <label for="assistenteB1">Assistente 1</label>
+          <input id="assistenteB1" placeholder="Nome do assistente 1 visitante">
+        </div>
+
+        <div class="full">
+          <label for="assistenteB2">Assistente 2</label>
+          <input id="assistenteB2" placeholder="Nome do assistente 2 visitante">
+        </div>
+      </div>
+    </section>
+
+    <section class="form-panel">
+      <h3 class="bloco-titulo">Arbitragem</h3>
+      <div class="grid">
+        <div>
+          <label for="arbitro">Árbitro</label>
+          <select id="arbitro">
+            <option value="">Selecione</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="assistente1">Árbitro Assistente 1</label>
+          <select id="assistente1">
+            <option value="">Selecione</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="assistente2">Árbitro Assistente 2</label>
+          <select id="assistente2">
+            <option value="">Selecione</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="arbitroAuxiliar">Árbitro Auxiliar</label>
+          <select id="arbitroAuxiliar">
+            <option value="">Selecione</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="top-actions">
+        <button class="action-btn" type="button" onclick="salvarJogo()">
+          <i class="fa-solid fa-floppy-disk"></i> Salvar Jogo
+        </button>
+      </div>
+    </section>
+
+    <section class="list-panel">
+      <h3 class="bloco-titulo">Jogos Cadastrados</h3>
+      <div id="listaJogos" class="lista-jogos">
+        <div class="mensagem-vazia">Carregando jogos...</div>
+      </div>
+    </section>
+  </div>
+
+  <script type="module">
+    import { auth, db } from "./firebase.js";
+    import {
+      collection,
+      addDoc,
+      getDocs,
+      doc,
+      deleteDoc
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    window.voltarPagina = function(){
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        window.location.href = "admin.html";
+      }
+    };
+
+    async function carregarTimes(){
+      const selectA = document.getElementById("timeA");
+      const selectB = document.getElementById("timeB");
+      selectA.innerHTML = '<option value="">Selecione</option>';
+      selectB.innerHTML = '<option value="">Selecione</option>';
+
+      const snap = await getDocs(collection(db, "times"));
+      let times = [];
+      snap.forEach(d => times.push(d.data()));
+      times.sort((a,b)=>(a.nome||"").localeCompare(b.nome||"", "pt-BR"));
+
+      times.forEach(t => {
+        selectA.innerHTML += `<option value="${t.nome}">${t.nome}</option>`;
+        selectB.innerHTML += `<option value="${t.nome}">${t.nome}</option>`;
+      });
+    }
+
+    async function carregarCategorias(){
+      const select = document.getElementById("categoria");
+      select.innerHTML = '<option value="">Selecione</option>';
+
+      const snap = await getDocs(collection(db, "categorias"));
+      let categorias = [];
+      snap.forEach(d => categorias.push(d.data()));
+      categorias.sort((a,b)=>(a.nome||"").localeCompare(b.nome||"", "pt-BR"));
+
+      categorias.forEach(c => {
+        select.innerHTML += `<option value="${c.nome}">${c.nome}</option>`;
+      });
+    }
+
+    async function carregarUsuarios(){
+      const arbitro = document.getElementById("arbitro");
+      const assistente1 = document.getElementById("assistente1");
+      const assistente2 = document.getElementById("assistente2");
+      const arbitroAuxiliar = document.getElementById("arbitroAuxiliar");
+
+      arbitro.innerHTML = '<option value="">Selecione</option>';
+      assistente1.innerHTML = '<option value="">Selecione</option>';
+      assistente2.innerHTML = '<option value="">Selecione</option>';
+      arbitroAuxiliar.innerHTML = '<option value="">Selecione</option>';
+
+      const snap = await getDocs(collection(db, "usuarios"));
+      let arbitros = [];
+      let assistentes = [];
+
+      snap.forEach(d => {
+        const u = d.data();
+
+        if(u.tipoUsuario === "arbitro" && u.aprovado === true){
+          arbitros.push(u.nome);
+        }
+
+        if(u.tipoUsuario === "assistente" && u.aprovado === true){
+          assistentes.push(u.nome);
+        }
+      });
+
+      arbitros.sort((a,b)=>a.localeCompare(b,"pt-BR"));
+      assistentes.sort((a,b)=>a.localeCompare(b,"pt-BR"));
+
+      arbitros.forEach(nome => {
+        arbitro.innerHTML += `<option value="${nome}">${nome}</option>`;
+        arbitroAuxiliar.innerHTML += `<option value="${nome}">${nome}</option>`;
+      });
+
+      assistentes.forEach(nome => {
+        assistente1.innerHTML += `<option value="${nome}">${nome}</option>`;
+        assistente2.innerHTML += `<option value="${nome}">${nome}</option>`;
+      });
+    }
+
+    window.salvarJogo = async function(){
+      const jogo = {
+        data: document.getElementById("dataJogo").value,
+        local: document.getElementById("localJogo").value.trim(),
+        campeonato: document.getElementById("campeonato").value.trim(),
+        logoCampeonato: document.getElementById("logoCampeonato").value.trim(),
+        rodada: document.getElementById("rodada").value.trim(),
+        categoria: document.getElementById("categoria").value,
+        timeA: document.getElementById("timeA").value,
+        timeB: document.getElementById("timeB").value,
+
+        tecnicoA: document.getElementById("tecnicoA").value.trim(),
+        assistenteA1: document.getElementById("assistenteA1").value.trim(),
+        assistenteA2: document.getElementById("assistenteA2").value.trim(),
+
+        tecnicoB: document.getElementById("tecnicoB").value.trim(),
+        assistenteB1: document.getElementById("assistenteB1").value.trim(),
+        assistenteB2: document.getElementById("assistenteB2").value.trim(),
+
+        arbitro: document.getElementById("arbitro").value,
+        assistente: document.getElementById("assistente1").value,
+        assistente2: document.getElementById("assistente2").value,
+        arbitroAuxiliar: document.getElementById("arbitroAuxiliar").value,
+
+        status: "pendente",
+        criadoEm: new Date().toISOString()
+      };
+
+      if(!jogo.data) return alert("Escolha a data e hora.");
+      if(!jogo.local) return alert("Digite o local.");
+      if(!jogo.rodada) return alert("Digite a rodada.");
+      if(!jogo.campeonato) return alert("Digite o campeonato.");
+      if(!jogo.timeA || !jogo.timeB) return alert("Selecione os times.");
+      if(jogo.timeA === jogo.timeB) return alert("Os times não podem ser iguais.");
+      if(!jogo.categoria) return alert("Selecione a categoria.");
+
+      await addDoc(collection(db, "jogos"), jogo);
+      alert("Jogo criado com sucesso!");
+      location.reload();
+    };
+
+    window.excluirJogo = async function(id){
+      if(!confirm("Deseja excluir este jogo?")) return;
+      await deleteDoc(doc(db, "jogos", id));
+      carregarJogos();
+    };
+
+    async function carregarJogos(){
+      const lista = document.getElementById("listaJogos");
+      lista.innerHTML = "";
+
+      const snap = await getDocs(collection(db, "jogos"));
+      let jogos = [];
+      snap.forEach(d => jogos.push({id:d.id, ...d.data()}));
+
+      jogos.sort((a,b)=>(a.data||"").localeCompare(b.data||""));
+
+      if(jogos.length === 0){
+        lista.innerHTML = `<div class="mensagem-vazia">Nenhum jogo cadastrado ainda.</div>`;
+        return;
+      }
+
+      jogos.forEach(j => {
+        lista.innerHTML += `
+          <div class="card">
+            <strong>${j.timeA} x ${j.timeB}</strong>
+
+            <div class="card-grid">
+              <div><span>Rodada</span>${j.rodada || "-"}</div>
+              <div><span>Categoria</span>${j.categoria || "-"}</div>
+              <div><span>Campeonato</span>${j.campeonato || "-"}</div>
+              <div><span>Data</span>${j.data || "-"}</div>
+              <div><span>Local</span>${j.local || "-"}</div>
+              <div><span>Status</span>${j.status || "pendente"}</div>
+              <div><span>Técnico Mandante</span>${j.tecnicoA || "-"}</div>
+              <div><span>Técnico Visitante</span>${j.tecnicoB || "-"}</div>
+              <div><span>Assistente 1 Mandante</span>${j.assistenteA1 || "-"}</div>
+              <div><span>Assistente 1 Visitante</span>${j.assistenteB1 || "-"}</div>
+              <div><span>Assistente 2 Mandante</span>${j.assistenteA2 || "-"}</div>
+              <div><span>Assistente 2 Visitante</span>${j.assistenteB2 || "-"}</div>
+              <div><span>Árbitro</span>${j.arbitro || "-"}</div>
+              <div><span>Árbitro Auxiliar</span>${j.arbitroAuxiliar || "-"}</div>
+              <div><span>Árbitro Assistente 1</span>${j.assistente || "-"}</div>
+              <div><span>Árbitro Assistente 2</span>${j.assistente2 || "-"}</div>
+            </div>
+
+            <div class="card-actions">
+              <a class="link-btn" href="sumula.html?id=${j.id}">
+                <i class="fa-solid fa-file-signature"></i> Abrir Súmula
+              </a>
+              <button class="action-btn btn-danger" onclick="excluirJogo('${j.id}')">
+                <i class="fa-solid fa-trash"></i> Excluir
+              </button>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    await carregarTimes();
+    await carregarCategorias();
+    await carregarUsuarios();
+    await carregarJogos();
+  </script>
 
 </body>
 </html>
