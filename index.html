@@ -300,7 +300,8 @@
       position:relative;
     }
 
-    .top-nav a{
+    .top-nav a,
+    .dropdown-toggle{
       display:inline-flex;
       align-items:center;
       gap:8px;
@@ -313,12 +314,61 @@
       transition:var(--transition);
     }
 
-    .top-nav a:hover{
+    .top-nav a:hover,
+    .dropdown-toggle:hover,
+    .top-nav li:hover > a{
       color:var(--yellow);
       background:var(--yellow-soft);
       border-color:var(--yellow-line);
     }
-.top-actions{
+.dropdown-toggle .fa-chevron-down{
+      transition:transform .2s ease;
+    }
+
+    .dropdown.open .dropdown-toggle{
+      color:var(--yellow);
+      background:var(--yellow-soft);
+      border-color:var(--yellow-line);
+    }
+
+    .dropdown.open .dropdown-toggle .fa-chevron-down{
+      transform:rotate(180deg);
+    }
+
+    .dropdown-menu{
+      position:absolute;
+      top:calc(100% + 8px);
+      left:0;
+      min-width:240px;
+      background:linear-gradient(180deg, #04132d 0%, #021022 100%);
+      border:1px solid var(--yellow-line);
+      border-radius:16px;
+      box-shadow:var(--shadow);
+      padding:8px;
+      display:none;
+      z-index:120;
+    }
+
+    .dropdown.open .dropdown-menu{
+      display:block;
+    }
+
+    .dropdown-menu a{
+      display:flex;
+      width:100%;
+      padding:12px 14px;
+      border-radius:12px;
+      color:var(--muted);
+      border:1px solid transparent;
+    }
+
+    .dropdown-menu a:hover{
+      color:var(--yellow);
+      background:var(--yellow-soft);
+      border-color:var(--yellow-line);
+    }
+
+    .top-actions{
       display:flex;
       align-items:center;
       gap:10px;
@@ -408,15 +458,10 @@
       font-weight:700;
       margin-bottom:16px;
     }
-
-    .hero h1{
+.hero h1{
       font-size:46px;
       line-height:1.08;
       margin-bottom:12px;
-      color:#fff;
-    }
-
-    .hero h1 span{
       color:var(--yellow);
     }
 
@@ -463,7 +508,8 @@
       gap:18px;
       margin:28px 0 10px;
     }
-.pillar{
+
+    .pillar{
       background:linear-gradient(180deg, rgba(7,24,59,.94), rgba(3,17,45,.96));
       border:1px solid rgba(255,255,255,.08);
       border-radius:20px;
@@ -551,8 +597,7 @@
       font-size:28px;
       color:#fff;
     }
-
-    .panel-head a{
+.panel-head a{
       color:var(--yellow);
       font-weight:700;
       transition:var(--transition);
@@ -619,7 +664,8 @@
       line-height:1.6;
       font-size:14px;
     }
-.cta-banner{
+
+    .cta-banner{
       margin:10px 0 34px;
     }
 
@@ -669,8 +715,7 @@
       border-radius:22px;
       padding:22px;
     }
-
-    .footer-card h4{
+.footer-card h4{
       color:var(--yellow);
       margin-bottom:14px;
       font-size:18px;
@@ -771,7 +816,8 @@
         grid-template-columns:1fr 1fr;
       }
     }
-@media (max-width: 900px){
+
+    @media (max-width: 900px){
       .hero-grid,
       .content-grid,
       .footer-grid,
@@ -802,8 +848,7 @@
       .wrap{
         width:min(100% - 20px, var(--max));
       }
-
-      .hero-grid{
+.hero-grid{
         padding:20px;
       }
 
@@ -859,14 +904,11 @@
     <div class="sidebar-block">
       <div class="sidebar-title">NAVEGAÇÃO PÚBLICA</div>
       <div class="side-menu">
-        <a href="campeonatos.html"><span class="side-icon"><i class="fa-solid fa-trophy"></i></span>Campeonatos</a>
-        <a href="tabela.html"><span class="side-icon"><i class="fa-solid fa-table"></i></span>Tabela</a>
-        <a href="jogos.html"><span class="side-icon"><i class="fa-solid fa-calendar-days"></i></span>Jogos</a>
+        <a href="classificacao.html"><span class="side-icon"><i class="fa-solid fa-ranking-star"></i></span>Classificação</a>
+        <a href="jogos.html"><span class="side-icon"><i class="fa-solid fa-calendar-days"></i></span>Tabela de Jogos</a>
         <a href="artilharia.html"><span class="side-icon"><i class="fa-solid fa-futbol"></i></span>Artilharia</a>
         <a href="cartoes.html"><span class="side-icon"><i class="fa-solid fa-id-card"></i></span>Cartões</a>
         <a href="suspensos.html"><span class="side-icon"><i class="fa-solid fa-ban"></i></span>Suspensos</a>
-        <a href="times.html"><span class="side-icon"><i class="fa-solid fa-shield-halved"></i></span>Times</a>
-        <a href="jogadores.html"><span class="side-icon"><i class="fa-solid fa-users"></i></span>Jogadores</a>
         <a href="arbitros.html"><span class="side-icon"><i class="fa-solid fa-whistle"></i></span>Árbitros</a>
         <a href="assistentes.html"><span class="side-icon"><i class="fa-solid fa-user-group"></i></span>Assistentes</a>
       </div>
@@ -876,8 +918,8 @@
       <div class="sidebar-title">INFORMAÇÕES</div>
       <div class="side-menu">
         <a href="categorias.html"><span class="side-icon"><i class="fa-solid fa-layer-group"></i></span>Categorias</a>
+        <a href="times.html"><span class="side-icon"><i class="fa-solid fa-shield-halved"></i></span>Clubes</a>
         <a href="regulamento.html"><span class="side-icon"><i class="fa-solid fa-book"></i></span>Regulamento</a>
-        <a href="noticias.html"><span class="side-icon"><i class="fa-solid fa-newspaper"></i></span>Notícias</a>
         <a href="#contato"><span class="side-icon"><i class="fa-solid fa-phone"></i></span>Contato</a>
       </div>
     </div>
@@ -908,14 +950,20 @@
         <ul>
           <li><a href="index.html">Início</a></li>
           <li><a href="campeonatos.html">Campeonatos</a></li>
-          <li><a href="tabela.html">Tabela</a></li>
-          <li><a href="jogos.html">Jogos</a></li>
-          <li><a href="artilharia.html">Artilharia</a></li>
-          <li><a href="cartoes.html">Cartões</a></li>
-          <li><a href="suspensos.html">Suspensos</a></li>
+          <li class="dropdown" id="statsDropdown">
+            <button class="dropdown-toggle" id="statsToggle" type="button">
+              Estatísticas <i class="fa-solid fa-chevron-down"></i>
+            </button>
+            <div class="dropdown-menu" id="statsMenu">
+              <a href="tabela.html">Tabelas</a>
+              <a href="classificacao.html">Classificação</a>
+              <a href="jogos.html">Tabela de Jogos</a>
+              <a href="artilharia.html">Artilharia</a>
+              <a href="cartoes.html">Cartões</a>
+              <a href="suspensos.html">Suspensos</a>
+            </div>
+          </li>
           <li><a href="times.html">Times</a></li>
-          <li><a href="jogadores.html">Jogadores</a></li>
-          <li><a href="login.html">Login</a></li>
         </ul>
       </nav>
 
@@ -939,7 +987,7 @@
                 Liga Oficial
               </div>
 
-              <h1>Bem-vindo à <span>Liga Goiana de Base</span></h1>
+              <h1>Bem-vindo à Liga Goiana de Base</h1>
 
               <p>Onde o talento encontra o futuro!</p>
 
@@ -965,8 +1013,7 @@
             </div>
           </div>
         </div>
-
-        <div class="cards-pilares">
+<div class="cards-pilares">
           <div class="pillar">
             <div class="pillar-icon"><i class="fa-solid fa-trophy"></i></div>
             <div class="pillar-text">
@@ -999,7 +1046,8 @@
             </div>
           </div>
         </div>
-<div class="content-grid">
+
+        <div class="content-grid">
           <section class="panel">
             <div class="panel-head">
               <div class="panel-head-title">
@@ -1054,8 +1102,7 @@
       </div>
     </section>
   </main>
-
-  <footer id="contato">
+<footer id="contato">
     <div class="wrap">
       <div class="footer-grid">
         <div class="footer-card">
@@ -1102,7 +1149,8 @@
             <span>Goiânia - GO</span>
           </div>
         </div>
-<div class="footer-card">
+
+        <div class="footer-card">
           <h4>Siga a Liga</h4>
           <p style="color: var(--muted); line-height:1.6; margin-bottom:12px;">Acompanhe nossas redes sociais</p>
 
@@ -1125,48 +1173,88 @@
     const sidebarOverlay = document.getElementById("sidebarOverlay");
     const menuToggle = document.getElementById("menuToggle");
     const sidebarClose = document.getElementById("sidebarClose");
+    const statsDropdown = document.getElementById("statsDropdown");
+    const statsToggle = document.getElementById("statsToggle");
     const statusUser = document.getElementById("statusUser");
     const menuAdmin = document.getElementById("menuAdmin");
+    const gamesTableBody = document.getElementById("gamesTableBody");
+    const newsList = document.getElementById("newsList");
+
+    const usuarioLogado = null;
 
     function openSidebar() {
+      if (!sidebar || !sidebarOverlay) return;
       sidebar.classList.add("open");
       sidebarOverlay.classList.add("show");
       document.body.style.overflow = "hidden";
     }
 
     function closeSidebar() {
+      if (!sidebar || !sidebarOverlay) return;
       sidebar.classList.remove("open");
       sidebarOverlay.classList.remove("show");
       document.body.style.overflow = "";
     }
 
-    menuToggle.addEventListener("click", function(event) {
+    function toggleStatsDropdown(event) {
+      if (!statsDropdown) return;
       event.stopPropagation();
-      openSidebar();
-    });
+      statsDropdown.classList.toggle("open");
+    }
 
-    sidebarClose.addEventListener("click", closeSidebar);
-    sidebarOverlay.addEventListener("click", closeSidebar);
+    function closeStatsDropdown() {
+      if (!statsDropdown) return;
+      statsDropdown.classList.remove("open");
+    }
+
+    if (menuToggle) {
+      menuToggle.addEventListener("click", function(event) {
+        event.stopPropagation();
+        openSidebar();
+      });
+    }
+
+    if (sidebarClose) {
+      sidebarClose.addEventListener("click", closeSidebar);
+    }
+
+    if (sidebarOverlay) {
+      sidebarOverlay.addEventListener("click", closeSidebar);
+    }
+
+    if (statsToggle) {
+      statsToggle.addEventListener("click", toggleStatsDropdown);
+    }
 
     document.addEventListener("click", function(event) {
-      const clickedInsideSidebar = sidebar.contains(event.target);
-      const clickedMenuToggle = menuToggle.contains(event.target);
+      const clickedInsideSidebar = sidebar && sidebar.contains(event.target);
+      const clickedMenuToggle = menuToggle && menuToggle.contains(event.target);
+      const clickedStats = statsDropdown && statsDropdown.contains(event.target);
 
-      if (sidebar.classList.contains("open") && !clickedInsideSidebar && !clickedMenuToggle) {
+      if (sidebar && sidebar.classList.contains("open") && !clickedInsideSidebar && !clickedMenuToggle) {
         closeSidebar();
+      }
+
+      if (!clickedStats) {
+        closeStatsDropdown();
       }
     });
 
     document.addEventListener("keydown", function(event) {
       if (event.key === "Escape") {
         closeSidebar();
+        closeStatsDropdown();
       }
     });
 
-    menuAdmin.addEventListener("click", function(event) {
-      event.preventDefault();
-      alert("Acesso ao Painel ADM somente para usuários liberados pelo administrador.");
-    });
+    if (menuAdmin) {
+      menuAdmin.style.display = "none";
+    }
+
+    if (statusUser) {
+      statusUser.innerHTML = "";
+      statusUser.style.display = "none";
+    }
 
     const games = [
       {
@@ -1210,30 +1298,30 @@
       }
     ];
 
-    const gamesTableBody = document.getElementById("gamesTableBody");
-    const newsList = document.getElementById("newsList");
-games.forEach(jogo => {
-      const tr = document.createElement("tr");
-      tr.innerHTML = `
-        <td>${jogo.dataHora}</td>
-        <td>${jogo.confronto}</td>
-        <td>${jogo.categoria}</td>
-        <td>${jogo.local}</td>
-      `;
-      gamesTableBody.appendChild(tr);
-    });
+    if (gamesTableBody) {
+      games.forEach(jogo => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${jogo.dataHora}</td>
+          <td>${jogo.confronto}</td>
+          <td>${jogo.categoria}</td>
+          <td>${jogo.local}</td>
+        `;
+        gamesTableBody.appendChild(tr);
+      });
+    }
 
-    news.forEach(item => {
-      const article = document.createElement("div");
-      article.className = "news-item";
-      article.innerHTML = `
-        <h3>${item.titulo}</h3>
-        <p>${item.texto}</p>
-      `;
-      newsList.appendChild(article);
-    });
-
-    statusUser.innerHTML = "";
+    if (newsList) {
+      news.forEach(item => {
+        const article = document.createElement("div");
+        article.className = "news-item";
+        article.innerHTML = `
+          <h3>${item.titulo}</h3>
+          <p>${item.texto}</p>
+        `;
+        newsList.appendChild(article);
+      });
+    }
   </script>
 
 </body>
