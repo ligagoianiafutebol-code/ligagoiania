@@ -1,344 +1,517 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Categorias</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Categorias</title>
 
-<style>
-body{
-margin:0;
-font-family:Arial;
-background:#0b1f3a;
-color:white;
-}
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-header{
-background:#08172c;
-padding:15px;
-text-align:center;
-font-size:22px;
-font-weight:bold;
-border-bottom:3px solid #f7c600;
-}
+  <style>
+    :root{
+      --bg:#0b1f3a;
+      --bg-dark:#08172c;
+      --card:#102a52;
+      --card-hover:#153766;
+      --gold:#f7c600;
+      --gold-soft:rgba(247,198,0,.12);
+      --gold-line:rgba(247,198,0,.24);
+      --white:#ffffff;
+      --muted:#d8e1ef;
+      --shadow:0 8px 22px rgba(0,0,0,.28);
+      --transition:.25s ease;
+      --max:980px;
+    }
 
-.container{
-padding:15px;
-max-width:900px;
-margin:auto;
-}
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
 
-input{
-width:100%;
-padding:12px;
-margin-bottom:12px;
-border:none;
-border-radius:8px;
-font-size:14px;
-box-sizing:border-box;
-}
+    body{
+      font-family:Arial, sans-serif;
+      background:
+        linear-gradient(rgba(11,31,58,.88), rgba(11,31,58,.94)),
+        url("fundo.png") center/cover fixed no-repeat;
+      color:var(--white);
+    }
 
-button{
-background:#f7c600;
-color:black;
-padding:10px 14px;
-border:none;
-border-radius:8px;
-font-weight:bold;
-cursor:pointer;
-margin-bottom:10px;
-}
+    a{
+      text-decoration:none;
+      color:inherit;
+      transition:var(--transition);
+    }
 
-.btn{
-display:inline-block;
-background:#f7c600;
-color:black;
-padding:10px 14px;
-border-radius:8px;
-font-weight:bold;
-cursor:pointer;
-margin-bottom:10px;
-text-decoration:none;
-}
+    button{
+      font-family:inherit;
+      cursor:pointer;
+      transition:var(--transition);
+      border:none;
+    }
 
-.btn-voltar{
-display:inline-block;
-margin-bottom:15px;
-background:#f7c600;
-color:black;
-padding:10px 14px;
-border-radius:8px;
-text-decoration:none;
-font-weight:bold;
-}
+    .wrap{
+      width:min(100% - 28px, var(--max));
+      margin:0 auto;
+    }
 
-.lista{
-display:flex;
-flex-direction:column;
-gap:10px;
-}
+    header{
+      background:rgba(8,23,44,.96);
+      border-bottom:3px solid var(--gold);
+      box-shadow:var(--shadow);
+    }
 
-.card{
-background:#102a52;
-padding:12px;
-border-radius:10px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-gap:10px;
-}
+    .header-top{
+      min-height:82px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      flex-wrap:wrap;
+      padding:14px 0;
+    }
 
-.card-info{
-display:flex;
-flex-direction:column;
-gap:4px;
-}
+    .header-left,
+    .header-right{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+    }
 
-.card-info small{
-opacity:.85;
-font-size:12px;
-}
+    .header-title{
+      flex:1;
+      text-align:center;
+      font-size:24px;
+      font-weight:700;
+      color:var(--white);
+    }
 
-.actions button{
-background:#1a3f73;
-margin-left:5px;
-font-size:12px;
-color:white;
-}
+    .top-btn{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:10px 16px;
+      border-radius:10px;
+      font-weight:700;
+    }
 
-.modal{
-display:none;
-position:fixed;
-inset:0;
-background:rgba(0,0,0,0.7);
-justify-content:center;
-align-items:center;
-padding:15px;
-z-index:999;
-}
+    .btn-light{
+      background:#fff4cf;
+      color:#111;
+    }
 
-.modal-content{
-background:#102a52;
-padding:20px;
-border-radius:12px;
-text-align:center;
-width:100%;
-max-width:650px;
-max-height:85vh;
-overflow:auto;
-}
+    .btn-light:hover{
+      background:var(--gold);
+      transform:translateY(-2px);
+    }
 
-.jogadores-box{
-margin-top:15px;
-text-align:left;
-background:#0b1f3a;
-border-radius:10px;
-padding:12px;
-}
+    .container{
+      padding:24px 0 34px;
+    }
 
-.jogadores-box h3{
-margin:0 0 10px;
-font-size:15px;
-color:#f7c600;
-}
+    .hero{
+      background:linear-gradient(135deg,#102a52,#0d2346);
+      border:1px solid var(--gold-line);
+      border-radius:18px;
+      padding:22px;
+      margin-bottom:20px;
+      box-shadow:var(--shadow);
+    }
 
-.jogadores-lista{
-display:flex;
-flex-wrap:wrap;
-gap:8px;
-}
+    .hero h2{
+      margin:0 0 8px;
+      color:var(--gold);
+      font-size:28px;
+    }
 
-.jogador-tag{
-background:#1a3f73;
-padding:6px 10px;
-border-radius:999px;
-font-size:12px;
-}
+    .hero p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.6;
+      font-size:15px;
+    }
 
-.sem-item{
-opacity:.85;
-font-size:13px;
-}
+    input{
+      width:100%;
+      padding:13px;
+      margin-bottom:16px;
+      border:none;
+      border-radius:10px;
+      font-size:14px;
+      box-sizing:border-box;
+      background:#f5f7fb;
+      color:#111;
+    }
 
-@media (max-width:700px){
-.card{
-flex-direction:column;
-align-items:flex-start;
-}
+    input:focus{
+      outline:2px solid rgba(247,198,0,.5);
+    }
 
-.actions{
-width:100%;
-}
-}
-</style>
+    .lista{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    .card{
+      background:linear-gradient(180deg, rgba(16,42,82,.96), rgba(12,33,64,.96));
+      padding:14px 16px;
+      border-radius:14px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      border:1px solid rgba(255,230,0,.10);
+      box-shadow:var(--shadow);
+      transition:var(--transition);
+    }
+
+    .card:hover{
+      transform:translateY(-2px);
+      border-color:var(--gold-line);
+    }
+
+    .card-info{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+
+    .card-info .nome{
+      font-size:18px;
+      font-weight:700;
+      color:#fff;
+    }
+
+    .card-info small{
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    .actions{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+
+    .actions button{
+      background:#1a3f73;
+      padding:10px 12px;
+      border-radius:8px;
+      font-size:13px;
+      color:white;
+      font-weight:700;
+    }
+
+    .actions button:hover{
+      background:var(--gold);
+      color:#111;
+    }
+
+    .modal{
+      display:none;
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,0.7);
+      justify-content:center;
+      align-items:center;
+      padding:15px;
+      z-index:999;
+    }
+
+    .modal-content{
+      background:linear-gradient(180deg, rgba(16,42,82,.98), rgba(12,33,64,.98));
+      padding:22px;
+      border-radius:16px;
+      width:100%;
+      max-width:700px;
+      max-height:85vh;
+      overflow:auto;
+      border:1px solid var(--gold-line);
+      box-shadow:var(--shadow);
+    }
+
+    .modal-content h2{
+      color:var(--gold);
+      margin-bottom:14px;
+      text-align:center;
+      font-size:26px;
+    }
+
+    .jogadores-box{
+      margin-top:10px;
+      text-align:left;
+      background:#0b1f3a;
+      border-radius:12px;
+      padding:14px;
+      border:1px solid rgba(255,255,255,.06);
+    }
+
+    .jogadores-box h3{
+      margin:0 0 12px;
+      font-size:16px;
+      color:var(--gold);
+    }
+
+    .jogadores-lista{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+
+    .jogador-tag{
+      background:#1a3f73;
+      padding:7px 11px;
+      border-radius:999px;
+      font-size:12px;
+      border:1px solid rgba(255,255,255,.08);
+    }
+
+    .sem-item{
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.6;
+    }
+
+    .fechar-btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      margin-top:16px;
+      background:var(--gold);
+      color:black;
+      padding:11px 14px;
+      border-radius:10px;
+      font-weight:700;
+    }
+
+    .fechar-btn:hover{
+      filter:brightness(1.04);
+      transform:translateY(-1px);
+    }
+
+    @media (max-width:700px){
+      .header-title{
+        order:3;
+        width:100%;
+        text-align:center;
+      }
+
+      .header-left,
+      .header-right{
+        width:100%;
+        justify-content:center;
+      }
+
+      .card{
+        flex-direction:column;
+        align-items:flex-start;
+      }
+
+      .actions{
+        width:100%;
+      }
+    }
+
+    @media (max-width:600px){
+      .top-btn{
+        width:100%;
+        justify-content:center;
+      }
+
+      .header-left,
+      .header-right{
+        flex-direction:column;
+        align-items:stretch;
+      }
+    }
+  </style>
 </head>
-
 <body>
 
-<header>Categorias</header>
+  <header>
+    <div class="wrap header-top">
+      <div class="header-left">
+        <button class="top-btn btn-light" type="button" onclick="voltarPagina()">
+          <i class="fa-solid fa-arrow-left"></i> Voltar
+        </button>
 
-<div class="container">
+        <a href="index.html" class="top-btn btn-light">
+          <i class="fa-solid fa-house"></i> Página Inicial
+        </a>
+      </div>
 
-<a href="index.html" class="btn-voltar">← Voltar</a>
+      <div class="header-title">Categorias</div>
 
-<input id="buscaCategoria" placeholder="Pesquisar..." oninput="carregarCategorias()">
+      <div class="header-right"></div>
+    </div>
+  </header>
 
-<div class="lista" id="listaCategorias"></div>
-
-</div>
-
-<div class="modal" id="modal">
-  <div class="modal-content" id="modalContent"></div>
-</div>
-
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
-import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-firestore.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyCyArj4yRlEl-yibkc0VEmL_4UJpRHHQSc",
-  authDomain: "liga-goiana-base.firebaseapp.com",
-  projectId: "liga-goiana-base",
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-let categoriasCache = [];
-let jogadoresCache = [];
-
-function obterNomeJogador(jogador) {
-  return (
-    jogador.nome ||
-    jogador.nomeJogador ||
-    jogador.jogador ||
-    jogador.atleta ||
-    "Jogador sem nome"
-  );
-}
-
-function jogadorPertenceCategoria(jogador, categoria) {
-  const categoriaId = categoria.id;
-  const categoriaNome = String(categoria.nome || "").trim().toLowerCase();
-
-  const campoCategoria = String(jogador.categoria || "").trim().toLowerCase();
-  const campoCategoriaNome = String(jogador.categoriaNome || "").trim().toLowerCase();
-  const campoCategoriaId = String(jogador.categoriaId || "").trim();
-
-  const categoriasLista = Array.isArray(jogador.categorias)
-    ? jogador.categorias.map(v => String(v).trim().toLowerCase())
-    : [];
-
-  const categoriaIdsLista = Array.isArray(jogador.categoriaIds)
-    ? jogador.categoriaIds.map(v => String(v).trim())
-    : [];
-
-  if (campoCategoria && campoCategoria === categoriaNome) return true;
-  if (campoCategoriaNome && campoCategoriaNome === categoriaNome) return true;
-  if (campoCategoriaId && campoCategoriaId === categoriaId) return true;
-  if (categoriasLista.includes(categoriaNome)) return true;
-  if (categoriaIdsLista.includes(categoriaId)) return true;
-
-  return false;
-}
-
-function obterJogadoresDaCategoria(categoria) {
-  return jogadoresCache.filter(jogador => jogadorPertenceCategoria(jogador, categoria));
-}
-
-window.verCategoria = function(id){
-  const categoria = categoriasCache.find(c => c.id === id);
-  if (!categoria) return;
-
-  const jogadores = obterJogadoresDaCategoria(categoria);
-
-  const htmlJogadores = jogadores.length
-    ? jogadores.map(j => `<div class="jogador-tag">${obterNomeJogador(j)}</div>`).join("")
-    : `<div class="sem-item">Nenhum jogador encontrado nesta categoria.</div>`;
-
-  document.getElementById("modalContent").innerHTML = `
-    <h2>${categoria.nome}</h2>
-
-    <div class="jogadores-box">
-      <h3>Jogadores cadastrados</h3>
-      <div class="jogadores-lista">${htmlJogadores}</div>
+  <div class="wrap container">
+    <div class="hero">
+      <h2>Categorias</h2>
+      <p>Veja todas as categorias cadastradas e os jogadores vinculados em cada uma delas.</p>
     </div>
 
-    <button onclick="fecharModal()" style="margin-top:15px;">Fechar</button>
-  `;
-  document.getElementById("modal").style.display = "flex";
-}
+    <input id="buscaCategoria" placeholder="Pesquisar categoria..." oninput="carregarCategorias()">
 
-window.fecharModal = function(){
-  document.getElementById("modal").style.display = "none";
-}
+    <div class="lista" id="listaCategorias"></div>
+  </div>
 
-async function carregarJogadores(){
-  jogadoresCache = [];
-  const snap = await getDocs(collection(db, "jogadores"));
+  <div class="modal" id="modal">
+    <div class="modal-content" id="modalContent"></div>
+  </div>
 
-  snap.forEach(docSnap => {
-    jogadoresCache.push({ id: docSnap.id, ...docSnap.data() });
-  });
-}
+  <script type="module">
+    import { auth, db } from "./firebase.js";
+    import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-async function carregarCategorias(){
-  const lista = document.getElementById("listaCategorias");
-  lista.innerHTML = "<div class='sem-item'>Carregando categorias...</div>";
+    let categoriasCache = [];
+    let jogadoresCache = [];
 
-  const snap = await getDocs(collection(db, "categorias"));
-  categoriasCache = [];
+    window.voltarPagina = function(){
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        window.location.href = "index.html";
+      }
+    };
 
-  snap.forEach(docSnap => {
-    categoriasCache.push({ id: docSnap.id, ...docSnap.data() });
-  });
+    function obterNomeJogador(jogador) {
+      return (
+        jogador.nome ||
+        jogador.nomeJogador ||
+        jogador.jogador ||
+        jogador.atleta ||
+        "Jogador sem nome"
+      );
+    }
 
-  let categorias = [...categoriasCache];
+    function jogadorPertenceCategoria(jogador, categoria) {
+      const categoriaId = categoria.id;
+      const categoriaNome = String(categoria.nome || "").trim().toLowerCase();
 
-  const busca = (document.getElementById("buscaCategoria").value || "").toLowerCase().trim();
+      const campoCategoria = String(jogador.categoria || "").trim().toLowerCase();
+      const campoCategoriaNome = String(jogador.categoriaNome || "").trim().toLowerCase();
+      const campoCategoriaId = String(jogador.categoriaId || "").trim();
 
-  if(busca){
-    categorias = categorias.filter(c => (c.nome || "").toLowerCase().includes(busca));
-  }
+      const categoriasLista = Array.isArray(jogador.categorias)
+        ? jogador.categorias.map(v => String(v).trim().toLowerCase())
+        : [];
 
-  categorias.sort((a,b)=>(a.nome || "").localeCompare((b.nome || ""), "pt-BR"));
+      const categoriaIdsLista = Array.isArray(jogador.categoriaIds)
+        ? jogador.categoriaIds.map(v => String(v).trim())
+        : [];
 
-  if (!categorias.length) {
-    lista.innerHTML = "<div class='sem-item'>Nenhuma categoria encontrada.</div>";
-    return;
-  }
+      if (campoCategoria && campoCategoria === categoriaNome) return true;
+      if (campoCategoriaNome && campoCategoriaNome === categoriaNome) return true;
+      if (campoCategoriaId && campoCategoriaId === categoriaId) return true;
+      if (categoriasLista.includes(categoriaNome)) return true;
+      if (categoriaIdsLista.includes(categoriaId)) return true;
 
-  lista.innerHTML = "";
+      return false;
+    }
 
-  categorias.forEach(c => {
-    const jogadores = obterJogadoresDaCategoria(c);
+    function obterJogadoresDaCategoria(categoria) {
+      return jogadoresCache.filter(jogador => jogadorPertenceCategoria(jogador, categoria));
+    }
 
-    lista.innerHTML += `
-      <div class="card">
-        <div class="card-info">
-          <div>${c.nome}</div>
-          <small>${jogadores.length} jogador(es) cadastrado(s)</small>
+    window.verCategoria = function(id){
+      const categoria = categoriasCache.find(c => c.id === id);
+      if (!categoria) return;
+
+      const jogadores = obterJogadoresDaCategoria(categoria);
+
+      const htmlJogadores = jogadores.length
+        ? jogadores.map(j => `<div class="jogador-tag">${obterNomeJogador(j)}</div>`).join("")
+        : `<div class="sem-item">Nenhum jogador encontrado nesta categoria.</div>`;
+
+      document.getElementById("modalContent").innerHTML = `
+        <h2>${categoria.nome}</h2>
+
+        <div class="jogadores-box">
+          <h3>Jogadores cadastrados</h3>
+          <div class="jogadores-lista">${htmlJogadores}</div>
         </div>
-        <div class="actions">
-          <button onclick="verCategoria('${c.id}')">Ver</button>
-        </div>
-      </div>
-    `;
-  });
-}
 
-async function iniciarPagina() {
-  try {
-    await carregarJogadores();
-    await carregarCategorias();
-  } catch (erro) {
-    document.getElementById("listaCategorias").innerHTML = "<div class='sem-item'>Erro ao carregar as categorias.</div>";
-    console.error(erro);
-  }
-}
+        <button class="fechar-btn" onclick="fecharModal()">Fechar</button>
+      `;
+      document.getElementById("modal").style.display = "flex";
+    };
 
-iniciarPagina();
-</script>
+    window.fecharModal = function(){
+      document.getElementById("modal").style.display = "none";
+    };
+
+    async function carregarJogadores(){
+      jogadoresCache = [];
+      const snap = await getDocs(collection(db, "jogadores"));
+
+      snap.forEach(docSnap => {
+        jogadoresCache.push({ id: docSnap.id, ...docSnap.data() });
+      });
+    }
+
+    window.carregarCategorias = async function(){
+      const lista = document.getElementById("listaCategorias");
+      lista.innerHTML = "<div class='sem-item'>Carregando categorias...</div>";
+
+      const snap = await getDocs(collection(db, "categorias"));
+      categoriasCache = [];
+
+      snap.forEach(docSnap => {
+        categoriasCache.push({ id: docSnap.id, ...docSnap.data() });
+      });
+
+      let categorias = [...categoriasCache];
+
+      const busca = (document.getElementById("buscaCategoria").value || "").toLowerCase().trim();
+
+      if(busca){
+        categorias = categorias.filter(c => (c.nome || "").toLowerCase().includes(busca));
+      }
+
+      categorias.sort((a,b)=>(a.nome || "").localeCompare((b.nome || ""), "pt-BR"));
+
+      if (!categorias.length) {
+        lista.innerHTML = "<div class='sem-item'>Nenhuma categoria encontrada.</div>";
+        return;
+      }
+
+      lista.innerHTML = "";
+
+      categorias.forEach(c => {
+        const jogadores = obterJogadoresDaCategoria(c);
+
+        lista.innerHTML += `
+          <div class="card">
+            <div class="card-info">
+              <div class="nome">${c.nome}</div>
+              <small>${jogadores.length} jogador(es) cadastrado(s)</small>
+            </div>
+            <div class="actions">
+              <button onclick="verCategoria('${c.id}')">
+                <i class="fa-solid fa-eye"></i> Ver
+              </button>
+            </div>
+          </div>
+        `;
+      });
+    };
+
+    async function iniciarPagina() {
+      try {
+        await carregarJogadores();
+        await carregarCategorias();
+      } catch (erro) {
+        document.getElementById("listaCategorias").innerHTML = "<div class='sem-item'>Erro ao carregar as categorias.</div>";
+        console.error(erro);
+      }
+    }
+
+    iniciarPagina();
+  </script>
 
 </body>
 </html>
