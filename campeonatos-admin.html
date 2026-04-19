@@ -221,14 +221,14 @@
       resize:vertical;
     }
 
-    .checkbox-box{
+    .bloco-form{
       background:#0d2346;
       border:1px solid rgba(255,255,255,.08);
       border-radius:14px;
       padding:14px;
     }
 
-    .checkbox-box-title{
+    .bloco-form-title{
       color:var(--gold);
       font-weight:700;
       margin-bottom:10px;
@@ -255,6 +255,33 @@
     .check-item input{
       width:auto;
       margin:0;
+    }
+
+    .subgrid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+.preview-logo{
+      margin-top:12px;
+      display:flex;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
+    .preview-logo img{
+      width:70px;
+      height:70px;
+      object-fit:cover;
+      border-radius:50%;
+      border:2px solid rgba(255,255,255,.12);
+      background:#1a3f73;
+    }
+
+    .preview-logo span{
+      color:var(--muted);
+      font-size:13px;
     }
 
     .form-actions{
@@ -457,7 +484,8 @@
         justify-content:center;
       }
 
-      .form-grid{
+      .form-grid,
+      .subgrid{
         grid-template-columns:1fr;
       }
 
@@ -519,7 +547,7 @@
 
     <div class="hero">
       <h2>Gestão de Campeonatos</h2>
-      <p>Cadastre, edite, publique e organize os campeonatos da Liga Goiana de Futebol de Base.</p>
+      <p>Cadastre, edite, publique e altere o formato da competição mesmo durante o campeonato, se necessário.</p>
     </div>
 
     <div class="toolbar">
@@ -540,6 +568,10 @@
 
         <div>
           <input type="text" id="temporada" placeholder="Temporada (ex: 2026)">
+        </div>
+
+        <div>
+          <input type="file" id="logoArquivo" accept="image/*" onchange="previewLogoArquivo()">
         </div>
 
         <div>
@@ -571,14 +603,48 @@
           </select>
         </div>
 
-        <div class="full">
-          <textarea id="descricao" placeholder="Descrição / observações do campeonato"></textarea>
+        <div>
+          <input type="number" id="faseFinalInicio" min="1" placeholder="A fase final começa com quantos times? Ex: 8">
         </div>
 
         <div class="full">
-          <div class="checkbox-box">
-            <div class="checkbox-box-title">Categorias do campeonato</div>
+          <textarea id="descricao" placeholder="Descrição / observações do campeonato"></textarea>
+        </div>
+<div class="full">
+          <div class="preview-logo" id="previewLogoBox" style="display:none;">
+            <img id="previewLogoImg" src="logo-liga.jfif" alt="Preview da logo">
+            <span id="previewLogoTexto">Pré-visualização da logo</span>
+          </div>
+        </div>
+
+        <div class="full">
+          <div class="bloco-form">
+            <div class="bloco-form-title">Categorias do campeonato</div>
             <div class="checkbox-grid" id="categoriasGrid"></div>
+          </div>
+        </div>
+
+        <div class="full">
+          <div class="bloco-form">
+            <div class="bloco-form-title">Configurações disciplinares</div>
+
+            <div class="subgrid">
+              <div>
+                <input type="number" id="amarelosParaSuspensao" min="1" value="3" placeholder="Quantos amarelos suspendem">
+              </div>
+
+              <div>
+                <input type="number" id="jogosSuspensaoAmarelos" min="1" value="1" placeholder="Quantos jogos suspende por amarelos">
+              </div>
+
+              <div>
+                <input type="number" id="jogosSuspensaoVermelhoDireto" min="1" value="2" placeholder="Quantos jogos suspende no vermelho direto">
+              </div>
+
+              <div>
+                <input type="number" id="jogosSuspensaoSegundoAmarelo" min="1" value="1" placeholder="Quantos jogos suspende no 2º amarelo">
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -610,10 +676,19 @@
       updateDoc,
       deleteDoc
     } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import {
+      getStorage,
+      ref,
+      uploadBytes,
+      getDownloadURL
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+
+    const storage = getStorage();
 
     let editandoId = null;
     let categoriasDisponiveis = [];
     let campeonatosCache = [];
+    let logoAtual = "";
 
     const lista = document.getElementById("listaCampeonatos");
     const msgSucesso = document.getElementById("msgSucesso");
@@ -659,15 +734,38 @@
     function limparFormulario(){
       document.getElementById("nome").value = "";
       document.getElementById("temporada").value = "";
+      document.getElementById("logoArquivo").value = "";
       document.getElementById("logo").value = "";
       document.getElementById("status").value = "rascunho";
       document.getElementById("formato").value = "";
       document.getElementById("turno").value = "";
+      document.getElementById("faseFinalInicio").value = "";
       document.getElementById("descricao").value = "";
+      document.getElementById("amarelosParaSuspensao").value = "3";
+      document.getElementById("jogosSuspensaoAmarelos").value = "1";
+      document.getElementById("jogosSuspensaoVermelhoDireto").value = "2";
+      document.getElementById("jogosSuspensaoSegundoAmarelo").value = "1";
       document.querySelectorAll('#categoriasGrid input[type="checkbox"]').forEach(item => item.checked = false);
+      document.getElementById("previewLogoBox").style.display = "none";
+      document.getElementById("previewLogoImg").src = "logo-liga.jfif";
+      document.getElementById("previewLogoTexto").textContent = "Pré-visualização da logo";
       editandoId = null;
+      logoAtual = "";
       limparMensagens();
     }
+
+    window.previewLogoArquivo = function(){
+      const arquivo = document.getElementById("logoArquivo").files[0];
+      if(!arquivo) return;
+
+      const leitor = new FileReader();
+      leitor.onload = function(e){
+        document.getElementById("previewLogoBox").style.display = "flex";
+        document.getElementById("previewLogoImg").src = e.target.result;
+        document.getElementById("previewLogoTexto").textContent = arquivo.name;
+      };
+      leitor.readAsDataURL(arquivo);
+    };
 
     function getCategoriasSelecionadas(){
       return Array.from(document.querySelectorAll('#categoriasGrid input[type="checkbox"]:checked')).map(item => item.value);
@@ -703,11 +801,14 @@
         `;
       });
     }
-function montarStatus(status){
+
+    function montarStatus(status){
       const s = String(status || "rascunho").toLowerCase();
+
       if(s === "publicado"){
         return `<div class="status publicado"><i class="fa-solid fa-circle-check"></i> Publicado</div>`;
       }
+
       return `<div class="status rascunho"><i class="fa-solid fa-pen"></i> Rascunho</div>`;
     }
 
@@ -715,42 +816,89 @@ function montarStatus(status){
       if(!categorias || !categorias.length){
         return '<span class="tag">Sem categorias</span>';
       }
+
       return categorias.map(cat => `<span class="tag">${cat}</span>`).join("");
     }
 
-    window.salvarCampeonato = async function(){
+    async function uploadLogoSeExistir(){
+      const arquivo = document.getElementById("logoArquivo").files[0];
+      const logoUrlManual = document.getElementById("logo").value.trim();
+
+      if(arquivo){
+        const caminho = `campeonatos/${Date.now()}-${arquivo.name}`;
+        const referencia = ref(storage, caminho);
+        await uploadBytes(referencia, arquivo);
+        return await getDownloadURL(referencia);
+      }
+
+      if(logoUrlManual){
+        return logoUrlManual;
+      }
+
+      return logoAtual;
+    }
+window.salvarCampeonato = async function(){
       limparMensagens();
 
       const nome = document.getElementById("nome").value.trim();
       const temporada = document.getElementById("temporada").value.trim();
-      const logo = document.getElementById("logo").value.trim();
       const status = document.getElementById("status").value;
       const formato = document.getElementById("formato").value;
       const turno = document.getElementById("turno").value;
+      const faseFinalInicio = Number(document.getElementById("faseFinalInicio").value || 0);
       const descricao = document.getElementById("descricao").value.trim();
       const categorias = getCategoriasSelecionadas();
+
+      const amarelosParaSuspensao = Number(document.getElementById("amarelosParaSuspensao").value || 3);
+      const jogosSuspensaoAmarelos = Number(document.getElementById("jogosSuspensaoAmarelos").value || 1);
+      const jogosSuspensaoVermelhoDireto = Number(document.getElementById("jogosSuspensaoVermelhoDireto").value || 2);
+      const jogosSuspensaoSegundoAmarelo = Number(document.getElementById("jogosSuspensaoSegundoAmarelo").value || 1);
 
       if(!nome){
         mostrarErro("Digite o nome do campeonato.");
         return;
       }
 
-      const dados = {
-        nome,
-        temporada,
-        logo,
-        status,
-        formato,
-        turno,
-        descricao,
-        categorias,
-        publicado: status === "publicado",
-        publico: status === "publicado",
-        visivelPublico: status === "publicado",
-        atualizadoEm: new Date().toISOString()
-      };
+      if(!formato){
+        mostrarErro("Selecione o formato da competição.");
+        return;
+      }
+
+      if(amarelosParaSuspensao < 1 || jogosSuspensaoAmarelos < 1 || jogosSuspensaoVermelhoDireto < 1 || jogosSuspensaoSegundoAmarelo < 1){
+        mostrarErro("As configurações de cartões precisam ser maiores que zero.");
+        return;
+      }
 
       try{
+        const logo = await uploadLogoSeExistir();
+
+        const dados = {
+          nome,
+          temporada,
+          logo,
+          status,
+          formato,
+          turno,
+          faseFinalInicio,
+          descricao,
+          categorias,
+
+          configuracoesFlexiveis: true,
+          podeAlterarFormatoDuranteCompeticao: true,
+
+          regrasCartoes: {
+            amarelosParaSuspensao,
+            jogosSuspensaoAmarelos,
+            jogosSuspensaoVermelhoDireto,
+            jogosSuspensaoSegundoAmarelo
+          },
+
+          publicado: status === "publicado",
+          publico: status === "publicado",
+          visivelPublico: status === "publicado",
+          atualizadoEm: new Date().toISOString()
+        };
+
         if(editandoId){
           await updateDoc(doc(db, "campeonatos", editandoId), dados);
           mostrarSucesso("Campeonato atualizado com sucesso!");
@@ -765,6 +913,7 @@ function montarStatus(status){
         limparFormulario();
         document.getElementById("formulario").style.display = "none";
         await carregarCampeonatos();
+
       }catch(erro){
         console.error(erro);
         mostrarErro("Erro ao salvar o campeonato.");
@@ -777,14 +926,38 @@ function montarStatus(status){
 
       document.getElementById("nome").value = campeonato.nome || "";
       document.getElementById("temporada").value = campeonato.temporada || "";
+      document.getElementById("logoArquivo").value = "";
       document.getElementById("logo").value = campeonato.logo || "";
       document.getElementById("status").value = campeonato.status || "rascunho";
       document.getElementById("formato").value = campeonato.formato || "";
       document.getElementById("turno").value = campeonato.turno || "";
+      document.getElementById("faseFinalInicio").value = campeonato.faseFinalInicio || "";
       document.getElementById("descricao").value = campeonato.descricao || "";
-      marcarCategorias(campeonato.categorias || []);
 
+      document.getElementById("amarelosParaSuspensao").value =
+        campeonato.regrasCartoes?.amarelosParaSuspensao ?? 3;
+
+      document.getElementById("jogosSuspensaoAmarelos").value =
+        campeonato.regrasCartoes?.jogosSuspensaoAmarelos ?? 1;
+
+      document.getElementById("jogosSuspensaoVermelhoDireto").value =
+        campeonato.regrasCartoes?.jogosSuspensaoVermelhoDireto ?? 2;
+
+      document.getElementById("jogosSuspensaoSegundoAmarelo").value =
+        campeonato.regrasCartoes?.jogosSuspensaoSegundoAmarelo ?? 1;
+
+      marcarCategorias(campeonato.categorias || []);
+      logoAtual = campeonato.logo || "";
       editandoId = id;
+
+      if(campeonato.logo){
+        document.getElementById("previewLogoBox").style.display = "flex";
+        document.getElementById("previewLogoImg").src = campeonato.logo;
+        document.getElementById("previewLogoTexto").textContent = "Logo atual do campeonato";
+      } else {
+        document.getElementById("previewLogoBox").style.display = "none";
+      }
+
       limparMensagens();
       document.getElementById("formulario").style.display = "block";
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -824,8 +997,9 @@ function montarStatus(status){
         if(busca){
           campeonatosFiltrados = campeonatosFiltrados.filter(item =>
             (item.nome || "").toLowerCase().includes(busca) ||
-            (String(item.temporada || "")).toLowerCase().includes(busca) ||
-            (String(item.status || "")).toLowerCase().includes(busca)
+            String(item.temporada || "").toLowerCase().includes(busca) ||
+            String(item.status || "").toLowerCase().includes(busca) ||
+            String(item.formato || "").toLowerCase().includes(busca)
           );
         }
 
@@ -839,6 +1013,8 @@ function montarStatus(status){
         lista.innerHTML = "";
 
         campeonatosFiltrados.forEach(campeonato => {
+          const regras = campeonato.regrasCartoes || {};
+
           lista.innerHTML += `
             <div class="card">
               <div class="item">
@@ -855,6 +1031,9 @@ function montarStatus(status){
                   <small>Temporada: ${campeonato.temporada || "-"}</small>
                   <small>Formato: ${campeonato.formato || "-"}</small>
                   <small>Turno: ${campeonato.turno || "-"}</small>
+                  <small>Fase final começa com: ${campeonato.faseFinalInicio || "-"}</small>
+                  <small>Amarelos para suspender: ${regras.amarelosParaSuspensao ?? "-"}</small>
+                  <small>Suspensão por vermelho: ${regras.jogosSuspensaoVermelhoDireto ?? "-"} jogo(s)</small>
                   <div class="tags">${montarCategoriasTags(campeonato.categorias || [])}</div>
                 </div>
               </div>
@@ -883,6 +1062,7 @@ function montarStatus(status){
     }
 
     await carregarCategorias();
+    limparFormulario();
     await carregarCampeonatos();
   </script>
 
