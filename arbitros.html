@@ -852,4 +852,144 @@
           const a = d.data();
           const cats = (a.categorias || []).map(c=>`<span class="tag">${c}</span>`).join("");
           const idade = calcularIdade(a.dataNascimento);
-          const stats = await calcularEsta
+          const stats = await calcularEstatisticasArbitro(a.nome || "");
+
+          const categoriasStatsHtml = Object.keys(stats.jogosPorCategoria).length
+            ? Object.entries(stats.jogosPorCategoria)
+                .sort((x, y) => x[0].localeCompare(y[0], "pt-BR"))
+                .map(([categoria, quantidade]) => `
+                  <div class="categoria-item">
+                    <span>${categoria}</span>
+                    <strong>${quantidade} jogo(s)</strong>
+                  </div>
+                `).join("")
+            : `<div class="categoria-item"><span>Sem jogos registrados</span><strong>0</strong></div>`;
+
+          document.getElementById("modalContent").innerHTML = `
+            <img src="${a.foto || 'logo-liga.jfif'}" class="photo" alt="${a.nome || 'Árbitro'}">
+            <h2>${a.nome || ""}</h2>
+
+            <div class="modal-grid">
+              <div class="info-box">
+                <h3>Dados do Árbitro</h3>
+                <div class="info-line"><strong>Email:</strong> ${a.email || "-"}</div>
+                <div class="info-line"><strong>Telefone:</strong> ${a.telefone || "-"}</div>
+                <div class="info-line"><strong>CPF:</strong> ${a.cpf || "-"}</div>
+                <div class="info-line"><strong>Idade:</strong> ${idade}</div>
+                <div class="info-line"><strong>Onde nasceu:</strong> ${a.cidadeNascimento || "-"}</div>
+                <div class="info-line"><strong>Autorização:</strong> Todas as categorias</div>
+                <div class="categorias-tags" style="margin-top:10px;">${cats || '<span class="tag">Sem categorias</span>'}</div>
+              </div>
+
+              <div class="stats-box">
+                <h3>Estatísticas</h3>
+                <div class="stats-grid">
+                  <div class="stat-card">
+                    <strong>${stats.jogosApitados}</strong>
+                    <span>Jogos apitados</span>
+                  </div>
+
+                  <div class="stat-card">
+                    <strong>${stats.amarelos}</strong>
+                    <span>Amarelos aplicados</span>
+                  </div>
+
+                  <div class="stat-card">
+                    <strong>${stats.vermelhos}</strong>
+                    <span>Vermelhos aplicados</span>
+                  </div>
+
+                  <div class="stat-card">
+                    <strong>${stats.mediaCartoes}</strong>
+                    <span>Média de cartões por jogo</span>
+                  </div>
+                </div>
+
+                <div class="categorias-stats">
+                  <h4>Jogos por categoria</h4>
+                  ${categoriasStatsHtml}
+                </div>
+              </div>
+            </div>
+
+            <div class="modal-actions">
+              <button onclick="fechar()">
+                <i class="fa-solid fa-xmark"></i> Fechar
+              </button>
+            </div>
+          `;
+
+          document.getElementById("modal").style.display = "flex";
+          break;
+        }
+      }
+    };
+
+    window.fechar = function(){
+      document.getElementById("modal").style.display = "none";
+    };
+
+    async function carregarArbitros(){
+      const lista = document.getElementById("lista");
+      lista.innerHTML = "<div class='vazio'>Carregando árbitros...</div>";
+
+      const snap = await getDocs(collection(db,"arbitros"));
+      let dados = [];
+
+      snap.forEach(d => dados.push({id:d.id, ...d.data()}));
+
+      const busca = (document.getElementById("busca").value || "").toLowerCase().trim();
+
+      if(busca){
+        dados = dados.filter(a =>
+          (a.nome || "").toLowerCase().includes(busca) ||
+          (a.email || "").toLowerCase().includes(busca) ||
+          (a.cpf || "").toLowerCase().includes(busca)
+        );
+      }
+
+      dados.sort((a,b)=>(a.nome || "").localeCompare(b.nome || "", "pt-BR"));
+
+      if(!dados.length){
+        lista.innerHTML = "<div class='vazio'>Nenhum árbitro encontrado.</div>";
+        return;
+      }
+
+      lista.innerHTML = "";
+
+      dados.forEach(a=>{
+        lista.innerHTML += `
+          <div class="card">
+            <div class="user">
+              <img src="${a.foto || 'logo-liga.jfif'}" class="photo" alt="${a.nome || 'Árbitro'}">
+              <div class="user-info">
+                <div class="nome">${a.nome || ""}</div>
+                <small>${a.email || "-"}</small>
+                <small>${a.telefone || "-"}</small>
+                <div class="categorias-tags">
+                  <span class="tag">Todas as categorias</span>
+                </div>
+              </div>
+            </div>
+            <div class="actions">
+              <button onclick="editar('${a.id}')">
+                <i class="fa-solid fa-pen"></i> Editar
+              </button>
+              <button onclick="ver('${a.id}')">
+                <i class="fa-solid fa-eye"></i> Ver
+              </button>
+              <button class="delete" onclick="excluir('${a.id}')">
+                <i class="fa-solid fa-trash"></i> Excluir
+              </button>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    await carregarCategorias();
+    carregarArbitros();
+  </script>
+
+</body>
+</html>
