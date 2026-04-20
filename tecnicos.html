@@ -21,7 +21,7 @@
       --danger:#b30000;
       --shadow:0 8px 22px rgba(0,0,0,.28);
       --transition:.25s ease;
-      --max:1140px;
+      --max:1240px;
     }
 
     *{
@@ -36,6 +36,7 @@
         linear-gradient(rgba(11,31,58,.88), rgba(11,31,58,.94)),
         url("fundo.png") center/cover fixed no-repeat;
       color:var(--white);
+      min-height:100vh;
     }
 
     a{
@@ -49,6 +50,7 @@
       cursor:pointer;
       transition:var(--transition);
       border:none;
+      background:none;
     }
 
     input, select{
@@ -95,10 +97,12 @@
     .top-btn{
       display:inline-flex;
       align-items:center;
+      justify-content:center;
       gap:8px;
       padding:10px 16px;
       border-radius:10px;
       font-weight:700;
+      white-space:nowrap;
     }
 
     .btn-light{
@@ -109,6 +113,42 @@
     .btn-light:hover{
       background:var(--gold);
       transform:translateY(-2px);
+    }
+
+    .nav-bar{
+      background:rgba(16,42,82,.95);
+      border-top:1px solid rgba(255,255,255,.06);
+      border-bottom:1px solid rgba(255,255,255,.08);
+    }
+
+    .menu{
+      display:flex;
+      justify-content:center;
+      gap:10px;
+      padding:12px 0;
+      flex-wrap:wrap;
+    }
+
+    .menu a{
+      color:white;
+      font-weight:700;
+      font-size:14px;
+      background:#0d2346;
+      padding:10px 14px;
+      border-radius:10px;
+      border:1px solid transparent;
+      white-space:nowrap;
+    }
+
+    .menu a:hover{
+      color:var(--gold);
+      background:var(--gold-soft);
+      border-color:var(--gold-line);
+    }
+
+    .menu a.ativo{
+      background:var(--gold);
+      color:black;
     }
 
     .container{
@@ -135,6 +175,7 @@
       color:var(--muted);
       line-height:1.6;
       font-size:15px;
+      max-width:850px;
     }
 
     .toolbar{
@@ -189,8 +230,7 @@
       box-shadow:var(--shadow);
       margin-bottom:18px;
     }
-
-    .form-grid{
+.form-grid{
       display:grid;
       grid-template-columns:1fr 1fr;
       gap:12px;
@@ -369,8 +409,7 @@
       padding:15px;
       z-index:999;
     }
-
-    .modal-content{
+.modal-content{
       background:linear-gradient(180deg, rgba(16,42,82,.98), rgba(12,33,64,.98));
       padding:22px;
       border-radius:16px;
@@ -545,15 +584,30 @@
         <a href="index.html" class="top-btn btn-light">
           <i class="fa-solid fa-house"></i> Página Inicial
         </a>
-
-        <a href="admin.html" class="top-btn btn-light">
-          <i class="fa-solid fa-gears"></i> Painel ADM
-        </a>
       </div>
 
-      <div class="header-title">Técnicos</div>
+      <div class="header-title">LIGA GOIANA DE FUTEBOL DE BASE</div>
 
       <div class="header-right"></div>
+    </div>
+
+    <div class="nav-bar">
+      <div class="wrap">
+        <div class="menu">
+          <a href="index.html">Início</a>
+          <a href="campeonatos.html">Campeonatos</a>
+          <a href="tabela.html">Tabela</a>
+          <a href="jogos.html">Jogos</a>
+          <a href="times.html">Times</a>
+          <a href="tecnicos.html" class="ativo">Técnicos</a>
+          <a href="jogadores.html">Jogadores</a>
+          <a href="arbitros.html">Arbitros</a>
+          <a href="assistente.html">Assistente</a>
+          <a href="sumula.html">Súmula</a>
+          <a href="noticias.html">Notícias</a>
+          <a href="login.html">Login</a>
+        </div>
+      </div>
     </div>
   </header>
 
@@ -632,8 +686,7 @@
   <div class="modal" id="modal">
     <div class="modal-content" id="modalContent"></div>
   </div>
-
-  <script type="module">
+<script type="module">
     import { db } from "./firebase.js";
     import { collection, addDoc, getDocs, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
     import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
@@ -674,24 +727,6 @@
       }
 
       return idade >= 0 ? idade : "-";
-    }
-
-    function parseDataFlex(valor){
-      if(!valor) return null;
-
-      const d1 = new Date(valor);
-      if(!isNaN(d1.getTime())) return d1;
-
-      const texto = String(valor).trim();
-      const match = texto.match(/^(\d{2})\/(\d{2})\/(\d{4})(?:\s*-\s*(\d{2}):(\d{2}))?$/);
-
-      if(match){
-        const [, dia, mes, ano, hora = "00", minuto = "00"] = match;
-        const d2 = new Date(`${ano}-${mes}-${dia}T${hora}:${minuto}:00`);
-        if(!isNaN(d2.getTime())) return d2;
-      }
-
-      return null;
     }
 
     async function carregarCategorias(){
@@ -767,83 +802,6 @@
       fotoAtual = "";
     }
 
-    async function calcularEstatisticasTecnico(nomeTime){
-      const snapJogos = await getDocs(collection(db,"jogos"));
-
-      let jogos = 0;
-      let vitorias = 0;
-      let empates = 0;
-      let derrotas = 0;
-      let golsPro = 0;
-      let golsContra = 0;
-      let proximoJogo = null;
-      const jogosPorCategoria = {};
-      const agora = new Date();
-
-      snapJogos.forEach(docSnap => {
-        const j = docSnap.data();
-        const ehMandante = normalizarTexto(j.timeA) === normalizarTexto(nomeTime);
-        const ehVisitante = normalizarTexto(j.timeB) === normalizarTexto(nomeTime);
-
-        if(!ehMandante && !ehVisitante) return;
-
-        const categoria = j.categoria || "Sem categoria";
-        jogosPorCategoria[categoria] = (jogosPorCategoria[categoria] || 0) + 1;
-
-        const finalizado = j.status === "sumula_enviada";
-        const dataJogo = parseDataFlex(j.data);
-
-        if(finalizado){
-          jogos += 1;
-
-          const golsA = Number(j.golsA || 0);
-          const golsB = Number(j.golsB || 0);
-
-          if(ehMandante){
-            golsPro += golsA;
-            golsContra += golsB;
-
-            if(golsA > golsB) vitorias++;
-            else if(golsA === golsB) empates++;
-            else derrotas++;
-          }
-
-          if(ehVisitante){
-            golsPro += golsB;
-            golsContra += golsA;
-
-            if(golsB > golsA) vitorias++;
-            else if(golsB === golsA) empates++;
-            else derrotas++;
-          }
-        }else if(dataJogo && dataJogo > agora){
-          if(!proximoJogo || dataJogo < proximoJogo.dataObj){
-            proximoJogo = {
-              confronto: `${j.timeA || "-"} x ${j.timeB || "-"}`,
-              data: j.data || "-",
-              local: j.local || "-",
-              categoria: j.categoria || "-",
-              dataObj: dataJogo
-            };
-          }
-        }
-      });
-
-      const aproveitamento = jogos > 0 ? (((vitorias * 3) + empates) / (jogos * 3) * 100).toFixed(1) : "0.0";
-
-      return {
-        jogos,
-        vitorias,
-        empates,
-        derrotas,
-        golsPro,
-        golsContra,
-        aproveitamento,
-        jogosPorCategoria,
-        proximoJogo
-      };
-    }
-
     window.salvar = async function(){
       const nome = document.getElementById("nome").value.trim();
       const cpf = document.getElementById("cpf").value.trim();
@@ -891,8 +849,7 @@
       limparFormulario();
       carregarTecnicos();
     };
-
-    window.editar = async function(id){
+window.editar = async function(id){
       const snap = await getDocs(collection(db,"tecnicos"));
 
       snap.forEach(d=>{
@@ -928,37 +885,6 @@
       for (const d of snap.docs){
         if(d.id===id){
           const t = d.data();
-          const cats = (t.categorias||[]).map(c=>`<span class="tag">${c}</span>`).join("");
-          const idade = calcularIdade(t.dataNascimento);
-          const stats = await calcularEstatisticasTecnico(t.time || "");
-
-          const categoriasStatsHtml = Object.keys(stats.jogosPorCategoria).length
-            ? Object.entries(stats.jogosPorCategoria)
-                .sort((x, y) => x[0].localeCompare(y[0], "pt-BR"))
-                .map(([categoria, quantidade]) => `
-                  <div class="categoria-item">
-                    <span>${categoria}</span>
-                    <strong>${quantidade} jogo(s)</strong>
-                  </div>
-                `).join("")
-            : `<div class="categoria-item"><span>Sem jogos registrados</span><strong>0</strong></div>`;
-
-          const proximoJogoHtml = stats.proximoJogo
-            ? `
-              <div class="categorias-stats">
-                <h4>Próximo jogo</h4>
-                <div class="info-line"><strong>Confronto:</strong> ${stats.proximoJogo.confronto}</div>
-                <div class="info-line"><strong>Data:</strong> ${stats.proximoJogo.data}</div>
-                <div class="info-line"><strong>Local:</strong> ${stats.proximoJogo.local}</div>
-                <div class="info-line"><strong>Categoria:</strong> ${stats.proximoJogo.categoria}</div>
-              </div>
-            `
-            : `
-              <div class="categorias-stats">
-                <h4>Próximo jogo</h4>
-                <div class="info-line">Nenhum jogo futuro encontrado.</div>
-              </div>
-            `;
 
           document.getElementById("modalContent").innerHTML = `
             <img src="${t.foto || 'logo-liga.jfif'}" class="photo" alt="${t.nome || 'Técnico'}">
@@ -971,61 +897,26 @@
                 <div class="info-line"><strong>Email:</strong> ${t.email || "-"}</div>
                 <div class="info-line"><strong>Telefone:</strong> ${t.telefone || "-"}</div>
                 <div class="info-line"><strong>CPF:</strong> ${t.cpf || "-"}</div>
-                <div class="info-line"><strong>Idade:</strong> ${idade}</div>
+                <div class="info-line"><strong>Idade:</strong> ${calcularIdade(t.dataNascimento)}</div>
                 <div class="info-line"><strong>Onde nasceu:</strong> ${t.cidadeNascimento || "-"}</div>
-                <div class="categorias-tags" style="margin-top:10px;">${cats || '<span class="tag">Sem categorias</span>'}</div>
+                <div class="categorias-tags" style="margin-top:10px;">
+                  ${(t.categorias || []).map(c=>`<span class="tag">${c}</span>`).join("") || '<span class="tag">Sem categorias</span>'}
+                </div>
               </div>
 
               <div class="stats-box">
-                <h3>Estatísticas do Time</h3>
+                <h3>Resumo</h3>
                 <div class="stats-grid">
                   <div class="stat-card">
-                    <strong>${stats.jogos}</strong>
-                    <span>Jogos</span>
+                    <strong>${t.time || "-"}</strong>
+                    <span>Time atual</span>
                   </div>
 
                   <div class="stat-card">
-                    <strong>${stats.vitorias}</strong>
-                    <span>Vitórias</span>
-                  </div>
-
-                  <div class="stat-card">
-                    <strong>${stats.empates}</strong>
-                    <span>Empates</span>
-                  </div>
-
-                  <div class="stat-card">
-                    <strong>${stats.derrotas}</strong>
-                    <span>Derrotas</span>
-                  </div>
-
-                  <div class="stat-card">
-                    <strong>${stats.golsPro}</strong>
-                    <span>Gols pró</span>
-                  </div>
-
-                  <div class="stat-card">
-                    <strong>${stats.golsContra}</strong>
-                    <span>Gols contra</span>
-                  </div>
-
-                  <div class="stat-card">
-                    <strong>${stats.aproveitamento}%</strong>
-                    <span>Aproveitamento</span>
-                  </div>
-
-                  <div class="stat-card">
-                    <strong>${Object.keys(stats.jogosPorCategoria).length}</strong>
-                    <span>Categorias com jogos</span>
+                    <strong>${(t.categorias || []).length}</strong>
+                    <span>Categorias</span>
                   </div>
                 </div>
-
-                <div class="categorias-stats">
-                  <h4>Jogos por categoria</h4>
-                  ${categoriasStatsHtml}
-                </div>
-
-                ${proximoJogoHtml}
               </div>
             </div>
 
