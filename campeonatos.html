@@ -121,10 +121,16 @@
 
     .menu{
       display:flex;
-      justify-content:center;
+      justify-content:flex-start;
       gap:10px;
-      padding:12px 0;
-      flex-wrap:wrap;
+      padding:12px 8px;
+      flex-wrap:nowrap;
+      overflow-x:auto;
+      scrollbar-width:none;
+    }
+
+    .menu::-webkit-scrollbar{
+      display:none;
     }
 
     .menu a{
@@ -136,6 +142,7 @@
       border-radius:10px;
       border:1px solid transparent;
       white-space:nowrap;
+      flex:0 0 auto;
     }
 
     .menu a:hover{
@@ -175,9 +182,10 @@
       font-size:15px;
       max-width:850px;
     }
-.filtros{
+
+    .filtros{
       display:grid;
-      grid-template-columns:1fr 1fr;
+      grid-template-columns:1fr 1fr 1fr;
       gap:12px;
       margin-bottom:20px;
     }
@@ -251,8 +259,7 @@
       font-size:18px;
       color:#fff;
     }
-
-    .item-info small{
+.item-info small{
       color:var(--muted);
       font-size:13px;
       line-height:1.5;
@@ -312,7 +319,8 @@
       border:1px solid rgba(255,255,255,.06);
       box-shadow:var(--shadow);
     }
-@media (max-width:900px){
+
+    @media (max-width:900px){
       .header-title{
         order:3;
         width:100%;
@@ -341,57 +349,15 @@
     }
 
     @media (max-width:600px){
-      .header-top{
-        flex-direction:column;
-        align-items:center;
-      }
-
-      .header-title{
-        order:2;
-        width:100%;
-        text-align:center;
-      }
-
-      .header-left{
-        order:1;
-        width:100%;
-        display:flex;
-        flex-direction:row;
-        align-items:center;
-        justify-content:center;
-        gap:10px;
-        flex-wrap:nowrap;
-      }
-
-      .header-right{
-        display:none;
-      }
-
       .top-btn{
-        width:auto;
-        min-width:0;
-        flex:1;
+        width:100%;
         justify-content:center;
-        padding:10px 12px;
-        font-size:14px;
       }
 
-      .menu{
-        justify-content:flex-start;
-        flex-wrap:nowrap;
-        overflow-x:auto;
-        padding:12px 4px;
-        scrollbar-width:none;
-      }
-
-      .menu::-webkit-scrollbar{
-        display:none;
-      }
-
-      .menu a{
-        min-width:max-content;
-        flex:0 0 auto;
-        text-align:center;
+      .header-left,
+      .header-right{
+        flex-direction:column;
+        align-items:stretch;
       }
 
       .hero h2{
@@ -405,7 +371,7 @@
   <header>
     <div class="wrap header-top">
       <div class="header-left">
-        <button class="top-btn btn-light" type="button" onclick="voltarPagina()">
+        <button class="top-btn btn-light" onclick="voltarPagina()">
           <i class="fa-solid fa-arrow-left"></i> Voltar
         </button>
 
@@ -418,10 +384,11 @@
 
       <div class="header-right"></div>
     </div>
-<div class="nav-bar">
+
+    <!-- MENU CORRIGIDO COMPLETO -->
+    <div class="nav-bar">
       <div class="wrap">
         <nav class="menu">
-
           <a href="index.html">Início</a>
           <a href="campeonatos.html" class="ativo">Campeonatos</a>
           <a href="tabela.html">Tabela</a>
@@ -437,38 +404,35 @@
           <a href="suspensos.html">Suspensos</a>
           <a href="noticias.html">Notícias</a>
           <a href="login.html">Login</a>
-
         </nav>
       </div>
     </div>
   </header>
 
   <main class="wrap container">
-<section class="hero">
+
+    <section class="hero">
       <h2>Campeonatos</h2>
-      <p>Veja os campeonatos publicados, filtre por temporada e abra a página pública de cada competição.</p>
+      <p>Veja os campeonatos publicados, filtre por nome, campeonato e categoria.</p>
     </section>
 
+    <!-- NOVOS FILTROS (CORRIGIDO) -->
     <section class="filtros">
-      <input 
-        id="buscaCampeonato" 
-        placeholder="Pesquisar campeonato..." 
-        oninput="carregarCampeonatos()"
-      >
+      <input id="buscaCampeonato" placeholder="Pesquisar campeonato..." oninput="carregarCampeonatos()">
 
-      <select 
-        id="filtroTemporada" 
-        onchange="carregarCampeonatos()"
-      >
-        <option value="">Selecione a temporada</option>
+      <select id="filtroCampeonato" onchange="carregarCampeonatos()">
+        <option value="">Todos os campeonatos</option>
+      </select>
+
+      <select id="filtroCategoria" onchange="carregarCampeonatos()">
+        <option value="">Todas categorias</option>
       </select>
     </section>
 
     <section class="lista-grid" id="listaCampeonatos"></section>
 
   </main>
-
-  <script type="module">
+<script type="module">
     import { db } from "./firebase.js";
     import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -481,7 +445,8 @@
         window.location.href = "index.html";
       }
     };
-function statusPublico(status = "") {
+
+    function statusPublico(status = "") {
       const s = String(status).trim().toLowerCase();
       return ["ativo", "em breve", "publicado", "publico", "público"].includes(s);
     }
@@ -494,39 +459,68 @@ function statusPublico(status = "") {
       return false;
     }
 
-    function preencherFiltroTemporada(){
-      const select = document.getElementById("filtroTemporada");
+    function preencherFiltroCampeonato(){
+      const select = document.getElementById("filtroCampeonato");
 
-      const temporadas = [...new Set(
+      const lista = [...new Set(
         campeonatosCache
           .filter(campeonatoEhPublico)
-          .map(c => c.temporada)
+          .map(c => c.nome)
           .filter(Boolean)
       )].sort((a,b) => String(a).localeCompare(String(b), "pt-BR"));
 
-      select.innerHTML = '<option value="">Selecione a temporada</option>';
+      select.innerHTML = '<option value="">Todos os campeonatos</option>';
 
-      temporadas.forEach(t => {
-        select.innerHTML += `<option value="${t}">${t}</option>`;
+      lista.forEach(nome => {
+        select.innerHTML += `<option value="${nome}">${nome}</option>`;
       });
+    }
+
+    function preencherFiltroCategoria(){
+      const select = document.getElementById("filtroCategoria");
+
+      const categorias = new Set();
+
+      campeonatosCache
+        .filter(campeonatoEhPublico)
+        .forEach(c => {
+          (c.categorias || []).forEach(cat => {
+            if(cat) categorias.add(cat);
+          });
+        });
+
+      select.innerHTML = '<option value="">Todas categorias</option>';
+
+      Array.from(categorias)
+        .sort((a,b) => String(a).localeCompare(String(b), "pt-BR"))
+        .forEach(cat => {
+          select.innerHTML += `<option value="${cat}">${cat}</option>`;
+        });
     }
 window.carregarCampeonatos = function(){
       const lista = document.getElementById("listaCampeonatos");
       const busca = (document.getElementById("buscaCampeonato").value || "").toLowerCase().trim();
-      const temporada = document.getElementById("filtroTemporada").value;
+      const campeonatoFiltro = document.getElementById("filtroCampeonato").value;
+      const categoriaFiltro = document.getElementById("filtroCategoria").value;
 
       let campeonatos = campeonatosCache.filter(campeonatoEhPublico);
 
       if (busca) {
         campeonatos = campeonatos.filter(c =>
           (c.nome || "").toLowerCase().includes(busca) ||
-          (String(c.temporada || "")).toLowerCase().includes(busca) ||
-          (String(c.status || "")).toLowerCase().includes(busca)
+          String(c.temporada || "").toLowerCase().includes(busca) ||
+          String(c.status || "").toLowerCase().includes(busca)
         );
       }
 
-      if (temporada) {
-        campeonatos = campeonatos.filter(c => String(c.temporada || "") === String(temporada));
+      if (campeonatoFiltro) {
+        campeonatos = campeonatos.filter(c => c.nome === campeonatoFiltro);
+      }
+
+      if (categoriaFiltro) {
+        campeonatos = campeonatos.filter(c =>
+          Array.isArray(c.categorias) && c.categorias.includes(categoriaFiltro)
+        );
       }
 
       campeonatos.sort((a, b) => (a.nome || "").localeCompare((b.nome || ""), "pt-BR"));
@@ -537,7 +531,8 @@ window.carregarCampeonatos = function(){
       }
 
       lista.innerHTML = "";
-campeonatos.forEach(campeonato => {
+
+      campeonatos.forEach(campeonato => {
         const categorias = (campeonato.categorias || [])
           .map(c => `<span class="tag">${c}</span>`)
           .join("");
@@ -581,15 +576,16 @@ async function iniciarPagina(){
           campeonatosCache.push({ id: docSnap.id, ...docSnap.data() });
         });
 
-        preencherFiltroTemporada();
+        preencherFiltroCampeonato();
+        preencherFiltroCategoria();
         carregarCampeonatos();
-
       }catch(erro){
         console.error(erro);
         lista.innerHTML = `<div class="vazio">Erro ao carregar os campeonatos.</div>`;
       }
     }
-iniciarPagina();
+
+    iniciarPagina();
   </script>
 
 </body>
