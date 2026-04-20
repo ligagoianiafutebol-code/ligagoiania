@@ -175,8 +175,7 @@
       font-size:15px;
       max-width:850px;
     }
-
-    .filtros{
+.filtros{
       display:grid;
       grid-template-columns:1fr 1fr;
       gap:12px;
@@ -193,7 +192,8 @@
       background:#f5f7fb;
       color:#111;
     }
-input:focus, select:focus{
+
+    input:focus, select:focus{
       outline:2px solid rgba(247,198,0,.5);
     }
 
@@ -312,8 +312,7 @@ input:focus, select:focus{
       border:1px solid rgba(255,255,255,.06);
       box-shadow:var(--shadow);
     }
-
-    @media (max-width:900px){
+@media (max-width:900px){
       .header-title{
         order:3;
         width:100%;
@@ -342,24 +341,57 @@ input:focus, select:focus{
     }
 
     @media (max-width:600px){
-      .top-btn{
-        width:100%;
-        justify-content:center;
+      .header-top{
+        flex-direction:column;
+        align-items:center;
       }
 
-      .header-left,
+      .header-title{
+        order:2;
+        width:100%;
+        text-align:center;
+      }
+
+      .header-left{
+        order:1;
+        width:100%;
+        display:flex;
+        flex-direction:row;
+        align-items:center;
+        justify-content:center;
+        gap:10px;
+        flex-wrap:nowrap;
+      }
+
       .header-right{
-        flex-direction:column;
-        align-items:stretch;
+        display:none;
+      }
+
+      .top-btn{
+        width:auto;
+        min-width:0;
+        flex:1;
+        justify-content:center;
+        padding:10px 12px;
+        font-size:14px;
       }
 
       .menu{
-        overflow-x:auto;
+        justify-content:flex-start;
         flex-wrap:nowrap;
+        overflow-x:auto;
+        padding:12px 4px;
+        scrollbar-width:none;
+      }
+
+      .menu::-webkit-scrollbar{
+        display:none;
       }
 
       .menu a{
         min-width:max-content;
+        flex:0 0 auto;
+        text-align:center;
       }
 
       .hero h2{
@@ -386,36 +418,48 @@ input:focus, select:focus{
 
       <div class="header-right"></div>
     </div>
-
-    <div class="nav-bar">
+<div class="nav-bar">
       <div class="wrap">
         <nav class="menu">
+
           <a href="index.html">Início</a>
           <a href="campeonatos.html" class="ativo">Campeonatos</a>
           <a href="tabela.html">Tabela</a>
           <a href="jogos.html">Jogos</a>
           <a href="times.html">Times</a>
+          <a href="tecnicos.html">Técnicos</a>
           <a href="jogadores.html">Jogadores</a>
           <a href="artilharia.html">Artilharia</a>
           <a href="cartoes.html">Cartões</a>
+          <a href="arbitros.html">Árbitros</a>
+          <a href="assistentes.html">Assistente</a>
+          <a href="sumula.html">Súmula</a>
           <a href="suspensos.html">Suspensos</a>
+          <a href="noticias.html">Notícias</a>
           <a href="login.html">Login</a>
+
         </nav>
       </div>
     </div>
   </header>
 
   <main class="wrap container">
-
-    <section class="hero">
+<section class="hero">
       <h2>Campeonatos</h2>
       <p>Veja os campeonatos publicados, filtre por temporada e abra a página pública de cada competição.</p>
     </section>
 
     <section class="filtros">
-      <input id="buscaCampeonato" placeholder="Pesquisar campeonato..." oninput="carregarCampeonatos()">
+      <input 
+        id="buscaCampeonato" 
+        placeholder="Pesquisar campeonato..." 
+        oninput="carregarCampeonatos()"
+      >
 
-      <select id="filtroTemporada" onchange="carregarCampeonatos()">
+      <select 
+        id="filtroTemporada" 
+        onchange="carregarCampeonatos()"
+      >
         <option value="">Selecione a temporada</option>
       </select>
     </section>
@@ -423,7 +467,8 @@ input:focus, select:focus{
     <section class="lista-grid" id="listaCampeonatos"></section>
 
   </main>
-<script type="module">
+
+  <script type="module">
     import { db } from "./firebase.js";
     import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -436,8 +481,7 @@ input:focus, select:focus{
         window.location.href = "index.html";
       }
     };
-
-    function statusPublico(status = "") {
+function statusPublico(status = "") {
       const s = String(status).trim().toLowerCase();
       return ["ativo", "em breve", "publicado", "publico", "público"].includes(s);
     }
@@ -466,8 +510,7 @@ input:focus, select:focus{
         select.innerHTML += `<option value="${t}">${t}</option>`;
       });
     }
-
-    window.carregarCampeonatos = function(){
+window.carregarCampeonatos = function(){
       const lista = document.getElementById("listaCampeonatos");
       const busca = (document.getElementById("buscaCampeonato").value || "").toLowerCase().trim();
       const temporada = document.getElementById("filtroTemporada").value;
@@ -526,8 +569,7 @@ campeonatos.forEach(campeonato => {
         `;
       });
     };
-
-    async function iniciarPagina(){
+async function iniciarPagina(){
       const lista = document.getElementById("listaCampeonatos");
       lista.innerHTML = `<div class="vazio">Carregando campeonatos...</div>`;
 
@@ -541,13 +583,13 @@ campeonatos.forEach(campeonato => {
 
         preencherFiltroTemporada();
         carregarCampeonatos();
+
       }catch(erro){
         console.error(erro);
         lista.innerHTML = `<div class="vazio">Erro ao carregar os campeonatos.</div>`;
       }
     }
-
-    iniciarPagina();
+iniciarPagina();
   </script>
 
 </body>
