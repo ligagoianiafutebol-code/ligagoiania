@@ -349,12 +349,6 @@
       gap:16px;
     }
 
-    .grid-3{
-      display:grid;
-      grid-template-columns:repeat(3, 1fr);
-      gap:16px;
-    }
-
     .info-card{
       background:rgba(11,31,58,.72);
       border:1px solid rgba(255,255,255,.08);
@@ -373,7 +367,8 @@
       font-weight:700;
       color:#fff;
     }
-.linha-info{
+
+    .linha-info{
       display:flex;
       align-items:center;
       justify-content:space-between;
@@ -431,12 +426,6 @@
       font-weight:700;
       color:var(--gold);
       line-height:1;
-    }
-
-    .numero-legenda{
-      font-size:12px;
-      color:var(--muted);
-      margin-top:4px;
     }
 
     .botao-ver-mais{
@@ -573,18 +562,9 @@
       flex-shrink:0;
     }
 
-    .vitoria{
-      background:var(--win);
-    }
-
-    .empate{
-      background:var(--draw);
-      color:#111;
-    }
-
-    .derrota{
-      background:var(--loss);
-    }
+    .vitoria{ background:var(--win); }
+    .empate{ background:var(--draw); color:#111; }
+    .derrota{ background:var(--loss); }
 
     .lista-jogos{
       display:flex;
@@ -655,20 +635,8 @@
       font-weight:700;
     }
 
-    .status.finalizado{
-      background:#1b5e20;
-      color:#fff;
-    }
-
-    .status.agendado{
-      background:#7a5a00;
-      color:#fff;
-    }
-
-    .status.info{
-      background:#0e4f86;
-      color:#fff;
-    }
+    .status.finalizado{ background:#1b5e20; color:#fff; }
+    .status.agendado{ background:#7a5a00; color:#fff; }
 
     .vazio{
       background:linear-gradient(180deg, rgba(16,42,82,.96), rgba(12,33,64,.96));
@@ -680,23 +648,7 @@
       box-shadow:var(--shadow);
     }
 
-    .acao-danger{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:11px 15px;
-      border-radius:10px;
-      font-weight:700;
-      color:#fff;
-      background:var(--danger);
-      cursor:pointer;
-    }
-
-    .acao-danger:hover{
-      filter:brightness(1.06);
-      transform:translateY(-1px);
-    }
-@media (max-width:900px){
+    @media (max-width:900px){
       .header-title{
         order:3;
         width:100%;
@@ -714,10 +666,6 @@
       }
 
       .grid-2{
-        grid-template-columns:1fr;
-      }
-
-      .grid-3{
         grid-template-columns:1fr;
       }
     }
@@ -825,7 +773,6 @@
 
 <header>
   <div class="wrap header-top">
-
     <div class="header-left">
       <button class="top-btn btn-light" onclick="voltarPagina()">
         <i class="fa-solid fa-arrow-left"></i> Voltar
@@ -836,17 +783,15 @@
       </a>
     </div>
 
-    <div class="header-title">
-      LIGA GOIANA DE FUTEBOL DE BASE
-    </div>
+    <div class="header-title">LIGA GOIANA DE FUTEBOL DE BASE</div>
 
     <div class="header-right"></div>
-
   </div>
 
   <div class="nav-bar">
     <div class="wrap">
       <nav class="menu">
+        <a href="index.html">Início</a>
         <a href="campeonatos.html">Campeonatos</a>
         <a href="tabela.html">Tabela</a>
         <a href="jogos.html">Jogos</a>
@@ -858,21 +803,17 @@
       </nav>
     </div>
   </div>
-
 </header>
 
 <main class="wrap container">
 
   <section class="hero">
     <div class="hero-top">
-
-      <img id="heroLogo" class="hero-logo" src="logo-liga.jfif">
+      <img id="heroLogo" class="hero-logo" src="logo-liga.jfif" alt="Logo campeonato">
 
       <div class="hero-info">
         <h1 id="heroTitulo">Classificação</h1>
-        <p id="heroSub">
-          Visualização completa do campeonato selecionado.
-        </p>
+        <p id="heroSub">Visualização completa do campeonato selecionado.</p>
 
         <div class="hero-tags">
           <div class="hero-tag" id="tagCategoria">Categoria: -</div>
@@ -880,25 +821,21 @@
           <div class="hero-tag" id="tagTimes">Times: 0</div>
           <div class="hero-tag" id="tagGols">Gols: 0</div>
         </div>
-
       </div>
     </div>
   </section>
 
   <section class="filtros">
-    <select id="filtroCampeonato"></select>
+    <select id="filtroCampeonato">
+      <option value="">Selecione o campeonato</option>
+    </select>
 
     <select id="filtroCategoria">
       <option value="">Selecione a categoria</option>
-      <option>Sub-11</option>
-      <option>Sub-13</option>
-      <option>Sub-15</option>
-      <option>Sub-17</option>
     </select>
   </section>
 
   <section>
-
     <h2 class="titulo-secao">Temporada</h2>
 
     <div class="abas">
@@ -911,711 +848,725 @@
     </div>
 
     <div class="subabas" id="subAbas"></div>
-
     <div id="conteudo"></div>
-
   </section>
+
 </main>
 
-<script>
-let abaAtual = "detalhes";
-let subAbaAtual = "geral";
+<script type="module">
+  import { db } from "./firebase.js";
+  import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-function voltarPagina(){
-  if(history.length > 1){
-    history.back();
-  }else{
-    window.location.href = "index.html";
-  }
-}
+  let abaAtual = "detalhes";
+  let subAbaAtual = "geral";
 
-/* =========================
-   CAMPEONATO TESTE (FIXO)
-========================= */
+  let campeonatos = [];
+  let jogos = [];
+  let times = [];
 
-const campeonatoTeste = {
-  nome: "Premier League 2024/2025",
-  categoria: "Profissional",
-  logo: "logo-liga.jfif",
-
-  tabela: [
-    {nome:"Manchester City", pontos:91, jogos:38, v:28, e:7, d:3, gp:96, gc:34, forma:["V","V","E","V","V"]},
-    {nome:"Arsenal", pontos:89, jogos:38, v:28, e:5, d:5, gp:91, gc:29, forma:["V","V","V","D","V"]},
-    {nome:"Liverpool", pontos:82, jogos:38, v:24, e:10, d:4, gp:86, gc:41, forma:["V","E","V","V","E"]},
-    {nome:"Aston Villa", pontos:68, jogos:38, v:20, e:8, d:10, gp:76, gc:61, forma:["D","V","V","E","V"]},
-    {nome:"Tottenham", pontos:66, jogos:38, v:20, e:6, d:12, gp:74, gc:61, forma:["V","D","V","D","V"]}
-  ],
-
-  jogos: [
-    {data:"Hoje", casa:"Manchester City", fora:"Arsenal", placar:"2 x 1", status:"finalizado"},
-    {data:"Amanhã", casa:"Liverpool", fora:"Chelsea", placar:"", status:"agendado"},
-    {data:"22/04", casa:"Tottenham", fora:"Aston Villa", placar:"", status:"agendado"}
-  ],
-
-  detalhes:{
-    campeao:"Manchester City",
-    titulos:"Mais títulos",
-    pais:"Inglaterra",
-    times:20,
-    rodada:"38 / 38"
-  },
-
-  gols:1091
-};
-
-/* =========================
-   INICIAR
-========================= */
-
-function iniciar(){
-  const select = document.getElementById("filtroCampeonato");
-
-  select.innerHTML = `<option>${campeonatoTeste.nome}</option>`;
-
-  atualizarTela();
-}
-
-/* =========================
-   TROCAR ABA
-========================= */
-
-function trocarAba(nome, el){
-  abaAtual = nome;
-
-  document.querySelectorAll(".aba").forEach(b=>b.classList.remove("ativa"));
-  el.classList.add("ativa");
-
-  montarSubAbas();
-  atualizarTela();
-}
-
-/* =========================
-   SUBABAS
-========================= */
-
-function montarSubAbas(){
-  const box = document.getElementById("subAbas");
-  box.innerHTML = "";
-
-  let lista = [];
-
-  if(abaAtual === "classificacao"){
-    lista = ["Geral","Casa","Fora"];
+  function voltarPagina(){
+    if (history.length > 1) {
+      history.back();
+    } else {
+      window.location.href = "index.html";
+    }
   }
 
-  if(abaAtual === "jogadores"){
-    lista = ["Gols","xG","Assistências"];
+  function normalizarTexto(texto){
+    return String(texto || "")
+      .trim()
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "");
   }
 
-  if(abaAtual === "times"){
-    lista = ["Lista"];
+  function valorCampo(obj, chaves, fallback = ""){
+    for (const chave of chaves){
+      if (obj && obj[chave] !== undefined && obj[chave] !== null && obj[chave] !== "") {
+        return obj[chave];
+      }
+    }
+    return fallback;
   }
 
-  if(abaAtual === "historico"){
-    lista = ["Campeões"];
+  function obterIdCampeonato(doc){
+    return valorCampo(doc, ["id", "campeonatoId"], "");
   }
 
-  if(!lista.length) return;
+  function obterNomeCampeonato(doc){
+    return valorCampo(doc, ["nome", "campeonato", "titulo"], "");
+  }
 
-  lista.forEach((nome,i)=>{
-    const btn = document.createElement("button");
-    btn.className = "subaba " + (i===0 ? "ativa":"");
-    btn.innerText = nome;
+  function obterEscudoTime(nome){
+    const time = times.find(t => normalizarTexto(valorCampo(t, ["nome"], "")) === normalizarTexto(nome));
+    return valorCampo(time, ["escudo", "logo"], "logo-liga.jfif");
+  }
 
-    btn.onclick = ()=>{
-      subAbaAtual = nome;
-      document.querySelectorAll(".subaba").forEach(b=>b.classList.remove("ativa"));
-      btn.classList.add("ativa");
-      atualizarTela();
-    };
+  function obterCategoriasDoCampeonato(camp){
+    const lista = valorCampo(camp, ["categorias"], []);
+    if (Array.isArray(lista) && lista.length) return lista;
 
-    box.appendChild(btn);
-  });
-}
+    const campId = obterIdCampeonato(camp);
+    const nomeCamp = obterNomeCampeonato(camp);
 
-/* =========================
-   ATUALIZAR TELA
-========================= */
+    const setCategorias = new Set();
 
-function atualizarTela(){
-  atualizarHero();
+    jogos.forEach(j => {
+      const jogoCampId = valorCampo(j, ["campeonatoId"], "");
+      const jogoCampNome = valorCampo(j, ["campeonato", "nomeCampeonato"], "");
+      const categoria = valorCampo(j, ["categoria"], "");
 
-  if(abaAtual === "detalhes") renderDetalhes();
-  if(abaAtual === "jogos") renderJogos();
-  if(abaAtual === "classificacao") renderClassificacao();
-  if(abaAtual === "jogadores") renderJogadores();
-  if(abaAtual === "times") renderTimes();
-  if(abaAtual === "historico") renderHistorico();
-}
+      const mesmoCamp = (campId && jogoCampId === campId) ||
+        (!campId && normalizarTexto(jogoCampNome) === normalizarTexto(nomeCamp));
 
-/* =========================
-   HERO
-========================= */
+      if (mesmoCamp && categoria) {
+        setCategorias.add(categoria);
+      }
+    });
 
-function atualizarHero(){
-  document.getElementById("heroTitulo").innerText = campeonatoTeste.nome;
-  document.getElementById("tagCategoria").innerText = "Categoria: " + campeonatoTeste.categoria;
-  document.getElementById("tagJogos").innerText = "Jogos: " + campeonatoTeste.tabela.length;
-  document.getElementById("tagTimes").innerText = "Times: " + campeonatoTeste.tabela.length;
-  document.getElementById("tagGols").innerText = "Gols: " + campeonatoTeste.gols;
-}
-/* =========================
-   DETALHES
-========================= */
+    return Array.from(setCategorias).sort((a,b) => String(a).localeCompare(String(b), "pt-BR"));
+  }
 
-function renderDetalhes(){
-  const box = document.getElementById("conteudo");
+  async function carregarDadosFirebase(){
+    const [snapCampeonatos, snapJogos, snapTimes] = await Promise.all([
+      getDocs(collection(db, "campeonatos")),
+      getDocs(collection(db, "jogos")),
+      getDocs(collection(db, "times"))
+    ]);
 
-  box.innerHTML = `
-    <div class="grid-2">
+    campeonatos = [];
+    jogos = [];
+    times = [];
 
-      <div class="bloco">
-        <div class="bloco-titulo">Detalhes da competição</div>
-        <div class="bloco-conteudo">
-          <div class="grid-2">
-            <div class="info-card">
-              <div class="info-label">Campeão atual</div>
-              <div class="info-valor">${campeonatoTeste.detalhes.campeao}</div>
-            </div>
+    snapCampeonatos.forEach(docSnap => {
+      campeonatos.push({ id: docSnap.id, ...docSnap.data() });
+    });
 
-            <div class="info-card">
-              <div class="info-label">Mais títulos</div>
-              <div class="info-valor">${campeonatoTeste.detalhes.titulos}</div>
-            </div>
+    snapJogos.forEach(docSnap => {
+      jogos.push({ id: docSnap.id, ...docSnap.data() });
+    });
 
-            <div class="info-card">
-              <div class="info-label">País</div>
-              <div class="info-valor">${campeonatoTeste.detalhes.pais}</div>
-            </div>
+    snapTimes.forEach(docSnap => {
+      times.push({ id: docSnap.id, ...docSnap.data() });
+    });
+  }
 
-            <div class="info-card">
-              <div class="info-label">Times</div>
-              <div class="info-valor">${campeonatoTeste.detalhes.times}</div>
-            </div>
+  function preencherCampeonatos(){
+    const select = document.getElementById("filtroCampeonato");
+    select.innerHTML = `<option value="">Selecione o campeonato</option>`;
 
-            <div class="info-card">
-              <div class="info-label">Rodada</div>
-              <div class="info-valor">${campeonatoTeste.detalhes.rodada}</div>
+    campeonatos
+      .sort((a,b) => obterNomeCampeonato(a).localeCompare(obterNomeCampeonato(b), "pt-BR"))
+      .forEach(c => {
+        const option = document.createElement("option");
+        option.value = obterIdCampeonato(c);
+        option.textContent = obterNomeCampeonato(c);
+        select.appendChild(option);
+      });
+  }
+
+  function preencherCategorias(){
+    const select = document.getElementById("filtroCategoria");
+    const campId = document.getElementById("filtroCampeonato").value;
+
+    select.innerHTML = `<option value="">Selecione a categoria</option>`;
+
+    if(!campId) return;
+
+    const camp = campeonatos.find(c => obterIdCampeonato(c) === campId);
+    if(!camp) return;
+
+    const categorias = obterCategoriasDoCampeonato(camp);
+    categorias.forEach(cat => {
+      const option = document.createElement("option");
+      option.value = cat;
+      option.textContent = cat;
+      select.appendChild(option);
+    });
+  }
+
+  function getFiltros(){
+    const campeonatoId = document.getElementById("filtroCampeonato").value;
+    const categoria = document.getElementById("filtroCategoria").value;
+    const campeonato = campeonatos.find(c => obterIdCampeonato(c) === campeonatoId) || null;
+    return { campeonatoId, categoria, campeonato };
+  }
+
+  function jogosFiltrados(){
+    const { campeonatoId, categoria, campeonato } = getFiltros();
+    if(!campeonatoId || !categoria || !campeonato) return [];
+
+    const nomeCamp = obterNomeCampeonato(campeonato);
+
+    return jogos.filter(j => {
+      const jogoCampId = valorCampo(j, ["campeonatoId"], "");
+      const jogoCampNome = valorCampo(j, ["campeonato", "nomeCampeonato"], "");
+      const jogoCategoria = valorCampo(j, ["categoria"], "");
+
+      const mesmoCamp = jogoCampId === campeonatoId ||
+        normalizarTexto(jogoCampNome) === normalizarTexto(nomeCamp);
+
+      return mesmoCamp && jogoCategoria === categoria;
+    });
+  }
+
+  function jogosFinalizadosFiltrados(){
+    return jogosFiltrados().filter(j => {
+      const status = normalizarTexto(valorCampo(j, ["status"], ""));
+      const temPlacar = valorCampo(j, ["golsA"], null) !== null && valorCampo(j, ["golsB"], null) !== null;
+      return status === "sumula_enviada" || status === "finalizado" || temPlacar;
+    });
+  }
+
+  function ordenarPorData(lista){
+    return [...lista].sort((a,b) => {
+      const dataA = valorCampo(a, ["data", "dataHora"], "");
+      const dataB = valorCampo(b, ["data", "dataHora"], "");
+      return String(dataA).localeCompare(String(dataB));
+    });
+  }
+
+  function formatarDataHora(dataString){
+    if(!dataString) return "-";
+    const data = new Date(dataString);
+    if(isNaN(data.getTime())) return String(dataString);
+
+    const dia = String(data.getDate()).padStart(2, "0");
+    const mes = String(data.getMonth() + 1).padStart(2, "0");
+    const ano = data.getFullYear();
+    const hora = String(data.getHours()).padStart(2, "0");
+    const minuto = String(data.getMinutes()).padStart(2, "0");
+    return `${dia}/${mes}/${ano} - ${hora}:${minuto}`;
+  }
+
+  function agruparJogosPorData(lista){
+    const grupos = {};
+    lista.forEach(j => {
+      const chave = valorCampo(j, ["dataAgrupada"], "");
+      if(chave){
+        if(!grupos[chave]) grupos[chave] = [];
+        grupos[chave].push(j);
+        return;
+      }
+
+      const dataRaw = valorCampo(j, ["data", "dataHora"], "");
+      if(!dataRaw){
+        if(!grupos["Sem data"]) grupos["Sem data"] = [];
+        grupos["Sem data"].push(j);
+        return;
+      }
+
+      const data = new Date(dataRaw);
+      let titulo = "Sem data";
+      if(!isNaN(data.getTime())){
+        titulo = data.toLocaleDateString("pt-BR", {
+          weekday: "long",
+          day: "2-digit",
+          month: "2-digit"
+        });
+      }
+
+      if(!grupos[titulo]) grupos[titulo] = [];
+      grupos[titulo].push(j);
+    });
+    return grupos;
+  }
+
+  function atualizarHero(){
+    const { campeonato, categoria } = getFiltros();
+    const listaJogos = jogosFiltrados();
+    const listaFinalizados = jogosFinalizadosFiltrados();
+
+    const timesSet = new Set();
+    listaJogos.forEach(j => {
+      const timeA = valorCampo(j, ["timeA", "mandante"], "");
+      const timeB = valorCampo(j, ["timeB", "visitante"], "");
+      if(timeA) timesSet.add(timeA);
+      if(timeB) timesSet.add(timeB);
+    });
+
+    let gols = 0;
+    listaFinalizados.forEach(j => {
+      gols += Number(valorCampo(j, ["golsA"], 0));
+      gols += Number(valorCampo(j, ["golsB"], 0));
+    });
+
+    document.getElementById("heroTitulo").innerText = campeonato ? obterNomeCampeonato(campeonato) : "Classificação";
+    document.getElementById("heroSub").innerText = campeonato
+      ? "Visualização completa do campeonato selecionado."
+      : "Selecione um campeonato e uma categoria para visualizar os dados.";
+    document.getElementById("heroLogo").src = campeonato ? valorCampo(campeonato, ["logo"], "logo-liga.jfif") : "logo-liga.jfif";
+    document.getElementById("tagCategoria").innerText = "Categoria: " + (categoria || "-");
+    document.getElementById("tagJogos").innerText = "Jogos: " + listaFinalizados.length;
+    document.getElementById("tagTimes").innerText = "Times: " + timesSet.size;
+    document.getElementById("tagGols").innerText = "Gols: " + gols;
+  }
+
+  function trocarAba(nome, el){
+    abaAtual = nome;
+    subAbaAtual = "geral";
+
+    document.querySelectorAll(".aba").forEach(b => b.classList.remove("ativa"));
+    el.classList.add("ativa");
+
+    montarSubAbas();
+    atualizarTela();
+  }
+
+  function montarSubAbas(){
+    const box = document.getElementById("subAbas");
+    box.innerHTML = "";
+
+    let lista = [];
+
+    if(abaAtual === "classificacao"){
+      lista = ["Geral", "Casa", "Fora"];
+    }
+
+    if(!lista.length) return;
+
+    lista.forEach((nome, i) => {
+      const btn = document.createElement("button");
+      btn.className = "subaba " + (i === 0 ? "ativa" : "");
+      btn.innerText = nome;
+
+      btn.onclick = () => {
+        subAbaAtual = nome.toLowerCase();
+        document.querySelectorAll(".subaba").forEach(b => b.classList.remove("ativa"));
+        btn.classList.add("ativa");
+        atualizarTela();
+      };
+
+      box.appendChild(btn);
+    });
+  }
+
+  function renderDetalhes(){
+    const box = document.getElementById("conteudo");
+    const { campeonato } = getFiltros();
+    const listaJogos = jogosFiltrados();
+
+    if(!campeonato){
+      box.innerHTML = `<div class="vazio">Selecione um campeonato e uma categoria.</div>`;
+      return;
+    }
+
+    const proximoJogo = ordenarPorData(
+      listaJogos.filter(j => {
+        const status = normalizarTexto(valorCampo(j, ["status"], ""));
+        return status !== "sumula_enviada" && status !== "finalizado";
+      })
+    )[0];
+
+    box.innerHTML = `
+      <div class="grid-2">
+        <div class="bloco">
+          <div class="bloco-titulo">Detalhes da competição</div>
+          <div class="bloco-conteudo">
+            <div class="grid-2">
+              <div class="info-card">
+                <div class="info-label">Campeão atual</div>
+                <div class="info-valor">${valorCampo(campeonato, ["campeaoAtual"], "-")}</div>
+              </div>
+
+              <div class="info-card">
+                <div class="info-label">Mais títulos</div>
+                <div class="info-valor">${valorCampo(campeonato, ["maisTitulos", "titulos"], "-")}</div>
+              </div>
+
+              <div class="info-card">
+                <div class="info-label">País</div>
+                <div class="info-valor">${valorCampo(campeonato, ["pais"], "Brasil")}</div>
+              </div>
+
+              <div class="info-card">
+                <div class="info-label">Times</div>
+                <div class="info-valor">${new Set(listaJogos.flatMap(j => [valorCampo(j, ["timeA"], ""), valorCampo(j, ["timeB"], "")]).filter(Boolean)).size}</div>
+              </div>
+
+              <div class="info-card">
+                <div class="info-label">Rodada</div>
+                <div class="info-valor">${valorCampo(campeonato, ["rodadaAtual"], "-")}</div>
+              </div>
+
+              <div class="info-card">
+                <div class="info-label">Temporada</div>
+                <div class="info-valor">${valorCampo(campeonato, ["temporada"], "-")}</div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
+        <div class="bloco">
+          <div class="bloco-titulo">Próximo jogo</div>
+          <div class="bloco-conteudo">
+            ${
+              proximoJogo ? `
+                <div class="jogo-card" style="margin:0;">
+                  <div class="jogo-topo">
+                    <div class="times-jogo">
+                      <div class="jogo-time">
+                        <img src="${obterEscudoTime(valorCampo(proximoJogo, ["timeA"], ""))}" class="mini-escudo">
+                        <span>${valorCampo(proximoJogo, ["timeA"], "-")}</span>
+                      </div>
+
+                      <div class="placar">x</div>
+
+                      <div class="jogo-time" style="justify-content:flex-end;">
+                        <span>${valorCampo(proximoJogo, ["timeB"], "-")}</span>
+                        <img src="${obterEscudoTime(valorCampo(proximoJogo, ["timeB"], ""))}" class="mini-escudo">
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="linha-sub" style="margin-top:10px;">
+                    ${formatarDataHora(valorCampo(proximoJogo, ["data"], ""))}
+                  </div>
+
+                  <div class="status agendado">Agendado</div>
+                </div>
+              ` : `<div class="vazio" style="padding:20px;">Nenhum próximo jogo encontrado.</div>`
+            }
+          </div>
+        </div>
+      </div>
+    `;
+  }
+function renderJogos(){
+    const box = document.getElementById("conteudo");
+    const lista = ordenarPorData(jogosFiltrados());
+
+    if(!lista.length){
+      box.innerHTML = `<div class="vazio">Nenhum jogo encontrado para esse campeonato/categoria.</div>`;
+      return;
+    }
+
+    const grupos = agruparJogosPorData(lista);
+
+    box.innerHTML = `
       <div class="bloco">
-        <div class="bloco-titulo">Próximo jogo</div>
+        <div class="bloco-titulo">Jogos da temporada</div>
         <div class="bloco-conteudo">
-          ${campeonatoTeste.jogos.filter(j => j.status === "agendado").slice(0,1).map(j => `
-            <div class="jogo-card" style="margin:0;">
+          <div class="lista-jogos" id="listaJogos"></div>
+        </div>
+      </div>
+    `;
+
+    const listaBox = document.getElementById("listaJogos");
+
+    Object.keys(grupos).forEach(data => {
+      const bloco = document.createElement("div");
+      bloco.className = "grupo-data";
+
+      bloco.innerHTML = `
+        <div class="grupo-data-titulo">${data}</div>
+        ${grupos[data].map(j => {
+          const status = normalizarTexto(valorCampo(j, ["status"], ""));
+          const finalizado = status === "sumula_enviada" || status === "finalizado";
+          return `
+            <div class="jogo-card">
               <div class="jogo-topo">
                 <div class="times-jogo">
                   <div class="jogo-time">
-                    <img src="logo-liga.jfif" class="mini-escudo">
-                    <span>${j.casa}</span>
+                    <img src="${obterEscudoTime(valorCampo(j, ["timeA"], ""))}" class="mini-escudo">
+                    <span>${valorCampo(j, ["timeA"], "-")}</span>
                   </div>
 
-                  <div class="placar">x</div>
+                  <div class="placar">${finalizado ? `${Number(valorCampo(j, ["golsA"], 0))} x ${Number(valorCampo(j, ["golsB"], 0))}` : "x"}</div>
 
                   <div class="jogo-time" style="justify-content:flex-end;">
-                    <span>${j.fora}</span>
-                    <img src="logo-liga.jfif" class="mini-escudo">
+                    <span>${valorCampo(j, ["timeB"], "-")}</span>
+                    <img src="${obterEscudoTime(valorCampo(j, ["timeB"], ""))}" class="mini-escudo">
                   </div>
                 </div>
               </div>
 
               <div class="linha-sub" style="margin-top:10px;">
-                Data: ${j.data}
+                ${formatarDataHora(valorCampo(j, ["data"], ""))}
               </div>
 
-              <div class="status agendado">Agendado</div>
+              <div class="status ${finalizado ? "finalizado" : "agendado"}">
+                ${finalizado ? "Finalizado" : "Agendado"}
+              </div>
+            </div>
+          `;
+        }).join("")}
+      `;
+
+      listaBox.appendChild(bloco);
+    });
+  }
+
+  function criarLinhaClassificacao(nome){
+    return {
+      nome,
+      pontos: 0,
+      jogos: 0,
+      v: 0,
+      e: 0,
+      d: 0,
+      gp: 0,
+      gc: 0,
+      forma: []
+    };
+  }
+
+  function adicionarForma(time, resultado){
+    time.forma.push(resultado);
+    if(time.forma.length > 5){
+      time.forma.shift();
+    }
+  }
+
+  function montarClassificacao(modo = "geral"){
+    const lista = ordenarPorData(jogosFinalizadosFiltrados());
+    const tabela = {};
+
+    lista.forEach(j => {
+      const timeA = valorCampo(j, ["timeA"], "");
+      const timeB = valorCampo(j, ["timeB"], "");
+      const golsA = Number(valorCampo(j, ["golsA"], 0));
+      const golsB = Number(valorCampo(j, ["golsB"], 0));
+
+      if(!timeA || !timeB) return;
+
+      if(!tabela[timeA]) tabela[timeA] = criarLinhaClassificacao(timeA);
+      if(!tabela[timeB]) tabela[timeB] = criarLinhaClassificacao(timeB);
+
+      const a = tabela[timeA];
+      const b = tabela[timeB];
+
+      let contaA = true;
+      let contaB = true;
+
+      if(modo === "casa"){
+        contaB = false;
+      }
+
+      if(modo === "fora"){
+        contaA = false;
+      }
+
+      if(contaA){
+        a.jogos++;
+        a.gp += golsA;
+        a.gc += golsB;
+      }
+
+      if(contaB){
+        b.jogos++;
+        b.gp += golsB;
+        b.gc += golsA;
+      }
+
+      if(golsA > golsB){
+        if(contaA){
+          a.v++;
+          a.pontos += 3;
+          adicionarForma(a, "V");
+        }
+        if(contaB){
+          b.d++;
+          adicionarForma(b, "D");
+        }
+      } else if(golsB > golsA){
+        if(contaB){
+          b.v++;
+          b.pontos += 3;
+          adicionarForma(b, "V");
+        }
+        if(contaA){
+          a.d++;
+          adicionarForma(a, "D");
+        }
+      } else {
+        if(contaA){
+          a.e++;
+          a.pontos += 1;
+          adicionarForma(a, "E");
+        }
+        if(contaB){
+          b.e++;
+          b.pontos += 1;
+          adicionarForma(b, "E");
+        }
+      }
+    });
+
+    return Object.values(tabela).sort((a,b) => {
+      const sgA = a.gp - a.gc;
+      const sgB = b.gp - b.gc;
+
+      if(b.pontos !== a.pontos) return b.pontos - a.pontos;
+      if(b.v !== a.v) return b.v - a.v;
+      if(sgB !== sgA) return sgB - sgA;
+      if(b.gp !== a.gp) return b.gp - a.gp;
+      return a.nome.localeCompare(b.nome, "pt-BR");
+    });
+  }
+
+  function renderClassificacao(){
+    const box = document.getElementById("conteudo");
+    const lista = montarClassificacao(subAbaAtual || "geral");
+
+    if(!lista.length){
+      box.innerHTML = `<div class="vazio">Nenhum jogo finalizado encontrado para montar a classificação.</div>`;
+      return;
+    }
+
+    box.innerHTML = `
+      <div class="bloco">
+        <div class="bloco-titulo">Classificação completa</div>
+        <div class="bloco-conteudo">
+          <div class="tabela-box">
+            <table>
+              <thead>
+                <tr>
+                  <th class="col-pos">#</th>
+                  <th class="col-time">Time</th>
+                  <th>P</th>
+                  <th>J</th>
+                  <th>V</th>
+                  <th>E</th>
+                  <th>D</th>
+                  <th>GM</th>
+                  <th>GS</th>
+                  <th>SG</th>
+                  <th class="forma-cell">Últimos 5</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${lista.map((t,i) => `
+                  <tr>
+                    <td class="col-pos">${i + 1}</td>
+
+                    <td class="col-time">
+                      <div class="time-wrap">
+                        <img src="${obterEscudoTime(t.nome)}" class="escudo">
+                        <div>
+                          <div class="time-nome">${t.nome}</div>
+                          <span class="time-extra">${i < 4 ? "Classificado" : "Em disputa"}</span>
+                        </div>
+                      </div>
+                    </td>
+
+                    <td class="pontos">${t.pontos}</td>
+                    <td>${t.jogos}</td>
+                    <td>${t.v}</td>
+                    <td>${t.e}</td>
+                    <td>${t.d}</td>
+                    <td>${t.gp}</td>
+                    <td>${t.gc}</td>
+                    <td>${t.gp - t.gc}</td>
+
+                    <td class="forma-cell">
+                      <div class="forma">
+                        ${t.forma.map(r => `
+                          <div class="bolinha ${r === "V" ? "vitoria" : r === "E" ? "empate" : "derrota"}">${r}</div>
+                        `).join("")}
+                      </div>
+                    </td>
+                  </tr>
+                `).join("")}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderJogadores(){
+    const box = document.getElementById("conteudo");
+    box.innerHTML = `
+      <div class="vazio">
+        Essa parte eu deixei preparada. No próximo passo eu ligo jogadores reais pelo Firebase.
+      </div>
+    `;
+  }
+
+  function renderTimes(){
+    const box = document.getElementById("conteudo");
+    const lista = jogosFiltrados();
+
+    const nomes = new Set();
+    lista.forEach(j => {
+      const timeA = valorCampo(j, ["timeA"], "");
+      const timeB = valorCampo(j, ["timeB"], "");
+      if(timeA) nomes.add(timeA);
+      if(timeB) nomes.add(timeB);
+    });
+
+    const timesLista = Array.from(nomes).sort((a,b) => a.localeCompare(b, "pt-BR"));
+
+    if(!timesLista.length){
+      box.innerHTML = `<div class="vazio">Nenhum time encontrado para esse campeonato/categoria.</div>`;
+      return;
+    }
+
+    box.innerHTML = `
+      <div class="bloco">
+        <div class="bloco-titulo">Times do campeonato</div>
+        <div class="bloco-conteudo">
+          ${timesLista.map(nome => `
+            <div class="linha-info">
+              <div class="linha-esquerda">
+                <img src="${obterEscudoTime(nome)}" class="mini-escudo">
+                <div class="linha-texto">
+                  <div class="linha-titulo">${nome}</div>
+                  <div class="linha-sub">Time inscrito nesta categoria</div>
+                </div>
+              </div>
             </div>
           `).join("")}
         </div>
       </div>
-
-    </div>
-
-    <div class="bloco">
-      <div class="bloco-titulo">Resumo da tabela</div>
-      <div class="bloco-conteudo">
-        <div class="tabela-box">
-          <table>
-            <thead>
-              <tr>
-                <th class="col-pos">#</th>
-                <th class="col-time">Time</th>
-                <th>P</th>
-                <th>J</th>
-                <th>V</th>
-                <th>E</th>
-                <th>D</th>
-                <th>SG</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${campeonatoTeste.tabela.slice(0,5).map((t,i)=>`
-                <tr>
-                  <td class="col-pos">${i+1}</td>
-                  <td class="col-time">
-                    <div class="time-wrap">
-                      <img src="logo-liga.jfif" class="escudo">
-                      <div>
-                        <div class="time-nome">${t.nome}</div>
-                      </div>
-                    </div>
-                  </td>
-                  <td class="pontos">${t.pontos}</td>
-                  <td>${t.jogos}</td>
-                  <td>${t.v}</td>
-                  <td>${t.e}</td>
-                  <td>${t.d}</td>
-                  <td>${t.gp - t.gc}</td>
-                </tr>
-              `).join("")}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  `;
-}
-
-/* =========================
-   JOGOS
-========================= */
-
-function renderJogos(){
-  const box = document.getElementById("conteudo");
-
-  const grupos = {};
-  campeonatoTeste.jogos.forEach(j=>{
-    if(!grupos[j.data]) grupos[j.data] = [];
-    grupos[j.data].push(j);
-  });
-
-  box.innerHTML = `
-    <div class="bloco">
-      <div class="bloco-titulo">Jogos da temporada</div>
-      <div class="bloco-conteudo">
-        <div class="lista-jogos" id="listaJogos"></div>
-      </div>
-    </div>
-  `;
-
-  const lista = document.getElementById("listaJogos");
-
-  Object.keys(grupos).forEach(data=>{
-    const bloco = document.createElement("div");
-    bloco.className = "grupo-data";
-
-    bloco.innerHTML = `
-      <div class="grupo-data-titulo">${data}</div>
-      ${grupos[data].map(j=>`
-        <div class="jogo-card">
-          <div class="jogo-topo">
-            <div class="times-jogo">
-              <div class="jogo-time">
-                <img src="logo-liga.jfif" class="mini-escudo">
-                <span>${j.casa}</span>
-              </div>
-
-              <div class="placar">${j.status === "finalizado" ? j.placar : "x"}</div>
-
-              <div class="jogo-time" style="justify-content:flex-end;">
-                <span>${j.fora}</span>
-                <img src="logo-liga.jfif" class="mini-escudo">
-              </div>
-            </div>
-          </div>
-
-          <div class="status ${j.status === "finalizado" ? "finalizado" : "agendado"}">
-            ${j.status === "finalizado" ? "Finalizado" : "Agendado"}
-          </div>
-        </div>
-      `).join("")}
     `;
-
-    lista.appendChild(bloco);
-  });
-}
-/* =========================
-   CLASSIFICAÇÃO
-========================= */
-
-function renderClassificacao(){
-  const box = document.getElementById("conteudo");
-
-  let lista = [...campeonatoTeste.tabela];
-
-  if(subAbaAtual === "Casa"){
-    lista = lista.map(t => ({
-      ...t,
-      pontos: Math.max(0, t.pontos - 6),
-      jogos: Math.max(0, t.jogos - 19),
-      v: Math.max(0, t.v - 10),
-      e: Math.max(0, t.e - 4),
-      d: Math.max(0, t.d - 5),
-      gp: Math.max(0, t.gp - 40),
-      gc: Math.max(0, t.gc - 18)
-    }));
   }
 
-  if(subAbaAtual === "Fora"){
-    lista = lista.map(t => ({
-      ...t,
-      pontos: Math.max(0, t.pontos - 10),
-      jogos: Math.max(0, t.jogos - 19),
-      v: Math.max(0, t.v - 12),
-      e: Math.max(0, t.e - 2),
-      d: Math.max(0, t.d - 5),
-      gp: Math.max(0, t.gp - 46),
-      gc: Math.max(0, t.gc - 16)
-    }));
+  function renderHistorico(){
+    const box = document.getElementById("conteudo");
+    box.innerHTML = `
+      <div class="vazio">
+        O histórico eu ligo no próximo passo, quando organizarmos campeonatos encerrados por temporada.
+      </div>
+    `;
   }
 
-  lista.sort((a,b)=>{
-    if(b.pontos !== a.pontos) return b.pontos - a.pontos;
-    if((b.gp - b.gc) !== (a.gp - a.gc)) return (b.gp - b.gc) - (a.gp - a.gc);
-    return b.gp - a.gp;
+  function atualizarTela(){
+    atualizarHero();
+
+    if(abaAtual === "detalhes") renderDetalhes();
+    if(abaAtual === "jogos") renderJogos();
+    if(abaAtual === "classificacao") renderClassificacao();
+    if(abaAtual === "jogadores") renderJogadores();
+    if(abaAtual === "times") renderTimes();
+    if(abaAtual === "historico") renderHistorico();
+  }
+
+  async function iniciar(){
+    document.getElementById("conteudo").innerHTML = `<div class="vazio">Carregando classificação...</div>`;
+
+    try{
+      await carregarDadosFirebase();
+      preencherCampeonatos();
+      montarSubAbas();
+      atualizarTela();
+    }catch(error){
+      console.error(error);
+      document.getElementById("conteudo").innerHTML = `<div class="vazio">Erro ao carregar dados do Firebase.</div>`;
+    }
+  }
+
+  document.getElementById("filtroCampeonato").addEventListener("change", () => {
+    preencherCategorias();
+    document.getElementById("filtroCategoria").value = "";
+    atualizarTela();
   });
 
-  box.innerHTML = `
-    <div class="bloco">
-      <div class="bloco-titulo">Classificação completa</div>
-      <div class="bloco-conteudo">
-        <div class="tabela-box">
-          <table>
-            <thead>
-              <tr>
-                <th class="col-pos">#</th>
-                <th class="col-time">Time</th>
-                <th>P</th>
-                <th>J</th>
-                <th>V</th>
-                <th>E</th>
-                <th>D</th>
-                <th>GM</th>
-                <th>GS</th>
-                <th>SG</th>
-                <th class="forma-cell">Últimos 5</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${lista.map((t,i)=>`
-                <tr>
-                  <td class="col-pos">${i+1}</td>
+  document.getElementById("filtroCategoria").addEventListener("change", atualizarTela);
 
-                  <td class="col-time">
-                    <div class="time-wrap">
-                      <img src="logo-liga.jfif" class="escudo">
-                      <div>
-                        <div class="time-nome">${t.nome}</div>
-                        <span class="time-extra">${i < 4 ? "Classificado" : "Temporada encerrada"}</span>
-                      </div>
-                    </div>
-                  </td>
-
-                  <td class="pontos">${t.pontos}</td>
-                  <td>${t.jogos}</td>
-                  <td>${t.v}</td>
-                  <td>${t.e}</td>
-                  <td>${t.d}</td>
-                  <td>${t.gp}</td>
-                  <td>${t.gc}</td>
-                  <td>${t.gp - t.gc}</td>
-
-                  <td class="forma-cell">
-                    <div class="forma">
-                      ${t.forma.map(r => `
-                        <div class="bolinha ${
-                          r === "V" ? "vitoria" :
-                          r === "E" ? "empate" :
-                          "derrota"
-                        }">${r}</div>
-                      `).join("")}
-                    </div>
-                  </td>
-                </tr>
-              `).join("")}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  `;
-}
-/* =========================
-   JOGADORES
-========================= */
-
-function renderJogadores(){
-  const box = document.getElementById("conteudo");
-
-  const gols = [
-    {nome:"Erling Haaland", posicao:"Centroavante", extra:"Pênaltis convertidos: 3", numero:"27"},
-    {nome:"Cole Palmer", posicao:"Meia Atacante", extra:"Pênaltis convertidos: 9", numero:"22"},
-    {nome:"Ollie Watkins", posicao:"Centroavante", extra:"Pênaltis convertidos: 0", numero:"19"}
-  ];
-
-  const xg = [
-    {nome:"Erling Haaland", posicao:"Centroavante", extra:"Gols: 27", numero:"24.32"},
-    {nome:"Mohamed Salah", posicao:"Ponta Direita", extra:"Gols: 18", numero:"18.11"},
-    {nome:"Ollie Watkins", posicao:"Centroavante", extra:"Gols: 19", numero:"16.94"}
-  ];
-
-  const assistencias = [
-    {nome:"Kevin De Bruyne", posicao:"Meia", extra:"xA: 10.42", numero:"16"},
-    {nome:"Mohamed Salah", posicao:"Ponta Direita", extra:"xA: 9.18", numero:"13"},
-    {nome:"Bruno Fernandes", posicao:"Meia Atacante", extra:"xA: 8.37", numero:"12"}
-  ];
-
-  let lista = gols;
-  let titulo = "Gols";
-
-  if(subAbaAtual === "xG"){
-    lista = xg;
-    titulo = "Gols esperados (xG)";
-  }
-
-  if(subAbaAtual === "Assistências"){
-    lista = assistencias;
-    titulo = "Assistências";
-  }
-
-  box.innerHTML = `
-    <div class="bloco">
-      <div class="bloco-titulo">Estatísticas dos jogadores</div>
-      <div class="bloco-conteudo">
-
-        <div class="bloco" style="margin-bottom:0;">
-          <div class="bloco-titulo">Ataque - ${titulo}</div>
-          <div class="bloco-conteudo">
-            ${lista.map((j, i) => `
-              <div class="linha-info">
-                <div class="linha-esquerda">
-                  <img src="logo-liga.jfif" class="mini-escudo">
-                  <div class="linha-texto">
-                    <div class="linha-titulo">${i + 1}. ${j.nome}</div>
-                    <div class="linha-sub">${j.posicao}</div>
-                    <div class="linha-sub">${j.extra}</div>
-                  </div>
-                </div>
-
-                <div class="linha-direita">
-                  <div class="numero">${j.numero}</div>
-                </div>
-              </div>
-            `).join("")}
-
-            <button class="botao-ver-mais">
-              <i class="fa-solid fa-chart-simple"></i> Veja mais
-            </button>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  `;
-}
-/* =========================
-   TIMES
-========================= */
-
-function renderTimes(){
-  const box = document.getElementById("conteudo");
-
-  const times = [
-    {nome:"Manchester City", fundacao:"1880", cidade:"Manchester", estadio:"Etihad Stadium", capacidade:"53.400"},
-    {nome:"Arsenal", fundacao:"1886", cidade:"Londres", estadio:"Emirates Stadium", capacidade:"60.704"},
-    {nome:"Liverpool", fundacao:"1892", cidade:"Liverpool", estadio:"Anfield", capacidade:"54.000"},
-    {nome:"Chelsea", fundacao:"1905", cidade:"Londres", estadio:"Stamford Bridge", capacidade:"41.837"},
-    {nome:"Tottenham", fundacao:"1882", cidade:"Londres", estadio:"Tottenham Stadium", capacidade:"62.850"},
-    {nome:"Aston Villa", fundacao:"1874", cidade:"Birmingham", estadio:"Villa Park", capacidade:"42.600"}
-  ];
-
-  box.innerHTML = `
-    <div class="bloco">
-      <div class="bloco-titulo">Times do campeonato</div>
-      <div class="bloco-conteudo">
-
-        ${times.map(t => `
-          <div class="linha-info">
-            <div class="linha-esquerda">
-              <img src="logo-liga.jfif" class="mini-escudo">
-
-              <div class="linha-texto">
-                <div class="linha-titulo">${t.nome}</div>
-                <div class="linha-sub">
-                  Fundado em ${t.fundacao}, ${t.cidade}
-                </div>
-                <div class="linha-sub">
-                  ${t.estadio} (${t.capacidade})
-                </div>
-              </div>
-            </div>
-
-            <div class="linha-direita">
-              <i class="fa-regular fa-star"></i>
-            </div>
-          </div>
-        `).join("")}
-
-      </div>
-    </div>
-  `;
-}
-
-/* =========================
-   HISTÓRICO
-========================= */
-
-function renderHistorico(){
-  const box = document.getElementById("conteudo");
-
-  const historico = [
-    {temp:"2024/2025", time:"Manchester City", v:28, e:7, d:3, p:91},
-    {temp:"2023/2024", time:"Manchester City", v:28, e:7, d:3, p:91},
-    {temp:"2022/2023", time:"Manchester City", v:28, e:5, d:5, p:89},
-    {temp:"2021/2022", time:"Manchester City", v:29, e:6, d:3, p:93},
-    {temp:"2020/2021", time:"Manchester City", v:27, e:5, d:6, p:86}
-  ];
-
-  box.innerHTML = `
-    <div class="bloco">
-      <div class="bloco-titulo">Histórico de campeões</div>
-      <div class="bloco-conteudo">
-
-        <div class="tabela-box">
-          <table>
-            <thead>
-              <tr>
-                <th>Temporada</th>
-                <th class="col-time">Time</th>
-                <th>V</th>
-                <th>E</th>
-                <th>D</th>
-                <th>P</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              ${historico.map(h => `
-                <tr>
-                  <td>${h.temp}</td>
-
-                  <td class="col-time">
-                    <div class="time-wrap">
-                      <img src="logo-liga.jfif" class="escudo">
-                      <div class="time-nome">${h.time}</div>
-                    </div>
-                  </td>
-
-                  <td>${h.v}</td>
-                  <td>${h.e}</td>
-                  <td>${h.d}</td>
-                  <td class="pontos">${h.p}</td>
-                </tr>
-              `).join("")}
-            </tbody>
-          </table>
-        </div>
-
-      </div>
-    </div>
-  `;
-}
-/* =========================
-   EXCLUIR CAMPEONATO TESTE
-========================= */
-
-function renderExcluirTeste(){
-  const box = document.getElementById("conteudo");
-
-  box.innerHTML = `
-    <div class="bloco">
-      <div class="bloco-titulo">Excluir campeonato de teste</div>
-      <div class="bloco-conteudo">
-
-        <div class="info-card" style="margin-bottom:16px;">
-          <div class="info-label">Campeonato atual de teste</div>
-          <div class="info-valor">${campeonatoTeste.nome}</div>
-        </div>
-
-        <p style="color:var(--muted); line-height:1.6; margin-bottom:16px;">
-          Essa opção serve apenas para remover o campeonato de teste visual que foi colocado
-          temporariamente para você ver como a página vai ficar.
-        </p>
-
-        <button class="acao-danger" onclick="excluirCampeonatoTeste()">
-          <i class="fa-solid fa-trash"></i> Excluir campeonato de teste
-        </button>
-
-      </div>
-    </div>
-  `;
-}
-
-function excluirCampeonatoTeste(){
-  const confirmar = confirm("Tem certeza que deseja excluir o campeonato de teste?");
-  if(!confirmar) return;
-
-  document.getElementById("filtroCampeonato").innerHTML =
-    `<option value="">Nenhum campeonato disponível</option>`;
-
-  document.getElementById("filtroCategoria").value = "";
-
-  document.getElementById("heroTitulo").innerText = "Classificação";
-  document.getElementById("heroSub").innerText = "Nenhum campeonato de teste disponível.";
-  document.getElementById("tagCategoria").innerText = "Categoria: -";
-  document.getElementById("tagJogos").innerText = "Jogos: 0";
-  document.getElementById("tagTimes").innerText = "Times: 0";
-  document.getElementById("tagGols").innerText = "Gols: 0";
-
-  document.getElementById("conteudo").innerHTML = `
-    <div class="vazio">
-      Campeonato de teste excluído com sucesso.
-    </div>
-  `;
-}
-
-/* =========================
-   MENU EXTRA NO FINAL
-========================= */
-
-function adicionarBotaoTesteNoFinal(){
-  const areaAbas = document.querySelector(".abas");
-
-  const jaExiste = Array.from(areaAbas.querySelectorAll("button"))
-    .some(btn => btn.innerText.trim() === "Excluir Teste");
-
-  if(jaExiste) return;
-
-  const btn = document.createElement("button");
-  btn.className = "aba";
-  btn.type = "button";
-  btn.innerText = "Excluir Teste";
-
-  btn.onclick = function(){
-    abaAtual = "excluir";
-
-    document.querySelectorAll(".aba").forEach(b=>b.classList.remove("ativa"));
-    btn.classList.add("ativa");
-
-    document.getElementById("subAbas").innerHTML = "";
-    renderExcluirTeste();
-  };
-
-  areaAbas.appendChild(btn);
-}
-/* =========================
-   FINALIZAR
-========================= */
-
-document.getElementById("filtroCampeonato").addEventListener("change", atualizarTela);
-document.getElementById("filtroCategoria").addEventListener("change", atualizarTela);
-
-iniciar();
-montarSubAbas();
-adicionarBotaoTesteNoFinal();
+  iniciar();
 </script>
 
 </body>
