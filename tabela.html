@@ -12,75 +12,38 @@
       --bg:#0b1f3a;
       --bg-dark:#08172c;
       --card:#102a52;
-      --card-hover:#153766;
       --gold:#f7c600;
-      --gold-soft:rgba(247,198,0,.12);
-      --gold-line:rgba(247,198,0,.24);
       --white:#ffffff;
       --muted:#d8e1ef;
       --shadow:0 8px 22px rgba(0,0,0,.28);
-      --transition:.25s ease;
       --max:1240px;
     }
 
-    *{
-      margin:0;
-      padding:0;
-      box-sizing:border-box;
-    }
+    *{margin:0;padding:0;box-sizing:border-box;}
 
     body{
-      font-family:Arial, sans-serif;
+      font-family:Arial;
       background:
         linear-gradient(rgba(11,31,58,.88), rgba(11,31,58,.94)),
         url("fundo.png") center/cover fixed no-repeat;
-      color:var(--white);
-      min-height:100vh;
-    }
-
-    a{
-      text-decoration:none;
-      color:inherit;
-      transition:var(--transition);
-    }
-
-    button{
-      font-family:inherit;
-      cursor:pointer;
-      transition:var(--transition);
-      border:none;
-    }
-
-    select{
-      font-family:inherit;
+      color:white;
     }
 
     .wrap{
       width:min(100% - 28px, var(--max));
-      margin:0 auto;
+      margin:auto;
     }
 
     header{
-      background:rgba(8,23,44,.96);
+      background:#08172c;
       border-bottom:3px solid var(--gold);
-      box-shadow:var(--shadow);
     }
 
     .header-top{
-      min-height:82px;
       display:flex;
-      align-items:center;
       justify-content:space-between;
-      gap:14px;
-      flex-wrap:wrap;
-      padding:14px 0;
-    }
-
-    .header-left,
-    .header-right{
-      display:flex;
       align-items:center;
-      gap:10px;
+      padding:14px;
       flex-wrap:wrap;
     }
 
@@ -88,76 +51,53 @@
       flex:1;
       text-align:center;
       font-size:24px;
-      font-weight:700;
-      color:var(--white);
+      font-weight:bold;
     }
 
     .top-btn{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:10px 16px;
-      border-radius:10px;
-      font-weight:700;
-    }
-
-    .btn-light{
       background:#fff4cf;
-      color:#111;
-    }
-
-    .btn-light:hover{
-      background:var(--gold);
-      transform:translateY(-2px);
+      padding:10px 14px;
+      border-radius:8px;
+      font-weight:bold;
     }
 
     .nav-bar{
-      background:rgba(16,42,82,.95);
-      border-top:1px solid rgba(255,255,255,.06);
-      border-bottom:1px solid rgba(255,255,255,.08);
+      background:#102a52;
     }
 
     .menu{
       display:flex;
       justify-content:center;
       gap:10px;
-      padding:12px 0;
-      flex-wrap:wrap;
+      padding:12px;
+      overflow-x:auto;
+      white-space:nowrap;
     }
 
     .menu a{
-      color:#fff;
-      font-weight:700;
-      font-size:14px;
       background:#0d2346;
       padding:10px 14px;
-      border-radius:10px;
-      border:1px solid transparent;
-      cursor:pointer;
-    }
-
-    .menu a:hover{
-      color:var(--gold);
-      background:var(--gold-soft);
-      border-color:var(--gold-line);
+      border-radius:8px;
+      font-weight:bold;
+      color:white;
+      text-decoration:none;
     }
 
     .menu a.ativo{
       background:var(--gold);
-      color:#111;
+      color:black;
     }
-
-    .container{
+.container{
       padding:24px 0 34px;
     }
 
     .hero{
-      background:linear-gradient(135deg, #102a52, #0d2346);
-      border:1px solid var(--gold-line);
+      background:linear-gradient(135deg,#102a52,#0d2346);
+      border:1px solid rgba(247,198,0,.24);
       border-radius:18px;
       padding:22px;
       margin-bottom:20px;
-      box-shadow:var(--shadow);
+      box-shadow:0 8px 22px rgba(0,0,0,.28);
     }
 
     .hero-top{
@@ -172,7 +112,6 @@
       height:72px;
       border-radius:50%;
       object-fit:cover;
-      border:2px solid rgba(255,255,255,.15);
       background:#1a3f73;
       flex-shrink:0;
     }
@@ -193,7 +132,6 @@
       color:var(--muted);
       line-height:1.6;
       font-size:15px;
-      max-width:850px;
     }
 
     .hero-tags{
@@ -209,7 +147,6 @@
       border-radius:999px;
       font-size:12px;
       font-weight:700;
-      color:var(--white);
       border:1px solid rgba(255,255,255,.08);
     }
 
@@ -226,17 +163,8 @@
       border:none;
       border-radius:10px;
       font-size:14px;
-      box-sizing:border-box;
       background:#f5f7fb;
       color:#111;
-    }
-
-    select:focus{
-      outline:2px solid rgba(247,198,0,.5);
-    }
-
-    .bloco-tabela{
-      margin-top:4px;
     }
 
     .titulo-secao{
@@ -260,14 +188,8 @@
       background:#0d2346;
       padding:10px 14px;
       border-radius:10px;
-      border:1px solid transparent;
+      border:none;
       cursor:pointer;
-    }
-
-    .aba:hover{
-      color:var(--gold);
-      background:var(--gold-soft);
-      border-color:var(--gold-line);
     }
 
     .aba.ativa{
@@ -280,7 +202,7 @@
       padding:16px;
       border-radius:16px;
       border:1px solid rgba(255,230,0,.10);
-      box-shadow:var(--shadow);
+      box-shadow:0 8px 22px rgba(0,0,0,.28);
     }
 
     .stats-grid{
@@ -323,15 +245,14 @@
       font-size:12px;
       border:1px solid rgba(255,255,255,.08);
     }
-
-    .vazio{
+.vazio{
       background:linear-gradient(180deg, rgba(16,42,82,.96), rgba(12,33,64,.96));
       padding:30px;
       border-radius:14px;
       text-align:center;
       color:var(--muted);
       border:1px solid rgba(255,255,255,.06);
-      box-shadow:var(--shadow);
+      box-shadow:0 8px 22px rgba(0,0,0,.28);
     }
 
     .box-tabela{
@@ -343,7 +264,7 @@
       border-radius:16px;
       overflow:hidden;
       border:1px solid rgba(255,255,255,.06);
-      box-shadow:var(--shadow);
+      box-shadow:0 8px 22px rgba(0,0,0,.28);
     }
 
     .row{
@@ -378,7 +299,8 @@
       background:#1a3f73;
       flex-shrink:0;
     }
-.card-lista{
+
+    .card-lista{
       display:flex;
       flex-direction:column;
       gap:10px;
@@ -472,20 +394,7 @@
       background:#1a3f73;
       color:#fff;
     }
-
-    .linha-ranking{
-      background:linear-gradient(180deg, rgba(16,42,82,.96), rgba(12,33,64,.96));
-      border-radius:12px;
-      padding:12px;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:10px;
-      border:1px solid rgba(255,255,255,.06);
-      box-shadow:var(--shadow);
-    }
-
-    .player{
+.player{
       display:flex;
       align-items:center;
       gap:10px;
@@ -610,8 +519,7 @@
   </style>
 </head>
 <body>
-
-  <header>
+<header>
     <div class="wrap header-top">
       <div class="header-left">
         <button class="top-btn btn-light" type="button" onclick="voltarPagina()">
@@ -631,13 +539,17 @@
     <div class="nav-bar">
       <div class="wrap">
         <nav class="menu">
+          <a href="index.html">Início</a>
           <a href="campeonatos.html">Campeonatos</a>
           <a href="tabela.html" class="ativo">Tabela</a>
           <a href="jogos.html">Jogos</a>
           <a href="times.html">Times</a>
-          <a href="artilharia.html">Artilharia</a>
-          <a href="cartoes.html">Cartões</a>
-          <a href="suspensos.html">Suspensos</a>
+          <a href="tecnicos.html">Técnicos</a>
+          <a href="jogadores.html">Jogadores</a>
+          <a href="arbitros.html">Arbitros</a>
+          <a href="assistentes.html">Assistente</a>
+          <a href="sumula.html">Súmula</a>
+          <a href="noticias.html">Notícias</a>
           <a href="login.html">Login</a>
         </nav>
       </div>
@@ -702,15 +614,15 @@
     </section>
 
   </main>
-<script type="module">
+
+  <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
     import {
       getFirestore,
       collection,
       getDocs
     } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-firestore.js";
-
-    const firebaseConfig = {
+const firebaseConfig = {
       apiKey: "AIzaSyCyArj4yRlEl-yibkc0VEmL_4UJpRHHQSc",
       authDomain: "liga-goiana-base.firebaseapp.com",
       projectId: "liga-goiana-base",
@@ -796,8 +708,7 @@
         select.innerHTML += `<option value="${c}">${c}</option>`;
       });
     }
-
-    function getFiltros(){
+function getFiltros(){
       return {
         campeonato: document.getElementById("filtroCampeonato").value,
         categoria: document.getElementById("filtroCategoria").value
@@ -841,7 +752,7 @@
 
       let gols = 0;
       sumulasFiltradas.forEach(s=>{
-        gols += Number(s.golsA||0) + Number(s.golsB||0);
+        gols += Number(s.golsA || 0) + Number(s.golsB || 0);
       });
 
       document.getElementById("heroTitulo").textContent = campeonato || "Tabela da Competição";
@@ -856,7 +767,8 @@
 
       document.getElementById("heroLogo").src = camp?.logo || "logo-liga.jfif";
     }
-function renderDetalhes(){
+
+    function renderDetalhes(){
       const area = document.getElementById("areaTabela");
       const { campeonato, categoria } = getFiltros();
       const jogosFiltrados = filtrarJogos();
@@ -894,8 +806,7 @@ function renderDetalhes(){
         </div>
       `;
     }
-
-    function criarLinhaClassificacao(nome){
+function criarLinhaClassificacao(nome){
       return {
         nome,
         pontos: 0,
@@ -1033,8 +944,7 @@ function renderDetalhes(){
       const numero = parseInt(texto.replace(/\D/g, ""), 10);
       return isNaN(numero) ? 999999 : numero;
     }
-
-    function renderJogos(){
+function renderJogos(){
       const area = document.getElementById("areaTabela");
       const { campeonato, categoria } = getFiltros();
       let filtrados = filtrarJogos();
@@ -1115,7 +1025,8 @@ function renderDetalhes(){
         });
       });
     }
-function renderArtilharia(){
+
+    function renderArtilharia(){
       const area = document.getElementById("areaTabela");
       const { campeonato, categoria } = getFiltros();
       const sumulasFiltradas = filtrarSumulas();
@@ -1249,8 +1160,7 @@ function renderArtilharia(){
         </div>
       `;
     }
-
-    function renderTimes(){
+function renderTimes(){
       const area = document.getElementById("areaTabela");
       const { campeonato, categoria } = getFiltros();
       const jogosFiltrados = filtrarJogos();
@@ -1423,7 +1333,6 @@ function renderArtilharia(){
     };
 
     window.atualizarTela = function(){
-      const { campeonato, categoria } = getFiltros();
       atualizarHero();
 
       if(abaAtual === "detalhes") renderDetalhes();
