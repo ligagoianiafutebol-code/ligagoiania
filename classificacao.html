@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Classificação - LIGA GOIANA DE FUTEBOL DE BASE</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    :root{
+      --bg:#0b1f3a;
+      --bg-dark:#08172c;
+      --card:#102a52;
+      --card-hover:#153766;
+      --gold:#f7c600;
+      --gold-soft:rgba(247,198,0,.12);
+      --gold-line:rgba(247,198,0,.24);
+      --white:#ffffff;
+      --muted:#d8e1ef;
+      --shadow:0 8px 22px rgba(0,0,0,.28);
+      --transition:.25s ease;
+      --max:1240px;
+      --win:#2dbd5a;
+      --draw:#d5a000;
+      --loss:#cf3e3e;
+    }
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    body{
+      font-family:Arial, sans-serif;
+      background:
+        linear-gradient(rgba(11,31,58,.88), rgba(11,31,58,.94)),
+        url("fundo.png") center/cover fixed no-repeat;
+      color:var(--white);
+      min-height:100vh;
+    }
+
+    a{
+      text-decoration:none;
+      color:inherit;
+      transition:var(--transition);
+    }
+
+    button{
+      font-family:inherit;
+      cursor:pointer;
+      transition:var(--transition);
+      border:none;
+      background:none;
+    }
+
+    select{
+      font-family:inherit;
+    }
+
+    .wrap{
+      width:min(100% - 28px, var(--max));
+      margin:0 auto;
+    }
+
+    header{
+      background:rgba(8,23,44,.96);
+      border-bottom:3px solid var(--gold);
+      box-shadow:var(--shadow);
+    }
+
+    .header-top{
+      min-height:82px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      flex-wrap:wrap;
+      padding:14px 0;
+    }
+
+    .header-left,
+    .header-right{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .header-title{
+      flex:1;
+      text-align:center;
+      font-size:24px;
+      font-weight:700;
+      color:var(--white);
+    }
+
+    .top-btn{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:10px 16px;
+      border-radius:10px;
+      font-weight:700;
+    }
+
+    .btn-light{
+      background:#fff4cf;
+      color:#111;
+    }
+
+    .btn-light:hover{
+      background:var(--gold);
+      transform:translateY(-2px);
+    }
+
+    .nav-bar{
+      background:rgba(16,42,82,.95);
+      border-top:1px solid rgba(255,255,255,.06);
+      border-bottom:1px solid rgba(255,255,255,.08);
+    }
+
+    .menu{
+      display:flex;
+      justify-content:center;
+      gap:10px;
+      padding:12px 0;
+      flex-wrap:wrap;
+    }
+
+    .menu a{
+      color:#fff;
+      font-weight:700;
+      font-size:14px;
+      background:#0d2346;
+      padding:10px 14px;
+      border-radius:10px;
+      border:1px solid transparent;
+      cursor:pointer;
+      white-space:nowrap;
+    }
+
+    .menu a:hover{
+      color:var(--gold);
+      background:var(--gold-soft);
+      border-color:var(--gold-line);
+    }
+
+    .menu a.ativo{
+      background:var(--gold);
+      color:#111;
+    }
+
+    .container{
+      padding:24px 0 34px;
+    }
+
+    .hero{
+      background:linear-gradient(135deg, #102a52, #0d2346);
+      border:1px solid var(--gold-line);
+      border-radius:18px;
+      padding:22px;
+      margin-bottom:20px;
+      box-shadow:var(--shadow);
+    }
+
+    .hero-top{
+      display:flex;
+      align-items:center;
+      gap:16px;
+      flex-wrap:wrap;
+    }
+
+    .hero-logo{
+      width:72px;
+      height:72px;
+      border-radius:50%;
+      object-fit:cover;
+      border:2px solid rgba(255,255,255,.15);
+      background:#1a3f73;
+      flex-shrink:0;
+    }
+
+    .hero-info{
+      flex:1;
+      min-width:260px;
+    }
+
+    .hero h2{
+      margin:0 0 8px;
+      color:var(--gold);
+      font-size:28px;
+    }
+
+    .hero p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.6;
+      font-size:15px;
+      max-width:850px;
+    }
+
+    .hero-tags{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-top:14px;
+    }
+
+    .hero-tag{
+      background:#0b1f3a;
+      padding:8px 12px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:700;
+      color:var(--white);
+      border:1px solid rgba(255,255,255,.08);
+    }
+
+    .filtros{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+      margin-bottom:20px;
+    }
+
+    select{
+      width:100%;
+      padding:13px;
+      border:none;
+      border-radius:10px;
+      font-size:14px;
+      box-sizing:border-box;
+      background:#f5f7fb;
+      color:#111;
+    }
+
+    select:focus{
+      outline:2px solid rgba(247,198,0,.5);
+    }
+
+    .bloco-classificacao{
+      margin-top:4px;
+    }
+
+    .titulo-secao{
+      font-size:22px;
+      color:var(--gold);
+      font-weight:700;
+      margin:0 0 14px;
+    }
+
+    .abas{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-bottom:18px;
+    }
+
+    .aba{
+      color:#fff;
+      font-weight:700;
+      font-size:14px;
+      background:#0d2346;
+      padding:10px 14px;
+      border-radius:10px;
+      border:1px solid transparent;
+      cursor:pointer;
+      white-space:nowrap;
+    }
+
+    .aba:hover{
+      color:var(--gold);
+      background:var(--gold-soft);
+      border-color:var(--gold-line);
+    }
+
+    .aba.ativa{
+      background:var(--gold);
+      color:#111;
+    }
+.subabas{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-bottom:18px;
+    }
+
+    .subaba{
+      min-width:120px;
+      text-align:center;
+      color:#cfe0ff;
+      font-weight:700;
+      font-size:14px;
+      background:rgba(13,35,70,.95);
+      padding:10px 16px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.08);
+      cursor:pointer;
+      white-space:nowrap;
+    }
+
+    .subaba.ativa{
+      color:#111;
+      background:var(--gold);
+      border-color:var(--gold);
+    }
+
+    .subaba:hover{
+      border-color:var(--gold-line);
+      color:var(--gold);
+    }
+
+    .subaba.ativa:hover{
+      color:#111;
+    }
+
+    .tabela-box{
+      overflow-x:auto;
+      background:linear-gradient(180deg, rgba(16,42,82,.96), rgba(12,33,64,.96));
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,.08);
+      box-shadow:var(--shadow);
+    }
+
+    .tabela-box::-webkit-scrollbar{
+      height:8px;
+    }
+
+    .tabela-box::-webkit-scrollbar-thumb{
+      background:rgba(247,198,0,.35);
+      border-radius:999px;
+    }
+
+    table{
+      width:100%;
+      min-width:1120px;
+      border-collapse:collapse;
+    }
+
+    thead tr{
+      background:#081a33;
+    }
+
+    th,
+    td{
+      padding:14px 10px;
+      border-bottom:1px solid rgba(255,255,255,.08);
+      text-align:center;
+      font-size:14px;
+    }
+
+    th{
+      color:var(--gold);
+      font-weight:700;
+      white-space:nowrap;
+    }
+
+    td{
+      color:#fff;
+    }
+
+    .col-pos{
+      width:56px;
+      font-weight:700;
+    }
+
+    .col-time{
+      min-width:280px;
+      text-align:left;
+    }
+
+    .time-wrap{
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+
+    .escudo{
+      width:32px;
+      height:32px;
+      border-radius:50%;
+      object-fit:cover;
+      background:#1a3f73;
+      flex-shrink:0;
+      border:1px solid rgba(255,255,255,.08);
+    }
+
+    .time-nome{
+      font-weight:700;
+      color:#fff;
+      line-height:1.35;
+    }
+
+    .time-extra{
+      display:block;
+      color:var(--muted);
+      font-size:12px;
+      margin-top:3px;
+    }
+
+    .pontos{
+      color:var(--gold);
+      font-weight:700;
+      font-size:18px;
+    }
+
+    .forma-cell{
+      min-width:170px;
+    }
+
+    .forma{
+      display:flex;
+      justify-content:center;
+      gap:6px;
+      flex-wrap:nowrap;
+    }
+
+    .bolinha{
+      width:28px;
+      height:28px;
+      border-radius:50%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:12px;
+      font-weight:700;
+      color:#fff;
+      flex-shrink:0;
+    }
+
+    .vitoria{
+      background:var(--win);
+    }
+
+    .empate{
+      background:var(--draw);
+      color:#111;
+    }
+
+    .derrota{
+      background:var(--loss);
+    }
+
+    .vazio{
+      background:linear-gradient(180deg, rgba(16,42,82,.96), rgba(12,33,64,.96));
+      padding:30px;
+      border-radius:14px;
+      text-align:center;
+      color:var(--muted);
+      border:1px solid rgba(255,255,255,.06);
+      box-shadow:var(--shadow);
+    }
+
+    @media (max-width:900px){
+      .header-title{
+        order:3;
+        width:100%;
+        text-align:center;
+      }
+
+      .header-left,
+      .header-right{
+        width:100%;
+        justify-content:center;
+      }
+
+      .filtros{
+        grid-template-columns:1fr;
+      }
+    }
+
+    @media (max-width:600px){
+      .top-btn{
+        width:100%;
+        justify-content:center;
+      }
+
+      .header-left,
+      .header-right{
+        flex-direction:column;
+        align-items:stretch;
+      }
+
+      .menu{
+        justify-content:flex-start;
+        flex-wrap:nowrap;
+        overflow-x:auto;
+        padding:12px 4px;
+        scrollbar-width:none;
+      }
+
+      .menu::-webkit-scrollbar{
+        display:none;
+      }
+
+      .menu a{
+        width:auto;
+        min-width:max-content;
+        flex:0 0 auto;
+        text-align:center;
+      }
+
+      .abas{
+        justify-content:flex-start;
+        flex-wrap:nowrap;
+        overflow-x:auto;
+        padding-bottom:4px;
+        scrollbar-width:none;
+      }
+
+      .abas::-webkit-scrollbar{
+        display:none;
+      }
+
+      .aba{
+        flex:0 0 auto;
+      }
+
+      .subabas{
+        justify-content:flex-start;
+        flex-wrap:nowrap;
+        overflow-x:auto;
+        padding-bottom:4px;
+        scrollbar-width:none;
+      }
+
+      .subabas::-webkit-scrollbar{
+        display:none;
+      }
+
+      .subaba{
+        flex:0 0 auto;
+        min-width:max-content;
+      }
+
+      .hero h2{
+        font-size:24px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="wrap header-top">
+      <div class="header-left">
+        <button class="top-btn btn-light" type="button" onclick="voltarPagina()">
+          <i class="fa-solid fa-arrow-left"></i> Voltar
+        </button>
+
+        <a href="index.html" class="top-btn btn-light">
+          <i class="fa-solid fa-house"></i> Página Inicial
+        </a>
+      </div>
+
+      <div class="header-title">LIGA GOIANA DE FUTEBOL DE BASE</div>
+
+      <div class="header-right"></div>
+    </div>
+
+    <div class="nav-bar">
+      <div class="wrap">
+        <nav class="menu">
+          <a href="campeonatos.html">Campeonatos</a>
+          <a href="tabela.html">Tabela</a>
+          <a href="jogos.html">Jogos</a>
+          <a href="times.html">Times</a>
+          <a href="artilharia.html">Artilharia</a>
+          <a href="cartoes.html">Cartões</a>
+          <a href="suspensos.html">Suspensos</a>
+          <a href="login.html">Login</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap container">
+    <section class="hero">
+      <div class="hero-top">
+        <img id="heroLogo" class="hero-logo" src="logo-liga.jfif" alt="Logo campeonato">
+
+        <div class="hero-info">
+          <h2 id="heroTitulo">Classificação</h2>
+          <p id="heroSub">Selecione o campeonato e a categoria para visualizar a classificação completa.</p>
+
+          <div class="hero-tags">
+            <div class="hero-tag" id="heroTagCategoria">Categoria: -</div>
+            <div class="hero-tag" id="heroTagJogos">Jogos: 0</div>
+            <div class="hero-tag" id="heroTagTimes">Times: 0</div>
+            <div class="hero-tag" id="heroTagGols">Gols: 0</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="filtros">
+      <select id="filtroCampeonato" onchange="atualizarTela()">
+        <option value="">Selecione o campeonato</option>
+      </select>
+
+      <select id="filtroCategoria" onchange="atualizarTela()">
+        <option value="">Selecione a categoria</option>
+        <option value="Sub-11">Sub-11</option>
+        <option value="Sub-12">Sub-12</option>
+        <option value="Sub-13">Sub-13</option>
+        <option value="Sub-14">Sub-14</option>
+        <option value="Sub-15">Sub-15</option>
+        <option value="Sub-16">Sub-16</option>
+        <option value="Sub-17">Sub-17</option>
+        <option value="Sub-18">Sub-18</option>
+        <option value="Sub-19">Sub-19</option>
+        <option value="Sub-20">Sub-20</option>
+        <option value="Sub-21">Sub-21</option>
+      </select>
+    </section>
+
+    <section class="bloco-classificacao">
+      <h2 class="titulo-secao">Classificação</h2>
+
+      <div class="abas">
+        <button class="aba ativa" type="button">Classificação</button>
+      </div>
+
+      <div class="subabas">
+        <button class="subaba ativa" type="button" onclick="trocarModo('geral', this)">Classificação</button>
+        <button class="subaba" type="button" onclick="trocarModo('casa', this)">Casa</button>
+        <button class="subaba" type="button" onclick="trocarModo('fora', this)">Fora</button>
+      </div>
+
+      <div id="areaClassificacao"></div>
+    </section>
+  </main>
+<script>
+let modoAtual = "geral";
+
+function voltarPagina(){
+  window.history.back();
+}
+
+function trocarModo(modo, el){
+  modoAtual = modo;
+
+  document.querySelectorAll(".subaba").forEach(b=>b.classList.remove("ativa"));
+  el.classList.add("ativa");
+
+  atualizarTabela();
+}
+
+function atualizarTela(){
+  atualizarTabela();
+}
+
+function atualizarTabela(){
+  const area = document.getElementById("areaClassificacao");
+  area.innerHTML = "";
+
+  const campeonato = document.getElementById("filtroCampeonato").value;
+  const categoria = document.getElementById("filtroCategoria").value;
+
+  if(!campeonato || !categoria){
+    area.innerHTML = `
+      <div class="vazio">
+        Selecione o campeonato e a categoria para ver a classificação.
+      </div>
+    `;
+    atualizarHero(0,0,0,categoria);
+    return;
+  }
+
+  const dados = gerarDadosFake();
+
+  atualizarHero(
+    dados.length,
+    dados.reduce((a,t)=>a+t.jogos,0),
+    dados.reduce((a,t)=>a+t.gp,0),
+    categoria
+  );
+
+  const tabela = document.createElement("div");
+  tabela.className = "tabela-box";
+
+  tabela.innerHTML = `
+    <table>
+      <thead>
+        <tr>
+          <th class="col-pos">#</th>
+          <th class="col-time">Time</th>
+          <th>P</th>
+          <th>J</th>
+          <th>V</th>
+          <th>E</th>
+          <th>D</th>
+          <th>SG</th>
+          <th>GP</th>
+          <th>GC</th>
+          <th class="forma-cell">Últimos 5</th>
+        </tr>
+      </thead>
+      <tbody id="tbodyClass"></tbody>
+    </table>
+  `;
+
+  const tbody = tabela.querySelector("#tbodyClass");
+
+  dados.sort((a,b)=>{
+    if(b.pontos !== a.pontos) return b.pontos - a.pontos;
+    if((b.gp - b.gc) !== (a.gp - a.gc)) return (b.gp - b.gc) - (a.gp - a.gc);
+    return b.gp - a.gp;
+  });
+
+  dados.forEach((t,i)=>{
+    const tr = document.createElement("tr");
+
+    tr.innerHTML = `
+      <td class="col-pos">${i+1}</td>
+
+      <td class="col-time">
+        <div class="time-wrap">
+          <img src="${t.escudo}" class="escudo">
+          <div>
+            <div class="time-nome">${t.nome}</div>
+            <span class="time-extra">Liga Goiana</span>
+          </div>
+        </div>
+      </td>
+
+      <td class="pontos">${t.pontos}</td>
+      <td>${t.jogos}</td>
+      <td>${t.vitorias}</td>
+      <td>${t.empates}</td>
+      <td>${t.derrotas}</td>
+      <td>${t.gp - t.gc}</td>
+      <td>${t.gp}</td>
+      <td>${t.gc}</td>
+
+      <td class="forma-cell">
+        <div class="forma">
+          ${t.forma.map(r=>{
+            if(r==="V") return `<div class="bolinha vitoria">V</div>`;
+            if(r==="E") return `<div class="bolinha empate">E</div>`;
+            return `<div class="bolinha derrota">D</div>`;
+          }).join("")}
+        </div>
+      </td>
+    `;
+
+    tbody.appendChild(tr);
+  });
+
+  area.appendChild(tabela);
+}
+function atualizarHero(times, jogos, gols, categoria){
+  document.getElementById("heroTitulo").textContent = "Classificação";
+  document.getElementById("heroSub").textContent = "Acompanhe a classificação oficial da competição.";
+  document.getElementById("heroTagCategoria").textContent = `Categoria: ${categoria || "-"}`;
+  document.getElementById("heroTagJogos").textContent = `Jogos: ${jogos || 0}`;
+  document.getElementById("heroTagTimes").textContent = `Times: ${times || 0}`;
+  document.getElementById("heroTagGols").textContent = `Gols: ${gols || 0}`;
+}
+
+function preencherCampeonatos(){
+  const select = document.getElementById("filtroCampeonato");
+
+  const campeonatos = [
+    "Liga Goiana Sub-11",
+    "Liga Goiana Sub-13",
+    "Liga Goiana Sub-15",
+    "Liga Goiana Sub-17"
+  ];
+
+  campeonatos.forEach(nome=>{
+    const option = document.createElement("option");
+    option.value = nome;
+    option.textContent = nome;
+    select.appendChild(option);
+  });
+}
+
+function gerarDadosFake(){
+  let dados = [
+    {
+      nome:"Clube Jaó",
+      escudo:"logo-liga.jfif",
+      pontos:28,
+      jogos:11,
+      vitorias:9,
+      empates:1,
+      derrotas:1,
+      gp:26,
+      gc:8,
+      forma:["V","V","E","V","V"]
+    },
+    {
+      nome:"Goiás EC",
+      escudo:"logo-liga.jfif",
+      pontos:24,
+      jogos:11,
+      vitorias:7,
+      empates:3,
+      derrotas:1,
+      gp:21,
+      gc:10,
+      forma:["V","E","V","V","E"]
+    },
+    {
+      nome:"Ovel Futebol",
+      escudo:"logo-liga.jfif",
+      pontos:20,
+      jogos:11,
+      vitorias:6,
+      empates:2,
+      derrotas:3,
+      gp:18,
+      gc:13,
+      forma:["D","V","V","E","V"]
+    },
+    {
+      nome:"Atlético Goianiense",
+      escudo:"logo-liga.jfif",
+      pontos:18,
+      jogos:11,
+      vitorias:5,
+      empates:3,
+      derrotas:3,
+      gp:17,
+      gc:14,
+      forma:["V","D","V","E","E"]
+    },
+    {
+      nome:"Vila Nova",
+      escudo:"logo-liga.jfif",
+      pontos:15,
+      jogos:11,
+      vitorias:4,
+      empates:3,
+      derrotas:4,
+      gp:15,
+      gc:15,
+      forma:["D","E","V","D","V"]
+    },
+    {
+      nome:"Campinas FC",
+      escudo:"logo-liga.jfif",
+      pontos:12,
+      jogos:11,
+      vitorias:3,
+      empates:3,
+      derrotas:5,
+      gp:12,
+      gc:18,
+      forma:["E","D","V","D","E"]
+    },
+    {
+      nome:"Bela Vista",
+      escudo:"logo-liga.jfif",
+      pontos:9,
+      jogos:11,
+      vitorias:2,
+      empates:3,
+      derrotas:6,
+      gp:10,
+      gc:21,
+      forma:["D","D","E","V","D"]
+    },
+    {
+      nome:"Trindade FC",
+      escudo:"logo-liga.jfif",
+      pontos:5,
+      jogos:11,
+      vitorias:1,
+      empates:2,
+      derrotas:8,
+      gp:7,
+      gc:27,
+      forma:["D","D","D","E","D"]
+    }
+  ];
+
+  if(modoAtual === "casa"){
+    dados = dados.map(t => ({
+      ...t,
+      pontos: Math.max(0, t.pontos - 2),
+      jogos: Math.max(0, t.jogos - 1),
+      vitorias: Math.max(0, t.vitorias - 1),
+      gp: Math.max(0, t.gp - 2),
+      gc: Math.max(0, t.gc - 1)
+    }));
+  }
+
+  if(modoAtual === "fora"){
+    dados = dados.map(t => ({
+      ...t,
+      pontos: Math.max(0, t.pontos - 4),
+      jogos: Math.max(0, t.jogos - 2),
+      vitorias: Math.max(0, t.vitorias - 2),
+      empates: Math.max(0, t.empates),
+      derrotas: Math.max(0, t.derrotas + 1),
+      gp: Math.max(0, t.gp - 4),
+      gc: Math.max(0, t.gc + 2)
+    }));
+  }
+
+  return dados;
+}
+document.getElementById("filtroCampeonato").addEventListener("change", atualizarTela);
+document.getElementById("filtroCategoria").addEventListener("change", atualizarTela);
+
+preencherCampeonatos();
+atualizarTela();
+</script>
+
+</body>
+</html>
