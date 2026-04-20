@@ -121,12 +121,13 @@
 
     .menu{
       display:flex;
-      justify-content:flex-start;
+      justify-content:center;
       gap:10px;
       padding:12px 8px;
       flex-wrap:nowrap;
       overflow-x:auto;
       scrollbar-width:none;
+      -ms-overflow-style:none;
     }
 
     .menu::-webkit-scrollbar{
@@ -200,8 +201,7 @@
       background:#f5f7fb;
       color:#111;
     }
-
-    input:focus, select:focus{
+input:focus, select:focus{
       outline:2px solid rgba(247,198,0,.5);
     }
 
@@ -259,7 +259,8 @@
       font-size:18px;
       color:#fff;
     }
-.item-info small{
+
+    .item-info small{
       color:var(--muted);
       font-size:13px;
       line-height:1.5;
@@ -349,15 +350,43 @@
     }
 
     @media (max-width:600px){
-      .top-btn{
-        width:100%;
-        justify-content:center;
+      .header-top{
+        flex-direction:column;
+        align-items:center;
       }
 
-      .header-left,
+      .header-title{
+        order:2;
+        width:100%;
+        text-align:center;
+      }
+
+      .header-left{
+        order:1;
+        width:100%;
+        display:flex;
+        flex-direction:row;
+        align-items:center;
+        justify-content:center;
+        gap:10px;
+        flex-wrap:nowrap;
+      }
+
       .header-right{
-        flex-direction:column;
-        align-items:stretch;
+        display:none;
+      }
+
+      .top-btn{
+        width:auto;
+        min-width:0;
+        flex:1;
+        justify-content:center;
+        padding:10px 12px;
+        font-size:14px;
+      }
+
+      .filtros{
+        grid-template-columns:1fr;
       }
 
       .hero h2{
@@ -367,11 +396,10 @@
   </style>
 </head>
 <body>
-
-  <header>
+<header>
     <div class="wrap header-top">
       <div class="header-left">
-        <button class="top-btn btn-light" onclick="voltarPagina()">
+        <button class="top-btn btn-light" type="button" onclick="voltarPagina()">
           <i class="fa-solid fa-arrow-left"></i> Voltar
         </button>
 
@@ -385,24 +413,21 @@
       <div class="header-right"></div>
     </div>
 
-    <!-- MENU CORRIGIDO COMPLETO -->
     <div class="nav-bar">
       <div class="wrap">
         <nav class="menu">
-  <a href="index.html">Início</a>
-  <a href="campeonatos.html" class="ativo">Campeonatos</a>
-  <a href="tabela.html">Tabela</a>
-  <a href="jogos.html">Jogos</a>
-  <a href="times.html">Times</a>
-  <a href="tecnicos.html">Técnicos</a>
-  <a href="jogadores.html">Jogadores</a>
-  <a href="arbitros.html">Árbitros</a>
-  <a href="assistentes.html">Assistente</a>
-  <a href="sumula.html">Súmula</a>
-  <a href="noticias.html">Notícias</a>
-  <a href="login.html">Login</a>
-</nav>
-          
+          <a href="index.html">Início</a>
+          <a href="campeonatos.html" class="ativo">Campeonatos</a>
+          <a href="tabela.html">Tabela</a>
+          <a href="jogos.html">Jogos</a>
+          <a href="times.html">Times</a>
+          <a href="tecnicos.html">Técnicos</a>
+          <a href="jogadores.html">Jogadores</a>
+          <a href="arbitros.html">Arbitros</a>
+          <a href="assistentes.html">Assistente</a>
+          <a href="sumula.html">Súmula</a>
+          <a href="noticias.html">Notícias</a>
+          <a href="login.html">Login</a>
         </nav>
       </div>
     </div>
@@ -415,7 +440,6 @@
       <p>Veja os campeonatos publicados, filtre por nome, campeonato e categoria.</p>
     </section>
 
-    <!-- NOVOS FILTROS (CORRIGIDO) -->
     <section class="filtros">
       <input id="buscaCampeonato" placeholder="Pesquisar campeonato..." oninput="carregarCampeonatos()">
 
@@ -431,7 +455,8 @@
     <section class="lista-grid" id="listaCampeonatos"></section>
 
   </main>
-<script type="module">
+
+  <script type="module">
     import { db } from "./firebase.js";
     import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -457,8 +482,7 @@
       if (statusPublico(campeonato.status)) return true;
       return false;
     }
-
-    function preencherFiltroCampeonato(){
+function preencherFiltroCampeonato(){
       const select = document.getElementById("filtroCampeonato");
 
       const lista = [...new Set(
@@ -496,7 +520,8 @@
           select.innerHTML += `<option value="${cat}">${cat}</option>`;
         });
     }
-window.carregarCampeonatos = function(){
+
+    window.carregarCampeonatos = function(){
       const lista = document.getElementById("listaCampeonatos");
       const busca = (document.getElementById("buscaCampeonato").value || "").toLowerCase().trim();
       const campeonatoFiltro = document.getElementById("filtroCampeonato").value;
@@ -530,8 +555,7 @@ window.carregarCampeonatos = function(){
       }
 
       lista.innerHTML = "";
-
-      campeonatos.forEach(campeonato => {
+campeonatos.forEach(campeonato => {
         const categorias = (campeonato.categorias || [])
           .map(c => `<span class="tag">${c}</span>`)
           .join("");
@@ -563,7 +587,8 @@ window.carregarCampeonatos = function(){
         `;
       });
     };
-async function iniciarPagina(){
+
+    async function iniciarPagina(){
       const lista = document.getElementById("listaCampeonatos");
       lista.innerHTML = `<div class="vazio">Carregando campeonatos...</div>`;
 
