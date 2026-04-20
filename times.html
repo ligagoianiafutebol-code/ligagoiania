@@ -94,6 +94,8 @@
       padding:10px 16px;
       border-radius:10px;
       font-weight:700;
+      justify-content:center;
+      white-space:nowrap;
     }
 
     .btn-light{
@@ -128,6 +130,7 @@
       padding:10px 14px;
       border-radius:10px;
       border:1px solid transparent;
+      white-space:nowrap;
     }
 
     .menu a:hover{
@@ -170,7 +173,7 @@
 
     .filtros{
       display:grid;
-      grid-template-columns:1fr 1fr;
+      grid-template-columns:1fr 1fr 1fr;
       gap:12px;
       margin-bottom:20px;
     }
@@ -184,6 +187,7 @@
       box-sizing:border-box;
       background:#f5f7fb;
       color:#111;
+      font-family:inherit;
     }
 
     input:focus, select:focus{
@@ -243,12 +247,14 @@
       font-weight:700;
       font-size:18px;
       color:#ffffff;
+      line-height:1.35;
     }
 
     .time-colors{
       display:flex;
       gap:6px;
       flex-wrap:wrap;
+      align-items:center;
     }
 
     .time-color{
@@ -289,6 +295,7 @@
       font-weight:700;
       font-size:13px;
       cursor:pointer;
+      white-space:nowrap;
     }
 
     .btn-ver{
@@ -310,8 +317,7 @@
       border:1px solid rgba(255,255,255,.06);
       box-shadow:var(--shadow);
     }
-
-    @media (max-width:900px){
+@media (max-width:900px){
       .header-title{
         order:3;
         width:100%;
@@ -340,19 +346,57 @@
     }
 
     @media (max-width:600px){
-      .top-btn{
-        width:100%;
-        justify-content:center;
+      .header-top{
+        flex-direction:column;
+        align-items:center;
       }
 
-      .header-left,
+      .header-title{
+        order:2;
+        width:100%;
+        text-align:center;
+      }
+
+      .header-left{
+        order:1;
+        width:100%;
+        display:flex;
+        flex-direction:row;
+        align-items:center;
+        justify-content:center;
+        gap:10px;
+        flex-wrap:nowrap;
+      }
+
       .header-right{
-        flex-direction:column;
-        align-items:stretch;
+        display:none;
+      }
+
+      .top-btn{
+        width:auto;
+        min-width:0;
+        flex:1;
+        justify-content:center;
+        padding:10px 12px;
+        font-size:14px;
+      }
+
+      .menu{
+        justify-content:flex-start;
+        flex-wrap:nowrap;
+        overflow-x:auto;
+        padding:12px 4px;
+        scrollbar-width:none;
+      }
+
+      .menu::-webkit-scrollbar{
+        display:none;
       }
 
       .menu a{
-        width:100%;
+        width:auto;
+        min-width:max-content;
+        flex:0 0 auto;
         text-align:center;
       }
     }
@@ -402,21 +446,14 @@
     </div>
 
     <div class="filtros">
-      <input id="buscaTime" placeholder="Pesquisar time..." oninput="carregarTimes()">
+      <input id="buscaTime" placeholder="Pesquisar time...">
 
-      <select id="filtroCategoria" onchange="carregarTimes()">
+      <select id="filtroCampeonato">
+        <option value="">Selecione o campeonato</option>
+      </select>
+
+      <select id="filtroCategoria">
         <option value="">Selecione a categoria</option>
-        <option value="Sub-11">Sub-11</option>
-        <option value="Sub-12">Sub-12</option>
-        <option value="Sub-13">Sub-13</option>
-        <option value="Sub-14">Sub-14</option>
-        <option value="Sub-15">Sub-15</option>
-        <option value="Sub-16">Sub-16</option>
-        <option value="Sub-17">Sub-17</option>
-        <option value="Sub-18">Sub-18</option>
-        <option value="Sub-19">Sub-19</option>
-        <option value="Sub-20">Sub-20</option>
-        <option value="Sub-21">Sub-21</option>
       </select>
     </div>
 
@@ -425,10 +462,12 @@
   </div>
 
   <script type="module">
-    import { auth, db } from "./firebase.js";
+    import { db } from "./firebase.js";
     import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
     let timesCache = [];
+    let jogosCache = [];
+    let campeonatosCache = [];
 
     window.voltarPagina = function(){
       if (window.history.length > 1) {
@@ -438,26 +477,210 @@
       }
     };
 
+    function getParametro(nome){
+      const params = new URLSearchParams(window.location.search);
+      return params.get(nome);
+    }
+
+    function normalizarTexto(texto){
+      return String(texto || "")
+        .trim()
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
+    }
+
+    function valorCampo(obj, chaves, fallback = ""){
+      for(const chave of chaves){
+        if(obj && obj[chave] !== undefined && obj[chave] !== null && obj[chave] !== ""){
+          return obj[chave];
+        }
+      }
+      return fallback;
+    }
+
+    function obterIdCampeonato(doc){
+      return valorCampo(doc, ["id", "campeonatoId"], "");
+    }
+
+    function obterNomeCampeonato(doc){
+      return valorCampo(doc, ["nome", "campeonato", "titulo"], "");
+    }
+
+    async function carregarDados(){
+      const [snapTimes, snapJogos, snapCampeonatos] = await Promise.all([
+        getDocs(collection(db, "times")),
+        getDocs(collection(db, "jogos")),
+        getDocs(collection(db, "campeonatos"))
+      ]);
+
+      timesCache = [];
+      jogosCache = [];
+      campeonatosCache = [];
+
+      snapTimes.forEach(docSnap => {
+        timesCache.push({ id: docSnap.id, ...docSnap.data() });
+      });
+
+      snapJogos.forEach(docSnap => {
+        jogosCache.push({ id: docSnap.id, ...docSnap.data() });
+      });
+
+      snapCampeonatos.forEach(docSnap => {
+        campeonatosCache.push({ id: docSnap.id, ...docSnap.data() });
+      });
+    }
+function preencherFiltroCampeonato(){
+      const select = document.getElementById("filtroCampeonato");
+      select.innerHTML = `<option value="">Selecione o campeonato</option>`;
+
+      campeonatosCache
+        .sort((a,b)=>obterNomeCampeonato(a).localeCompare(obterNomeCampeonato(b), "pt-BR"))
+        .forEach(c => {
+          const option = document.createElement("option");
+          option.value = obterIdCampeonato(c);
+          option.textContent = obterNomeCampeonato(c);
+          select.appendChild(option);
+        });
+    }
+
+    function preencherFiltroCategoria(){
+      const select = document.getElementById("filtroCategoria");
+      const campeonatoId = document.getElementById("filtroCampeonato").value;
+
+      select.innerHTML = `<option value="">Selecione a categoria</option>`;
+
+      if(!campeonatoId) return;
+
+      const camp = campeonatosCache.find(c => obterIdCampeonato(c) === campeonatoId);
+      const categorias = new Set();
+
+      const categoriasCadastro = valorCampo(camp, ["categorias"], []);
+      if(Array.isArray(categoriasCadastro)){
+        categoriasCadastro.forEach(cat => {
+          if(cat) categorias.add(cat);
+        });
+      }
+
+      jogosCache.forEach(j => {
+        const jogoCampId = valorCampo(j, ["campeonatoId"], "");
+        const categoria = valorCampo(j, ["categoria"], "");
+        if(jogoCampId === campeonatoId && categoria){
+          categorias.add(categoria);
+        }
+      });
+
+      Array.from(categorias)
+        .sort((a,b)=>String(a).localeCompare(String(b), "pt-BR"))
+        .forEach(cat => {
+          const option = document.createElement("option");
+          option.value = cat;
+          option.textContent = cat;
+          select.appendChild(option);
+        });
+    }
+
+    function aplicarFiltrosDaURL(){
+      const campeonatoURL = getParametro("campeonato");
+      const categoriaURL = getParametro("categoria");
+
+      if(campeonatoURL){
+        const camp = campeonatosCache.find(c =>
+          normalizarTexto(obterNomeCampeonato(c)) === normalizarTexto(campeonatoURL)
+        );
+
+        if(camp){
+          document.getElementById("filtroCampeonato").value = obterIdCampeonato(camp);
+          preencherFiltroCategoria();
+        }
+      }
+
+      if(categoriaURL){
+        const selectCat = document.getElementById("filtroCategoria");
+        const opcoes = Array.from(selectCat.options);
+        const opcao = opcoes.find(op => normalizarTexto(op.value) === normalizarTexto(categoriaURL));
+
+        if(opcao){
+          selectCat.value = opcao.value;
+        }
+      }
+    }
+
+    function montarMapaTimesParticipantes(campeonatoId, categoria){
+      const mapa = new Map();
+      const campeonato = campeonatosCache.find(c => obterIdCampeonato(c) === campeonatoId) || null;
+      const nomeCampeonato = campeonato ? obterNomeCampeonato(campeonato) : "";
+
+      jogosCache.forEach(j => {
+        const jogoCampId = valorCampo(j, ["campeonatoId"], "");
+        const jogoCampNome = valorCampo(j, ["campeonato", "nomeCampeonato"], "");
+        const jogoCategoria = valorCampo(j, ["categoria"], "");
+        const timeA = valorCampo(j, ["timeA"], "");
+        const timeB = valorCampo(j, ["timeB"], "");
+
+        const mesmoCampeonato =
+          jogoCampId === campeonatoId ||
+          normalizarTexto(jogoCampNome) === normalizarTexto(nomeCampeonato);
+
+        if(!mesmoCampeonato) return;
+        if(categoria && jogoCategoria !== categoria) return;
+
+        if(timeA){
+          const chave = normalizarTexto(timeA);
+          if(!mapa.has(chave)){
+            mapa.set(chave, {
+              nome: timeA,
+              categorias: new Set(),
+              campeonatos: new Set()
+            });
+          }
+          if(jogoCategoria) mapa.get(chave).categorias.add(jogoCategoria);
+          if(nomeCampeonato) mapa.get(chave).campeonatos.add(nomeCampeonato);
+        }
+
+        if(timeB){
+          const chave = normalizarTexto(timeB);
+          if(!mapa.has(chave)){
+            mapa.set(chave, {
+              nome: timeB,
+              categorias: new Set(),
+              campeonatos: new Set()
+            });
+          }
+          if(jogoCategoria) mapa.get(chave).categorias.add(jogoCategoria);
+          if(nomeCampeonato) mapa.get(chave).campeonatos.add(nomeCampeonato);
+        }
+      });
+
+      return mapa;
+    }
+
     window.carregarTimes = function(){
       const lista = document.getElementById("listaTimes");
-      const busca = (document.getElementById("buscaTime").value || "").toLowerCase().trim();
+      const busca = normalizarTexto(document.getElementById("buscaTime").value || "");
+      const campeonatoId = document.getElementById("filtroCampeonato").value;
       const categoria = document.getElementById("filtroCategoria").value;
 
-      let times = [...timesCache];
-
-      if (busca) {
-        times = times.filter(t =>
-          (t.nome || "").toLowerCase().includes(busca)
-        );
+      if(!campeonatoId){
+        lista.innerHTML = `<div class="vazio">Selecione um campeonato para ver os times.</div>`;
+        return;
       }
 
-      if (categoria) {
-        times = times.filter(t => Array.isArray(t.categorias) && t.categorias.includes(categoria));
+      const mapaParticipantes = montarMapaTimesParticipantes(campeonatoId, categoria);
+
+      let times = timesCache.filter(t => {
+        const nome = valorCampo(t, ["nome"], "");
+        if(!nome) return false;
+        return mapaParticipantes.has(normalizarTexto(nome));
+      });
+
+      if(busca){
+        times = times.filter(t => normalizarTexto(valorCampo(t, ["nome"], "")).includes(busca));
       }
 
-      times.sort((a, b) => (a.nome || "").localeCompare((b.nome || ""), "pt-BR"));
+      times.sort((a, b) => valorCampo(a, ["nome"], "").localeCompare(valorCampo(b, ["nome"], ""), "pt-BR"));
 
-      if (!times.length) {
+      if(!times.length){
         lista.innerHTML = `<div class="vazio">Nenhum time encontrado.</div>`;
         return;
       }
@@ -465,17 +688,32 @@
       lista.innerHTML = "";
 
       times.forEach(t => {
-        const cores = (t.cores || []).map(c => `<div class="time-color" style="background:${c}"></div>`).join("");
-        const categorias = (t.categorias || []).map(c => `<span class="tag">${c}</span>`).join("");
+        const participante = mapaParticipantes.get(normalizarTexto(valorCampo(t, ["nome"], "")));
+        const cores = (valorCampo(t, ["cores"], []) || [])
+          .map(c => `<div class="time-color" style="background:${c}"></div>`)
+          .join("");
 
-        lista.innerHTML += `
+        const categorias = Array.from(participante?.categorias || []).map(c => `<span class="tag">${c}</span>`).join("");
+lista.innerHTML += `
           <div class="card">
             <div class="team">
-              <img src="${t.escudo || 'logo-liga.jfif'}" class="preview" alt="${t.nome || 'Time'}" onerror="this.src='logo-liga.jfif'">
+              <img
+                src="${valorCampo(t, ["escudo", "logo"], "logo-liga.jfif")}"
+                class="preview"
+                alt="${valorCampo(t, ["nome"], "Time")}"
+                onerror="this.src='logo-liga.jfif'"
+              >
+
               <div class="team-info">
-                <div class="nome-time">${t.nome || "-"}</div>
-                <div class="time-colors">${cores || '<div class="tag">Sem cores</div>'}</div>
-                <div class="tags">${categorias || '<span class="tag">Sem categoria</span>'}</div>
+                <div class="nome-time">${valorCampo(t, ["nome"], "-")}</div>
+
+                <div class="time-colors">
+                  ${cores || '<div class="tag">Sem cores</div>'}
+                </div>
+
+                <div class="tags">
+                  ${categorias || '<span class="tag">Sem categoria</span>'}
+                </div>
               </div>
             </div>
 
@@ -489,17 +727,24 @@
       });
     };
 
+    document.getElementById("buscaTime").addEventListener("input", carregarTimes);
+
+    document.getElementById("filtroCampeonato").addEventListener("change", () => {
+      preencherFiltroCategoria();
+      document.getElementById("filtroCategoria").value = "";
+      carregarTimes();
+    });
+
+    document.getElementById("filtroCategoria").addEventListener("change", carregarTimes);
+
     async function iniciarPagina(){
       const lista = document.getElementById("listaTimes");
       lista.innerHTML = `<div class="vazio">Carregando times...</div>`;
 
       try{
-        const snap = await getDocs(collection(db, "times"));
-        timesCache = [];
-        snap.forEach(docSnap => {
-          timesCache.push({ id: docSnap.id, ...docSnap.data() });
-        });
-
+        await carregarDados();
+        preencherFiltroCampeonato();
+        aplicarFiltrosDaURL();
         carregarTimes();
       }catch(erro){
         console.error(erro);
