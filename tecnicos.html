@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Técnicos - Admin</title>
+  <title>Técnicos - LIGA GOIANA DE FUTEBOL DE BASE</title>
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
@@ -18,7 +18,6 @@
       --gold-line:rgba(247,198,0,.24);
       --white:#ffffff;
       --muted:#d8e1ef;
-      --danger:#b30000;
       --shadow:0 8px 22px rgba(0,0,0,.28);
       --transition:.25s ease;
       --max:1240px;
@@ -178,32 +177,11 @@
       max-width:850px;
     }
 
-    .toolbar{
-      display:flex;
+    .filtros{
+      display:grid;
+      grid-template-columns:1fr 1fr 1fr;
       gap:12px;
-      flex-wrap:wrap;
-      margin-bottom:18px;
-    }
-
-    .toolbar .btn{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      background:var(--gold);
-      color:black;
-      padding:11px 16px;
-      border-radius:10px;
-      font-weight:700;
-      text-decoration:none;
-    }
-
-    .toolbar .btn:hover{
-      filter:brightness(1.04);
-      transform:translateY(-1px);
-    }
-
-    .search-box{
-      margin-bottom:16px;
+      margin-bottom:20px;
     }
 
     input, select{
@@ -220,69 +198,7 @@
     input:focus, select:focus{
       outline:2px solid rgba(247,198,0,.5);
     }
-
-    .form-panel{
-      display:none;
-      background:linear-gradient(180deg, rgba(16,42,82,.96), rgba(12,33,64,.96));
-      border:1px solid rgba(255,255,255,.06);
-      border-radius:18px;
-      padding:18px;
-      box-shadow:var(--shadow);
-      margin-bottom:18px;
-    }
-.form-grid{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:12px;
-    }
-
-    .full{
-      grid-column:1 / -1;
-    }
-
-    .checkbox-grid{
-      display:grid;
-      grid-template-columns:repeat(auto-fit, minmax(130px, 1fr));
-      gap:8px;
-      margin-top:6px;
-    }
-
-    .check-item{
-      background:#102a52;
-      padding:10px;
-      border-radius:10px;
-      display:flex;
-      align-items:center;
-      gap:8px;
-      font-size:14px;
-    }
-
-    .check-item input{
-      width:auto;
-      margin:0;
-    }
-
-    .form-actions{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-top:14px;
-    }
-
-    .form-actions button{
-      background:var(--gold);
-      color:black;
-      padding:10px 14px;
-      border-radius:10px;
-      font-weight:700;
-    }
-
-    .form-actions button:hover{
-      filter:brightness(1.04);
-      transform:translateY(-1px);
-    }
-
-    .lista-grid{
+.lista-grid{
       display:grid;
       grid-template-columns:repeat(auto-fit, minmax(320px, 1fr));
       gap:12px;
@@ -335,6 +251,7 @@
       font-weight:700;
       font-size:18px;
       color:#fff;
+      line-height:1.35;
     }
 
     .user-info small{
@@ -356,6 +273,7 @@
       border-radius:999px;
       font-size:12px;
       display:inline-block;
+      border:1px solid rgba(255,255,255,.08);
     }
 
     .actions{
@@ -365,28 +283,23 @@
       justify-content:flex-end;
     }
 
-    .actions button{
-      background:#1a3f73;
-      padding:9px 12px;
-      border-radius:8px;
-      color:white;
-      font-size:12px;
-      margin:0;
-      font-weight:700;
-    }
-
-    .actions button:hover{
+    .actions .btn-ver{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
       background:var(--gold);
       color:#111;
+      padding:11px 14px;
+      border-radius:10px;
+      font-weight:700;
+      font-size:13px;
+      white-space:nowrap;
     }
 
-    .actions .delete{
-      background:var(--danger) !important;
-      color:#fff !important;
-    }
-
-    .actions .delete:hover{
-      filter:brightness(1.08);
+    .actions .btn-ver:hover{
+      filter:brightness(1.04);
+      transform:translateY(-1px);
     }
 
     .vazio{
@@ -409,12 +322,13 @@
       padding:15px;
       z-index:999;
     }
-.modal-content{
+
+    .modal-content{
       background:linear-gradient(180deg, rgba(16,42,82,.98), rgba(12,33,64,.98));
       padding:22px;
       border-radius:16px;
       text-align:center;
-      max-width:860px;
+      max-width:760px;
       width:100%;
       max-height:88vh;
       overflow:auto;
@@ -435,80 +349,22 @@
       text-align:left;
     }
 
-    .info-box,
-    .stats-box{
+    .info-box{
       background:#102a52;
       border:1px solid rgba(255,255,255,.06);
       border-radius:14px;
       padding:14px;
     }
 
-    .info-box h3,
-    .stats-box h3{
+    .info-box h3{
       color:var(--gold);
       margin-bottom:10px;
       font-size:18px;
     }
-
-    .info-line{
+.info-line{
       color:var(--muted);
       line-height:1.7;
       font-size:14px;
-    }
-
-    .stats-grid{
-      display:grid;
-      grid-template-columns:repeat(2, 1fr);
-      gap:10px;
-    }
-
-    .stat-card{
-      background:#0d2346;
-      border-radius:12px;
-      padding:12px;
-      border:1px solid rgba(255,255,255,.06);
-    }
-
-    .stat-card strong{
-      display:block;
-      color:var(--gold);
-      font-size:22px;
-      margin-bottom:4px;
-    }
-
-    .stat-card span{
-      color:var(--muted);
-      font-size:13px;
-      line-height:1.5;
-    }
-
-    .categorias-stats{
-      margin-top:14px;
-      background:#0d2346;
-      border-radius:12px;
-      padding:12px;
-      border:1px solid rgba(255,255,255,.06);
-      text-align:left;
-    }
-
-    .categorias-stats h4{
-      color:var(--gold);
-      margin-bottom:10px;
-      font-size:16px;
-    }
-
-    .categoria-item{
-      display:flex;
-      justify-content:space-between;
-      gap:12px;
-      padding:8px 0;
-      border-bottom:1px solid rgba(255,255,255,.06);
-      color:var(--muted);
-      font-size:14px;
-    }
-
-    .categoria-item:last-child{
-      border-bottom:none;
     }
 
     .modal-actions{
@@ -536,9 +392,8 @@
         justify-content:center;
       }
 
-      .form-grid,
-      .modal-grid,
-      .stats-grid{
+      .filtros,
+      .modal-grid{
         grid-template-columns:1fr;
       }
 
@@ -554,8 +409,7 @@
     }
 
     @media (max-width:600px){
-      .top-btn,
-      .toolbar .btn{
+      .top-btn{
         width:100%;
         justify-content:center;
       }
@@ -566,8 +420,8 @@
         align-items:stretch;
       }
 
-      .form-actions button{
-        width:100%;
+      .hero h2{
+        font-size:24px;
       }
     }
   </style>
@@ -614,95 +468,50 @@
   <div class="wrap container">
 
     <div class="hero">
-      <h2>Cadastro de Técnicos</h2>
-      <p>Cadastre, edite, visualize e acompanhe estatísticas automáticas dos técnicos e seus times.</p>
+      <h2>Técnicos</h2>
+      <p>Veja os técnicos cadastrados, filtre por nome, campeonato e categoria e abra a página pública de cada técnico.</p>
     </div>
 
-    <div class="toolbar">
-      <a class="btn" onclick="toggleFormulario()">
-        <i class="fa-solid fa-plus"></i> Novo Técnico
-      </a>
+    <div class="filtros">
+      <input id="buscaTecnico" placeholder="Pesquisar técnico...">
+
+      <select id="filtroCampeonato">
+        <option value="">Selecione o campeonato</option>
+      </select>
+
+      <select id="filtroCategoria">
+        <option value="">Selecione a categoria</option>
+      </select>
     </div>
 
-    <div class="search-box">
-      <input id="busca" placeholder="Pesquisar técnico..." oninput="carregarTecnicos()">
-    </div>
-
-    <div class="form-panel" id="formulario">
-      <div class="form-grid">
-        <div>
-          <input id="nome" placeholder="Nome do técnico">
-        </div>
-
-        <div>
-          <input id="foto" type="file" accept="image/*">
-        </div>
-
-        <div>
-          <input id="cpf" placeholder="CPF">
-        </div>
-
-        <div>
-          <input id="telefone" placeholder="Telefone">
-        </div>
-
-        <div>
-          <input id="email" placeholder="Email">
-        </div>
-
-        <div>
-          <input id="dataNascimento" type="date">
-        </div>
-
-        <div class="full">
-          <input id="cidadeNascimento" placeholder="Cidade onde nasceu">
-        </div>
-
-        <div class="full">
-          <select id="time">
-            <option value="">Selecione o time</option>
-          </select>
-        </div>
-
-        <div class="full">
-          <div class="checkbox-grid" id="categoriasGrid"></div>
-        </div>
-      </div>
-
-      <div class="form-actions">
-        <button onclick="salvar()">
-          <i class="fa-solid fa-floppy-disk"></i> Salvar
-        </button>
-        <button onclick="cancelarEdicao()">
-          <i class="fa-solid fa-xmark"></i> Cancelar
-        </button>
-      </div>
-    </div>
-
-    <div class="lista-grid" id="lista"></div>
+    <div class="lista-grid" id="listaTecnicos"></div>
 
   </div>
 
   <div class="modal" id="modal">
     <div class="modal-content" id="modalContent"></div>
   </div>
-<script type="module">
+
+  <script type="module">
     import { db } from "./firebase.js";
-    import { collection, addDoc, getDocs, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+    import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-    const storage = getStorage();
-
-    let editandoId = null;
-    let fotoAtual = "";
+    let tecnicosCache = [];
+    let jogosCache = [];
+    let campeonatosCache = [];
 
     window.voltarPagina = function(){
       if (window.history.length > 1) {
         window.history.back();
       } else {
-        window.location.href = "admin.html";
+        window.location.href = "index.html";
       }
     };
+
+    function getParametro(nome){
+      const params = new URLSearchParams(window.location.search);
+      return params.get(nome);
+    }
 
     function normalizarTexto(texto){
       return String(texto || "")
@@ -710,6 +519,153 @@
         .toLowerCase()
         .normalize("NFD")
         .replace(/[\u0300-\u036f]/g, "");
+    }
+
+    function valorCampo(obj, chaves, fallback = ""){
+      for(const chave of chaves){
+        if(obj && obj[chave] !== undefined && obj[chave] !== null && obj[chave] !== ""){
+          return obj[chave];
+        }
+      }
+      return fallback;
+    }
+
+    function obterIdCampeonato(doc){
+      return valorCampo(doc, ["id", "campeonatoId"], "");
+    }
+
+    function obterNomeCampeonato(doc){
+      return valorCampo(doc, ["nome", "campeonato", "titulo"], "");
+    }
+async function carregarDados(){
+      const [snapTecnicos, snapJogos, snapCampeonatos] = await Promise.all([
+        getDocs(collection(db, "tecnicos")),
+        getDocs(collection(db, "jogos")),
+        getDocs(collection(db, "campeonatos"))
+      ]);
+
+      tecnicosCache = [];
+      jogosCache = [];
+      campeonatosCache = [];
+
+      snapTecnicos.forEach(docSnap => {
+        tecnicosCache.push({ id: docSnap.id, ...docSnap.data() });
+      });
+
+      snapJogos.forEach(docSnap => {
+        jogosCache.push({ id: docSnap.id, ...docSnap.data() });
+      });
+
+      snapCampeonatos.forEach(docSnap => {
+        campeonatosCache.push({ id: docSnap.id, ...docSnap.data() });
+      });
+    }
+
+    function preencherFiltroCampeonato(){
+      const select = document.getElementById("filtroCampeonato");
+      select.innerHTML = `<option value="">Selecione o campeonato</option>`;
+
+      campeonatosCache
+        .sort((a,b)=>obterNomeCampeonato(a).localeCompare(obterNomeCampeonato(b), "pt-BR"))
+        .forEach(c => {
+          const option = document.createElement("option");
+          option.value = obterIdCampeonato(c);
+          option.textContent = obterNomeCampeonato(c);
+          select.appendChild(option);
+        });
+    }
+
+    function preencherFiltroCategoria(){
+      const select = document.getElementById("filtroCategoria");
+      const campeonatoId = document.getElementById("filtroCampeonato").value;
+
+      select.innerHTML = `<option value="">Selecione a categoria</option>`;
+
+      if(!campeonatoId) return;
+
+      const camp = campeonatosCache.find(c => obterIdCampeonato(c) === campeonatoId);
+      const categorias = new Set();
+
+      const categoriasCadastro = valorCampo(camp, ["categorias"], []);
+      if(Array.isArray(categoriasCadastro)){
+        categoriasCadastro.forEach(cat => {
+          if(cat) categorias.add(cat);
+        });
+      }
+
+      jogosCache.forEach(j => {
+        const jogoCampId = valorCampo(j, ["campeonatoId"], "");
+        const categoria = valorCampo(j, ["categoria"], "");
+        if(jogoCampId === campeonatoId && categoria){
+          categorias.add(categoria);
+        }
+      });
+
+      Array.from(categorias)
+        .sort((a,b)=>String(a).localeCompare(String(b), "pt-BR"))
+        .forEach(cat => {
+          const option = document.createElement("option");
+          option.value = cat;
+          option.textContent = cat;
+          select.appendChild(option);
+        });
+    }
+
+    function aplicarFiltrosDaURL(){
+      const campeonatoURL = getParametro("campeonato");
+      const categoriaURL = getParametro("categoria");
+
+      if(campeonatoURL){
+        const camp = campeonatosCache.find(c =>
+          normalizarTexto(obterNomeCampeonato(c)) === normalizarTexto(campeonatoURL)
+        );
+
+        if(camp){
+          document.getElementById("filtroCampeonato").value = obterIdCampeonato(camp);
+          preencherFiltroCategoria();
+        }
+      }
+
+      if(categoriaURL){
+        const selectCat = document.getElementById("filtroCategoria");
+        const opcoes = Array.from(selectCat.options);
+        const opcao = opcoes.find(op => normalizarTexto(op.value) === normalizarTexto(categoriaURL));
+
+        if(opcao){
+          selectCat.value = opcao.value;
+        }
+      }
+    }
+
+    function montarMapaTimesParticipantes(campeonatoId, categoria){
+      const mapa = new Map();
+      const campeonato = campeonatosCache.find(c => obterIdCampeonato(c) === campeonatoId) || null;
+      const nomeCampeonato = campeonato ? obterNomeCampeonato(campeonato) : "";
+
+      jogosCache.forEach(j => {
+        const jogoCampId = valorCampo(j, ["campeonatoId"], "");
+        const jogoCampNome = valorCampo(j, ["campeonato", "nomeCampeonato"], "");
+        const jogoCategoria = valorCampo(j, ["categoria"], "");
+        const timeA = valorCampo(j, ["timeA"], "");
+        const timeB = valorCampo(j, ["timeB"], "");
+
+        const mesmoCampeonato =
+          jogoCampId === campeonatoId ||
+          normalizarTexto(jogoCampNome) === normalizarTexto(nomeCampeonato);
+
+        if(!mesmoCampeonato) return;
+        if(categoria && jogoCategoria !== categoria) return;
+
+        if(timeA){
+          mapa.set(normalizarTexto(timeA), true);
+        }
+
+        if(timeB){
+          mapa.set(normalizarTexto(timeB), true);
+        }
+      });
+
+      return mapa;
     }
 
     function calcularIdade(dataNascimento){
@@ -728,245 +684,91 @@
 
       return idade >= 0 ? idade : "-";
     }
+window.verTecnico = function(id){
+      const tecnico = tecnicosCache.find(t => t.id === id);
+      if(!tecnico) return;
 
-    async function carregarCategorias(){
-      const grid = document.getElementById("categoriasGrid");
-      grid.innerHTML = "";
+      const cats = (tecnico.categorias || []).map(c => `<span class="tag">${c}</span>`).join("");
 
-      const snap = await getDocs(collection(db, "categorias"));
-      let lista = [];
+      document.getElementById("modalContent").innerHTML = `
+        <img src="${tecnico.foto || 'logo-liga.jfif'}" class="photo" alt="${tecnico.nome || 'Técnico'}">
+        <h2>${tecnico.nome || ""}</h2>
 
-      snap.forEach(d => {
-        const data = d.data();
-        if(data.nome) lista.push(data.nome);
-      });
-
-      lista.sort((a,b)=>a.localeCompare(b, "pt-BR"));
-
-      lista.forEach(nome=>{
-        grid.innerHTML += `
-          <label class="check-item">
-            <input type="checkbox" value="${nome}">${nome}
-          </label>
-        `;
-      });
-    }
-
-    async function carregarTimes(){
-      const select = document.getElementById("time");
-      select.innerHTML = '<option value="">Selecione o time</option>';
-
-      const snap = await getDocs(collection(db, "times"));
-      let lista = [];
-
-      snap.forEach(d=>lista.push(d.data()));
-
-      lista.sort((a,b)=>(a.nome || "").localeCompare(b.nome || "", "pt-BR"));
-
-      lista.forEach(t=>{
-        select.innerHTML += `<option value="${t.nome}">${t.nome}</option>`;
-      });
-    }
-
-    function getCategorias(){
-      return Array.from(document.querySelectorAll('#categoriasGrid input:checked')).map(i=>i.value);
-    }
-
-    function marcarCategorias(categorias){
-      document.querySelectorAll('#categoriasGrid input').forEach(i => {
-        i.checked = (categorias || []).includes(i.value);
-      });
-    }
-
-    window.toggleFormulario = function(){
-      const f = document.getElementById("formulario");
-      f.style.display = f.style.display === "none" || f.style.display === "" ? "block" : "none";
-    };
-
-    window.cancelarEdicao = function(){
-      limparFormulario();
-      document.getElementById("formulario").style.display = "none";
-    };
-
-    function limparFormulario(){
-      document.getElementById("nome").value = "";
-      document.getElementById("foto").value = "";
-      document.getElementById("cpf").value = "";
-      document.getElementById("telefone").value = "";
-      document.getElementById("email").value = "";
-      document.getElementById("time").value = "";
-      document.getElementById("dataNascimento").value = "";
-      document.getElementById("cidadeNascimento").value = "";
-      document.querySelectorAll('#categoriasGrid input').forEach(i => i.checked = false);
-      editandoId = null;
-      fotoAtual = "";
-    }
-
-    window.salvar = async function(){
-      const nome = document.getElementById("nome").value.trim();
-      const cpf = document.getElementById("cpf").value.trim();
-      const telefone = document.getElementById("telefone").value.trim();
-      const email = document.getElementById("email").value.trim();
-      const time = document.getElementById("time").value;
-      const dataNascimento = document.getElementById("dataNascimento").value;
-      const cidadeNascimento = document.getElementById("cidadeNascimento").value.trim();
-      const foto = document.getElementById("foto").files[0];
-      const categorias = getCategorias();
-
-      if(!nome || !cpf || !time){
-        alert("Preencha os campos obrigatórios.");
-        return;
-      }
-
-      let url = fotoAtual;
-
-      if(foto){
-        const refStorage = ref(storage, "tecnicos/" + Date.now() + "-" + foto.name);
-        await uploadBytes(refStorage, foto);
-        url = await getDownloadURL(refStorage);
-      }
-
-      const dados = {
-        nome,
-        cpf,
-        telefone,
-        email,
-        time,
-        foto:url,
-        categorias,
-        dataNascimento,
-        cidadeNascimento
-      };
-
-      if(editandoId){
-        await updateDoc(doc(db,"tecnicos",editandoId), dados);
-        alert("Técnico atualizado com sucesso!");
-      }else{
-        await addDoc(collection(db,"tecnicos"), dados);
-        alert("Técnico salvo com sucesso!");
-      }
-
-      limparFormulario();
-      carregarTecnicos();
-    };
-window.editar = async function(id){
-      const snap = await getDocs(collection(db,"tecnicos"));
-
-      snap.forEach(d=>{
-        if(d.id===id){
-          const t = d.data();
-          document.getElementById("nome").value = t.nome || "";
-          document.getElementById("cpf").value = t.cpf || "";
-          document.getElementById("telefone").value = t.telefone || "";
-          document.getElementById("email").value = t.email || "";
-          document.getElementById("time").value = t.time || "";
-          document.getElementById("dataNascimento").value = t.dataNascimento || "";
-          document.getElementById("cidadeNascimento").value = t.cidadeNascimento || "";
-          fotoAtual = t.foto || "";
-          editandoId = id;
-          marcarCategorias(t.categorias || []);
-        }
-      });
-
-      document.getElementById("formulario").style.display = "block";
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    };
-
-    window.excluir = async function(id){
-      if(confirm("Excluir técnico?")){
-        await deleteDoc(doc(db,"tecnicos",id));
-        carregarTecnicos();
-      }
-    };
-
-    window.ver = async function(id){
-      const snap = await getDocs(collection(db,"tecnicos"));
-
-      for (const d of snap.docs){
-        if(d.id===id){
-          const t = d.data();
-
-          document.getElementById("modalContent").innerHTML = `
-            <img src="${t.foto || 'logo-liga.jfif'}" class="photo" alt="${t.nome || 'Técnico'}">
-            <h2>${t.nome || ""}</h2>
-
-            <div class="modal-grid">
-              <div class="info-box">
-                <h3>Dados do Técnico</h3>
-                <div class="info-line"><strong>Time:</strong> ${t.time || "-"}</div>
-                <div class="info-line"><strong>Email:</strong> ${t.email || "-"}</div>
-                <div class="info-line"><strong>Telefone:</strong> ${t.telefone || "-"}</div>
-                <div class="info-line"><strong>CPF:</strong> ${t.cpf || "-"}</div>
-                <div class="info-line"><strong>Idade:</strong> ${calcularIdade(t.dataNascimento)}</div>
-                <div class="info-line"><strong>Onde nasceu:</strong> ${t.cidadeNascimento || "-"}</div>
-                <div class="categorias-tags" style="margin-top:10px;">
-                  ${(t.categorias || []).map(c=>`<span class="tag">${c}</span>`).join("") || '<span class="tag">Sem categorias</span>'}
-                </div>
-              </div>
-
-              <div class="stats-box">
-                <h3>Resumo</h3>
-                <div class="stats-grid">
-                  <div class="stat-card">
-                    <strong>${t.time || "-"}</strong>
-                    <span>Time atual</span>
-                  </div>
-
-                  <div class="stat-card">
-                    <strong>${(t.categorias || []).length}</strong>
-                    <span>Categorias</span>
-                  </div>
-                </div>
-              </div>
+        <div class="modal-grid">
+          <div class="info-box">
+            <h3>Dados do Técnico</h3>
+            <div class="info-line"><strong>Time:</strong> ${tecnico.time || "-"}</div>
+            <div class="info-line"><strong>Email:</strong> ${tecnico.email || "-"}</div>
+            <div class="info-line"><strong>Telefone:</strong> ${tecnico.telefone || "-"}</div>
+            <div class="info-line"><strong>Idade:</strong> ${calcularIdade(tecnico.dataNascimento)}</div>
+            <div class="info-line"><strong>Cidade:</strong> ${tecnico.cidadeNascimento || "-"}</div>
+            <div class="categorias-tags" style="margin-top:10px;">
+              ${cats || '<span class="tag">Sem categorias</span>'}
             </div>
+          </div>
 
-            <div class="modal-actions">
-              <button onclick="fechar()">
-                <i class="fa-solid fa-xmark"></i> Fechar
-              </button>
-            </div>
-          `;
+          <div class="info-box">
+            <h3>Resumo</h3>
+            <div class="info-line"><strong>Nome:</strong> ${tecnico.nome || "-"}</div>
+            <div class="info-line"><strong>Time atual:</strong> ${tecnico.time || "-"}</div>
+            <div class="info-line"><strong>Total de categorias:</strong> ${(tecnico.categorias || []).length}</div>
+          </div>
+        </div>
 
-          document.getElementById("modal").style.display = "flex";
-          break;
-        }
-      }
+        <div class="modal-actions">
+          <button onclick="fecharModal()">
+            <i class="fa-solid fa-xmark"></i> Fechar
+          </button>
+        </div>
+      `;
+
+      document.getElementById("modal").style.display = "flex";
     };
 
-    window.fechar = function(){
+    window.fecharModal = function(){
       document.getElementById("modal").style.display = "none";
     };
 
-    async function carregarTecnicos(){
-      const lista = document.getElementById("lista");
-      lista.innerHTML = "<div class='vazio'>Carregando técnicos...</div>";
+    window.carregarTecnicos = function(){
+      const lista = document.getElementById("listaTecnicos");
+      const busca = normalizarTexto(document.getElementById("buscaTecnico").value || "");
+      const campeonatoId = document.getElementById("filtroCampeonato").value;
+      const categoria = document.getElementById("filtroCategoria").value;
 
-      const snap = await getDocs(collection(db,"tecnicos"));
-      let tecnicos = [];
+      if(!campeonatoId){
+        lista.innerHTML = `<div class="vazio">Selecione um campeonato para ver os técnicos.</div>`;
+        return;
+      }
 
-      snap.forEach(d => tecnicos.push({ id:d.id, ...d.data() }));
+      const mapaParticipantes = montarMapaTimesParticipantes(campeonatoId, categoria);
 
-      const busca = (document.getElementById("busca").value || "").toLowerCase().trim();
+      let tecnicos = tecnicosCache.filter(t => {
+        const nomeTime = valorCampo(t, ["time"], "");
+        if(!nomeTime) return false;
+        return mapaParticipantes.has(normalizarTexto(nomeTime));
+      });
 
       if(busca){
         tecnicos = tecnicos.filter(t =>
-          (t.nome || "").toLowerCase().includes(busca) ||
-          (t.time || "").toLowerCase().includes(busca) ||
-          (t.email || "").toLowerCase().includes(busca)
+          normalizarTexto(valorCampo(t, ["nome"], "")).includes(busca) ||
+          normalizarTexto(valorCampo(t, ["time"], "")).includes(busca) ||
+          normalizarTexto(valorCampo(t, ["email"], "")).includes(busca)
         );
       }
 
-      tecnicos.sort((a,b)=>(a.nome || "").localeCompare(b.nome || "", "pt-BR"));
+      tecnicos.sort((a,b) =>
+        valorCampo(a, ["nome"], "").localeCompare(valorCampo(b, ["nome"], ""), "pt-BR")
+      );
 
       if(!tecnicos.length){
-        lista.innerHTML = "<div class='vazio'>Nenhum técnico encontrado.</div>";
+        lista.innerHTML = `<div class="vazio">Nenhum técnico encontrado.</div>`;
         return;
       }
 
       lista.innerHTML = "";
 
-      tecnicos.forEach(t=>{
-        const cats = (t.categorias || []).map(c=>`<span class="tag">${c}</span>`).join("");
+      tecnicos.forEach(t => {
+        const cats = (t.categorias || []).map(c => `<span class="tag">${c}</span>`).join("");
 
         lista.innerHTML += `
           <div class="card">
@@ -975,28 +777,48 @@ window.editar = async function(id){
               <div class="user-info">
                 <div class="nome">${t.nome || ""}</div>
                 <small>${t.time || "-"}</small>
-                <div class="categorias-tags">${cats || '<span class="tag">Sem categorias</span>'}</div>
+                <div class="categorias-tags">
+                  ${cats || '<span class="tag">Sem categorias</span>'}
+                </div>
               </div>
             </div>
+
             <div class="actions">
-              <button onclick="editar('${t.id}')">
-                <i class="fa-solid fa-pen"></i> Editar
-              </button>
-              <button onclick="ver('${t.id}')">
+              <a class="btn-ver" onclick="verTecnico('${t.id}')">
                 <i class="fa-solid fa-eye"></i> Ver
-              </button>
-              <button class="delete" onclick="excluir('${t.id}')">
-                <i class="fa-solid fa-trash"></i> Excluir
-              </button>
+              </a>
             </div>
           </div>
         `;
       });
+    };
+
+    document.getElementById("buscaTecnico").addEventListener("input", carregarTecnicos);
+
+    document.getElementById("filtroCampeonato").addEventListener("change", () => {
+      preencherFiltroCategoria();
+      document.getElementById("filtroCategoria").value = "";
+      carregarTecnicos();
+    });
+
+    document.getElementById("filtroCategoria").addEventListener("change", carregarTecnicos);
+
+    async function iniciarPagina(){
+      const lista = document.getElementById("listaTecnicos");
+      lista.innerHTML = `<div class="vazio">Carregando técnicos...</div>`;
+
+      try{
+        await carregarDados();
+        preencherFiltroCampeonato();
+        aplicarFiltrosDaURL();
+        carregarTecnicos();
+      }catch(erro){
+        console.error(erro);
+        lista.innerHTML = `<div class="vazio">Erro ao carregar os técnicos.</div>`;
+      }
     }
 
-    await carregarCategorias();
-    await carregarTimes();
-    carregarTecnicos();
+    iniciarPagina();
   </script>
 
 </body>
