@@ -1,211 +1,421 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Suspensos - LIGA GOIANA DE FUTEBOL DE BASE</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Suspensos - LIGA GOIANA DE FUTEBOL DE BASE</title>
 
-<style>
-body{
-font-family:Arial;
-margin:0;
-background:#0b1f3a;
-color:white;
-}
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-header{
-background:#08172c;
-padding:18px;
-text-align:center;
-font-size:24px;
-font-weight:bold;
-border-bottom:3px solid #f7c600;
-}
+  <style>
+    :root{
+      --bg:#0b1f3a;
+      --bg-dark:#08172c;
+      --card:#102a52;
+      --gold:#f7c600;
+      --gold-soft:rgba(247,198,0,.12);
+      --gold-line:rgba(247,198,0,.24);
+      --white:#ffffff;
+      --muted:#d8e1ef;
+      --shadow:0 8px 22px rgba(0,0,0,.28);
+      --transition:.25s ease;
+      --max:1180px;
+    }
 
-.menu{
-display:flex;
-justify-content:center;
-gap:10px;
-background:#102a52;
-padding:12px;
-flex-wrap:wrap;
-}
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
 
-.menu a{
-color:white;
-text-decoration:none;
-font-weight:bold;
-font-size:14px;
-background:#0d2346;
-padding:10px 14px;
-border-radius:8px;
-}
+    body{
+      font-family:Arial, sans-serif;
+      background:
+        linear-gradient(rgba(11,31,58,.88), rgba(11,31,58,.94)),
+        url("fundo.png") center/cover fixed no-repeat;
+      color:var(--white);
+      min-height:100vh;
+    }
 
-.menu a.ativo{
-background:#f7c600;
-color:black;
-}
+    a{
+      text-decoration:none;
+      color:inherit;
+      transition:var(--transition);
+    }
 
-.container{
-max-width:1200px;
-margin:auto;
-padding:20px;
-}
+    button{
+      font-family:inherit;
+      cursor:pointer;
+      transition:var(--transition);
+      border:none;
+    }
 
-.filtros{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:12px;
-margin-bottom:20px;
-}
+    select{
+      font-family:inherit;
+    }
 
-select{
-width:100%;
-padding:12px;
-border:none;
-border-radius:8px;
-box-sizing:border-box;
-font-size:14px;
-}
+    .wrap{
+      width:min(100% - 28px, var(--max));
+      margin:0 auto;
+    }
 
-.titulo{
-font-size:22px;
-color:#f7c600;
-font-weight:bold;
-margin-bottom:14px;
-}
+    header{
+      background:rgba(8,23,44,.96);
+      border-bottom:3px solid var(--gold);
+      box-shadow:var(--shadow);
+    }
 
-.lista{
-display:flex;
-flex-direction:column;
-gap:12px;
-}
+    .header-top{
+      min-height:82px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      flex-wrap:wrap;
+      padding:14px 0;
+    }
 
-.card{
-background:#102a52;
-border-radius:12px;
-padding:14px;
-border:1px solid rgba(255,230,0,.12);
-display:flex;
-justify-content:space-between;
-align-items:center;
-gap:12px;
-}
+    .header-left,
+    .header-right{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+    }
 
-.player{
-display:flex;
-align-items:center;
-gap:12px;
-min-width:0;
-}
+    .header-title{
+      flex:1;
+      text-align:center;
+      font-size:24px;
+      font-weight:700;
+      color:var(--white);
+    }
 
-.photo{
-width:52px;
-height:52px;
-border-radius:50%;
-object-fit:cover;
-background:#1a3f73;
-border:2px solid rgba(255,255,255,.12);
-}
+    .top-btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      padding:10px 16px;
+      border-radius:10px;
+      font-weight:700;
+      white-space:nowrap;
+    }
 
-.info{
-display:flex;
-flex-direction:column;
-gap:4px;
-min-width:0;
-}
+    .btn-light{
+      background:#fff4cf;
+      color:#111;
+    }
 
-.nome{
-font-weight:bold;
-font-size:16px;
-}
+    .btn-light:hover{
+      background:var(--gold);
+      transform:translateY(-2px);
+    }
 
-.subinfo{
-opacity:.9;
-font-size:13px;
-}
+    .nav-bar{
+      background:rgba(16,42,82,.95);
+      border-top:1px solid rgba(255,255,255,.06);
+      border-bottom:1px solid rgba(255,255,255,.08);
+    }
 
-.tags{
-display:flex;
-gap:8px;
-flex-wrap:wrap;
-margin-top:6px;
-}
+    .menu{
+      display:flex;
+      justify-content:center;
+      gap:10px;
+      padding:12px 0;
+      flex-wrap:wrap;
+    }
 
-.tag{
-background:#0b1f3a;
-padding:6px 10px;
-border-radius:999px;
-font-size:12px;
-font-weight:bold;
-}
+    .menu a{
+      color:white;
+      text-decoration:none;
+      font-weight:700;
+      font-size:14px;
+      background:#0d2346;
+      padding:10px 14px;
+      border-radius:10px;
+      border:1px solid transparent;
+      white-space:nowrap;
+    }
 
-.lado-direito{
-text-align:right;
-}
+    .menu a:hover{
+      color:var(--gold);
+      background:var(--gold-soft);
+      border-color:var(--gold-line);
+    }
 
-.numero-destaque{
-font-size:22px;
-font-weight:bold;
-color:#f7c600;
-}
+    .menu a.ativo{
+      background:var(--gold);
+      color:#111;
+    }
 
-.vazio{
-background:#102a52;
-border-radius:12px;
-padding:30px;
-text-align:center;
-}
+    .container{
+      padding:24px 0 34px;
+    }
 
+    .hero{
+      background:linear-gradient(135deg,#102a52,#0d2346);
+      border:1px solid var(--gold-line);
+      border-radius:18px;
+      padding:22px;
+      margin-bottom:20px;
+      box-shadow:var(--shadow);
+    }
+
+    .hero h2{
+      margin:0 0 8px;
+      color:var(--gold);
+      font-size:28px;
+    }
+
+    .hero p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.6;
+      font-size:15px;
+      max-width:850px;
+    }
+
+    .filtros{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+      margin-bottom:20px;
+    }
+
+    select{
+      width:100%;
+      padding:13px;
+      border:none;
+      border-radius:10px;
+      box-sizing:border-box;
+      font-size:14px;
+      background:#f5f7fb;
+      color:#111;
+    }
+
+    select:focus{
+      outline:2px solid rgba(247,198,0,.5);
+    }
+
+    .titulo{
+      font-size:24px;
+      font-weight:700;
+      color:var(--gold);
+      margin-bottom:16px;
+    }
+
+    .lista{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    .card{
+      background:linear-gradient(180deg, rgba(16,42,82,.96), rgba(12,33,64,.96));
+      border-radius:16px;
+      padding:16px;
+      border:1px solid rgba(255,230,0,.10);
+      box-shadow:var(--shadow);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+    }
+
+    .player{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-width:0;
+    }
+
+    .photo{
+      width:52px;
+      height:52px;
+      border-radius:50%;
+      object-fit:cover;
+      background:#1a3f73;
+      border:2px solid rgba(255,255,255,.12);
+      flex-shrink:0;
+    }
+
+    .info{
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+      min-width:0;
+    }
+
+    .nome{
+      font-weight:700;
+      font-size:16px;
+      line-height:1.35;
+    }
+
+    .subinfo{
+      opacity:.9;
+      font-size:13px;
+      color:var(--muted);
+      line-height:1.45;
+    }
+
+    .tags{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-top:6px;
+    }
+
+    .tag{
+      background:#0b1f3a;
+      padding:6px 10px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:700;
+      border:1px solid rgba(255,255,255,.08);
+    }
+
+    .lado-direito{
+      text-align:right;
+      flex-shrink:0;
+    }
+
+    .numero-destaque{
+      font-size:22px;
+      font-weight:700;
+      color:var(--gold);
+    }
+
+    .vazio{
+      background:linear-gradient(180deg, rgba(16,42,82,.96), rgba(12,33,64,.96));
+      border-radius:14px;
+      padding:30px;
+      text-align:center;
+      color:var(--muted);
+      box-shadow:var(--shadow);
+      border:1px solid rgba(255,255,255,.06);
+    }
 @media (max-width:800px){
-.filtros{
-grid-template-columns:1fr;
-}
+      .filtros{
+        grid-template-columns:1fr;
+      }
 
-.card{
-flex-direction:column;
-align-items:flex-start;
-}
+      .card{
+        flex-direction:column;
+        align-items:flex-start;
+      }
 
-.lado-direito{
-text-align:left;
-}
-}
-</style>
+      .lado-direito{
+        text-align:left;
+      }
+    }
+
+    @media (max-width:600px){
+      .header-top{
+        flex-direction:column;
+        align-items:center;
+      }
+
+      .header-title{
+        order:2;
+        width:100%;
+        text-align:center;
+      }
+
+      .header-left{
+        order:1;
+        width:100%;
+        display:flex;
+        flex-direction:row;
+        align-items:center;
+        justify-content:center;
+        gap:10px;
+        flex-wrap:nowrap;
+      }
+
+      .header-right{
+        display:none;
+      }
+
+      .top-btn{
+        width:auto;
+        min-width:0;
+        flex:1;
+        justify-content:center;
+        padding:10px 12px;
+        font-size:14px;
+      }
+
+      .menu{
+        justify-content:flex-start;
+        flex-wrap:nowrap;
+        overflow-x:auto;
+        padding:12px 4px;
+        scrollbar-width:none;
+      }
+
+      .menu::-webkit-scrollbar{
+        display:none;
+      }
+
+      .menu a{
+        width:auto;
+        min-width:max-content;
+        flex:0 0 auto;
+        text-align:center;
+      }
+    }
+  </style>
 </head>
 <body>
 
-<header>LIGA GOIANA DE FUTEBOL DE BASE</header>
+<header>
+  <div class="wrap header-top">
+    <div class="header-left">
+      <button class="top-btn btn-light" type="button" onclick="voltarPagina()">
+        <i class="fa-solid fa-arrow-left"></i> Voltar
+      </button>
 
-<div class="menu">
-  <a href="index.html">Campeonatos</a>
-  <a href="tabela.html">Tabela</a>
-  <a href="jogos.html">Jogos</a>
-  <a href="artilharia.html">Artilharia</a>
-  <a href="cartoes.html">Cartões</a>
-  <a href="suspensos.html" class="ativo">Suspensos</a>
-  <a href="login.html">Login</a>
-</div>
+      <a href="index.html" class="top-btn btn-light">
+        <i class="fa-solid fa-house"></i> Página Inicial
+      </a>
+    </div>
 
-<div class="container">
+    <div class="header-title">LIGA GOIANA DE FUTEBOL DE BASE</div>
+
+    <div class="header-right"></div>
+  </div>
+
+  <div class="nav-bar">
+    <div class="wrap">
+      <div class="menu">
+        <a href="index.html">Início</a>
+        <a href="campeonatos.html">Campeonatos</a>
+        <a href="tabela.html">Tabela</a>
+        <a href="jogos.html">Jogos</a>
+        <a href="artilharia.html">Artilharia</a>
+        <a href="cartoes.html">Cartões</a>
+        <a href="suspensos.html" class="ativo">Suspensos</a>
+        <a href="login.html">Login</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap container">
+  <div class="hero">
+    <h2>Suspensos</h2>
+    <p>Acompanhe os jogadores suspensos por campeonato e categoria, com base nas regras configuradas da competição.</p>
+  </div>
+
   <div class="filtros">
-    <select id="filtroCampeonato" onchange="carregarSuspensos()">
+    <select id="filtroCampeonato">
       <option value="">Selecione o campeonato</option>
     </select>
 
-    <select id="filtroCategoria" onchange="carregarSuspensos()">
+    <select id="filtroCategoria">
       <option value="">Selecione a categoria</option>
-      <option value="Sub-11">Sub-11</option>
-      <option value="Sub-12">Sub-12</option>
-      <option value="Sub-13">Sub-13</option>
-      <option value="Sub-14">Sub-14</option>
-      <option value="Sub-15">Sub-15</option>
-      <option value="Sub-16">Sub-16</option>
-      <option value="Sub-17">Sub-17</option>
-      <option value="Sub-18">Sub-18</option>
-      <option value="Sub-19">Sub-19</option>
-      <option value="Sub-20">Sub-20</option>
-      <option value="Sub-21">Sub-21</option>
     </select>
   </div>
 
@@ -215,29 +425,21 @@ text-align:left;
 </div>
 
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
-import {
-  getFirestore,
-  collection,
-  getDocs
-} from "https://www.gstatic.com/firebasejs/12.12.0/firebase-firestore.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyCyArj4yRlEl-yibkc0VEmL_4UJpRHHQSc",
-  authDomain: "liga-goiana-base.firebaseapp.com",
-  projectId: "liga-goiana-base",
-  storageBucket: "liga-goiana-base.appspot.com",
-  messagingSenderId: "952863591183",
-  appId: "1:952863591183:web:4eea34f494ba2dd754cc7a"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+import { db } from "./firebase.js";
+import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 let campeonatos = [];
 let jogos = [];
 let sumulas = [];
 let jogadores = [];
+
+window.voltarPagina = function(){
+  if(history.length > 1){
+    history.back();
+  }else{
+    window.location.href = "index.html";
+  }
+};
 
 function getParametro(nome){
   const params = new URLSearchParams(window.location.search);
@@ -252,6 +454,52 @@ function normalizarTexto(texto){
     .replace(/[\u0300-\u036f]/g, "");
 }
 
+function valorCampo(obj, chaves, fallback = ""){
+  for(const chave of chaves){
+    if(obj && obj[chave] !== undefined && obj[chave] !== null && obj[chave] !== ""){
+      return obj[chave];
+    }
+  }
+  return fallback;
+}
+
+function obterIdCampeonato(doc){
+  return valorCampo(doc, ["id", "campeonatoId"], "");
+}
+
+function obterNomeCampeonato(doc){
+  return valorCampo(doc, ["nome", "campeonato", "titulo"], "");
+}
+
+async function carregarDados(){
+  const [snapCampeonatos, snapJogos, snapSumulas, snapJogadores] = await Promise.all([
+    getDocs(collection(db, "campeonatos")),
+    getDocs(collection(db, "jogos")),
+    getDocs(collection(db, "sumulas")),
+    getDocs(collection(db, "jogadores"))
+  ]);
+
+  campeonatos = [];
+  jogos = [];
+  sumulas = [];
+  jogadores = [];
+
+  snapCampeonatos.forEach(docSnap => {
+    campeonatos.push({ id: docSnap.id, ...docSnap.data() });
+  });
+
+  snapJogos.forEach(docSnap => {
+    jogos.push({ id: docSnap.id, ...docSnap.data() });
+  });
+
+  snapSumulas.forEach(docSnap => {
+    sumulas.push({ id: docSnap.id, ...docSnap.data() });
+  });
+
+  snapJogadores.forEach(docSnap => {
+    jogadores.push({ id: docSnap.id, ...docSnap.data() });
+  });
+}
 function parseDataFlex(valor){
   if(!valor) return new Date(0);
 
@@ -273,25 +521,72 @@ function ehSegundoAmarelo(obs){
   const texto = normalizarTexto(obs);
   return texto.includes("segundo amarelo")
     || texto.includes("2 amarelos")
-    || texto.includes("duplo amarelo");
+    || texto.includes("duplo amarelo")
+    || texto.includes("2o amarelo")
+    || texto.includes("2º amarelo");
 }
 
 function pegarFotoJogador(nomeJogador, nomeTime = ""){
   const jogador = jogadores.find(j =>
-    normalizarTexto(j.nome) === normalizarTexto(nomeJogador) &&
-    (!nomeTime || normalizarTexto(j.time) === normalizarTexto(nomeTime))
+    normalizarTexto(valorCampo(j, ["nome"], "")) === normalizarTexto(nomeJogador) &&
+    (!nomeTime || normalizarTexto(valorCampo(j, ["time"], "")) === normalizarTexto(nomeTime))
   );
-  return jogador?.foto || "";
+
+  return valorCampo(jogador, ["foto", "imagem"], "");
 }
 
 function preencherFiltroCampeonato(){
   const select = document.getElementById("filtroCampeonato");
-  const listaCampeonatos = [...new Set(jogos.map(j => j.campeonato).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"pt-BR"));
-
   select.innerHTML = '<option value="">Selecione o campeonato</option>';
-  listaCampeonatos.forEach(c => {
-    select.innerHTML += `<option value="${c}">${c}</option>`;
+
+  campeonatos
+    .sort((a,b)=>obterNomeCampeonato(a).localeCompare(obterNomeCampeonato(b), "pt-BR"))
+    .forEach(c => {
+      const option = document.createElement("option");
+      option.value = obterIdCampeonato(c);
+      option.textContent = obterNomeCampeonato(c);
+      select.appendChild(option);
+    });
+}
+
+function preencherCategorias(){
+  const select = document.getElementById("filtroCategoria");
+  const campeonatoId = document.getElementById("filtroCampeonato").value;
+
+  select.innerHTML = '<option value="">Selecione a categoria</option>';
+
+  if(!campeonatoId) return;
+
+  const camp = campeonatos.find(c => obterIdCampeonato(c) === campeonatoId);
+  if(!camp) return;
+
+  const categoriasDoCadastro = valorCampo(camp, ["categorias"], []);
+  const categorias = new Set(Array.isArray(categoriasDoCadastro) ? categoriasDoCadastro : []);
+
+  jogos.forEach(j => {
+    const jogoCampId = valorCampo(j, ["campeonatoId"], "");
+    const categoria = valorCampo(j, ["categoria"], "");
+    if(jogoCampId === campeonatoId && categoria){
+      categorias.add(categoria);
+    }
   });
+
+  sumulas.forEach(s => {
+    const sumulaCampId = valorCampo(s, ["campeonatoId"], "");
+    const categoria = valorCampo(s, ["categoria"], "");
+    if(sumulaCampId === campeonatoId && categoria){
+      categorias.add(categoria);
+    }
+  });
+
+  Array.from(categorias)
+    .sort((a,b)=>String(a).localeCompare(String(b), "pt-BR"))
+    .forEach(cat => {
+      const option = document.createElement("option");
+      option.value = cat;
+      option.textContent = cat;
+      select.appendChild(option);
+    });
 }
 
 function aplicarFiltrosDaURL(){
@@ -299,86 +594,94 @@ function aplicarFiltrosDaURL(){
   const categoriaURL = getParametro("categoria");
 
   if(campeonatoURL){
-    const selectCamp = document.getElementById("filtroCampeonato");
-    const opcoesCamp = Array.from(selectCamp.options);
-    const opcaoCamp = opcoesCamp.find(op => normalizarTexto(op.value) === normalizarTexto(campeonatoURL));
+    const camp = campeonatos.find(c =>
+      normalizarTexto(obterNomeCampeonato(c)) === normalizarTexto(campeonatoURL)
+    );
 
-    if(opcaoCamp){
-      selectCamp.value = opcaoCamp.value;
+    if(camp){
+      document.getElementById("filtroCampeonato").value = obterIdCampeonato(camp);
+      preencherCategorias();
     }
   }
 
   if(categoriaURL){
     const selectCat = document.getElementById("filtroCategoria");
-    const opcoesCat = Array.from(selectCat.options);
-    const opcaoCat = opcoesCat.find(op => normalizarTexto(op.value) === normalizarTexto(categoriaURL));
+    const opcoes = Array.from(selectCat.options);
+    const opcao = opcoes.find(op => normalizarTexto(op.value) === normalizarTexto(categoriaURL));
 
-    if(opcaoCat){
-      selectCat.value = opcaoCat.value;
+    if(opcao){
+      selectCat.value = opcao.value;
     }
   }
 }
 
 function getFiltros(){
   return {
-    campeonato: document.getElementById("filtroCampeonato").value,
+    campeonatoId: document.getElementById("filtroCampeonato").value,
     categoria: document.getElementById("filtroCategoria").value
   };
 }
 
-function obterRegrasCampeonato(nomeCampeonato){
-  const camp = campeonatos.find(c => normalizarTexto(c.nome) === normalizarTexto(nomeCampeonato));
+function obterRegrasCampeonatoPorId(campeonatoId){
+  const camp = campeonatos.find(c => obterIdCampeonato(c) === campeonatoId);
 
   return {
-    amarelosParaSuspensao: Number(camp?.regrasCartoes?.amarelosParaSuspensao || 3),
-    jogosSuspensaoAmarelos: Number(camp?.regrasCartoes?.jogosSuspensaoAmarelos || 1),
-    jogosSuspensaoVermelhoDireto: Number(camp?.regrasCartoes?.jogosSuspensaoVermelhoDireto || 2),
-    jogosSuspensaoSegundoAmarelo: Number(camp?.regrasCartoes?.jogosSuspensaoSegundoAmarelo || 1)
+    amarelosParaSuspensao: Number(valorCampo(camp, ["regrasCartoes"], {})?.amarelosParaSuspensao || 3),
+    jogosSuspensaoAmarelos: Number(valorCampo(camp, ["regrasCartoes"], {})?.jogosSuspensaoAmarelos || 1),
+    jogosSuspensaoVermelhoDireto: Number(valorCampo(camp, ["regrasCartoes"], {})?.jogosSuspensaoVermelhoDireto || 2),
+    jogosSuspensaoSegundoAmarelo: Number(valorCampo(camp, ["regrasCartoes"], {})?.jogosSuspensaoSegundoAmarelo || 1)
   };
 }
 
 function obterListaDoTimeNaSumula(sumula, nomeTime){
-  if(normalizarTexto(sumula.timeA) === normalizarTexto(nomeTime)){
+  if(normalizarTexto(valorCampo(sumula, ["timeA"], "")) === normalizarTexto(nomeTime)){
     return {
-      amarelos: sumula.amarelosDetalhadosA || [],
-      vermelhos: sumula.vermelhosDetalhadosA || []
+      amarelos: valorCampo(sumula, ["amarelosDetalhadosA"], []),
+      vermelhos: valorCampo(sumula, ["vermelhosDetalhadosA"], [])
     };
   }
 
-  if(normalizarTexto(sumula.timeB) === normalizarTexto(nomeTime)){
+  if(normalizarTexto(valorCampo(sumula, ["timeB"], "")) === normalizarTexto(nomeTime)){
     return {
-      amarelos: sumula.amarelosDetalhadosB || [],
-      vermelhos: sumula.vermelhosDetalhadosB || []
+      amarelos: valorCampo(sumula, ["amarelosDetalhadosB"], []),
+      vermelhos: valorCampo(sumula, ["vermelhosDetalhadosB"], [])
     };
   }
 
   return null;
 }
-
 function contarNomeNumero(lista, jogadorNome, jogadorNumero){
   return (lista || []).filter(item => {
-    const nomeOk = normalizarTexto(item.nome) === normalizarTexto(jogadorNome);
-    const numeroOk = String(item.numero || "").trim() && String(jogadorNumero || "").trim()
-      ? String(item.numero || "").trim() === String(jogadorNumero || "").trim()
+    const nomeOk = normalizarTexto(valorCampo(item, ["nome"], "")) === normalizarTexto(jogadorNome);
+
+    const numeroItem = String(valorCampo(item, ["numero"], "")).trim();
+    const numeroJogador = String(jogadorNumero || "").trim();
+
+    const numeroOk = numeroItem && numeroJogador
+      ? numeroItem === numeroJogador
       : true;
+
     return nomeOk && numeroOk;
   });
 }
 
-function calcularSituacaoSuspensao(jogadorNome, jogadorNumero, nomeTime, campeonatoNome, categoriaNome, dataAtual){
-  const regras = obterRegrasCampeonato(campeonatoNome);
+function calcularSituacaoSuspensao(jogadorNome, jogadorNumero, nomeTime, campeonatoId, categoriaNome, dataAtual){
+  const regras = obterRegrasCampeonatoPorId(campeonatoId);
 
   const historicoDoTime = sumulas
     .filter(s =>
-      normalizarTexto(s.campeonato) === normalizarTexto(campeonatoNome) &&
-      normalizarTexto(s.categoria) === normalizarTexto(categoriaNome) &&
+      valorCampo(s, ["campeonatoId"], "") === campeonatoId &&
+      valorCampo(s, ["categoria"], "") === categoriaNome &&
       (
-        normalizarTexto(s.timeA) === normalizarTexto(nomeTime) ||
-        normalizarTexto(s.timeB) === normalizarTexto(nomeTime)
+        normalizarTexto(valorCampo(s, ["timeA"], "")) === normalizarTexto(nomeTime) ||
+        normalizarTexto(valorCampo(s, ["timeB"], "")) === normalizarTexto(nomeTime)
       ) &&
-      parseDataFlex(s.data || s.enviadaEm || "").getTime() < dataAtual.getTime()
+      parseDataFlex(valorCampo(s, ["data", "enviadaEm"], "")).getTime() < dataAtual.getTime()
     )
-    .sort((a,b) => parseDataFlex(a.data || a.enviadaEm || "") - parseDataFlex(b.data || b.enviadaEm || ""));
+    .sort((a,b) =>
+      parseDataFlex(valorCampo(a, ["data", "enviadaEm"], "")).getTime() -
+      parseDataFlex(valorCampo(b, ["data", "enviadaEm"], "")).getTime()
+    );
 
   let amarelosAcumulados = 0;
   let jogosPendentes = 0;
@@ -405,7 +708,7 @@ function calcularSituacaoSuspensao(jogadorNome, jogadorNumero, nomeTime, campeon
     }
 
     vermelhosJogador.forEach(v => {
-      if(ehSegundoAmarelo(v.obs || "")){
+      if(ehSegundoAmarelo(valorCampo(v, ["obs", "motivo"], ""))){
         jogosPendentes += regras.jogosSuspensaoSegundoAmarelo;
       }else{
         jogosPendentes += regras.jogosSuspensaoVermelhoDireto;
@@ -421,48 +724,60 @@ function calcularSituacaoSuspensao(jogadorNome, jogadorNumero, nomeTime, campeon
 }
 
 function montarSuspensos(){
-  const { campeonato, categoria } = getFiltros();
+  const { campeonatoId, categoria } = getFiltros();
+
   const jogosFiltrados = jogos
     .filter(j =>
-      (!campeonato || j.campeonato === campeonato) &&
-      (!categoria || j.categoria === categoria)
+      (!campeonatoId || valorCampo(j, ["campeonatoId"], "") === campeonatoId) &&
+      (!categoria || valorCampo(j, ["categoria"], "") === categoria)
     )
-    .sort((a,b) => parseDataFlex(a.data || "").getTime() - parseDataFlex(b.data || "").getTime());
+    .sort((a,b) =>
+      parseDataFlex(valorCampo(a, ["data"], "")).getTime() -
+      parseDataFlex(valorCampo(b, ["data"], "")).getTime()
+    );
 
   const proximoJogoPorTime = {};
 
   jogosFiltrados.forEach(jogo => {
-    const dataJogo = parseDataFlex(jogo.data || "");
-    if(jogo.timeA && !proximoJogoPorTime[jogo.timeA]) proximoJogoPorTime[jogo.timeA] = { data: dataJogo, jogo };
-    if(jogo.timeB && !proximoJogoPorTime[jogo.timeB]) proximoJogoPorTime[jogo.timeB] = { data: dataJogo, jogo };
+    const timeA = valorCampo(jogo, ["timeA"], "");
+    const timeB = valorCampo(jogo, ["timeB"], "");
+    const dataJogo = parseDataFlex(valorCampo(jogo, ["data"], ""));
+
+    if(timeA && !proximoJogoPorTime[timeA]) proximoJogoPorTime[timeA] = { data: dataJogo, jogo };
+    if(timeB && !proximoJogoPorTime[timeB]) proximoJogoPorTime[timeB] = { data: dataJogo, jogo };
   });
 
   const listaFinal = [];
 
   jogadores.forEach(jogador => {
-    if(categoria && !(jogador.categorias || []).includes(categoria)) return;
-    if(!jogador.time) return;
+    const categoriasJogador = valorCampo(jogador, ["categorias"], []);
+    const timeJogador = valorCampo(jogador, ["time"], "");
+    const nomeJogador = valorCampo(jogador, ["nome"], "");
+    const numeroJogador = valorCampo(jogador, ["numero"], "");
 
-    const proximo = proximoJogoPorTime[jogador.time];
+    if(categoria && Array.isArray(categoriasJogador) && categoriasJogador.length && !categoriasJogador.includes(categoria)) return;
+    if(!timeJogador || !nomeJogador) return;
+
+    const proximo = proximoJogoPorTime[timeJogador];
     if(!proximo) return;
 
     const situacao = calcularSituacaoSuspensao(
-      jogador.nome,
-      jogador.numero,
-      jogador.time,
-      proximo.jogo.campeonato,
-      proximo.jogo.categoria,
+      nomeJogador,
+      numeroJogador,
+      timeJogador,
+      valorCampo(proximo.jogo, ["campeonatoId"], ""),
+      valorCampo(proximo.jogo, ["categoria"], ""),
       proximo.data
     );
 
     if(situacao.suspenso){
       listaFinal.push({
-        nome: jogador.nome || "-",
-        numero: jogador.numero || "-",
-        time: jogador.time || "-",
-        foto: jogador.foto || "",
-        campeonato: proximo.jogo.campeonato || "-",
-        categoria: proximo.jogo.categoria || "-",
+        nome: nomeJogador || "-",
+        numero: numeroJogador || "-",
+        time: timeJogador || "-",
+        foto: valorCampo(jogador, ["foto", "imagem"], ""),
+        campeonatoId: valorCampo(proximo.jogo, ["campeonatoId"], ""),
+        categoria: valorCampo(proximo.jogo, ["categoria"], "-"),
         jogosPendentes: situacao.jogosPendentes,
         motivo: `Cumprindo ${situacao.jogosPendentes} jogo(s) de suspensão`
       });
@@ -479,10 +794,17 @@ function montarSuspensos(){
 
 window.carregarSuspensos = function(){
   const lista = document.getElementById("listaSuspensos");
-  const { campeonato, categoria } = getFiltros();
+  const { campeonatoId, categoria } = getFiltros();
+  const campeonato = campeonatos.find(c => obterIdCampeonato(c) === campeonatoId) || null;
+  const nomeCampeonato = campeonato ? obterNomeCampeonato(campeonato) : "";
 
   document.getElementById("tituloPagina").textContent =
-    `Suspensos${categoria ? " - " + categoria : ""}${campeonato ? " | " + campeonato : ""}`;
+    `Suspensos${categoria ? " - " + categoria : ""}${nomeCampeonato ? " | " + nomeCampeonato : ""}`;
+
+  if(!campeonatoId){
+    lista.innerHTML = `<div class="vazio">Selecione um campeonato para ver os suspensos.</div>`;
+    return;
+  }
 
   const suspensos = montarSuspensos();
 
@@ -496,12 +818,12 @@ window.carregarSuspensos = function(){
       ${suspensos.map(j => `
         <div class="card">
           <div class="player">
-            <img src="${j.foto || pegarFotoJogador(j.nome, j.time)}" class="photo" onerror="this.src=''">
+            <img src="${j.foto || pegarFotoJogador(j.nome, j.time)}" class="photo" alt="${j.nome}" onerror="this.src='logo-liga.jfif'">
             <div class="info">
               <div class="nome">${j.numero || "-"} - ${j.nome}</div>
               <div class="subinfo">${j.time}</div>
               <div class="tags">
-                <div class="tag">${j.campeonato}</div>
+                <div class="tag">${nomeCampeonato || "-"}</div>
                 <div class="tag">${j.categoria}</div>
               </div>
               <div class="subinfo">${j.motivo}</div>
@@ -516,28 +838,12 @@ window.carregarSuspensos = function(){
     </div>
   `;
 }
-
 async function iniciarPagina(){
   const lista = document.getElementById("listaSuspensos");
   lista.innerHTML = `<div class="vazio">Carregando suspensos...</div>`;
 
   try{
-    const snapCampeonatos = await getDocs(collection(db, "campeonatos"));
-    campeonatos = [];
-    snapCampeonatos.forEach(docSnap => campeonatos.push({ id: docSnap.id, ...docSnap.data() }));
-
-    const snapJogos = await getDocs(collection(db, "jogos"));
-    jogos = [];
-    snapJogos.forEach(docSnap => jogos.push({ id: docSnap.id, ...docSnap.data() }));
-
-    const snapSumulas = await getDocs(collection(db, "sumulas"));
-    sumulas = [];
-    snapSumulas.forEach(docSnap => sumulas.push({ id: docSnap.id, ...docSnap.data() }));
-
-    const snapJogadores = await getDocs(collection(db, "jogadores"));
-    jogadores = [];
-    snapJogadores.forEach(docSnap => jogadores.push({ id: docSnap.id, ...docSnap.data() }));
-
+    await carregarDados();
     preencherFiltroCampeonato();
     aplicarFiltrosDaURL();
     carregarSuspensos();
@@ -546,6 +852,14 @@ async function iniciarPagina(){
     lista.innerHTML = `<div class="vazio">Erro ao carregar suspensos.</div>`;
   }
 }
+
+document.getElementById("filtroCampeonato").addEventListener("change", () => {
+  preencherCategorias();
+  document.getElementById("filtroCategoria").value = "";
+  carregarSuspensos();
+});
+
+document.getElementById("filtroCategoria").addEventListener("change", carregarSuspensos);
 
 iniciarPagina();
 </script>
