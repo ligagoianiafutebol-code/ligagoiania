@@ -96,6 +96,8 @@
       padding:10px 16px;
       border-radius:10px;
       font-weight:700;
+      white-space:nowrap;
+      justify-content:center;
     }
 
     .btn-light{
@@ -131,6 +133,7 @@
       padding:10px 14px;
       border-radius:10px;
       border:1px solid transparent;
+      white-space:nowrap;
     }
 
     .menu a:hover{
@@ -189,6 +192,7 @@
       font-size:14px;
       background:#f5f7fb;
       color:#111;
+      font-family:inherit;
     }
 
     select:focus{
@@ -372,19 +376,57 @@
     }
 
     @media (max-width: 600px){
-      .top-btn{
-        width:100%;
-        justify-content:center;
+      .header-top{
+        flex-direction:column;
+        align-items:center;
       }
 
-      .header-left,
+      .header-title{
+        order:2;
+        width:100%;
+        text-align:center;
+      }
+
+      .header-left{
+        order:1;
+        width:100%;
+        display:flex;
+        flex-direction:row;
+        align-items:center;
+        justify-content:center;
+        gap:10px;
+        flex-wrap:nowrap;
+      }
+
       .header-right{
-        flex-direction:column;
-        align-items:stretch;
+        display:none;
+      }
+
+      .top-btn{
+        width:auto;
+        min-width:0;
+        flex:1;
+        justify-content:center;
+        padding:10px 12px;
+        font-size:14px;
+      }
+
+      .menu{
+        justify-content:flex-start;
+        flex-wrap:nowrap;
+        overflow-x:auto;
+        padding:12px 4px;
+        scrollbar-width:none;
+      }
+
+      .menu::-webkit-scrollbar{
+        display:none;
       }
 
       .menu a{
-        width:100%;
+        width:auto;
+        min-width:max-content;
+        flex:0 0 auto;
         text-align:center;
       }
     }
@@ -416,6 +458,7 @@
           <a href="campeonatos.html">Campeonatos</a>
           <a href="tabela.html">Tabela</a>
           <a href="jogos.html" class="ativo">Jogos</a>
+          <a href="times.html">Times</a>
           <a href="artilharia.html">Artilharia</a>
           <a href="cartoes.html">Cartões</a>
           <a href="suspensos.html">Suspensos</a>
@@ -433,23 +476,12 @@
     </div>
 
     <div class="filtros">
-      <select id="filtroCampeonato" onchange="carregarJogos()">
+      <select id="filtroCampeonato">
         <option value="">Selecione o campeonato</option>
       </select>
 
-      <select id="filtroCategoria" onchange="carregarJogos()">
+      <select id="filtroCategoria">
         <option value="">Selecione a categoria</option>
-        <option value="Sub-11">Sub-11</option>
-        <option value="Sub-12">Sub-12</option>
-        <option value="Sub-13">Sub-13</option>
-        <option value="Sub-14">Sub-14</option>
-        <option value="Sub-15">Sub-15</option>
-        <option value="Sub-16">Sub-16</option>
-        <option value="Sub-17">Sub-17</option>
-        <option value="Sub-18">Sub-18</option>
-        <option value="Sub-19">Sub-19</option>
-        <option value="Sub-20">Sub-20</option>
-        <option value="Sub-21">Sub-21</option>
       </select>
     </div>
 
@@ -460,7 +492,7 @@
   </div>
 
   <script type="module">
-    import { auth, db } from "./firebase.js";
+    import { db } from "./firebase.js";
     import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
     let jogos = [];
@@ -488,11 +520,28 @@
         .replace(/[\u0300-\u036f]/g, "");
     }
 
-    function montarLinkPagina(pagina, campeonato, categoria){
+    function valorCampo(obj, chaves, fallback = ""){
+      for (const chave of chaves){
+        if (obj && obj[chave] !== undefined && obj[chave] !== null && obj[chave] !== "") {
+          return obj[chave];
+        }
+      }
+      return fallback;
+    }
+
+    function obterIdCampeonato(doc){
+      return valorCampo(doc, ["id", "campeonatoId"], "");
+    }
+
+    function obterNomeCampeonato(doc){
+      return valorCampo(doc, ["nome", "campeonato", "titulo"], "");
+    }
+
+    function montarLinkPagina(pagina, campeonatoNome, categoria){
       const params = new URLSearchParams();
 
-      if(campeonato){
-        params.set("campeonato", campeonato);
+      if(campeonatoNome){
+        params.set("campeonato", campeonatoNome);
       }
 
       if(categoria){
@@ -503,46 +552,96 @@
       return query ? `${pagina}?${query}` : pagina;
     }
 
-    function montarLinkCampeonatoPublico(campeonato){
-      const camp = campeonatos.find(c => normalizarTexto(c.nome) === normalizarTexto(campeonato));
+    function montarLinkCampeonatoPublico(campeonatoNome){
+      const camp = campeonatos.find(c => normalizarTexto(obterNomeCampeonato(c)) === normalizarTexto(campeonatoNome));
       if(!camp) return "campeonatos.html";
-      return `campeonato-publico.html?id=${camp.id}`;
+      return `campeonato-publico.html?id=${obterIdCampeonato(camp)}`;
     }
 
     async function carregarDados(){
-      const snapJogos = await getDocs(collection(db, "jogos"));
+      const [snapJogos, snapTimes, snapCampeonatos] = await Promise.all([
+        getDocs(collection(db, "jogos")),
+        getDocs(collection(db, "times")),
+        getDocs(collection(db, "campeonatos"))
+      ]);
+
       jogos = [];
+      times = [];
+      campeonatos = [];
+
       snapJogos.forEach(docSnap => {
         jogos.push({ id: docSnap.id, ...docSnap.data() });
       });
 
-      const snapTimes = await getDocs(collection(db, "times"));
-      times = [];
       snapTimes.forEach(docSnap => {
         times.push({ id: docSnap.id, ...docSnap.data() });
       });
 
-      const snapCampeonatos = await getDocs(collection(db, "campeonatos"));
-      campeonatos = [];
       snapCampeonatos.forEach(docSnap => {
         campeonatos.push({ id: docSnap.id, ...docSnap.data() });
       });
     }
 
     function pegarEscudo(nomeTime){
-      const time = times.find(t => t.nome === nomeTime);
-      return time?.escudo || "logo-liga.jfif";
+      const time = times.find(t => normalizarTexto(valorCampo(t, ["nome"], "")) === normalizarTexto(nomeTime));
+      return valorCampo(time, ["escudo", "logo"], "logo-liga.jfif");
+    }
+
+    function obterCategoriasDoCampeonato(camp){
+      const lista = valorCampo(camp, ["categorias"], []);
+      if (Array.isArray(lista) && lista.length) return lista;
+
+      const campId = obterIdCampeonato(camp);
+      const nomeCamp = obterNomeCampeonato(camp);
+      const setCategorias = new Set();
+
+      jogos.forEach(j => {
+        const jogoCampId = valorCampo(j, ["campeonatoId"], "");
+        const jogoCampNome = valorCampo(j, ["campeonato", "nomeCampeonato"], "");
+        const categoria = valorCampo(j, ["categoria"], "");
+
+        const mesmoCamp = (campId && jogoCampId === campId) ||
+          (!campId && normalizarTexto(jogoCampNome) === normalizarTexto(nomeCamp));
+
+        if(mesmoCamp && categoria){
+          setCategorias.add(categoria);
+        }
+      });
+
+      return Array.from(setCategorias).sort((a,b) => String(a).localeCompare(String(b), "pt-BR"));
     }
 
     function preencherFiltros(){
       const selectCamp = document.getElementById("filtroCampeonato");
-
-      const campeonatosLista = [...new Set(jogos.map(j => j.campeonato).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"pt-BR"));
-
       selectCamp.innerHTML = '<option value="">Selecione o campeonato</option>';
 
-      campeonatosLista.forEach(c => {
-        selectCamp.innerHTML += `<option value="${c}">${c}</option>`;
+      campeonatos
+        .sort((a,b) => obterNomeCampeonato(a).localeCompare(obterNomeCampeonato(b), "pt-BR"))
+        .forEach(c => {
+          const option = document.createElement("option");
+          option.value = obterIdCampeonato(c);
+          option.textContent = obterNomeCampeonato(c);
+          selectCamp.appendChild(option);
+        });
+    }
+
+    function preencherCategorias(){
+      const selectCat = document.getElementById("filtroCategoria");
+      const campeonatoId = document.getElementById("filtroCampeonato").value;
+
+      selectCat.innerHTML = '<option value="">Selecione a categoria</option>';
+
+      if(!campeonatoId) return;
+
+      const camp = campeonatos.find(c => obterIdCampeonato(c) === campeonatoId);
+      if(!camp) return;
+
+      const categorias = obterCategoriasDoCampeonato(camp);
+      categorias.forEach(cat => {
+        const option = document.createElement("option");
+        option.value = cat;
+        option.textContent = cat;
+        selectCat.appendChild(option);
       });
     }
 
@@ -551,22 +650,19 @@
       const categoriaURL = getParametro("categoria");
 
       if(campeonatoURL){
-        const selectCamp = document.getElementById("filtroCampeonato");
-        const opcoesCamp = Array.from(selectCamp.options);
-        const opcaoCamp = opcoesCamp.find(op => normalizarTexto(op.value) === normalizarTexto(campeonatoURL));
-
-        if(opcaoCamp){
-          selectCamp.value = opcaoCamp.value;
+        const camp = campeonatos.find(c => normalizarTexto(obterNomeCampeonato(c)) === normalizarTexto(campeonatoURL));
+        if(camp){
+          document.getElementById("filtroCampeonato").value = obterIdCampeonato(camp);
+          preencherCategorias();
         }
       }
 
       if(categoriaURL){
         const selectCat = document.getElementById("filtroCategoria");
-        const opcoesCat = Array.from(selectCat.options);
-        const opcaoCat = opcoesCat.find(op => normalizarTexto(op.value) === normalizarTexto(categoriaURL));
-
-        if(opcaoCat){
-          selectCat.value = opcaoCat.value;
+        const opcoes = Array.from(selectCat.options);
+        const opcao = opcoes.find(op => normalizarTexto(op.value) === normalizarTexto(categoriaURL));
+        if(opcao){
+          selectCat.value = opcao.value;
         }
       }
     }
@@ -575,7 +671,7 @@
       if(!dataString) return "-";
 
       const data = new Date(dataString);
-      if(isNaN(data.getTime())) return dataString;
+      if(isNaN(data.getTime())) return String(dataString);
 
       const dia = String(data.getDate()).padStart(2, "0");
       const mes = String(data.getMonth() + 1).padStart(2, "0");
@@ -595,18 +691,45 @@
       return isNaN(numero) ? 999999 : numero;
     }
 
-    window.carregarJogos = function(){
-      const lista = document.getElementById("listaJogos");
-      const campeonato = document.getElementById("filtroCampeonato").value;
+    function jogosFiltrados(){
+      const campeonatoId = document.getElementById("filtroCampeonato").value;
       const categoria = document.getElementById("filtroCategoria").value;
 
-      let filtrados = jogos.filter(j =>
-        (!campeonato || j.campeonato === campeonato) &&
-        (!categoria || j.categoria === categoria)
-      );
+      if(!campeonatoId) return [];
+
+      const campeonatoSelecionado = campeonatos.find(c => obterIdCampeonato(c) === campeonatoId);
+      if(!campeonatoSelecionado) return [];
+
+      const nomeCamp = obterNomeCampeonato(campeonatoSelecionado);
+
+      return jogos.filter(j => {
+        const jogoCampId = valorCampo(j, ["campeonatoId"], "");
+        const jogoCampNome = valorCampo(j, ["campeonato", "nomeCampeonato"], "");
+        const jogoCategoria = valorCampo(j, ["categoria"], "");
+
+        const mesmoCamp = jogoCampId === campeonatoId ||
+          normalizarTexto(jogoCampNome) === normalizarTexto(nomeCamp);
+
+        return mesmoCamp && (!categoria || jogoCategoria === categoria);
+      });
+    }
+
+    window.carregarJogos = function(){
+      const lista = document.getElementById("listaJogos");
+      const campeonatoId = document.getElementById("filtroCampeonato").value;
+      const categoria = document.getElementById("filtroCategoria").value;
+      const campeonatoSelecionado = campeonatos.find(c => obterIdCampeonato(c) === campeonatoId) || null;
+      const campeonatoNome = campeonatoSelecionado ? obterNomeCampeonato(campeonatoSelecionado) : "";
+
+      let filtrados = jogosFiltrados();
 
       document.getElementById("tituloPagina").textContent =
-        `Jogos${categoria ? " - " + categoria : ""}${campeonato ? " | " + campeonato : ""}`;
+        `Jogos${categoria ? " - " + categoria : ""}${campeonatoNome ? " | " + campeonatoNome : ""}`;
+
+      if(!campeonatoId){
+        lista.innerHTML = `<div class="vazio">Selecione um campeonato para ver os jogos.</div>`;
+        return;
+      }
 
       if(filtrados.length === 0){
         lista.innerHTML = `<div class="vazio">Nenhum jogo encontrado.</div>`;
@@ -614,17 +737,20 @@
       }
 
       filtrados.sort((a, b) => {
-        const rodadaA = numeroRodada(a.rodada);
-        const rodadaB = numeroRodada(b.rodada);
-
+        const rodadaA = numeroRodada(valorCampo(a, ["rodada"], ""));
+        const rodadaB = numeroRodada(valorCampo(b, ["rodada"], ""));
         if(rodadaA !== rodadaB) return rodadaA - rodadaB;
-        return (a.data || "").localeCompare(b.data || "");
+
+        return String(valorCampo(a, ["data"], "")).localeCompare(String(valorCampo(b, ["data"], "")));
       });
 
       const grupos = {};
 
       filtrados.forEach(j => {
-        const chave = j.rodada ? `Rodada ${j.rodada}` : "Sem rodada";
+        const chave = valorCampo(j, ["rodada"], "")
+          ? `Rodada ${valorCampo(j, ["rodada"], "")}`
+          : "Sem rodada";
+
         if(!grupos[chave]) grupos[chave] = [];
         grupos[chave].push(j);
       });
@@ -635,38 +761,41 @@
         lista.innerHTML += `<div class="rodada">${rodada}</div>`;
 
         grupos[rodada].forEach(j => {
-          const finalizado = j.status === "sumula_enviada";
+          const status = normalizarTexto(valorCampo(j, ["status"], ""));
+          const finalizado = status === "sumula_enviada" || status === "finalizado";
           const placar = finalizado
-            ? `${Number(j.golsA || 0)} x ${Number(j.golsB || 0)}`
+            ? `${Number(valorCampo(j, ["golsA"], 0))} x ${Number(valorCampo(j, ["golsB"], 0))}`
             : "x";
 
-          const linkCampeonato = montarLinkCampeonatoPublico(j.campeonato || "");
-          const linkTabela = montarLinkPagina("tabela.html", j.campeonato || "", j.categoria || "");
-          const linkJogos = montarLinkPagina("jogos.html", j.campeonato || "", j.categoria || "");
-          const linkSuspensos = montarLinkPagina("suspensos.html", j.campeonato || "", j.categoria || "");
+          const nomeCampJogo = valorCampo(j, ["campeonato", "nomeCampeonato"], campeonatoNome);
+          const categoriaJogo = valorCampo(j, ["categoria"], "");
+          const linkCampeonato = montarLinkCampeonatoPublico(nomeCampJogo || "");
+          const linkTabela = montarLinkPagina("tabela.html", nomeCampJogo || "", categoriaJogo || "");
+          const linkJogos = montarLinkPagina("jogos.html", nomeCampJogo || "", categoriaJogo || "");
+          const linkSuspensos = montarLinkPagina("suspensos.html", nomeCampJogo || "", categoriaJogo || "");
 
           lista.innerHTML += `
             <div class="jogo">
               <div class="topo-jogo">
                 <div class="times">
                   <div class="time">
-                    <img src="${pegarEscudo(j.timeA)}" class="escudo" alt="${j.timeA}">
-                    <span>${j.timeA || "-"}</span>
+                    <img src="${pegarEscudo(valorCampo(j, ["timeA"], ""))}" class="escudo" alt="${valorCampo(j, ["timeA"], "-")}">
+                    <span>${valorCampo(j, ["timeA"], "-")}</span>
                   </div>
 
                   <div class="placar">${placar}</div>
 
                   <div class="time">
-                    <img src="${pegarEscudo(j.timeB)}" class="escudo" alt="${j.timeB}">
-                    <span>${j.timeB || "-"}</span>
+                    <img src="${pegarEscudo(valorCampo(j, ["timeB"], ""))}" class="escudo" alt="${valorCampo(j, ["timeB"], "-")}">
+                    <span>${valorCampo(j, ["timeB"], "-")}</span>
                   </div>
                 </div>
               </div>
 
               <div class="info">
-                ${formatarDataHora(j.data)}<br>
-                ${j.local || "-"}<br>
-                Campeonato: ${j.campeonato || "-"} | Categoria: ${j.categoria || "-"}
+                ${formatarDataHora(valorCampo(j, ["data"], ""))}<br>
+                ${valorCampo(j, ["local"], "-")}<br>
+                Campeonato: ${nomeCampJogo || "-"} | Categoria: ${categoriaJogo || "-"}
               </div>
 
               <div class="status ${finalizado ? "finalizado" : "agendado"}">
@@ -697,6 +826,14 @@
         });
       });
     };
+
+    document.getElementById("filtroCampeonato").addEventListener("change", () => {
+      preencherCategorias();
+      document.getElementById("filtroCategoria").value = "";
+      carregarJogos();
+    });
+
+    document.getElementById("filtroCategoria").addEventListener("change", carregarJogos);
 
     await carregarDados();
     preencherFiltros();
