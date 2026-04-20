@@ -35,6 +35,7 @@
         linear-gradient(rgba(11,31,58,.88), rgba(11,31,58,.94)),
         url("fundo.png") center/cover fixed no-repeat;
       color:var(--white);
+      min-height:100vh;
     }
 
     a{
@@ -48,6 +49,11 @@
       cursor:pointer;
       transition:var(--transition);
       border:none;
+      background:none;
+    }
+
+    input, select{
+      font-family:inherit;
     }
 
     .wrap{
@@ -90,11 +96,11 @@
     .top-btn{
       display:inline-flex;
       align-items:center;
+      justify-content:center;
       gap:8px;
       padding:10px 16px;
       border-radius:10px;
       font-weight:700;
-      justify-content:center;
       white-space:nowrap;
     }
 
@@ -193,8 +199,7 @@
     input:focus, select:focus{
       outline:2px solid rgba(247,198,0,.5);
     }
-
-    .lista-grid{
+.lista-grid{
       display:grid;
       grid-template-columns:repeat(auto-fit, minmax(300px, 1fr));
       gap:14px;
@@ -317,7 +322,8 @@
       border:1px solid rgba(255,255,255,.06);
       box-shadow:var(--shadow);
     }
-@media (max-width:900px){
+
+    @media (max-width:900px){
       .header-title{
         order:3;
         width:100%;
@@ -346,65 +352,25 @@
     }
 
     @media (max-width:600px){
-      .header-top{
-        flex-direction:column;
-        align-items:center;
-      }
-
-      .header-title{
-        order:2;
-        width:100%;
-        text-align:center;
-      }
-
-      .header-left{
-        order:1;
-        width:100%;
-        display:flex;
-        flex-direction:row;
-        align-items:center;
-        justify-content:center;
-        gap:10px;
-        flex-wrap:nowrap;
-      }
-
-      .header-right{
-        display:none;
-      }
-
       .top-btn{
-        width:auto;
-        min-width:0;
-        flex:1;
+        width:100%;
         justify-content:center;
-        padding:10px 12px;
-        font-size:14px;
       }
 
-      .menu{
-        justify-content:flex-start;
-        flex-wrap:nowrap;
-        overflow-x:auto;
-        padding:12px 4px;
-        scrollbar-width:none;
+      .header-left,
+      .header-right{
+        flex-direction:column;
+        align-items:stretch;
       }
 
-      .menu::-webkit-scrollbar{
-        display:none;
-      }
-
-      .menu a{
-        width:auto;
-        min-width:max-content;
-        flex:0 0 auto;
-        text-align:center;
+      .hero h2{
+        font-size:24px;
       }
     }
   </style>
 </head>
 <body>
-
-  <header>
+<header>
     <div class="wrap header-top">
       <div class="header-left">
         <button class="top-btn btn-light" type="button" onclick="voltarPagina()">
@@ -428,10 +394,13 @@
           <a href="campeonatos.html">Campeonatos</a>
           <a href="tabela.html">Tabela</a>
           <a href="jogos.html">Jogos</a>
-          <a href="artilharia.html">Artilharia</a>
-          <a href="cartoes.html">Cartões</a>
-          <a href="suspensos.html">Suspensos</a>
           <a href="times.html" class="ativo">Times</a>
+          <a href="tecnicos.html">Técnicos</a>
+          <a href="jogadores.html">Jogadores</a>
+          <a href="arbitros.html">Arbitros</a>
+          <a href="assistente.html">Assistente</a>
+          <a href="sumula.html">Súmula</a>
+          <a href="noticias.html">Notícias</a>
           <a href="login.html">Login</a>
         </div>
       </div>
@@ -654,8 +623,7 @@ function preencherFiltroCampeonato(){
 
       return mapa;
     }
-
-    window.carregarTimes = function(){
+window.carregarTimes = function(){
       const lista = document.getElementById("listaTimes");
       const busca = normalizarTexto(document.getElementById("buscaTime").value || "");
       const campeonatoId = document.getElementById("filtroCampeonato").value;
@@ -693,8 +661,11 @@ function preencherFiltroCampeonato(){
           .map(c => `<div class="time-color" style="background:${c}"></div>`)
           .join("");
 
-        const categorias = Array.from(participante?.categorias || []).map(c => `<span class="tag">${c}</span>`).join("");
-lista.innerHTML += `
+        const categorias = Array.from(participante?.categorias || [])
+          .map(c => `<span class="tag">${c}</span>`)
+          .join("");
+
+        lista.innerHTML += `
           <div class="card">
             <div class="team">
               <img
