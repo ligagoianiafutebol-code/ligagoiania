@@ -22,7 +22,7 @@
       --yellow-dark:#7a5a00;
       --shadow:0 8px 22px rgba(0,0,0,.28);
       --transition:.25s ease;
-      --max:1180px;
+      --max:1240px;
     }
 
     *{
@@ -37,6 +37,7 @@
         linear-gradient(rgba(11,31,58,.88), rgba(11,31,58,.94)),
         url("fundo.png") center/cover fixed no-repeat;
       color:var(--white);
+      min-height:100vh;
     }
 
     a{
@@ -50,6 +51,7 @@
       cursor:pointer;
       transition:var(--transition);
       border:none;
+      background:none;
     }
 
     .wrap{
@@ -92,12 +94,12 @@
     .top-btn{
       display:inline-flex;
       align-items:center;
+      justify-content:center;
       gap:8px;
       padding:10px 16px;
       border-radius:10px;
       font-weight:700;
       white-space:nowrap;
-      justify-content:center;
     }
 
     .btn-light{
@@ -125,8 +127,7 @@
     }
 
     .menu a{
-      color:white;
-      text-decoration:none;
+      color:#fff;
       font-weight:700;
       font-size:14px;
       background:#0d2346;
@@ -144,12 +145,10 @@
 
     .menu a.ativo{
       background:var(--gold);
-      color:black;
+      color:#111;
     }
 
     .container{
-      max-width:1100px;
-      margin:auto;
       padding:24px 0 34px;
     }
 
@@ -198,8 +197,7 @@
     select:focus{
       outline:2px solid rgba(247,198,0,.5);
     }
-
-    .titulo{
+.titulo{
       font-size:24px;
       font-weight:700;
       color:var(--gold);
@@ -333,12 +331,12 @@
 
     .btn-sumula{
       background:var(--gold);
-      color:black;
+      color:#111;
     }
 
     .btn-secundario{
       background:#1a3f73;
-      color:white;
+      color:#fff;
     }
 
     .btn-sumula:hover,
@@ -347,7 +345,7 @@
       transform:translateY(-1px);
     }
 
-    @media (max-width: 900px){
+    @media (max-width:900px){
       .header-title{
         order:3;
         width:100%;
@@ -375,66 +373,31 @@
       }
     }
 
-    @media (max-width: 600px){
-      .header-top{
-        flex-direction:column;
-        align-items:center;
-      }
-
-      .header-title{
-        order:2;
-        width:100%;
-        text-align:center;
-      }
-
-      .header-left{
-        order:1;
-        width:100%;
-        display:flex;
-        flex-direction:row;
-        align-items:center;
-        justify-content:center;
-        gap:10px;
-        flex-wrap:nowrap;
-      }
-
-      .header-right{
-        display:none;
-      }
-
+    @media (max-width:600px){
       .top-btn{
-        width:auto;
-        min-width:0;
-        flex:1;
+        width:100%;
         justify-content:center;
-        padding:10px 12px;
-        font-size:14px;
       }
 
-      .menu{
-        justify-content:flex-start;
-        flex-wrap:nowrap;
-        overflow-x:auto;
-        padding:12px 4px;
-        scrollbar-width:none;
-      }
-
-      .menu::-webkit-scrollbar{
-        display:none;
+      .header-left,
+      .header-right{
+        flex-direction:column;
+        align-items:stretch;
       }
 
       .menu a{
-        width:auto;
-        min-width:max-content;
-        flex:0 0 auto;
+        width:100%;
         text-align:center;
+      }
+
+      .hero h2{
+        font-size:24px;
       }
     }
   </style>
 </head>
 <body>
-
-  <header>
+<header>
     <div class="wrap header-top">
       <div class="header-left">
         <button class="top-btn btn-light" type="button" onclick="voltarPagina()">
@@ -459,9 +422,12 @@
           <a href="tabela.html">Tabela</a>
           <a href="jogos.html" class="ativo">Jogos</a>
           <a href="times.html">Times</a>
-          <a href="artilharia.html">Artilharia</a>
-          <a href="cartoes.html">Cartões</a>
-          <a href="suspensos.html">Suspensos</a>
+          <a href="tecnicos.html">Técnicos</a>
+          <a href="jogadores.html">Jogadores</a>
+          <a href="arbitros.html">Árbitros</a>
+          <a href="assistente.html">Assistente</a>
+          <a href="sumula.html">Súmula</a>
+          <a href="noticias.html">Notícias</a>
           <a href="login.html">Login</a>
         </div>
       </div>
@@ -490,8 +456,7 @@
     <div id="listaJogos"></div>
 
   </div>
-
-  <script type="module">
+<script type="module">
     import { db } from "./firebase.js";
     import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -713,8 +678,7 @@
         return mesmoCamp && (!categoria || jogoCategoria === categoria);
       });
     }
-
-    window.carregarJogos = function(){
+window.carregarJogos = function(){
       const lista = document.getElementById("listaJogos");
       const campeonatoId = document.getElementById("filtroCampeonato").value;
       const categoria = document.getElementById("filtroCategoria").value;
