@@ -95,10 +95,12 @@
     .top-btn{
       display:inline-flex;
       align-items:center;
+      justify-content:center;
       gap:8px;
       padding:10px 16px;
       border-radius:10px;
       font-weight:700;
+      white-space:nowrap;
     }
 
     .btn-light{
@@ -133,6 +135,7 @@
       padding:10px 14px;
       border-radius:10px;
       border:1px solid transparent;
+      white-space:nowrap;
     }
 
     .menu a:hover{
@@ -190,8 +193,7 @@
       background:#f5f7fb;
       color:#111;
     }
-
-    input:focus, select:focus{
+input:focus, select:focus{
       outline:2px solid rgba(247,198,0,.5);
     }
 
@@ -351,9 +353,13 @@
         align-items:stretch;
       }
 
+      .menu{
+        overflow-x:auto;
+        flex-wrap:nowrap;
+      }
+
       .menu a{
-        width:100%;
-        text-align:center;
+        min-width:max-content;
       }
 
       .hero h2{
@@ -388,11 +394,11 @@
           <a href="campeonatos.html" class="ativo">Campeonatos</a>
           <a href="tabela.html">Tabela</a>
           <a href="jogos.html">Jogos</a>
+          <a href="times.html">Times</a>
+          <a href="jogadores.html">Jogadores</a>
           <a href="artilharia.html">Artilharia</a>
           <a href="cartoes.html">Cartões</a>
           <a href="suspensos.html">Suspensos</a>
-          <a href="times.html">Times</a>
-          <a href="jogadores.html">Jogadores</a>
           <a href="login.html">Login</a>
         </nav>
       </div>
@@ -417,8 +423,7 @@
     <section class="lista-grid" id="listaCampeonatos"></section>
 
   </main>
-
-  <script type="module">
+<script type="module">
     import { db } from "./firebase.js";
     import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -489,8 +494,7 @@
       }
 
       lista.innerHTML = "";
-
-      campeonatos.forEach(campeonato => {
+campeonatos.forEach(campeonato => {
         const categorias = (campeonato.categorias || [])
           .map(c => `<span class="tag">${c}</span>`)
           .join("");
