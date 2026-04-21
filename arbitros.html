@@ -248,7 +248,6 @@
       font-weight:700;
       font-size:18px;
       color:#fff;
-      line-height:1.35;
     }
 
     .user-info small{
@@ -269,7 +268,6 @@
       padding:5px 9px;
       border-radius:999px;
       font-size:12px;
-      display:inline-block;
       border:1px solid rgba(255,255,255,.08);
     }
 
@@ -280,7 +278,7 @@
       justify-content:flex-end;
     }
 
-    .actions .btn-ver{
+    .btn-ver{
       display:inline-flex;
       align-items:center;
       justify-content:center;
@@ -291,11 +289,9 @@
       border-radius:10px;
       font-weight:700;
       font-size:13px;
-      white-space:nowrap;
     }
 
-    .actions .btn-ver:hover{
-      filter:brightness(1.04);
+    .btn-ver:hover{
       transform:translateY(-1px);
     }
 
@@ -343,13 +339,11 @@
       grid-template-columns:1fr 1fr;
       gap:12px;
       margin-top:16px;
-      text-align:left;
     }
 
     .info-box,
     .stats-box{
       background:#102a52;
-      border:1px solid rgba(255,255,255,.06);
       border-radius:14px;
       padding:14px;
     }
@@ -358,134 +352,21 @@
     .stats-box h3{
       color:var(--gold);
       margin-bottom:10px;
-      font-size:18px;
     }
-.info-line{
+
+    .info-line{
       color:var(--muted);
-      line-height:1.7;
+      line-height:1.6;
       font-size:14px;
     }
-
-    .stats-grid{
-      display:grid;
-      grid-template-columns:repeat(2, 1fr);
-      gap:10px;
-    }
-
-    .stat-card{
-      background:#0d2346;
-      border-radius:12px;
-      padding:12px;
-      border:1px solid rgba(255,255,255,.06);
-    }
-
-    .stat-card strong{
-      display:block;
-      color:var(--gold);
-      font-size:22px;
-      margin-bottom:4px;
-    }
-
-    .stat-card span{
-      color:var(--muted);
-      font-size:13px;
-      line-height:1.5;
-    }
-
-    .categorias-stats{
-      margin-top:14px;
-      background:#0d2346;
-      border-radius:12px;
-      padding:12px;
-      border:1px solid rgba(255,255,255,.06);
-      text-align:left;
-    }
-
-    .categorias-stats h4{
-      color:var(--gold);
-      margin-bottom:10px;
-      font-size:16px;
-    }
-
-    .categoria-item{
-      display:flex;
-      justify-content:space-between;
-      gap:12px;
-      padding:8px 0;
-      border-bottom:1px solid rgba(255,255,255,.06);
-      color:var(--muted);
-      font-size:14px;
-    }
-
-    .categoria-item:last-child{
-      border-bottom:none;
-    }
-
-    .modal-actions{
-      margin-top:18px;
-    }
-
-    .modal-actions button{
-      background:var(--gold);
-      color:black;
-      padding:11px 14px;
-      border-radius:10px;
-      font-weight:700;
-    }
-
-    @media (max-width:900px){
-      .header-title{
-        order:3;
-        width:100%;
-        text-align:center;
-      }
-
-      .header-left,
-      .header-right{
-        width:100%;
-        justify-content:center;
-      }
-
-      .modal-grid,
-      .stats-grid{
-        grid-template-columns:1fr;
-      }
-
-      .card{
-        flex-direction:column;
-        align-items:flex-start;
-      }
-
-      .actions{
-        width:100%;
-        justify-content:flex-start;
-      }
-    }
-
-    @media (max-width:600px){
-      .top-btn{
-        width:100%;
-        justify-content:center;
-      }
-
-      .header-left,
-      .header-right{
-        flex-direction:column;
-        align-items:stretch;
-      }
-
-      .hero h2{
-        font-size:24px;
-      }
-    }
-  </style>
+</style>
 </head>
 <body>
 
   <header>
     <div class="wrap header-top">
       <div class="header-left">
-        <button class="top-btn btn-light" type="button" onclick="voltarPagina()">
+        <button class="top-btn btn-light" onclick="voltarPagina()">
           <i class="fa-solid fa-arrow-left"></i> Voltar
         </button>
 
@@ -523,7 +404,7 @@
 
     <div class="hero">
       <h2>Árbitros</h2>
-      <p>Veja os árbitros cadastrados e acompanhe informações públicas e estatísticas de atuação.</p>
+      <p>Veja os árbitros cadastrados e acompanhe suas estatísticas públicas.</p>
     </div>
 
     <div class="search-box">
@@ -537,8 +418,7 @@
   <div class="modal" id="modal">
     <div class="modal-content" id="modalContent"></div>
   </div>
-
-  <script type="module">
+<script type="module">
     import { db } from "./firebase.js";
     import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -557,7 +437,8 @@
         .normalize("NFD")
         .replace(/[\u0300-\u036f]/g, "");
     }
-function calcularIdade(dataNascimento){
+
+    function calcularIdade(dataNascimento){
       if(!dataNascimento) return "-";
 
       const nascimento = new Date(dataNascimento + "T00:00:00");
@@ -642,8 +523,6 @@ function calcularIdade(dataNascimento){
             <div class="modal-grid">
               <div class="info-box">
                 <h3>Dados do Árbitro</h3>
-                <div class="info-line"><strong>Email:</strong> ${a.email || "-"}</div>
-                <div class="info-line"><strong>Telefone:</strong> ${a.telefone || "-"}</div>
                 <div class="info-line"><strong>Idade:</strong> ${idade}</div>
                 <div class="info-line"><strong>Onde nasceu:</strong> ${a.cidadeNascimento || "-"}</div>
                 <div class="info-line"><strong>Autorização:</strong> Todas as categorias</div>
@@ -704,15 +583,13 @@ async function carregarArbitros(){
       const snap = await getDocs(collection(db,"arbitros"));
       let dados = [];
 
-      snap.forEach(d => dados.push({id:d.id, ...d.data()}));
+      snap.forEach(d => dados.push({ id:d.id, ...d.data() }));
 
       const busca = (document.getElementById("busca").value || "").toLowerCase().trim();
 
       if(busca){
         dados = dados.filter(a =>
-          (a.nome || "").toLowerCase().includes(busca) ||
-          (a.email || "").toLowerCase().includes(busca) ||
-          (a.cpf || "").toLowerCase().includes(busca)
+          (a.nome || "").toLowerCase().includes(busca)
         );
       }
 
@@ -732,13 +609,13 @@ async function carregarArbitros(){
               <img src="${a.foto || 'logo-liga.jfif'}" class="photo" alt="${a.nome || 'Árbitro'}">
               <div class="user-info">
                 <div class="nome">${a.nome || ""}</div>
-                <small>${a.email || "-"}</small>
-                <small>${a.telefone || "-"}</small>
+                <small>Árbitro autorizado</small>
                 <div class="categorias-tags">
                   <span class="tag">Todas as categorias</span>
                 </div>
               </div>
             </div>
+
             <div class="actions">
               <button class="btn-ver" onclick="ver('${a.id}')">
                 <i class="fa-solid fa-eye"></i> Ver
