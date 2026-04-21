@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Assistentes - Admin</title>
+  <title>Assistente - LIGA GOIANA DE FUTEBOL DE BASE</title>
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
@@ -18,10 +18,9 @@
       --gold-line:rgba(247,198,0,.24);
       --white:#ffffff;
       --muted:#d8e1ef;
-      --danger:#b30000;
       --shadow:0 8px 22px rgba(0,0,0,.28);
       --transition:.25s ease;
-      --max:1140px;
+      --max:1240px;
     }
 
     *{
@@ -36,6 +35,7 @@
         linear-gradient(rgba(11,31,58,.88), rgba(11,31,58,.94)),
         url("fundo.png") center/cover fixed no-repeat;
       color:var(--white);
+      min-height:100vh;
     }
 
     a{
@@ -49,6 +49,7 @@
       cursor:pointer;
       transition:var(--transition);
       border:none;
+      background:none;
     }
 
     input{
@@ -95,10 +96,12 @@
     .top-btn{
       display:inline-flex;
       align-items:center;
+      justify-content:center;
       gap:8px;
       padding:10px 16px;
       border-radius:10px;
       font-weight:700;
+      white-space:nowrap;
     }
 
     .btn-light{
@@ -109,6 +112,42 @@
     .btn-light:hover{
       background:var(--gold);
       transform:translateY(-2px);
+    }
+
+    .nav-bar{
+      background:rgba(16,42,82,.95);
+      border-top:1px solid rgba(255,255,255,.06);
+      border-bottom:1px solid rgba(255,255,255,.08);
+    }
+
+    .menu{
+      display:flex;
+      justify-content:center;
+      gap:10px;
+      padding:12px 0;
+      flex-wrap:wrap;
+    }
+
+    .menu a{
+      color:white;
+      font-weight:700;
+      font-size:14px;
+      background:#0d2346;
+      padding:10px 14px;
+      border-radius:10px;
+      border:1px solid transparent;
+      white-space:nowrap;
+    }
+
+    .menu a:hover{
+      color:var(--gold);
+      background:var(--gold-soft);
+      border-color:var(--gold-line);
+    }
+
+    .menu a.ativo{
+      background:var(--gold);
+      color:black;
     }
 
     .container{
@@ -135,30 +174,7 @@
       color:var(--muted);
       line-height:1.6;
       font-size:15px;
-    }
-
-    .toolbar{
-      display:flex;
-      gap:12px;
-      flex-wrap:wrap;
-      margin-bottom:18px;
-    }
-
-    .toolbar .btn{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      background:var(--gold);
-      color:black;
-      padding:11px 16px;
-      border-radius:10px;
-      font-weight:700;
-      text-decoration:none;
-    }
-
-    .toolbar .btn:hover{
-      filter:brightness(1.04);
-      transform:translateY(-1px);
+      max-width:850px;
     }
 
     .search-box{
@@ -179,78 +195,7 @@
     input:focus{
       outline:2px solid rgba(247,198,0,.5);
     }
-
-    .form-panel{
-      display:none;
-      background:linear-gradient(180deg, rgba(16,42,82,.96), rgba(12,33,64,.96));
-      border:1px solid rgba(255,255,255,.06);
-      border-radius:18px;
-      padding:18px;
-      box-shadow:var(--shadow);
-      margin-bottom:18px;
-    }
-
-    .form-grid{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:12px;
-    }
-
-    .full{
-      grid-column:1 / -1;
-    }
-
-    .info-categorias{
-      margin-top:10px;
-      background:#102a52;
-      border:1px solid rgba(255,255,255,.06);
-      border-radius:12px;
-      padding:14px;
-      color:var(--muted);
-      line-height:1.6;
-      font-size:14px;
-    }
-
-    .info-categorias strong{
-      color:var(--gold);
-    }
-
-    .categorias-preview{
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-      margin-top:10px;
-    }
-
-    .tag{
-      background:#1a3f73;
-      padding:5px 9px;
-      border-radius:999px;
-      font-size:12px;
-      display:inline-block;
-    }
-
-    .form-actions{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-top:14px;
-    }
-
-    .form-actions button{
-      background:var(--gold);
-      color:black;
-      padding:10px 14px;
-      border-radius:10px;
-      font-weight:700;
-    }
-
-    .form-actions button:hover{
-      filter:brightness(1.04);
-      transform:translateY(-1px);
-    }
-
-    .lista-grid{
+.lista-grid{
       display:grid;
       grid-template-columns:repeat(auto-fit, minmax(320px, 1fr));
       gap:12px;
@@ -303,6 +248,7 @@
       font-weight:700;
       font-size:18px;
       color:#fff;
+      line-height:1.35;
     }
 
     .user-info small{
@@ -318,6 +264,15 @@
       margin-top:6px;
     }
 
+    .tag{
+      background:#1a3f73;
+      padding:5px 9px;
+      border-radius:999px;
+      font-size:12px;
+      display:inline-block;
+      border:1px solid rgba(255,255,255,.08);
+    }
+
     .actions{
       display:flex;
       gap:8px;
@@ -325,28 +280,23 @@
       justify-content:flex-end;
     }
 
-    .actions button{
-      background:#1a3f73;
-      padding:9px 12px;
-      border-radius:8px;
-      color:white;
-      font-size:12px;
-      margin:0;
-      font-weight:700;
-    }
-
-    .actions button:hover{
+    .actions .btn-ver{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
       background:var(--gold);
       color:#111;
+      padding:11px 14px;
+      border-radius:10px;
+      font-weight:700;
+      font-size:13px;
+      white-space:nowrap;
     }
 
-    .actions .delete{
-      background:var(--danger) !important;
-      color:#fff !important;
-    }
-
-    .actions .delete:hover{
-      filter:brightness(1.08);
+    .actions .btn-ver:hover{
+      filter:brightness(1.04);
+      transform:translateY(-1px);
     }
 
     .vazio{
@@ -388,12 +338,6 @@
       margin:14px 0 10px;
     }
 
-    .modal-content p{
-      color:var(--muted);
-      line-height:1.6;
-      margin-bottom:8px;
-    }
-
     .modal-grid{
       display:grid;
       grid-template-columns:1fr 1fr;
@@ -416,8 +360,7 @@
       margin-bottom:10px;
       font-size:18px;
     }
-
-    .info-line{
+.info-line{
       color:var(--muted);
       line-height:1.7;
       font-size:14px;
@@ -503,7 +446,6 @@
         justify-content:center;
       }
 
-      .form-grid,
       .modal-grid,
       .stats-grid{
         grid-template-columns:1fr;
@@ -521,8 +463,7 @@
     }
 
     @media (max-width:600px){
-      .top-btn,
-      .toolbar .btn{
+      .top-btn{
         width:100%;
         justify-content:center;
       }
@@ -533,8 +474,8 @@
         align-items:stretch;
       }
 
-      .form-actions button{
-        width:100%;
+      .hero h2{
+        font-size:24px;
       }
     }
   </style>
@@ -551,81 +492,42 @@
         <a href="index.html" class="top-btn btn-light">
           <i class="fa-solid fa-house"></i> Página Inicial
         </a>
-
-        <a href="admin.html" class="top-btn btn-light">
-          <i class="fa-solid fa-gears"></i> Painel ADM
-        </a>
       </div>
 
-      <div class="header-title">Assistentes</div>
+      <div class="header-title">LIGA GOIANA DE FUTEBOL DE BASE</div>
 
       <div class="header-right"></div>
+    </div>
+
+    <div class="nav-bar">
+      <div class="wrap">
+        <div class="menu">
+          <a href="index.html">Início</a>
+          <a href="campeonatos.html">Campeonatos</a>
+          <a href="tabela.html">Tabela</a>
+          <a href="jogos.html">Jogos</a>
+          <a href="times.html">Times</a>
+          <a href="tecnicos.html">Técnicos</a>
+          <a href="jogadores.html">Jogadores</a>
+          <a href="arbitros.html">Arbitros</a>
+          <a href="assistente.html" class="ativo">Assistente</a>
+          <a href="sumula.html">Súmula</a>
+          <a href="noticias.html">Notícias</a>
+          <a href="login.html">Login</a>
+        </div>
+      </div>
     </div>
   </header>
 
   <div class="wrap container">
 
     <div class="hero">
-      <h2>Cadastro de Assistentes</h2>
-      <p>Cadastre, edite, visualize e acompanhe estatísticas dos assistentes da competição.</p>
-    </div>
-
-    <div class="toolbar">
-      <a class="btn" onclick="toggleFormulario()">
-        <i class="fa-solid fa-plus"></i> Novo Assistente
-      </a>
+      <h2>Assistentes</h2>
+      <p>Veja os assistentes cadastrados e acompanhe informações públicas e estatísticas de atuação.</p>
     </div>
 
     <div class="search-box">
       <input id="busca" placeholder="Pesquisar assistente..." oninput="carregarAssistentes()">
-    </div>
-
-    <div class="form-panel" id="formulario">
-      <div class="form-grid">
-        <div>
-          <input id="nome" placeholder="Nome">
-        </div>
-
-        <div>
-          <input id="foto" type="file" accept="image/*">
-        </div>
-
-        <div>
-          <input id="cpf" placeholder="CPF">
-        </div>
-
-        <div>
-          <input id="telefone" placeholder="Telefone">
-        </div>
-
-        <div>
-          <input id="email" placeholder="Email">
-        </div>
-
-        <div>
-          <input id="dataNascimento" type="date" placeholder="Data de nascimento">
-        </div>
-
-        <div class="full">
-          <input id="cidadeNascimento" placeholder="Cidade onde nasceu">
-        </div>
-
-        <div class="full">
-          <div class="info-categorias">
-            <strong>Autorização automática:</strong> todo assistente cadastrado neste painel já fica autorizado para trabalhar em <strong>todas as categorias</strong>.
-            <div class="categorias-preview" id="categoriasPreview"></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="form-actions">
-        <button onclick="salvar()">
-          <i class="fa-solid fa-floppy-disk"></i> Salvar
-        </button>
-        <button onclick="cancelarEdicao()">
-          <i class="fa-solid fa-xmark"></i> Cancelar
-        </button>
-      </div>
     </div>
 
     <div class="lista-grid" id="lista"></div>
@@ -638,20 +540,13 @@
 
   <script type="module">
     import { db } from "./firebase.js";
-    import { collection, addDoc, getDocs, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
-
-    const storage = getStorage();
-
-    let editandoId = null;
-    let fotoAtual = "";
-    let categoriasDisponiveis = [];
+    import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
     window.voltarPagina = function(){
       if (window.history.length > 1) {
         window.history.back();
       } else {
-        window.location.href = "admin.html";
+        window.location.href = "index.html";
       }
     };
 
@@ -662,8 +557,7 @@
         .normalize("NFD")
         .replace(/[\u0300-\u036f]/g, "");
     }
-
-    function calcularIdade(dataNascimento){
+function calcularIdade(dataNascimento){
       if(!dataNascimento) return "-";
 
       const nascimento = new Date(dataNascimento + "T00:00:00");
@@ -678,55 +572,6 @@
       }
 
       return idade >= 0 ? idade : "-";
-    }
-
-    function preencherPreviewCategorias(){
-      const box = document.getElementById("categoriasPreview");
-      if(!categoriasDisponiveis.length){
-        box.innerHTML = `<span class="tag">Sem categorias cadastradas</span>`;
-        return;
-      }
-
-      box.innerHTML = categoriasDisponiveis.map(c => `<span class="tag">${c}</span>`).join("");
-    }
-
-    async function carregarCategorias(){
-      categoriasDisponiveis = [];
-      const snap = await getDocs(collection(db,"categorias"));
-
-      snap.forEach(d => {
-        const data = d.data();
-        if(data.nome) categoriasDisponiveis.push(data.nome);
-      });
-
-      categoriasDisponiveis.sort((a,b)=>a.localeCompare(b, "pt-BR"));
-      preencherPreviewCategorias();
-    }
-
-    window.toggleFormulario = function(){
-      const f = document.getElementById("formulario");
-      f.style.display = f.style.display === "none" || f.style.display === "" ? "block" : "none";
-    };
-
-    window.cancelarEdicao = function(){
-      limparFormulario();
-      document.getElementById("formulario").style.display = "none";
-    };
-
-    function limparFormulario(){
-      document.getElementById("nome").value = "";
-      document.getElementById("foto").value = "";
-      document.getElementById("cpf").value = "";
-      document.getElementById("telefone").value = "";
-      document.getElementById("email").value = "";
-      document.getElementById("dataNascimento").value = "";
-      document.getElementById("cidadeNascimento").value = "";
-      editandoId = null;
-      fotoAtual = "";
-    }
-
-    function getCategoriasAutomaticas(){
-      return [...categoriasDisponiveis];
     }
 
     async function calcularEstatisticasAssistente(nomeAssistente){
@@ -757,81 +602,6 @@
       };
     }
 
-    window.salvar = async function(){
-      const nome = document.getElementById("nome").value.trim();
-      const cpf = document.getElementById("cpf").value.trim();
-      const telefone = document.getElementById("telefone").value.trim();
-      const email = document.getElementById("email").value.trim();
-      const dataNascimento = document.getElementById("dataNascimento").value;
-      const cidadeNascimento = document.getElementById("cidadeNascimento").value.trim();
-      const foto = document.getElementById("foto").files[0];
-      const categorias = getCategoriasAutomaticas();
-
-      if(!nome || !cpf){
-        alert("Preencha os campos obrigatórios.");
-        return;
-      }
-
-      let url = fotoAtual;
-
-      if(foto){
-        const refStorage = ref(storage,"assistentes/" + Date.now() + "-" + foto.name);
-        await uploadBytes(refStorage,foto);
-        url = await getDownloadURL(refStorage);
-      }
-
-      const dados = {
-        nome,
-        cpf,
-        telefone,
-        email,
-        dataNascimento,
-        cidadeNascimento,
-        foto:url,
-        categorias,
-        autorizadoTodasCategorias: true
-      };
-
-      if(editandoId){
-        await updateDoc(doc(db,"assistentes",editandoId),dados);
-        alert("Assistente atualizado com sucesso!");
-      }else{
-        await addDoc(collection(db,"assistentes"),dados);
-        alert("Assistente salvo com sucesso!");
-      }
-
-      limparFormulario();
-      carregarAssistentes();
-    };
-
-    window.editar = async function(id){
-      const snap = await getDocs(collection(db,"assistentes"));
-
-      snap.forEach(d=>{
-        if(d.id===id){
-          const a = d.data();
-          document.getElementById("nome").value = a.nome || "";
-          document.getElementById("cpf").value = a.cpf || "";
-          document.getElementById("telefone").value = a.telefone || "";
-          document.getElementById("email").value = a.email || "";
-          document.getElementById("dataNascimento").value = a.dataNascimento || "";
-          document.getElementById("cidadeNascimento").value = a.cidadeNascimento || "";
-          fotoAtual = a.foto || "";
-          editandoId = id;
-        }
-      });
-
-      document.getElementById("formulario").style.display = "block";
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    };
-
-    window.excluir = async function(id){
-      if(confirm("Excluir assistente?")){
-        await deleteDoc(doc(db,"assistentes",id));
-        carregarAssistentes();
-      }
-    };
-
     window.ver = async function(id){
       const snap = await getDocs(collection(db,"assistentes"));
 
@@ -860,9 +630,6 @@
             <div class="modal-grid">
               <div class="info-box">
                 <h3>Dados do Assistente</h3>
-                <div class="info-line"><strong>Email:</strong> ${a.email || "-"}</div>
-                <div class="info-line"><strong>Telefone:</strong> ${a.telefone || "-"}</div>
-                <div class="info-line"><strong>CPF:</strong> ${a.cpf || "-"}</div>
                 <div class="info-line"><strong>Idade:</strong> ${idade}</div>
                 <div class="info-line"><strong>Onde nasceu:</strong> ${a.cidadeNascimento || "-"}</div>
                 <div class="info-line"><strong>Autorização:</strong> Todas as categorias</div>
@@ -906,27 +673,24 @@
     window.fechar = function(){
       document.getElementById("modal").style.display = "none";
     };
-
-    async function carregarAssistentes(){
+async function carregarAssistentes(){
       const lista = document.getElementById("lista");
       lista.innerHTML = "<div class='vazio'>Carregando assistentes...</div>";
 
       const snap = await getDocs(collection(db,"assistentes"));
       let dados = [];
 
-      snap.forEach(d=>dados.push({id:d.id,...d.data()}));
+      snap.forEach(d => dados.push({ id:d.id, ...d.data() }));
 
       const busca = (document.getElementById("busca").value || "").toLowerCase().trim();
 
       if(busca){
         dados = dados.filter(a =>
-          (a.nome||"").toLowerCase().includes(busca) ||
-          (a.email||"").toLowerCase().includes(busca) ||
-          (a.cpf||"").toLowerCase().includes(busca)
+          (a.nome || "").toLowerCase().includes(busca)
         );
       }
 
-      dados.sort((a,b)=>(a.nome || "").localeCompare(b.nome || "",'pt-BR'));
+      dados.sort((a,b)=>(a.nome || "").localeCompare(b.nome || "", "pt-BR"));
 
       if(!dados.length){
         lista.innerHTML = "<div class='vazio'>Nenhum assistente encontrado.</div>";
@@ -939,25 +703,19 @@
         lista.innerHTML += `
           <div class="card">
             <div class="user">
-              <img src="${a.foto||'logo-liga.jfif'}" class="photo" alt="${a.nome || 'Assistente'}">
+              <img src="${a.foto || 'logo-liga.jfif'}" class="photo" alt="${a.nome || 'Assistente'}">
               <div class="user-info">
                 <div class="nome">${a.nome || ""}</div>
-                <small>${a.email || "-"}</small>
-                <small>${a.telefone || "-"}</small>
+                <small>Assistente autorizado</small>
                 <div class="categorias-tags">
                   <span class="tag">Todas as categorias</span>
                 </div>
               </div>
             </div>
+
             <div class="actions">
-              <button onclick="editar('${a.id}')">
-                <i class="fa-solid fa-pen"></i> Editar
-              </button>
-              <button onclick="ver('${a.id}')">
+              <button class="btn-ver" onclick="ver('${a.id}')">
                 <i class="fa-solid fa-eye"></i> Ver
-              </button>
-              <button class="delete" onclick="excluir('${a.id}')">
-                <i class="fa-solid fa-trash"></i> Excluir
               </button>
             </div>
           </div>
@@ -965,7 +723,6 @@
       });
     }
 
-    await carregarCategorias();
     carregarAssistentes();
   </script>
 
